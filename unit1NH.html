@@ -97,7 +97,7 @@
                         <span class="card-category" id="cardCategory">Category</span>
                         <button class="ai-gen-btn" onclick="generateAIImage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh</button>
                         <i class="fa-solid fa-heart" id="cardIcon" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                        <img id="cardImg" style="display:none; max-width: 100px; margin-bottom: 1rem;">
+                        <img id="cardImg" style="display:none; max-width: 140px; max-height: 100px; border-radius: 8px; margin-bottom: 1rem; object-fit: contain;">
                         <div class="card-word" id="cardWord">Aunt</div>
                         <div class="card-phonetic" id="cardPhonetic">/ɑːnt/</div>
                         <button class="ctrl-btn" style="width: 36px; height: 36px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
@@ -149,44 +149,44 @@
     <script>
         const rawVocabulary = [
             // Family
-            { word: "Aunt", meaning: "cô, dì, thím, mợ", category: "Family Members", phonetic: "/ɑːnt/" },
-            { word: "Uncle", meaning: "chú, bác, cậu, dượng", category: "Family Members", phonetic: "/ˈʌŋ.kəl/" },
-            { word: "Cousin", meaning: "anh, chị, em họ", category: "Family Members", phonetic: "/ˈkʌz.ən/" },
-            { word: "Nephew", meaning: "cháu trai (con của anh/chị/em)", category: "Family Members", phonetic: "/ˈnef.juː/" },
-            { word: "Niece", meaning: "cháu gái (con của anh/chị/em)", category: "Family Members", phonetic: "/niːs/" },
-            { word: "Stepbrother", meaning: "anh/em trai kế", category: "Family Members", phonetic: "/ˈstepˌbrʌð.ər/" },
-            { word: "Stepsister", meaning: "chị/em gái kế", category: "Family Members", phonetic: "/ˈstepˌsɪs.tər/" },
+            { word: "Aunt", meaning: "cô, dì, thím, mợ", category: "Family Members", phonetic: "/ɑːnt/", icon: "fa-person-dress" },
+            { word: "Uncle", meaning: "chú, bác, cậu, dượng", category: "Family Members", phonetic: "/ˈʌŋ.kəl/", icon: "fa-person" },
+            { word: "Cousin", meaning: "anh, chị, em họ", category: "Family Members", phonetic: "/ˈkʌz.ən/", icon: "fa-people-arrows" },
+            { word: "Nephew", meaning: "cháu trai (con của anh/chị/em)", category: "Family Members", phonetic: "/ˈnef.juː/", icon: "fa-child" },
+            { word: "Niece", meaning: "cháu gái (con của anh/chị/em)", category: "Family Members", phonetic: "/niːs/", icon: "fa-child-dress" },
+            { word: "Stepbrother", meaning: "anh/em trai kế", category: "Family Members", phonetic: "/ˈstepˌbrʌð.ər/", icon: "fa-user-group" },
+            { word: "Stepsister", meaning: "chị/em gái kế", category: "Family Members", phonetic: "/ˈstepˌsɪs.tər/", icon: "fa-user-group" },
             
             // Housework
-            { word: "Clean the house", meaning: "dọn dẹp nhà cửa", category: "Housework", phonetic: "/kliːn ðə haʊs/" },
-            { word: "Do the ironing", meaning: "là/ủi quần áo", category: "Housework", phonetic: "/duː ðə ˈaɪə.nɪŋ/" },
-            { word: "Do the washing", meaning: "giặt giũ quần áo", category: "Housework", phonetic: "/duː ðə ˈwɒʃ.ɪŋ/" },
-            { word: "Set the table", meaning: "dọn bàn ăn", category: "Housework", phonetic: "/set ðə ˈteɪ.bəl/" },
-            { word: "Load the dishwasher", meaning: "xếp bát vào máy rửa", category: "Housework", phonetic: "/ləʊd ðə ˈdɪʃˌwɒʃ.ər/" },
+            { word: "Clean the house", meaning: "dọn dẹp nhà cửa", category: "Housework", phonetic: "/kliːn ðə haʊs/", icon: "fa-broom" },
+            { word: "Do the ironing", meaning: "là/ủi quần áo", category: "Housework", phonetic: "/duː ðə ˈaɪə.nɪŋ/", icon: "fa-shirt" },
+            { word: "Do the washing", meaning: "giặt giũ quần áo", category: "Housework", phonetic: "/duː ðə ˈwɒʃ.ɪŋ/", icon: "fa-soap" },
+            { word: "Set the table", meaning: "dọn bàn ăn", category: "Housework", phonetic: "/set ðə ˈteɪ.bəl/", icon: "fa-utensils" },
+            { word: "Load the dishwasher", meaning: "xếp bát vào máy rửa", category: "Housework", phonetic: "/ləʊd ðə ˈdɪʃˌwɒʃ.ər/", icon: "fa-sink" },
 
             // Adjectives & Prepositions
-            { word: "Excited about", meaning: "hào hứng về...", category: "Adjectives & Prepositions", phonetic: "/ɪkˈsaɪ.tɪd əˈbaʊt/" },
-            { word: "Famous for", meaning: "nổi tiếng về...", category: "Adjectives & Prepositions", phonetic: "/ˈfeɪ.məs fɔːr/" },
-            { word: "Frightened of", meaning: "sợ hãi...", category: "Adjectives & Prepositions", phonetic: "/ˈfraɪ.tənd ɒv/" },
-            { word: "Good at", meaning: "giỏi về...", category: "Adjectives & Prepositions", phonetic: "/ɡʊd æt/" },
-            { word: "Proud of", meaning: "tự hào về...", category: "Adjectives & Prepositions", phonetic: "/praʊd ɒv/" },
-            { word: "Similar to", meaning: "giống với...", category: "Adjectives & Prepositions", phonetic: "/ˈsɪm.ɪ.lər tuː/" },
+            { word: "Excited about", meaning: "hào hứng về...", category: "Adjectives & Prepositions", phonetic: "/ɪkˈsaɪ.tɪd əˈbaʊt/", icon: "fa-face-laugh-beam" },
+            { word: "Famous for", meaning: "nổi tiếng về...", category: "Adjectives & Prepositions", phonetic: "/ˈfeɪ.məs fɔːr/", icon: "fa-star" },
+            { word: "Frightened of", meaning: "sợ hãi...", category: "Adjectives & Prepositions", phonetic: "/ˈfraɪ.tənd ɒv/", icon: "fa-face-flushed" },
+            { word: "Good at", meaning: "giỏi về...", category: "Adjectives & Prepositions", phonetic: "/ɡʊd æt/", icon: "fa-thumbs-up" },
+            { word: "Proud of", meaning: "tự hào về...", category: "Adjectives & Prepositions", phonetic: "/praʊd ɒv/", icon: "fa-award" },
+            { word: "Similar to", meaning: "giống với...", category: "Adjectives & Prepositions", phonetic: "/ˈsɪm.ɪ.lər tuː/", icon: "fa-clone" },
 
             // Personality
-            { word: "Brave", meaning: "dũng cảm", category: "Personality", phonetic: "/breɪv/" },
-            { word: "Creative", meaning: "sáng tạo", category: "Personality", phonetic: "/kriˈeɪ.tɪv/" },
-            { word: "Patient", meaning: "kiên nhẫn", category: "Personality", phonetic: "/ˈpeɪ.ʃənt/" },
-            { word: "Sensible", meaning: "biết điều, khôn ngoan", category: "Personality", phonetic: "/ˈsen.sə.bəl/" },
-            { word: "Moody", meaning: "dễ thay đổi tâm trạng", category: "Personality", phonetic: "/ˈmuː.di/" },
-            { word: "Selfish", meaning: "ích kỷ", category: "Personality", phonetic: "/ˈsel.fɪʃ/" },
+            { word: "Brave", meaning: "dũng cảm", category: "Personality", phonetic: "/breɪv/", icon: "fa-shield-halved" },
+            { word: "Creative", meaning: "sáng tạo", category: "Personality", phonetic: "/kriˈeɪ.tɪv/", icon: "fa-palette" },
+            { word: "Patient", meaning: "kiên nhẫn", category: "Personality", phonetic: "/ˈpeɪ.ʃənt/", icon: "fa-hourglass-half" },
+            { word: "Sensible", meaning: "biết điều, khôn ngoan", category: "Personality", phonetic: "/ˈsen.sə.bəl/", icon: "fa-brain" },
+            { word: "Moody", meaning: "dễ thay đổi tâm trạng", category: "Personality", phonetic: "/ˈmuː.di/", icon: "fa-face-rolling-eyes" },
+            { word: "Selfish", meaning: "ích kỷ", category: "Personality", phonetic: "/ˈsel.fɪʃ/", icon: "fa-user-lock" },
 
             // Appearance
-            { word: "Attractive", meaning: "thu hút, lôi cuốn", category: "Appearance", phonetic: "/əˈtræk.tɪv/" },
-            { word: "Good-looking", meaning: "ưa nhìn, đẹp trai/gái", category: "Appearance", phonetic: "/ˌɡʊdˈlʊk.ɪŋ/" },
-            { word: "Curly hair", meaning: "tóc xoăn", category: "Appearance", phonetic: "/ˈkɜː.li heər/" },
-            { word: "Wavy hair", meaning: "tóc gợn sóng", category: "Appearance", phonetic: "/ˈweɪ.vi heər/" },
-            { word: "Beard", meaning: "râu quai nón", category: "Appearance", phonetic: "/bɪəd/" },
-            { word: "Moustache", meaning: "ria mép", category: "Appearance", phonetic: "/məsˈtɑːʃ/" }
+            { word: "Attractive", meaning: "thu hút, lôi cuốn", category: "Appearance", phonetic: "/əˈtræk.tɪv/", icon: "fa-sparkles" },
+            { word: "Good-looking", meaning: "ưa nhìn, đẹp trai/gái", category: "Appearance", phonetic: "/ˌɡʊdˈlʊk.ɪŋ/", icon: "fa-face-smile-wink" },
+            { word: "Curly hair", meaning: "tóc xoăn", category: "Appearance", phonetic: "/ˈkɜː.li heər/", icon: "fa-scissors" },
+            { word: "Wavy hair", meaning: "tóc gợn sóng", category: "Appearance", phonetic: "/ˈweɪ.vi heər/", icon: "fa-wave-square" },
+            { word: "Beard", meaning: "râu quai nón", category: "Appearance", phonetic: "/bɪəd/", icon: "fa-user-ninja" },
+            { word: "Moustache", meaning: "ria mép", category: "Appearance", phonetic: "/məsˈtɑːʃ/", icon: "fa-user-tie" }
         ];
 
         let dataset = [...rawVocabulary];
@@ -203,6 +203,7 @@
 
             let imgEl = document.getElementById('cardImg');
             let iconEl = document.getElementById('cardIcon');
+            
             if (item.customImg) {
                 imgEl.src = item.customImg;
                 imgEl.style.display = 'block';
@@ -210,6 +211,7 @@
             } else {
                 imgEl.style.display = 'none';
                 iconEl.style.display = 'block';
+                iconEl.className = `fa-solid ${item.icon || 'fa-heart'}`;
             }
             speakWord();
         }
@@ -234,16 +236,40 @@
             }
         }
 
+        // Cải tiến hàm tạo ảnh AI minh họa riêng cho từng từ vựng
         function generateAIImage(e) {
             e.stopPropagation();
             let btn = e.currentTarget;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            
             setTimeout(() => {
-                let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80" viewBox="0 0 100 80"><rect width="100" height="80" rx="10" fill="#4255ff" opacity="0.2"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-weight="bold" fill="#4255ff">${dataset[index].word}</text></svg>`;
-                dataset[index].customImg = 'data:image/svg+xml;base64,' + btoa(svg);
+                let word = dataset[index].word;
+                let category = dataset[index].category;
+                
+                // Bảng màu đa dạng tự động thay đổi theo từng từ
+                let palette = ['#4255ff', '#23b26d', '#ff495c', '#ffb800', '#8e44ad', '#3498db', '#e67e22'];
+                let themeColor = palette[Math.abs(hashCode(word)) % palette.length];
+                
+                let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="140" height="100" viewBox="0 0 140 100">
+                    <rect width="140" height="100" rx="12" fill="${themeColor}" opacity="0.15"/>
+                    <circle cx="70" cy="38" r="22" fill="${themeColor}" opacity="0.25"/>
+                    <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="16" fill="${themeColor}">${word.charAt(0)}</text>
+                    <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="11" fill="${themeColor}">${word}</text>
+                </svg>`;
+                
+                dataset[index].customImg = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
                 btn.innerHTML = '<i class="fa-solid fa-check"></i>';
                 loadCard();
-            }, 500);
+            }, 400);
+        }
+
+        // Hàm băm tên từ vựng thành số ngẫu nhiên cố định để chọn màu
+        function hashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return hash;
         }
 
         function switchTab(tab, btn) {
