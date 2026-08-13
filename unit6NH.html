@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Master - Unit 6: Lessons in life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4255ff;
+            --primary-hover: #2e3ed4;
+            --bg-color: #f6f7fb;
+            --card-bg: #ffffff;
+            --text-dark: #1a1d28;
+            --text-muted: #586380;
+            --border-color: #e3e8ee;
+            --accent-green: #23b26d;
+            --accent-red: #ff4949;
+            --shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .app-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            background: #eef2f6;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .nav-btn {
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Filter bar */
+        .filter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .filter-select {
+            padding: 8px 14px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Flashcards Mode */
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 400px;
+            margin: 1rem 0;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #f8fafc;
+        }
+
+        .card-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .audio-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .card-img-box {
+            width: 130px;
+            height: 130px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+        }
+
+        .card-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-gen-btn {
+            margin-top: 10px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: #f0fdf4;
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: white; border: 2px solid var(--border-color); color: var(--text-dark); }
+
+        /* Match Game Mode */
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .match-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem 0.8rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .match-card.selected { border-color: var(--primary); background: #eef2ff; }
+        .match-card.correct { border-color: var(--accent-green); background: #e6f4ea; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .match-card.wrong { border-color: var(--accent-red); background: #fce8e6; }
+
+        /* Quiz & Spell Mode */
+        .quiz-card, .spell-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-options { display: grid; gap: 12px; margin: 1.5rem 0; }
+        .quiz-option {
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: white;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .quiz-option.correct { background: #e6f4ea; border-color: var(--accent-green); color: #137333; }
+        .quiz-option.wrong { background: #fce8e6; border-color: var(--accent-red); color: #c5221f; }
+
+        .spell-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            margin: 1rem 0;
+            outline: none;
+        }
+
+        .shortcut-hint {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            .match-grid { grid-template-columns: repeat(2, 1fr); }
+            .app-title { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-badge">Q</div>
+            <div class="app-title">Quizlet Master - Unit 6: Lessons in life</div>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="switchTab('cards')">🃏 Flashcards</button>
+            <button class="nav-btn" onclick="switchTab('match')">🧩 Ghép từ</button>
+            <button class="nav-btn" onclick="switchTab('quiz')">📝 Kiểm tra</button>
+            <button class="nav-btn" onclick="switchTab('spell')">🎧 Nghe & Viết</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TAB 1: FLASHCARDS -->
+        <div id="tab-cards" class="tab-content active">
+            <div class="filter-container">
+                <span class="filter-label">📂 Chọn danh mục bài học:</span>
+                <select class="filter-select" id="category-filter" onchange="filterCategory()">
+                    <option value="ALL">-- Tất cả từ vựng --</option>
+                    <option value="1. Adjectives (-ed / -ing)">1. Adjectives (-ed / -ing) (Tính từ cảm xúc & tính chất)</option>
+                    <option value="2. Past Simple Verbs">2. Past Simple Verbs (Động từ Quá khứ)</option>
+                    <option value="3. Past Time Expressions">3. Past Time Expressions (Từ chỉ thời gian quá khứ)</option>
+                    <option value="4. Reading & Listening">4. Reading & Listening (Từ vựng bài đọc & nghe)</option>
+                    <option value="5. Biography & Linking words">5. Biography & Linking words (Tiểu sử & Từ nối)</option>
+                    <option value="6. Everyday English: Dates">6. Everyday English: Dates (Ngày tháng & Số thứ tự)</option>
+                </select>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span class="card-category" id="card-cat">Category</span>
+                        <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentTerm()">🔊</button>
+                        <div class="card-img-box" id="card-img-container">
+                            <span class="card-icon" id="card-icon">📚</span>
+                        </div>
+                        <div class="card-text" id="card-term">Term</div>
+                        <button class="ai-gen-btn" onclick="event.stopPropagation(); generateAIImage()">✨ AI Tạo Ảnh Minh Họa</button>
+                    </div>
+                    <div class="card-face card-back">
+                        <span class="card-category">Nghĩa tiếng Việt</span>
+                        <div class="card-text" id="card-def" style="color: var(--primary);">Definition</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-outline" onclick="prevCard()">← Thẻ trước</button>
+                <div style="font-weight: 600; color: var(--text-muted);" id="card-counter">1 / 50</div>
+                <button class="btn btn-outline" onclick="nextCard()">Thẻ sau →</button>
+            </div>
+            <div class="shortcut-hint">
+                💡 Phím tắt: <kbd>Space</kbd> để lật thẻ | <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+            </div>
+        </div>
+
+        <!-- TAB 2: MATCH GAME -->
+        <div id="tab-match" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="match-timer">⏱️ 0.0s</div>
+                <button class="btn btn-outline" onclick="initMatchGame()">🔄 Ván mới</button>
+            </div>
+            <div class="match-grid" id="match-grid"></div>
+        </div>
+
+        <!-- TAB 3: QUIZ -->
+        <div id="tab-quiz" class="tab-content">
+            <div class="quiz-card" id="quiz-box"></div>
+        </div>
+
+        <!-- TAB 4: LISTEN & SPELL -->
+        <div id="tab-spell" class="tab-content">
+            <div class="spell-card" style="text-align: center;" id="spell-box">
+                <button class="audio-btn" style="position: static; width: 70px; height: 70px; margin: 0 auto 1rem; font-size: 2rem;" onclick="speakCurrentSpellWord()">🔊</button>
+                <p style="color: var(--text-muted);" id="spell-hint">Nghe phát âm và gõ lại từ chính xác</p>
+                <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tại đây..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpellAnswer()">
+                <div><button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button></div>
+                <div style="margin-top: 1rem; font-weight: 600;" id="spell-feedback"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const vocabData = [
+            // 1. Adjectives (-ed / -ing)
+            {term: "Bored", definition: "bị tẻ nhạt, buồn chán (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "🥱"},
+            {term: "Boring", definition: "nhạt nhẽo, chán ngắt (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "💤"},
+            {term: "Excited", definition: "hào hứng, phấn khích (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "🤩"},
+            {term: "Exciting", definition: "thú vị, gây phấn khích (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "🎉"},
+            {term: "Tired", definition: "mệt mỏi (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😮‍💨"},
+            {term: "Tiring", definition: "gây mệt mỏi (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "🏋️"},
+            {term: "Annoyed", definition: "bực mình, khó chịu (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😠"},
+            {term: "Annoying", definition: "gây bực mình (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "😤"},
+            {term: "Worried", definition: "lo lắng (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😟"},
+            {term: "Worrying", definition: "đáng lo ngại (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "😰"},
+            {term: "Disappointed", definition: "thất vọng (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😞"},
+            {term: "Disappointing", definition: "gây thất vọng (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "👎"},
+            {term: "Frightened", definition: "bị hoảng sợ (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😱"},
+            {term: "Frightening", definition: "gây sợ hãi (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "👻"},
+            {term: "Embarrassed", definition: "ngượng ngùng, xấu hổ (cảm xúc)", category: "1. Adjectives (-ed / -ing)", icon: "😳"},
+            {term: "Embarrassing", definition: "gây ngượng ngùng (tính chất)", category: "1. Adjectives (-ed / -ing)", icon: "🙈"},
+
+            // 2. Past Simple Verbs
+            {term: "Died", definition: "qua đời (die)", category: "2. Past Simple Verbs", icon: "🕊️"},
+            {term: "Moved", definition: "di chuyển, chuyển nhà (move)", category: "2. Past Simple Verbs", icon: "📦"},
+            {term: "Married", definition: "kết hôn (marry)", category: "2. Past Simple Verbs", icon: "💍"},
+            {term: "Inherited", definition: "thừa kế (inherit)", category: "2. Past Simple Verbs", icon: "🏛️"},
+            {term: "Became", definition: "trở thành (become)", category: "2. Past Simple Verbs", icon: "✨"},
+            {term: "Began", definition: "bắt đầu (begin)", category: "2. Past Simple Verbs", icon: "🏁"},
+            {term: "Came", definition: "đến (come)", category: "2. Past Simple Verbs", icon: "🚶"},
+            {term: "Cost", definition: "trị giá, tốn phí (cost)", category: "2. Past Simple Verbs", icon: "💵"},
+            {term: "Gave", definition: "cho, tặng (give)", category: "2. Past Simple Verbs", icon: "🎁"},
+            {term: "Went", definition: "đi (go)", category: "2. Past Simple Verbs", icon: "🏃"},
+            {term: "Flew", definition: "bay (fly)", category: "2. Past Simple Verbs", icon: "✈️"},
+            {term: "Made", definition: "làm ra, chế tạo (make)", category: "2. Past Simple Verbs", icon: "🛠️"},
+            {term: "Met", definition: "gặp gỡ (meet)", category: "2. Past Simple Verbs", icon: "🤝"},
+            {term: "Paid", definition: "thanh toán (pay)", category: "2. Past Simple Verbs", icon: "💳"},
+            {term: "Spent", definition: "tiêu xài tiền/thời gian (spend)", category: "2. Past Simple Verbs", icon: "⏳"},
+            {term: "Took", definition: "cầm, nắm, tốn thời gian (take)", category: "2. Past Simple Verbs", icon: "⏱️"},
+            {term: "Won", definition: "chiến thắng (win)", category: "2. Past Simple Verbs", icon: "🏆"},
+            {term: "Lost", definition: "thất bại, mất (lose)", category: "2. Past Simple Verbs", icon: "📉"},
+
+            // 3. Past Time Expressions
+            {term: "Yesterday morning", definition: "sáng qua", category: "3. Past Time Expressions", icon: "🌅"},
+            {term: "Yesterday afternoon", definition: "chiều qua", category: "3. Past Time Expressions", icon: "☀️"},
+            {term: "Yesterday evening", definition: "tối qua", category: "3. Past Time Expressions", icon: "🌆"},
+            {term: "Last night", definition: "đêm qua", category: "3. Past Time Expressions", icon: "🌙"},
+            {term: "Last week", definition: "tuần trước", category: "3. Past Time Expressions", icon: "📅"},
+            {term: "Last month", definition: "tháng trước", category: "3. Past Time Expressions", icon: "🗓️"},
+            {term: "Last year", definition: "năm ngoái", category: "3. Past Time Expressions", icon: "🎆"},
+            {term: "Ten minutes ago", definition: "10 phút trước", category: "3. Past Time Expressions", icon: "⏱️"},
+            {term: "A long time ago", definition: "khoảng thời gian dài trước đây", category: "3. Past Time Expressions", icon: "⏳"},
+
+            // 4. Reading & Listening
+            {term: "Fishing village", definition: "làng chài", category: "4. Reading & Listening", icon: "🏞️"},
+            {term: "Tuna fish", definition: "cá ngừ", category: "4. Reading & Listening", icon: "🐟"},
+            {term: "Take a siesta", definition: "ngủ trưa, nghỉ trưa", category: "4. Reading & Listening", icon: "🛌"},
+            {term: "Fleet of boats", definition: "đội tàu, đoàn thuyền", category: "4. Reading & Listening", icon: "⛵"},
+            {term: "Export", definition: "xuất khẩu", category: "4. Reading & Listening", icon: "📦"},
+            {term: "Become a millionaire", definition: "trở thành triệu phú", category: "4. Reading & Listening", icon: "💰"},
+            {term: "Tourist attraction", definition: "điểm thu hút khách du lịch", category: "4. Reading & Listening", icon: "📸"},
+            {term: "Queue", definition: "xếp hàng", category: "4. Reading & Listening", icon: "🚶‍♂️🚶‍♀️"},
+            {term: "Housekeeper", definition: "quản gia, người giúp việc nhà", category: "4. Reading & Listening", icon: "🧹"},
+            {term: "Wax models", definition: "tượng sáp", category: "4. Reading & Listening", icon: "🗿"},
+
+            // 5. Biography & Linking words
+            {term: "However", definition: "tuy nhiên (chỉ sự đối lập)", category: "5. Biography & Linking words", icon: "🔄"},
+            {term: "Until", definition: "cho đến khi", category: "5. Biography & Linking words", icon: "⏳"},
+            {term: "Continue", definition: "tiếp tục", category: "5. Biography & Linking words", icon: "⏩"},
+            {term: "Run a company", definition: "điều hành một công ty", category: "5. Biography & Linking words", icon: "🏢"},
+            {term: "Win a business award", definition: "đạt giải thưởng kinh doanh", category: "5. Biography & Linking words", icon: "🥇"},
+
+            // 6. Everyday English: Dates
+            {term: "First (1st)", definition: "thứ nhất (ngày 1)", category: "6. Everyday English: Dates", icon: "1️⃣"},
+            {term: "Second (2nd)", definition: "thứ hai (ngày 2)", category: "6. Everyday English: Dates", icon: "2️⃣"},
+            {term: "Third (3rd)", definition: "thứ ba (ngày 3)", category: "6. Everyday English: Dates", icon: "3️⃣"},
+            {term: "Twelfth (12th)", definition: "thứ mười hai (ngày 12)", category: "6. Everyday English: Dates", icon: "🔢"},
+            {term: "Twentieth (20th)", definition: "thứ hai mươi (ngày 20)", category: "6. Everyday English: Dates", icon: "🔢"},
+            {term: "The first of April", definition: "Ngày 1 tháng 4", category: "6. Everyday English: Dates", icon: "📅"}
+        ];
+
+        let filteredVocab = [...vocabData];
+        let currentCardIdx = 0;
+        let aiImageCache = {};
+
+        window.onload = () => {
+            updateFlashcard();
+            initMatchGame();
+            initQuiz();
+            initSpell();
+        };
+
+        function filterCategory() {
+            const selectedCat = document.getElementById('category-filter').value;
+            if (selectedCat === 'ALL') {
+                filteredVocab = [...vocabData];
+            } else {
+                filteredVocab = vocabData.filter(item => item.category === selectedCat);
+            }
+            currentCardIdx = 0;
+            updateFlashcard();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if (tabName === 'match') initMatchGame();
+            if (tabName === 'quiz') initQuiz();
+            if (tabName === 'spell') initSpell();
+        }
+
+        // --- FLASHCARDS MODE ---
+        function updateFlashcard() {
+            if (filteredVocab.length === 0) return;
+            const item = filteredVocab[currentCardIdx];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-def').innerText = item.definition;
+            document.getElementById('card-cat').innerText = item.category;
+            document.getElementById('card-counter').innerText = `${currentCardIdx + 1} / ${filteredVocab.length}`;
+            
+            const imgContainer = document.getElementById('card-img-container');
+            if (aiImageCache[item.term]) {
+                imgContainer.innerHTML = `<img src="${aiImageCache[item.term]}" alt="AI Image">`;
+            } else {
+                imgContainer.innerHTML = `<span class="card-icon">${item.icon || '📌'}</span>`;
+            }
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+        function nextCard() { 
+            if (filteredVocab.length === 0) return;
+            currentCardIdx = (currentCardIdx + 1) % filteredVocab.length; 
+            updateFlashcard(); 
+        }
+        function prevCard() { 
+            if (filteredVocab.length === 0) return;
+            currentCardIdx = (currentCardIdx - 1 + filteredVocab.length) % filteredVocab.length; 
+            updateFlashcard(); 
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakCurrentTerm() { 
+            if (filteredVocab.length > 0) {
+                const term = filteredVocab[currentCardIdx].term.split('(')[0].trim();
+                speakText(term);
+            }
+        }
+
+        function generateAIImage() {
+            if (filteredVocab.length === 0) return;
+            const item = filteredVocab[currentCardIdx];
+            const imgContainer = document.getElementById('card-img-container');
+            imgContainer.innerHTML = `<span style="font-size:0.8rem; color:var(--primary);">✨ AI đang vẽ...</span>`;
+            
+            const cleanTerm = item.term.split('(')[0].trim();
+            const prompt = encodeURIComponent(`digital art illustration of ${cleanTerm}, high quality, clean background`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=200&height=200&nologo=true`;
+
+            const img = new Image();
+            img.onload = () => {
+                aiImageCache[item.term] = imageUrl;
+                imgContainer.innerHTML = `<img src="${imageUrl}" alt="AI Image">`;
+            };
+            img.src = imageUrl;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('tab-cards').classList.contains('active')) {
+                if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+                if (e.code === 'ArrowRight') nextCard();
+                if (e.code === 'ArrowLeft') prevCard();
+            }
+        });
+
+        // --- MATCH GAME MODE ---
+        let matchTimer, matchStartTime, matchSelected = null;
+        function initMatchGame() {
+            clearInterval(matchTimer);
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchSelected = null;
+            const pool = filteredVocab.length >= 6 ? filteredVocab : vocabData;
+            const shuffled = [...pool].sort(() => 0.5 - Math.random()).slice(0, 6);
+            let cards = [];
+            shuffled.forEach((item, idx) => {
+                cards.push({ id: idx, text: item.term, type: 'term' });
+                cards.push({ id: idx, text: item.definition, type: 'def' });
+            });
+            cards.sort(() => 0.5 - Math.random());
+
+            cards.forEach(card => {
+                const el = document.createElement('div');
+                el.className = 'match-card';
+                el.innerText = card.text;
+                el.onclick = () => {
+                    if (el.classList.contains('correct') || el === matchSelected) return;
+                    if (!matchSelected) {
+                        matchSelected = el;
+                        el.classList.add('selected');
+                    } else {
+                        if (matchSelected.innerText !== el.innerText && 
+                           ((shuffled[card.id].term === matchSelected.innerText && shuffled[card.id].definition === el.innerText) ||
+                            (shuffled[card.id].definition === matchSelected.innerText && shuffled[card.id].term === el.innerText))) {
+                            matchSelected.classList.add('correct');
+                            el.classList.add('correct');
+                            matchSelected = null;
+                        } else {
+                            el.classList.add('wrong');
+                            matchSelected.classList.add('wrong');
+                            setTimeout(() => {
+                                el.classList.remove('wrong', 'selected');
+                                matchSelected.classList.remove('wrong', 'selected');
+                                matchSelected = null;
+                            }, 400);
+                        }
+                    }
+                };
+                grid.appendChild(el);
+            });
+
+            matchStartTime = Date.now();
+            matchTimer = setInterval(() => {
+                document.getElementById('match-timer').innerText = `⏱️ ${((Date.now() - matchStartTime)/1000).toFixed(1)}s`;
+            }, 100);
+        }
+
+        // --- QUIZ MODE ---
+        let quizQuestions = [], quizIdx = 0, quizScore = 0;
+        function initQuiz() {
+            quizIdx = 0; quizScore = 0;
+            const pool = filteredVocab.length >= 4 ? filteredVocab : vocabData;
+            quizQuestions = [...pool].sort(() => 0.5 - Math.random()).slice(0, 10);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const box = document.getElementById('quiz-box');
+            if (quizIdx >= quizQuestions.length) {
+                box.innerHTML = `<h2 style="text-align:center;">🎉 Hoàn thành! Kết quả: ${quizScore}/${quizQuestions.length}</h2>
+                <div style="text-align:center; margin-top:1rem;"><button class="btn btn-primary" onclick="initQuiz()">Thử lại</button></div>`;
+                return;
+            }
+            const item = quizQuestions[quizIdx];
+            let opts = [item.definition];
+            while(opts.length < 4) {
+                let r = vocabData[Math.floor(Math.random()*vocabData.length)].definition;
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => 0.5 - Math.random());
+
+            box.innerHTML = `<h3>Từ <span style="color:var(--primary);">'${item.term}'</span> nghĩa là gì?</h3>
+            <div class="quiz-options">
+                ${opts.map(o => `<button class="quiz-option" onclick="answerQuiz(this, ${o === item.definition})">${o}</button>`).join('')}
+            </div>`;
+        }
+
+        function answerQuiz(btn, isCorrect) {
+            if(isCorrect) { btn.classList.add('correct'); quizScore++; }
+            else btn.classList.add('wrong');
+            setTimeout(() => { quizIdx++; renderQuiz(); }, 1000);
+        }
+
+        // --- SPELL MODE ---
+        let spellList = [], spellIdx = 0;
+        function initSpell() {
+            const pool = filteredVocab.length > 0 ? filteredVocab : vocabData;
+            spellList = [...pool].sort(() => 0.5 - Math.random()).slice(0, 10);
+            spellIdx = 0;
+            renderSpell();
+        }
+
+        function renderSpell() {
+            if(spellIdx >= spellList.length) {
+                document.getElementById('spell-box').innerHTML = `<h2>🎉 Bạn đã hoàn thành bài Luyện nghe!</h2>`;
+                return;
+            }
+            document.getElementById('spell-input').value = '';
+            document.getElementById('spell-feedback').innerText = '';
+            document.getElementById('spell-hint').innerText = `Gợi ý nghĩa: "${spellList[spellIdx].definition}"`;
+            speakCurrentSpellWord();
+        }
+
+        function speakCurrentSpellWord() { 
+            if(spellList[spellIdx]) {
+                const term = spellList[spellIdx].term.split('(')[0].trim();
+                speakText(term);
+            } 
+        }
+
+        function checkSpellAnswer() {
+            const val = document.getElementById('spell-input').value.trim().toLowerCase();
+            const target = spellList[spellIdx].term.split('(')[0].trim().toLowerCase();
+            const fb = document.getElementById('spell-feedback');
+            if(val === target) {
+                fb.innerText = "✅ Chính xác!";
+                fb.style.color = "var(--accent-green)";
+                setTimeout(() => { spellIdx++; renderSpell(); }, 1000);
+            } else {
+                fb.innerText = `❌ Chưa đúng! Đáp án: "${target}"`;
+                fb.style.color = "var(--accent-red)";
+            }
+        }
+    </script>
+</body>
+</html>
