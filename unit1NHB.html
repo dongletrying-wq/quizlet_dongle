@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Master - Unit 1: Hello!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* CSS cho hiệu ứng 3D Flashcard */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-hand-wave text-2xl text-indigo-500"></i>
+                <h1 class="font-bold text-xl tracking-wide text-indigo-400">Quizlet<span class="text-white">Lite</span></h1>
+                <span class="text-xs bg-indigo-950 text-indigo-200 px-2.5 py-0.5 rounded border border-indigo-700/50">Unit 1: Hello!</span>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <nav class="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 text-sm font-medium overflow-x-auto">
+                <button onclick="switchTab('flashcards')" id="btn-flashcards" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition bg-indigo-600 text-white">
+                    <i class="fa-solid fa-clone"></i> Flashcards
+                </button>
+                <button onclick="switchTab('match')" id="btn-match" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
+                </button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-circle-question"></i> Kiểm tra
+                </button>
+                <button onclick="switchTab('spell')" id="btn-spell" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-headphones"></i> Nghe & Viết
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <section class="bg-slate-800/50 border-b border-slate-700/50 py-2.5">
+        <div class="max-w-6xl mx-auto px-4 flex items-center gap-3">
+            <label for="category-filter" class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <i class="fa-solid fa-filter"></i> Danh mục:
+            </label>
+            <select id="category-filter" onchange="handleCategoryChange()" class="bg-slate-900 text-slate-200 text-sm rounded-lg px-3 py-1.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                <!-- Dynamically Populated -->
+            </select>
+            <span id="word-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">0 từ</span>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+
+        <!-- 1. MODE: FLASHCARDS -->
+        <div id="mode-flashcards" class="tab-content flex flex-col items-center gap-6">
+            <div class="w-full max-w-lg perspective-1000">
+                <div id="card-inner" onclick="flipCard()" class="relative w-full h-80 rounded-2xl bg-slate-800 border-2 border-slate-700 shadow-2xl cursor-pointer transform-style-3d transition-transform duration-500 hover:border-indigo-500 flex flex-col justify-between p-6">
+                    
+                    <!-- Card Front -->
+                    <div class="absolute inset-0 backface-hidden flex flex-col justify-between p-6 bg-slate-800 rounded-2xl">
+                        <div class="flex justify-between items-start">
+                            <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
+                            <button onclick="event.stopPropagation(); speakCurrentWord()" class="text-slate-400 hover:text-indigo-400 text-xl p-2 rounded-full hover:bg-slate-700/50 transition">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center my-auto space-y-2">
+                            <i id="card-icon-front" class="text-4xl text-indigo-400 mb-2 block"></i>
+                            <h2 id="card-word" class="text-3xl font-extrabold text-white tracking-wide"></h2>
+                            <p id="card-ipa" class="text-slate-400 font-mono text-sm"></p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-regular fa-keyboard"></i> Space: Lật</span>
+                            <span>Mặt trước</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Back -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-slate-800 border-indigo-500 rounded-2xl">
+                        <div class="flex justify-between items-start">
+                            <span id="card-type-back" class="text-xs font-semibold text-slate-400 italic"></span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" class="text-xs bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2.5 py-1 rounded-lg border border-indigo-500/50 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh
+                            </button>
+                        </div>
+
+                        <div class="text-center my-auto flex flex-col items-center justify-center gap-3">
+                            <div id="ai-img-container" class="hidden w-32 h-32 rounded-lg overflow-hidden border border-slate-600 bg-slate-900 relative">
+                                <img id="ai-img" src="" alt="AI Illustration" class="w-full h-full object-cover">
+                                <div id="ai-loading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center hidden">
+                                    <i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xl"></i>
+                                </div>
+                            </div>
+
+                            <h3 id="card-meaning" class="text-2xl font-bold text-emerald-400"></h3>
+                            <p id="card-example" class="text-xs text-slate-300 italic max-w-xs mt-1"></p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-solid fa-arrows-left-right"></i> Phím ← / →: Chuyển</span>
+                            <span>Mặt sau</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-6">
+                <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 10</span>
+                <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-right text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. MODE: MATCH GAME -->
+        <div id="mode-match" class="tab-content hidden flex-col items-center gap-4">
+            <div class="flex justify-between items-center w-full max-w-2xl bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-stopwatch text-indigo-400 text-xl"></i>
+                    <span id="match-timer" class="font-mono text-2xl font-bold text-white">0.0s</span>
+                </div>
+                <button onclick="initMatchGame()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
+                </button>
+            </div>
+
+            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full max-w-2xl">
+                <!-- Cards injected dynamically -->
+            </div>
+        </div>
+
+        <!-- 3. MODE: QUIZ / LEARN -->
+        <div id="mode-quiz" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
+            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                    <span id="quiz-progress" class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Câu hỏi 1/10</span>
+                    <span id="quiz-score" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">Điểm: 0</span>
+                </div>
+
+                <div class="text-center mb-8">
+                    <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
+                    <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
+                    <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 gap-3">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <div id="quiz-feedback" class="mt-6 text-center text-sm font-semibold h-6"></div>
+            </div>
+        </div>
+
+        <!-- 4. MODE: LISTEN & SPELL -->
+        <div id="mode-spell" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
+            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl flex flex-col items-center gap-6">
+                <div class="text-center">
+                    <button onclick="speakSpellWord()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl transition transform hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/30 mb-3">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <p class="text-xs text-slate-400">Click để nghe lại từ phát âm</p>
+                </div>
+
+                <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 w-full text-center">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Gợi ý nghĩa</span>
+                    <p id="spell-hint" class="text-lg font-bold text-emerald-400"></p>
+                </div>
+
+                <form onsubmit="handleSpellSubmit(event)" class="w-full flex flex-col gap-3">
+                    <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh tương ứng..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                        Kiểm tra
+                    </button>
+                </form>
+
+                <div id="spell-feedback" class="text-center font-semibold text-sm h-6"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATASET: Unit 1 – Hello! ---
+        const rawVocabulary = [
+            // General Vocabulary
+            { word: "and", type: "conj", ipa: "/ænd/, /ənd/", meaning: "và", example: "Fine, thanks. And you?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-plus" },
+            { word: "apple", type: "n", ipa: "/ˈæpl/", meaning: "quả táo", example: "It’s an apple.", category: "General Vocabulary", icon: "fa-solid fa-apple-whole" },
+            { word: "bag", type: "n", ipa: "/bæg/", meaning: "cái túi, cặp", example: "It's my bag.", category: "General Vocabulary", icon: "fa-solid fa-bag-shopping" },
+            { word: "bike", type: "n", ipa: "/baɪk/", meaning: "xe đạp", example: "My bike is blue.", category: "General Vocabulary", icon: "fa-solid fa-bicycle" },
+            { word: "book", type: "n", ipa: "/bʊk/", meaning: "quyển sách", example: "It’s a good book.", category: "General Vocabulary", icon: "fa-solid fa-book" },
+            { word: "bus", type: "n", ipa: "/bʌs/", meaning: "xe buýt", example: "The bus is late.", category: "General Vocabulary", icon: "fa-solid fa-bus" },
+            { word: "Bye!", type: "excl", ipa: "/baɪ/", meaning: "Tạm biệt!", example: "Bye! See you later, Mum!", category: "Greetings & Social", icon: "fa-solid fa-hand-wave" },
+            { word: "coffee", type: "n", ipa: "/ˈkɒfi/", meaning: "cà phê", example: "A coffee, please.", category: "General Vocabulary", icon: "fa-solid fa-mug-hot" },
+            { word: "Daddy", type: "n", ipa: "/ˈdædi/", meaning: "bố, ba (thân mật)", example: "Night night, Daddy.", category: "People & Family", icon: "fa-solid fa-user-tie" },
+            { word: "day", type: "n", ipa: "/deɪ/", meaning: "ngày", example: "Have a nice day!", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-sun" },
+            { word: "English", type: "n", ipa: "/ˈɪŋglɪʃ/", meaning: "tiếng Anh", example: "What’s this in English?", category: "General Vocabulary", icon: "fa-solid fa-language" },
+            { word: "fine", type: "adj", ipa: "/faɪn/", meaning: "khỏe, ổn, tốt", example: "Fine, thanks.", category: "Greetings & Social", icon: "fa-solid fa-thumbs-up" },
+            { word: "Good afternoon!", type: "excl", ipa: "/gʊd ˌɑːftəˈnuːn/", meaning: "Chào buổi chiều!", example: "Good afternoon! A coffee, please.", category: "Greetings & Social", icon: "fa-solid fa-sun" },
+            { word: "Good morning!", type: "excl", ipa: "/gʊd ˈmɔːnɪŋ/", meaning: "Chào buổi sáng!", example: "Good morning! What a lovely day!", category: "Greetings & Social", icon: "fa-solid fa-sun-plant-wilt" },
+            { word: "Good night!", type: "excl", ipa: "/gʊd ˈnaɪt/", meaning: "Chúc ngủ ngon!", example: "Good night! Sleep well.", category: "Greetings & Social", icon: "fa-solid fa-moon" },
+            { word: "Goodbye!", type: "excl", ipa: "/gʊdˈbaɪ/", meaning: "Tạm biệt!", example: "Goodbye! Have a nice day!", category: "Greetings & Social", icon: "fa-solid fa-door-open" },
+            { word: "Have a nice day!", type: "phr", ipa: "/ˌhæv ə naɪs ˈdeɪ/", meaning: "Chúc một ngày tốt lành!", example: "Goodbye! Have a nice day!", category: "Greetings & Social", icon: "fa-solid fa-smile-beam" },
+            { word: "Hello", type: "excl", ipa: "/həˈləʊ/", meaning: "Xin chào", example: "Hello. A cup of tea, please.", category: "Greetings & Social", icon: "fa-solid fa-comments" },
+            { word: "house", type: "n", ipa: "/haʊs/", meaning: "ngôi nhà", example: "My house is near the station.", category: "General Vocabulary", icon: "fa-solid fa-house" },
+            { word: "How are you?", type: "phr", ipa: "/haʊ ɑː(r) juː/", meaning: "Bạn khỏe không?", example: "How are you? Fine, thanks.", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-circle-question" },
+            { word: "laptop", type: "n", ipa: "/ˈlæptɒp/", meaning: "máy tính xách tay", example: "My laptop is Japanese.", category: "General Vocabulary", icon: "fa-solid fa-laptop" },
+            { word: "lovely", type: "adj", ipa: "/ˈlʌvli/", meaning: "đáng yêu, tuyệt đẹp", example: "What a lovely day!", category: "General Vocabulary", icon: "fa-solid fa-heart" },
+            { word: "Mum", type: "n", ipa: "/mʌm/", meaning: "mẹ", example: "See you later, Mum!", category: "People & Family", icon: "fa-solid fa-person-dress" },
+            { word: "my", type: "det", ipa: "/maɪ/", meaning: "của tôi", example: "My name’s Usha.", category: "General Vocabulary", icon: "fa-solid fa-user" },
+            { word: "name", type: "n", ipa: "/neɪm/", meaning: "tên", example: "My name’s Paul Bartosz.", category: "General Vocabulary", icon: "fa-solid fa-id-card" },
+            { word: "Nice to meet you.", type: "phr", ipa: "/ˌnaɪs tə ˈmiːt ju/", meaning: "Rất vui được gặp bạn.", example: "Hello, Shi. Nice to meet you.", category: "Greetings & Social", icon: "fa-solid fa-handshake" },
+            { word: "OK", type: "adj", ipa: "/ˌəʊ ˈkeɪ/", meaning: "ổn, được", example: "I’m OK, thanks.", category: "Greetings & Social", icon: "fa-solid fa-circle-check" },
+            { word: "phone", type: "n", ipa: "/fəʊn/", meaning: "điện thoại", example: "Her phone is new.", category: "General Vocabulary", icon: "fa-solid fa-mobile-screen-button" },
+            { word: "photo", type: "n", ipa: "/ˈfəʊtəʊ/", meaning: "ảnh, bức ảnh", example: "This is a photo of my dad.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-image" },
+            { word: "please", type: "excl", ipa: "/pliːz/", meaning: "làm ơn, vui lòng", example: "A cup of tea, please.", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-hands-praying" },
+            { word: "sandwich", type: "n", ipa: "/ˈsænwɪtʃ/", meaning: "bánh sandwich", example: "This is a nice sandwich!", category: "General Vocabulary", icon: "fa-solid fa-burger" },
+            { word: "See you later!", type: "excl", ipa: "/ˌsiː ju ˈleɪtə(r)/", meaning: "Hẹn gặp lại sau!", example: "See you later, Mum!", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-clock" },
+            { word: "Sleep well!", type: "excl", ipa: "/ˈsliːp ˌwel/", meaning: "Ngủ ngon nhé!", example: "Good night! Sleep well.", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-bed" },
+            { word: "sugar", type: "n", ipa: "/ˈʃʊɡə(r)/", meaning: "đường", example: "A coffee with sugar, please.", category: "General Vocabulary", icon: "fa-solid fa-cubes" },
+            { word: "Thank you", type: "excl", ipa: "/ˈθæŋkjuː/", meaning: "Cảm ơn bạn", example: "Have a nice day. Thank you.", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-heart" },
+            { word: "Thanks", type: "excl", ipa: "/θæŋks/", meaning: "Cảm ơn", example: "Fine, thanks. And you?", category: "Greetings & Social", icon: "fa-solid fa-[#4255ff] fa-heart" },
+            { word: "this", type: "pron", ipa: "/ˈðɪs/", meaning: "cái này, đây", example: "Tom, this is Carlos.", category: "General Vocabulary", icon: "fa-solid fa-hand-pointer" },
+            { word: "today", type: "adv", ipa: "/təˈdeɪ/", meaning: "hôm nay", example: "How are you today?", category: "General Vocabulary", icon: "fa-solid fa-calendar-day" },
+            { word: "umbrella", type: "n", ipa: "/ʌmˈbrelə/", meaning: "cái ô, dù", example: "My umbrella is red.", category: "General Vocabulary", icon: "fa-solid fa-umbrella" },
+            { word: "very well", type: "phr", ipa: "/ˌveri ˈwel/", meaning: "rất khỏe, rất tốt", example: "How are you? Very well, thank you.", category: "Greetings & Social", icon: "fa-solid fa-face-smile" },
+            { word: "watch", type: "n", ipa: "/wɒtʃ/", meaning: "đồng hồ đeo tay", example: "My watch is Swiss.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-clock" },
+            { word: "What?", type: "pron", ipa: "/wɒt/", meaning: "cái gì?", example: "What’s this in English?", category: "General Vocabulary", icon: "fa-solid fa-circle-question" },
+            { word: "your", type: "det", ipa: "/jɔː(r)/", meaning: "của bạn", example: "What’s your name?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-user" },
+
+            // Numbers 1-10
+            { word: "one", type: "num", ipa: "/wʌn/", meaning: "một (1)", example: "one book → một quyển sách", category: "Numbers 1–10", icon: "fa-solid fa-1" },
+            { word: "two", type: "num", ipa: "/tuː/", meaning: "hai (2)", example: "two bikes → hai chiếc xe đạp", category: "Numbers 1–10", icon: "fa-solid fa-2" },
+            { word: "three", type: "num", ipa: "/θriː/", meaning: "ba (3)", example: "three umbrellas → ba cái ô", category: "Numbers 1–10", icon: "fa-solid fa-3" },
+            { word: "four", type: "num", ipa: "/fɔː(r)/", meaning: "bốn (4)", example: "four photos → bốn bức ảnh", category: "Numbers 1–10", icon: "fa-solid fa-4" },
+            { word: "five", type: "num", ipa: "/faɪv/", meaning: "năm (5)", example: "five apples → năm quả táo", category: "Numbers 1–10", icon: "fa-solid fa-5" },
+            { word: "six", type: "num", ipa: "/sɪks/", meaning: "sáu (6)", example: "six laptops → sáu chiếc laptop", category: "Numbers 1–10", icon: "fa-solid fa-6" },
+            { word: "seven", type: "num", ipa: "/ˈsevn/", meaning: "bảy (7)", example: "seven watches → bảy chiếc đồng hồ", category: "Numbers 1–10", icon: "fa-solid fa-7" },
+            { word: "eight", type: "num", ipa: "/eɪt/", meaning: "tám (8)", example: "eight sandwiches → tám chiếc sandwich", category: "Numbers 1–10", icon: "fa-solid fa-8" },
+            { word: "nine", type: "num", ipa: "/naɪn/", meaning: "chín (9)", example: "nine houses → chín ngôi nhà", category: "Numbers 1–10", icon: "fa-solid fa-9" },
+            { word: "ten", type: "num", ipa: "/ten/", meaning: "mười (10)", example: "ten apples → mười quả táo", category: "Numbers 1–10", icon: "fa-solid fa-1" }
+        ];
+
+        // --- GLOBAL APP STATE ---
+        let currentVocabList = [...rawVocabulary];
+        let activeTab = 'flashcards';
+
+        // Flashcards state
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        // Match Game state
+        let matchTimerInterval = null;
+        let matchStartTime = 0;
+        let selectedMatchCards = [];
+        let matchedPairs = 0;
+
+        // Quiz state
+        let quizIndex = 0;
+        let quizScore = 0;
+        let quizList = [];
+
+        // Spell state
+        let spellIndex = 0;
+        let spellList = [];
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            populateCategories();
+            updateFilteredList();
+            setupKeyboardShortcuts();
+        });
+
+        function populateCategories() {
+            const categories = ["Tất cả (All)", ...new Set(rawVocabulary.map(v => v.category))];
+            const select = document.getElementById('category-filter');
+            select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        }
+
+        function handleCategoryChange() {
+            updateFilteredList();
+            switchTab(activeTab);
+        }
+
+        function updateFilteredList() {
+            const selectedCat = document.getElementById('category-filter').value;
+            if (selectedCat === "Tất cả (All)") {
+                currentVocabList = [...rawVocabulary];
+            } else {
+                currentVocabList = rawVocabulary.filter(v => v.category === selectedCat);
+            }
+            document.getElementById('word-count-badge').textContent = `${currentVocabList.length} từ`;
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('hover:bg-slate-800', 'text-slate-400');
+            });
+            const activeBtn = document.getElementById(`btn-${tab}`);
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            activeBtn.classList.remove('hover:bg-slate-800', 'text-slate-400');
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`mode-${tab}`).classList.remove('hidden');
+            document.getElementById(`mode-${tab}`).classList.add('flex');
+
+            if (tab === 'flashcards') initFlashcards();
+            if (tab === 'match') initMatchGame();
+            if (tab === 'quiz') initQuizMode();
+            if (tab === 'spell') initSpellMode();
+        }
+
+        // --- TEXT TO SPEECH (TTS) ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const cleanText = text.replace(/\([^)]*\)/g, '').trim();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- 1. MODE: FLASHCARDS LOGIC ---
+        function initFlashcards() {
+            currentCardIndex = 0;
+            isCardFlipped = false;
+            renderCard();
+        }
+
+        function renderCard() {
+            if (currentVocabList.length === 0) return;
+            const item = currentVocabList[currentCardIndex];
+            
+            const cardInner = document.getElementById('card-inner');
+            cardInner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            document.getElementById('ai-img-container').classList.add('hidden');
+
+            setTimeout(() => {
+                // Front
+                document.getElementById('card-cat-front').textContent = item.category;
+                document.getElementById('card-word').textContent = item.word;
+                document.getElementById('card-ipa').textContent = item.ipa;
+                document.getElementById('card-icon-front').className = `${item.icon} text-4xl text-indigo-400 mb-2 block`;
+
+                // Back
+                document.getElementById('card-type-back').textContent = `(${item.type})`;
+                document.getElementById('card-meaning').textContent = item.meaning;
+                document.getElementById('card-example').textContent = item.example ? `"${item.example}"` : '';
+
+                // Counter
+                document.getElementById('card-progress').textContent = `${currentCardIndex + 1} / ${currentVocabList.length}`;
+            }, 150);
+        }
+
+        function flipCard() {
+            const cardInner = document.getElementById('card-inner');
+            isCardFlipped = !isCardFlipped;
+            if (isCardFlipped) {
+                cardInner.classList.add('rotate-y-180');
+            } else {
+                cardInner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            if (currentVocabList.length === 0) return;
+            currentCardIndex = (currentCardIndex + 1) % currentVocabList.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            if (currentVocabList.length === 0) return;
+            currentCardIndex = (currentCardIndex - 1 + currentVocabList.length) % currentVocabList.length;
+            renderCard();
+        }
+
+        function speakCurrentWord() {
+            if (currentVocabList[currentCardIndex]) {
+                speakText(currentVocabList[currentCardIndex].word);
+            }
+        }
+
+        function generateAIImage() {
+            const item = currentVocabList[currentCardIndex];
+            if (!item) return;
+
+            const container = document.getElementById('ai-img-container');
+            const img = document.getElementById('ai-img');
+            const loading = document.getElementById('ai-loading');
+
+            container.classList.remove('hidden');
+            loading.classList.remove('hidden');
+
+            const prompt = encodeURIComponent(`digital illustration of ${item.word}, minimalist, clean educational style`);
+            const url = `https://pollinations.ai/p/${prompt}?width=200&height=200&seed=${Math.floor(Math.random()*1000)}`;
+
+            img.onload = () => {
+                loading.classList.add('hidden');
+            };
+            img.src = url;
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (activeTab !== 'flashcards') return;
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // --- 2. MODE: MATCH GAME LOGIC ---
+        function initMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-timer').textContent = "0.0s";
+            matchedPairs = 0;
+            selectedMatchCards = [];
+
+            const pool = [...currentVocabList].sort(() => 0.5 - Math.random()).slice(0, 6);
+            
+            let cards = [];
+            pool.forEach((item, index) => {
+                cards.push({ id: index, text: item.word, type: 'en', matched: false });
+                cards.push({ id: index, text: item.meaning, type: 'vi', matched: false });
+            });
+
+            cards.sort(() => 0.5 - Math.random());
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = cards.map((card) => `
+                <div onclick="handleMatchCardClick(this, ${card.id}, '${card.type}')" 
+                     data-card-id="${card.id}" data-card-type="${card.type}"
+                     class="match-card bg-slate-800 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium cursor-pointer transition transform hover:scale-105 active:scale-95 text-sm select-none">
+                     ${card.text}
+                </div>
+            `).join('');
+
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = (Date.now() - matchStartTime) / 1000;
+                document.getElementById('match-timer').textContent = `${elapsed.toFixed(1)}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(element, id, type) {
+            if (element.classList.contains('bg-emerald-900/50') || element.classList.contains('border-indigo-500')) return;
+            if (selectedMatchCards.length === 1 && selectedMatchCards[0].element === element) return;
+
+            element.classList.add('border-indigo-500', 'bg-indigo-950/40');
+            selectedMatchCards.push({ element, id, type });
+
+            if (selectedMatchCards.length === 2) {
+                const [first, second] = selectedMatchCards;
+                
+                if (first.id === second.id && first.type !== second.type) {
+                    setTimeout(() => {
+                        first.element.className = "bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium text-sm opacity-40 cursor-default";
+                        second.element.className = "bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium text-sm opacity-40 cursor-default";
+                    }, 200);
+
+                    matchedPairs++;
+                    if (matchedPairs === Math.min(currentVocabList.length, 6)) {
+                        clearInterval(matchTimerInterval);
+                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                    }
+                } else {
+                    setTimeout(() => {
+                        first.element.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                        second.element.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                        first.element.classList.add('border-red-500/50');
+                        second.element.classList.add('border-red-500/50');
+                        setTimeout(() => {
+                            first.element.classList.remove('border-red-500/50');
+                            second.element.classList.remove('border-red-500/50');
+                        }, 400);
+                    }, 200);
+                }
+                selectedMatchCards = [];
+            }
+        }
+
+        // --- 3. MODE: QUIZ / LEARN LOGIC ---
+        function initQuizMode() {
+            quizIndex = 0;
+            quizScore = 0;
+            quizList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            if (quizIndex >= quizList.length) {
+                document.getElementById('quiz-options').innerHTML = `
+                    <div class="text-center py-6">
+                        <i class="fa-solid fa-trophy text-5xl text-amber-400 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">Hoàn thành bài kiểm tra!</h3>
+                        <p class="text-slate-300">Điểm số của bạn: <span class="text-emerald-400 font-bold text-xl">${quizScore} / ${quizList.length}</span></p>
+                        <button onclick="initQuizMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
+                            Làm lại bài test
+                        </button>
+                    </div>
+                `;
+                document.getElementById('quiz-feedback').textContent = "";
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
+
+            const current = quizList[quizIndex];
+            document.getElementById('quiz-progress').textContent = `Câu hỏi ${quizIndex + 1}/${quizList.length}`;
+            document.getElementById('quiz-score').textContent = `Điểm: ${quizScore}`;
+            document.getElementById('quiz-target-word').textContent = current.word;
+            document.getElementById('quiz-target-ipa').textContent = current.ipa;
+            document.getElementById('quiz-feedback').textContent = "";
+
+            const distractors = rawVocabulary
+                .filter(v => v.word !== current.word)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(v => v.meaning);
+
+            const options = [...distractors, current.meaning].sort(() => 0.5 - Math.random());
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = options.map(opt => `
+                <button onclick="checkQuizAnswer(this, '${opt.replace(/'/g, "\\'")}', '${current.meaning.replace(/'/g, "\\'")}')" 
+                        class="quiz-opt-btn w-full bg-slate-900/80 hover:bg-slate-700/80 border border-slate-700/80 text-left px-5 py-3.5 rounded-xl text-slate-200 transition font-medium text-sm flex items-center justify-between">
+                    <span>${opt}</span>
+                    <i class="fa-regular fa-circle text-slate-500"></i>
+                </button>
+            `).join('');
+        }
+
+        function checkQuizAnswer(button, selected, correct) {
+            document.querySelectorAll('.quiz-opt-btn').forEach(btn => btn.disabled = true);
+
+            const feedback = document.getElementById('quiz-feedback');
+            if (selected === correct) {
+                button.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-300');
+                feedback.className = "mt-6 text-center text-sm font-semibold text-emerald-400";
+                feedback.textContent = "Chính xác! 🎉";
+                quizScore++;
+                speakText(quizList[quizIndex].word);
+            } else {
+                button.classList.add('bg-red-950', 'border-red-500', 'text-red-300');
+                feedback.className = "mt-6 text-center text-sm font-semibold text-red-400";
+                feedback.textContent = `Chưa đúng! Đáp án là: ${correct}`;
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                renderQuizQuestion();
+            }, 1500);
+        }
+
+        // --- 4. MODE: LISTEN & SPELL LOGIC ---
+        function initSpellMode() {
+            spellIndex = 0;
+            spellList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            renderSpellQuestion();
+        }
+
+        function renderSpellQuestion() {
+            if (spellIndex >= spellList.length) {
+                document.getElementById('mode-spell').innerHTML = `
+                    <div class="text-center py-6 bg-slate-800 rounded-2xl border border-slate-700 p-8 w-full max-w-xl">
+                        <i class="fa-solid fa-circle-check text-5xl text-emerald-400 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">Tuyệt vời!</h3>
+                        <p class="text-slate-300">Bạn đã luyện nghe và viết xong tất cả từ vựng trong danh mục này.</p>
+                        <button onclick="initSpellMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
+                            Luyện tập lại
+                        </button>
+                    </div>
+                `;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
+
+            const current = spellList[spellIndex];
+            document.getElementById('spell-hint').textContent = current.meaning;
+            document.getElementById('spell-input').value = "";
+            document.getElementById('spell-feedback').textContent = "";
+            document.getElementById('spell-input').focus();
+
+            setTimeout(() => speakSpellWord(), 300);
+        }
+
+        function speakSpellWord() {
+            if (spellList[spellIndex]) {
+                speakText(spellList[spellIndex].word);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input').value.trim().toLowerCase();
+            const current = spellList[spellIndex];
+            const targetWord = current.word.toLowerCase();
+
+            const feedback = document.getElementById('spell-feedback');
+
+            if (input === targetWord) {
+                feedback.className = "text-center font-semibold text-sm text-emerald-400";
+                feedback.textContent = "Chính xác! ✨";
+                setTimeout(() => {
+                    spellIndex++;
+                    renderSpellQuestion();
+                }, 1000);
+            } else {
+                feedback.className = "text-center font-semibold text-sm text-red-400";
+                feedback.textContent = `Chưa đúng. Đáp án đúng: "${current.word}"`;
+                speakSpellWord();
+            }
+        }
+    </script>
+</body>
+</html>
