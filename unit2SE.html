@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Master - Solutions Elementary Unit 2: School days</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4255ff;
+            --primary-hover: #2e3ed4;
+            --bg-color: #f6f7fb;
+            --card-bg: #ffffff;
+            --text-dark: #1a1d28;
+            --text-muted: #586380;
+            --border-color: #e3e8ee;
+            --accent-green: #23b26d;
+            --accent-red: #ff4949;
+            --shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .app-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            background: #eef2f6;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .nav-btn {
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Filter bar */
+        .filter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .filter-select {
+            padding: 8px 14px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Flashcards Mode */
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 400px;
+            margin: 1rem 0;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #f8fafc;
+        }
+
+        .card-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .audio-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .card-img-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+        }
+
+        .card-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .card-ipa {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-gen-btn {
+            margin-top: 6px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: #f0fdf4;
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: white; border: 2px solid var(--border-color); color: var(--text-dark); }
+
+        /* Match Game Mode */
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .match-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem 0.8rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .match-card.selected { border-color: var(--primary); background: #eef2ff; }
+        .match-card.correct { border-color: var(--accent-green); background: #e6f4ea; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .match-card.wrong { border-color: var(--accent-red); background: #fce8e6; }
+
+        /* Quiz & Spell Mode */
+        .quiz-card, .spell-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-options { display: grid; gap: 12px; margin: 1.5rem 0; }
+        .quiz-option {
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: white;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .quiz-option.correct { background: #e6f4ea; border-color: var(--accent-green); color: #137333; }
+        .quiz-option.wrong { background: #fce8e6; border-color: var(--accent-red); color: #c5221f; }
+
+        .spell-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            margin: 1rem 0;
+            outline: none;
+        }
+
+        .shortcut-hint {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            .match-grid { grid-template-columns: repeat(2, 1fr); }
+            .app-title { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-badge">Q</div>
+            <div class="app-title">Solutions Elementary - Unit 2: School days</div>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="switchTab('cards')">🃏 Flashcards</button>
+            <button class="nav-btn" onclick="switchTab('match')">🧩 Ghép từ</button>
+            <button class="nav-btn" onclick="switchTab('quiz')">📝 Kiểm tra</button>
+            <button class="nav-btn" onclick="switchTab('spell')">🎧 Nghe & Viết</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TAB 1: FLASHCARDS -->
+        <div id="tab-cards" class="tab-content active">
+            <div class="filter-container">
+                <span class="filter-label">📂 Chọn danh mục bài học:</span>
+                <select class="filter-select" id="category-filter" onchange="filterCategory()">
+                    <option value="ALL">-- Tất cả từ vựng --</option>
+                    <option value="1. Daily routine">1. Daily routine (Thói quen hàng ngày)</option>
+                    <option value="2. School subjects">2. School subjects (Các môn học)</option>
+                    <option value="3. Days of the week">3. Days of the week (Thứ trong tuần)</option>
+                    <option value="4. Landscape">4. Landscape (Phong cảnh thiên nhiên)</option>
+                    <option value="5. Feelings">5. Feelings (Cảm xúc & Trạng thái)</option>
+                    <option value="6. School events">6. School events (Sự kiện & Hoạt động trường)</option>
+                    <option value="7. Adjectives for places">7. Adjectives (Tính từ miêu tả địa điểm/đồ vật)</option>
+                    <option value="8. Adverbs of frequency">8. Adverbs of frequency (Trạng từ chỉ tần suất)</option>
+                </select>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span class="card-category" id="card-cat">Category</span>
+                        <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentTerm()">🔊</button>
+                        <div class="card-img-box" id="card-img-container">
+                            <span class="card-icon" id="card-icon">🏫</span>
+                        </div>
+                        <div class="card-text" id="card-term">Term</div>
+                        <div class="card-ipa" id="card-ipa">/ipa/</div>
+                        <button class="ai-gen-btn" onclick="event.stopPropagation(); generateAIImage()">✨ AI Tạo Ảnh Minh Họa</button>
+                    </div>
+                    <div class="card-face card-back">
+                        <span class="card-category">Nghĩa tiếng Việt</span>
+                        <div class="card-text" id="card-def" style="color: var(--primary);">Definition</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-outline" onclick="prevCard()">← Thẻ trước</button>
+                <div style="font-weight: 600; color: var(--text-muted);" id="card-counter">1 / 50</div>
+                <button class="btn btn-outline" onclick="nextCard()">Thẻ sau →</button>
+            </div>
+            <div class="shortcut-hint">
+                💡 Phím tắt: <kbd>Space</kbd> để lật thẻ | <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+            </div>
+        </div>
+
+        <!-- TAB 2: MATCH GAME -->
+        <div id="tab-match" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="match-timer">⏱️ 0.0s</div>
+                <button class="btn btn-outline" onclick="initMatchGame()">🔄 Ván mới</button>
+            </div>
+            <div class="match-grid" id="match-grid"></div>
+        </div>
+
+        <!-- TAB 3: QUIZ -->
+        <div id="tab-quiz" class="tab-content">
+            <div class="quiz-card" id="quiz-box"></div>
+        </div>
+
+        <!-- TAB 4: LISTEN & SPELL -->
+        <div id="tab-spell" class="tab-content">
+            <div class="spell-card" style="text-align: center;" id="spell-box">
+                <button class="audio-btn" style="position: static; width: 70px; height: 70px; margin: 0 auto 1rem; font-size: 2rem;" onclick="speakCurrentSpellWord()">🔊</button>
+                <p style="color: var(--text-muted);" id="spell-hint">Nghe phát âm và gõ lại từ chính xác</p>
+                <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tại đây..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpellAnswer()">
+                <div><button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button></div>
+                <div style="margin-top: 1rem; font-weight: 600;" id="spell-feedback"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const vocabData = [
+            // 1. Daily routine
+            {term: "wake up", ipa: "/weɪk ʌp/", definition: "Thức dậy", category: "1. Daily routine", icon: "⏰"},
+            {term: "get dressed", ipa: "/ɡet drest/", definition: "Mặc quần áo", category: "1. Daily routine", icon: "👔"},
+            {term: "have breakfast", ipa: "/hæv ˈbrek.fəst/", definition: "Ăn sáng", category: "1. Daily routine", icon: "🍳"},
+            {term: "have lunch", ipa: "/hæv lʌntʃ/", definition: "Ăn trưa", category: "1. Daily routine", icon: "🥪"},
+            {term: "have dinner", ipa: "/hæv ˈdɪn.ər/", definition: "Ăn tối", category: "1. Daily routine", icon: "🍽️"},
+            {term: "arrive at school", ipa: "/əˈraɪv æt skuːl/", definition: "Đến trường", category: "1. Daily routine", icon: "🏫"},
+            {term: "leave school", ipa: "/liːv skuːl/", definition: "Tan học, rời trường", category: "1. Daily routine", icon: "🚶‍♂️"},
+            {term: "go to bed", ipa: "/ɡəʊ tə bed/", definition: "Đi ngủ", category: "1. Daily routine", icon: "🛏️"},
+
+            // 2. School subjects
+            {term: "art and design", ipa: "/ˌɑːt ənd dɪˈzaɪn/", definition: "Mỹ thuật và thiết kế", category: "2. School subjects", icon: "🎨"},
+            {term: "biology", ipa: "/baɪˈɒl.ə.dʒi/", definition: "Sinh học", category: "2. School subjects", icon: "🧬"},
+            {term: "chemistry", ipa: "/ˈkem.ɪ.stri/", definition: "Hóa học", category: "2. School subjects", icon: "🧪"},
+            {term: "economics", ipa: "/ˌiː.kəˈnɒm.ɪks/", definition: "Kinh tế học", category: "2. School subjects", icon: "📊"},
+            {term: "English", ipa: "/ˈɪŋ.ɡlɪʃ/", definition: "Tiếng Anh", category: "2. School subjects", icon: "🇬🇧"},
+            {term: "French", ipa: "/frentʃ/", definition: "Tiếng Pháp", category: "2. School subjects", icon: "🇫🇷"},
+            {term: "geography", ipa: "/dʒiˈɒɡ.rə.fi/", definition: "Địa lý", category: "2. School subjects", icon: "🌍"},
+            {term: "German", ipa: "/ˈdʒɜː.mən/", definition: "Tiếng Đức", category: "2. School subjects", icon: "🇩🇪"},
+            {term: "history", ipa: "/ˈhɪs.tər.i/", definition: "Lịch sử", category: "2. School subjects", icon: "📜"},
+            {term: "I.C.T.", ipa: "/ˌaɪ.siːˈtiː/", definition: "Công nghệ thông tin và truyền thông", category: "2. School subjects", icon: "💻"},
+            {term: "maths", ipa: "/mæθs/", definition: "Toán học", category: "2. School subjects", icon: "➕"},
+            {term: "music", ipa: "/ˈmjuː.zɪk/", definition: "Âm nhạc", category: "2. School subjects", icon: "🎵"},
+            {term: "P.E.", ipa: "/ˌpiːˈiː/", definition: "Thể dục (Physical Education)", category: "2. School subjects", icon: "⚽"},
+            {term: "physics", ipa: "/ˈfɪz.ɪks/", definition: "Vật lý", category: "2. School subjects", icon: "⚛️"},
+            {term: "R.E.", ipa: "/ˌɑːˈiː/", definition: "Giáo dục tôn giáo (Religious Education)", category: "2. School subjects", icon: "⛪"},
+
+            // 3. Days of the week
+            {term: "Monday", ipa: "/ˈmʌn.deɪ/", definition: "Thứ Hai", category: "3. Days of the week", icon: "📅"},
+            {term: "Tuesday", ipa: "/ˈtjuːz.deɪ/", definition: "Thứ Ba", category: "3. Days of the week", icon: "📅"},
+            {term: "Wednesday", ipa: "/ˈwed.nəz-di/", definition: "Thứ Tư", category: "3. Days of the week", icon: "📅"},
+            {term: "Thursday", ipa: "/ˈθɜːz.deɪ/", definition: "Thứ Năm", category: "3. Days of the week", icon: "📅"},
+            {term: "Friday", ipa: "/ˈfraɪ.deɪ/", definition: "Thứ Sáu", category: "3. Days of the week", icon: "📅"},
+            {term: "Saturday", ipa: "/ˈsæt.ə.deɪ/", definition: "Thứ Bảy", category: "3. Days of the week", icon: "🎉"},
+            {term: "Sunday", ipa: "/ˈsandi/", definition: "Chủ Nhật", category: "3. Days of the week", icon: "☀️"},
+
+            // 4. Landscape
+            {term: "boat", ipa: "/bəʊt/", definition: "Con thuyền", category: "4. Landscape", icon: "⛵"},
+            {term: "bridge", ipa: "/brɪdʒ/", definition: "Cây cầu", category: "4. Landscape", icon: "🌉"},
+            {term: "jungle", ipa: "/ˈdʒʌŋ.ɡəl/", definition: "Rừng rậm nhiệt đới", category: "4. Landscape", icon: "🌴"},
+            {term: "mountain", ipa: "/ˈmaʊn.tɪn/", definition: "Ngọn núi", category: "4. Landscape", icon: "⛰️"},
+            {term: "path", ipa: "/pɑːθ/", definition: "Lối đi, con đường mòn", category: "4. Landscape", icon: "🚶"},
+            {term: "river", ipa: "/ˈrɪv.ər/", definition: "Dòng sông", category: "4. Landscape", icon: "🌊"},
+            {term: "rope", ipa: "/rəʊp/", definition: "Dây thừng", category: "4. Landscape", icon: "🪢"},
+            {term: "valley", ipa: "/ˈvæl.i/", definition: "Thung lũng", category: "4. Landscape", icon: "🏞️"},
+
+            // 5. Feelings
+            {term: "embarrassed", ipa: "/ɪmˈbær.əst/", definition: "Bối rối, xấu hổ", category: "5. Feelings", icon: "😳"},
+            {term: "excited", ipa: "/ɪkˈsaɪ.tɪd/", definition: "Hào hứng, phấn khích", category: "5. Feelings", icon: "🤩"},
+            {term: "happy", ipa: "/ˈhæp.i/", definition: "Vui vẻ, hạnh phúc", category: "5. Feelings", icon: "😊"},
+            {term: "sad", ipa: "/ˈsæd/", definition: "Buồn bã", category: "5. Feelings", icon: "😢"},
+            {term: "tired", ipa: "/ˈtaɪəd/", definition: "Mệt mỏi", category: "5. Feelings", icon: "😴"},
+            {term: "worried", ipa: "/ˈwʌr.id/", definition: "Lo lắng", category: "5. Feelings", icon: "😟"},
+
+            // 6. School events
+            {term: "concert", ipa: "/ˈkɒn.sət/", definition: "Buổi hòa nhạc", category: "6. School events", icon: "🎶"},
+            {term: "musical play", ipa: "/ˈmjuː.zɪ.kəl pleɪ/", definition: "Vở nhạc kịch", category: "6. School events", icon: "🎭"},
+            {term: "school camp", ipa: "/skuːl kæmp/", definition: "Cắm trại trường học", category: "6. School events", icon: "🏕️"},
+            {term: "school club", ipa: "/skuːl klʌb/", definition: "Câu lạc bộ trường học", category: "6. School events", icon: "👥"},
+            {term: "school trip", ipa: "/skuːl trɪp/", definition: "Chuyến dã ngoại của trường", category: "6. School events", icon: "🚌"},
+            {term: "sports day", ipa: "/spɔːts deɪ/", definition: "Ngày hội thể thao", category: "6. School events", icon: "🏆"},
+
+            // 7. Adjectives for places
+            {term: "dangerous", ipa: "/ˈdeɪn.dʒər.əs/", definition: "Nguy hiểm", category: "7. Adjectives for places", icon: "⚠️"},
+            {term: "safe", ipa: "/seɪf/", definition: "An toàn", category: "7. Adjectives for places", icon: "🛡️"},
+            {term: "dry", ipa: "/draɪ/", definition: "Khô ráo", category: "7. Adjectives for places", icon: "🌵"},
+            {term: "wet", ipa: "/wet/", definition: "Ẩm ướt", category: "7. Adjectives for places", icon: "🌧️"},
+            {term: "large", ipa: "/lɑːdʒ/", definition: "Rộng lớn", category: "7. Adjectives for places", icon: "🐘"},
+            {term: "small", ipa: "/smɔːl/", definition: "Nhỏ bé", category: "7. Adjectives for places", icon: "🐭"},
+            {term: "narrow", ipa: "/ˈnær.əʊ/", definition: "Hẹp", category: "7. Adjectives for places", icon: "📏"},
+            {term: "wide", ipa: "/waɪd/", definition: "Rộng", category: "7. Adjectives for places", icon: "↔️"},
+
+            // 8. Adverbs of frequency
+            {term: "always", ipa: "/ˈɔːl.weɪz/", definition: "Luôn luôn (100%)", category: "8. Adverbs of frequency", icon: "💯"},
+            {term: "usually", ipa: "/ˈjuː.ʒu.ə.li/", definition: "Thường xuyên (~80%)", category: "8. Adverbs of frequency", icon: "🔄"},
+            {term: "often", ipa: "/ˈɒf.ən/", definition: "Thường (~60%)", category: "8. Adverbs of frequency", icon: "📈"},
+            {term: "sometimes", ipa: "/ˈsʌm.taɪmz/", definition: "Thỉnh thoảng (~40%)", category: "8. Adverbs of frequency", icon: "🎲"},
+            {term: "hardly ever", ipa: "/ˌhɑːd.li ˈev.ər/", definition: "Hầu như không bao giờ (~10%)", category: "8. Adverbs of frequency", icon: "📉"},
+            {term: "never", ipa: "/ˈnev.ər/", definition: "Không bao giờ (0%)", category: "8. Adverbs of frequency", icon: "🚫"}
+        ];
+
+        let filteredVocab = [...vocabData];
+        let currentCardIdx = 0;
+        let aiImageCache = {};
+
+        window.onload = () => {
+            updateFlashcard();
+            initMatchGame();
+            initQuiz();
+            initSpell();
+        };
+
+        function filterCategory() {
+            const selectedCat = document.getElementById('category-filter').value;
+            if (selectedCat === 'ALL') {
+                filteredVocab = [...vocabData];
+            } else {
+                filteredVocab = vocabData.filter(item => item.category === selectedCat);
+            }
+            currentCardIdx = 0;
+            updateFlashcard();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if (tabName === 'match') initMatchGame();
+            if (tabName === 'quiz') initQuiz();
+            if (tabName === 'spell') initSpell();
+        }
+
+        // --- FLASHCARDS MODE ---
+        function updateFlashcard() {
+            if (filteredVocab.length === 0) return;
+            const item = filteredVocab[currentCardIdx];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-ipa').innerText = item.ipa || '';
+            document.getElementById('card-def').innerText = item.definition;
+            document.getElementById('card-cat').innerText = item.category;
+            document.getElementById('card-counter').innerText = `${currentCardIdx + 1} / ${filteredVocab.length}`;
+            
+            const imgContainer = document.getElementById('card-img-container');
+            if (aiImageCache[item.term]) {
+                imgContainer.innerHTML = `<img src="${aiImageCache[item.term]}" alt="AI Image">`;
+            } else {
+                imgContainer.innerHTML = `<span class="card-icon">${item.icon || '📌'}</span>`;
+            }
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+        function nextCard() { 
+            if (filteredVocab.length === 0) return;
+            currentCardIdx = (currentCardIdx + 1) % filteredVocab.length; 
+            updateFlashcard(); 
+        }
+        function prevCard() { 
+            if (filteredVocab.length === 0) return;
+            currentCardIdx = (currentCardIdx - 1 + filteredVocab.length) % filteredVocab.length; 
+            updateFlashcard(); 
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakCurrentTerm() { 
+            if (filteredVocab.length > 0) {
+                const term = filteredVocab[currentCardIdx].term.split('(')[0].trim();
+                speakText(term);
+            }
+        }
+
+        function generateAIImage() {
+            if (filteredVocab.length === 0) return;
+            const item = filteredVocab[currentCardIdx];
+            const imgContainer = document.getElementById('card-img-container');
+            imgContainer.innerHTML = `<span style="font-size:0.8rem; color:var(--primary);">✨ AI đang vẽ...</span>`;
+            
+            const cleanTerm = item.term.split('(')[0].trim();
+            const prompt = encodeURIComponent(`digital art illustration of ${cleanTerm}, high quality, clean background`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=200&height=200&nologo=true`;
+
+            const img = new Image();
+            img.onload = () => {
+                aiImageCache[item.term] = imageUrl;
+                imgContainer.innerHTML = `<img src="${imageUrl}" alt="AI Image">`;
+            };
+            img.src = imageUrl;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('tab-cards').classList.contains('active')) {
+                if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+                if (e.code === 'ArrowRight') nextCard();
+                if (e.code === 'ArrowLeft') prevCard();
+            }
+        });
+
+        // --- MATCH GAME MODE ---
+        let matchTimer, matchStartTime, matchSelected = nullDưới đây là mã nguồn trọn gói cho ứng dụng **Web App HTML/JS tương tác đơn trong 1 file** duy nhất. 
+
+Bạn chỉ cần tạo một file có tên `index.html`, dán toàn bộ đoạn mã bên dưới vào và mở trực tiếp bằng bất kỳ trình duyệt web nào (Chrome, Edge, Safari, Firefox).
+
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Master - Solutions Elementary Unit 2</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <!-- Canvas Confetti -->
+    <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
+
+    <style>
+        /* CSS cho hiệu ứng 3D Flashcard */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-[#4255ff] fa-layer-group text-2xl text-indigo-500"></i>
+                <h1 class="font-bold text-xl tracking-wide text-indigo-400">Quizlet<span class="text-white">Lite</span></h1>
+                <span class="text-xs bg-indigo-900 text-indigo-200 px-2 py-0.5 rounded border border-indigo-700">Unit 2: School Days</span>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <nav class="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 text-sm font-medium overflow-x-auto">
+                <button onclick="switchTab('flashcards')" id="btn-flashcards" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition bg-indigo-600 text-white">
+                    <i class="fa-solid fa-clone"></i> Flashcards
+                </button>
+                <button onclick="switchTab('match')" id="btn-match" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
+                </button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-circle-question"></i> Kiểm tra
+                </button>
+                <button onclick="switchTab('spell')" id="btn-spell" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-headphones"></i> Nghe & Viết
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <section class="bg-slate-800/50 border-b border-slate-700/50 py-2.5">
+        <div class="max-w-6xl mx-auto px-4 flex items-center gap-3">
+            <label for="category-filter" class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <i class="fa-solid fa-filter"></i> Danh mục:
+            </label>
+            <select id="category-filter" onchange="handleCategoryChange()" class="bg-slate-900 text-slate-200 text-sm rounded-lg px-3 py-1.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                <!-- Dynamically Populated -->
+            </select>
+            <span id="word-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">0 từ</span>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+
+        <!-- 1. MODE: FLASHCARDS -->
+        <div id="mode-flashcards" class="tab-content flex flex-col items-center gap-6">
+            <div class="w-full max-w-lg perspective-1000">
+                <div id="card-inner" onclick="flipCard()" class="relative w-full h-80 rounded-2xl bg-slate-800 border-2 border-slate-700 shadow-2xl cursor-pointer transform-style-3d transition-transform duration-500 hover:border-indigo-500 flex flex-col justify-between p-6">
+                    
+                    <!-- Card Front -->
+                    <div class="absolute inset-0 backface-hidden flex flex-col justify-between p-6 bg-slate-800 rounded-2xl">
+                        <div class="flex justify-between items-start">
+                            <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
+                            <button onclick="event.stopPropagation(); speakCurrentWord()" class="text-slate-400 hover:text-indigo-400 text-xl p-2 rounded-full hover:bg-slate-700/50 transition">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center my-auto space-y-2">
+                            <i id="card-icon-front" class="text-4xl text-indigo-400 mb-2 block"></i>
+                            <h2 id="card-word" class="text-3xl font-extrabold text-white tracking-wide"></h2>
+                            <p id="card-ipa" class="text-slate-400 font-mono text-sm"></p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-regular fa-keyboard"></i> Space: Lật</span>
+                            <span>Mặt trước</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Back -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-slate-850 rounded-2xl bg-slate-800 border-indigo-500">
+                        <div class="flex justify-between items-start">
+                            <span id="card-type-back" class="text-xs font-semibold text-slate-400 italic"></span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" class="text-xs bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2.5 py-1 rounded-lg border border-indigo-500/50 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh
+                            </button>
+                        </div>
+
+                        <div class="text-center my-auto flex flex-col items-center justify-center gap-3">
+                            <!-- Pollinations AI Image Container -->
+                            <div id="ai-img-container" class="hidden w-32 h-32 rounded-lg overflow-hidden border border-slate-600 bg-slate-900 relative">
+                                <img id="ai-img" src="" alt="AI Illustration" class="w-full h-full object-cover">
+                                <div id="ai-loading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center hidden">
+                                    <i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xl"></i>
+                                </div>
+                            </div>
+
+                            <h3 id="card-meaning" class="text-2xl font-bold text-emerald-400"></h3>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-solid fa-arrows-left-right"></i> Phím ← / →: Chuyển</span>
+                            <span>Mặt sau</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-6">
+                <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 10</span>
+                <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-right text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. MODE: MATCH GAME -->
+        <div id="mode-match" class="tab-content hidden flex-col items-center gap-4">
+            <div class="flex justify-between items-center w-full max-w-2xl bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-stopwatch text-indigo-400 text-xl"></i>
+                    <span id="match-timer" class="font-mono text-2xl font-bold text-white">0.0s</span>
+                </div>
+                <button onclick="initMatchGame()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
+                </button>
+            </div>
+
+            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full max-w-2xl">
+                <!-- Cards will be dynamically injected -->
+            </div>
+        </div>
+
+        <!-- 3. MODE: QUIZ / LEARN -->
+        <div id="mode-quiz" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
+            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                    <span id="quiz-progress" class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Câu hỏi 1/10</span>
+                    <span id="quiz-score" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">Điểm: 0</span>
+                </div>
+
+                <div class="text-center mb-8">
+                    <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
+                    <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
+                    <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 gap-3">
+                    <!-- Options injected dynamically -->
+                </div>
