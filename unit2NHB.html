@@ -80,7 +80,10 @@
                     <!-- Card Front -->
                     <div class="absolute inset-0 backface-hidden flex flex-col justify-between p-6 bg-slate-800 rounded-2xl">
                         <div class="flex justify-between items-start">
-                            <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
+                            <div class="flex items-center gap-2">
+                                <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
+                                <span id="card-type-front" class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
+                            </div>
                             <button onclick="event.stopPropagation(); speakCurrentWord()" class="text-slate-400 hover:text-indigo-400 text-xl p-2 rounded-full hover:bg-slate-700/50 transition">
                                 <i class="fa-solid fa-volume-high"></i>
                             </button>
@@ -101,7 +104,7 @@
                     <!-- Card Back -->
                     <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-slate-800 border-indigo-500 rounded-2xl">
                         <div class="flex justify-between items-start">
-                            <span id="card-type-back" class="text-xs font-semibold text-slate-400 italic"></span>
+                            <span id="card-type-back" class="text-xs font-semibold text-amber-400 italic bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
                             <button onclick="event.stopPropagation(); generateAIImage()" class="text-xs bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2.5 py-1 rounded-lg border border-indigo-500/50 transition flex items-center gap-1.5">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh
                             </button>
@@ -167,7 +170,10 @@
 
                 <div class="text-center mb-8">
                     <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
-                    <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
+                    <div class="flex items-center justify-center gap-2">
+                        <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
+                        <span id="quiz-target-type" class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
+                    </div>
                     <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
                 </div>
 
@@ -378,6 +384,7 @@
             setTimeout(() => {
                 // Front
                 document.getElementById('card-cat-front').textContent = item.category;
+                document.getElementById('card-type-front').textContent = `(${item.type})`;
                 document.getElementById('card-word').textContent = item.word;
                 document.getElementById('card-ipa').textContent = item.ipa;
                 document.getElementById('card-icon-front').className = `${item.icon} text-4xl text-indigo-400 mb-2 block`;
@@ -553,6 +560,7 @@
             document.getElementById('quiz-progress').textContent = `Câu hỏi ${quizIndex + 1}/${quizList.length}`;
             document.getElementById('quiz-score').textContent = `Điểm: ${quizScore}`;
             document.getElementById('quiz-target-word').textContent = current.word;
+            document.getElementById('quiz-target-type').textContent = `(${current.type})`;
             document.getElementById('quiz-target-ipa').textContent = current.ipa;
             document.getElementById('quiz-feedback').textContent = "";
 
