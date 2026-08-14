@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng Tiếng Trung - Bài 1 (Quizlet Interactive App)</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti for Game Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --font-hanzi: 'Ma Shan Zheng', 'Noto Sans SC', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #312e81 0%, #4f46e5 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-area i {
+            font-size: 2rem;
+            color: #38bdf8;
+        }
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .filter-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            backdrop-filter: blur(8px);
+        }
+
+        .filter-area select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-area select option {
+            background-color: #312e81;
+            color: white;
+        }
+
+        nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
+            background-color: #f8fafc;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* FLASHCARD STYLES */
+        .card-perspective {
+            perspective: 1000px;
+            width: 100%;
+            height: 420px;
+            margin: 0 auto 1.5rem;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-perspective.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            background: white;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #fafafa;
+        }
+
+        .card-header-tag {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pos-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .category-badge {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hanzi-main {
+            font-family: var(--font-hanzi);
+            font-size: 5rem;
+            color: var(--text-main);
+            margin: 0.5rem 0;
+            line-height: 1.1;
+        }
+
+        .audio-btn {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .pinyin-text {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .vietnamese-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .example-box {
+            background: white;
+            border-left: 4px solid var(--primary);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .example-hanzi {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .example-pinyin {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .example-vi {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .ai-image-container {
+            width: 100%;
+            height: 120px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .ai-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ai-gen-btn {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: opacity 0.2s;
+        }
+
+        .ai-gen-btn:hover {
+            opacity: 0.9;
+        }
+
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* QUIZ STYLES */
+        .quiz-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-mode-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: #f1f5f9;
+            padding: 0.3rem;
+            border-radius: 0.75rem;
+        }
+
+        .sub-tab-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            background: transparent;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .sub-tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quiz-question {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-hanzi {
+            font-family: var(--font-hanzi);
+            font-size: 4.5rem;
+            color: var(--text-main);
+            margin: 0.5rem 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-btn.correct {
+            background-color: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2;
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* MATCH GAME STYLES */
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .match-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            height: 120px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .match-card.hanzi {
+            font-family: var(--font-hanzi);
+            font-size: 2.2rem;
+            color: var(--text-main);
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .match-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .match-card.matched {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        /* LISTEN & SPELL STYLES */
+        .spell-container {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .spell-audio-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            margin: 1rem 0 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .spell-audio-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .spell-hint {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .spell-input-group {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .spell-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .spell-input:focus {
+            border-color: var(--primary);
+        }
+
+        .spell-feedback {
+            font-weight: 700;
+            font-size: 1.1rem;
+            min-height: 1.5rem;
+        }
+
+        .spell-feedback.correct {
+            color: var(--success);
+        }
+
+        .spell-feedback.wrong {
+            color: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            .match-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .card-perspective {
+                height: 480px;
+            }
+            .hanzi-main {
+                font-size: 3.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-area">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <div>
+                    <h1>Chinese Vocabulary Quizlet</h1>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">Bài 1: Giao Tiếp & Giới Thiệu Nhân Vật</p>
+                </div>
+            </div>
+            <div class="filter-area">
+                <i class="fa-solid fa-filter"></i>
+                <select id="categoryFilter" onchange="changeCategory()">
+                    <option value="ALL">Tất cả bài học (40 từ)</option>
+                    <option value="CHARACTERS">1. Nhân vật (3)</option>
+                    <option value="VOCAB_1">2. Từ vựng Phần I (15)</option>
+                    <option value="PLACES">3. Địa danh (1)</option>
+                    <option value="PHRASES_1">4. Cụm từ Phần I (6)</option>
+                    <option value="VOCAB_2">5. Từ vựng Phần II (10)</option>
+                    <option value="PROPER_NAMES">6. Tên riêng & Nước (5)</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="switchTab('flashcardTab')">
+                <i class="fa-solid fa-clone"></i> Thẻ Ghi Nhớ 3D
+            </button>
+            <button class="nav-btn" onclick="switchTab('quizTab')">
+                <i class="fa-solid fa-list-check"></i> Luyện Chữ Hán
+            </button>
+            <button class="nav-btn" onclick="switchTab('matchTab')">
+                <i class="fa-solid fa-puzzle-piece"></i> Ghép Từ (Match)
+            </button>
+            <button class="nav-btn" onclick="switchTab('spellTab')">
+                <i class="fa-solid fa-headphones"></i> Luyện Nghe & Viết
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 1. FLASHCARD TAB -->
+        <section id="flashcardTab" class="tab-content active">
+            <div class="card-perspective" id="flashcard" onclick="flipCard()">
+                <div class="card-inner">
+                    <!-- Front Side -->
+                    <div class="card-front">
+                        <div class="card-header-tag">
+                            <span class="pos-badge" id="cardPos">Noun</span>
+                            <span class="category-badge" id="cardCategory">Phần I</span>
+                        </div>
+                        <div>
+                            <div class="hanzi-main" id="cardHanzi">你</div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">(Bấm hoặc dùng phím Space để lật mặt sau)</p>
+                        </div>
+                        <div>
+                            <button class="audio-btn" onclick="speakHanzi(event)">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Back Side -->
+                    <div class="card-back">
+                        <div class="card-header-tag">
+                            <span class="category-badge" id="cardCategoryBack">Phần I</span>
+                            <button class="ai-gen-btn" onclick="generateAiImage(event)">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Tạo Ảnh
+                            </button>
+                        </div>
+                        <div class="pinyin-text" id="cardPinyin">nǐ</div>
+                        <div class="vietnamese-text" id="cardVietnamese">bạn, anh, chị</div>
+                        
+                        <div class="ai-image-container" id="aiImageContainer" style="display: none;">
+                            <img id="aiImg" src="" alt="AI Illustration">
+                        </div>
+
+                        <div class="example-box" id="exampleBox">
+                            <div class="example-hanzi" id="cardExHanzi">你好！</div>
+                            <div class="example-pinyin" id="cardExPinyin">Nǐ hǎo!</div>
+                            <div class="example-vi" id="cardExVi">Xin chào!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-bar">
+                <button class="action-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i> Thẻ Trước</button>
+                <span class="progress-text" id="cardProgress">1 / 40</span>
+                <button class="action-btn" onclick="nextCard()">Thẻ Tiếp <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </section>
+
+        <!-- 2. QUIZ TAB -->
+        <section id="quizTab" class="tab-content">
+            <div class="quiz-card">
+                <div class="quiz-mode-selector">
+                    <button class="sub-tab-btn active" id="modePinyinBtn" onclick="setQuizMode('PINYIN')">Chữ Hán ➔ Pinyin</button>
+                    <button class="sub-tab-btn" id="modeMeaningBtn" onclick="setQuizMode('MEANING')">Chữ Hán ➔ Nghĩa Tiếng Việt</button>
+                </div>
+
+                <div class="quiz-question">
+                    <span class="pos-badge" id="quizPos">Phần I</span>
+                    <div class="quiz-hanzi" id="quizHanzi">好</div>
+                    <button class="audio-btn" onclick="speakCurrentQuiz()">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options inserted via JS -->
+                </div>
+
+                <div class="quiz-stats">
+                    <span>Đúng: <strong id="quizCorrect" style="color: var(--success)">0</strong></span>
+                    <span>Sai: <strong id="quizWrong" style="color: var(--danger)">0</strong></span>
+                    <span>Chính xác: <strong id="quizAccuracy">100%</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MATCH GAME TAB -->
+        <section id="matchTab" class="tab-content">
+            <div class="match-header">
+                <h2><i class="fa-solid fa-stopwatch"></i> Ghép Cặp Nhanh</h2>
+                <div class="timer-badge" id="matchTimer">0.0s</div>
+                <button class="action-btn" onclick="startMatchGame()"><i class="fa-solid fa-rotate-right"></i> Chơi Lại</button>
+            </div>
+            <div class="match-grid" id="matchGrid">
+                <!-- Match cards inserted via JS -->
+            </div>
+        </section>
+
+        <!-- 4. LISTEN & SPELL TAB -->
+        <section id="spellTab" class="tab-content">
+            <div class="spell-container">
+                <h2>Luyện Nghe & Viết Tiếng Trung</h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Nghe âm thanh và gõ lại đúng Chữ Hán hoặc Pinyin</p>
+                
+                <button class="spell-audio-btn" onclick="playSpellAudio()">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+
+                <div class="spell-hint" id="spellHint">Gợi ý nghĩa: bạn, anh, chị</div>
+
+                <div class="spell-input-group">
+                    <input type="text" id="spellInput" class="spell-input" placeholder="Nhập Chữ Hán hoặc Pinyin tại đây..." onkeyup="checkSpellEnter(event)">
+                    <button class="action-btn" style="background: var(--primary); color: white;" onclick="checkSpellAnswer()">Kiểm tra</button>
+                </div>
+
+                <div class="spell-feedback" id="spellFeedback"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // DATASET BASED ON LESSON 1
+        const rawData = [
+            // Characters
+            { hanzi: "陳月美", pinyin: "Chén Yuèměi", pos: "N", vi: "Trần Nguyệt Mỹ (nhân vật nữ từ Việt Nam)", cat: "CHARACTERS", exH: "陳月美是越南人。", exP: "Chén Yuèměi shì Yuènán rén.", exV: "Trần Nguyệt Mỹ là người Việt Nam." },
+            { hanzi: "李明華", pinyin: "Lǐ Mínghuá", pos: "N", vi: "Lý Minh Hoa (nhân vật nam từ Đài Loan)", cat: "CHARACTERS", exH: "李明華是台灣人。", exP: "Lǐ Mínghuá shì Táiwān rén.", exV: "Lý Minh Hoa là người Đài Loan." },
+            { hanzi: "王開文", pinyin: "Wáng Kāiwén", pos: "N", vi: "Vương Khai Văn (nhân vật nam từ Mỹ)", cat: "CHARACTERS", exH: "王開文是美國人。", exP: "Wáng Kāiwén shì Měiguó rén.", exV: "Vương Khai Văn là người Mỹ." },
+            
+            // Vocab 1
+            { hanzi: "你", pinyin: "nǐ", pos: "N", vi: "bạn, anh, chị (ngôi thứ 2)", cat: "VOCAB_1", exH: "你好嗎？", exP: "Nǐ hǎo ma?", exV: "Bạn khỏe không?" },
+            { hanzi: "來", pinyin: "lái", pos: "V", vi: "đến", cat: "VOCAB_1", exH: "歡迎你來！", exP: "Huānyíng nǐ lái!", exV: "Chào mừng bạn đến!" },
+            { hanzi: "是", pinyin: "shì", pos: "Vst", vi: "là", cat: "VOCAB_1", exH: "我是王開文。", exP: "Wǒ shì Wáng Kāiwén.", exV: "Tôi là Vương Khai Văn." },
+            { hanzi: "小姐", pinyin: "xiǎojie", pos: "N", vi: "cô, cô gái, tiểu thư", cat: "VOCAB_1", exH: "陳小姐，你好。", exP: "Chén xiǎojie, nǐ hǎo.", exV: "Chào cô Trần." },
+            { hanzi: "嗎", pinyin: "ma", pos: "Ptc", vi: "không? (trợ từ nghi vấn)", cat: "VOCAB_1", exH: "你是李先生嗎？", exP: "Nǐ shì Lǐ xiansheng ma?", exV: "Bạn là ông Lý phải không?" },
+            { hanzi: "接", pinyin: "jiē", pos: "V", vi: "đón (ai đó)", cat: "VOCAB_1", exH: "我來接你。", exP: "Wǒ lái jiē nǐ.", exV: "Tôi đến đón bạn." },
+            { hanzi: "我們", pinyin: "wǒmen", pos: "N", vi: "chúng tôi, chúng ta", cat: "VOCAB_1", exH: "我們喝茶。", exP: "Wǒmen hē chá.", exV: "Chúng ta uống trà." },
+            { hanzi: "我", pinyin: "wǒ", pos: "N", vi: "tôi, tớ, mình", cat: "VOCAB_1", exH: "我是陳月美。", exP: "Wǒ shì Chén Yuèměi.", exV: "Tôi là Trần Nguyệt Mỹ." },
+            { hanzi: "這", pinyin: "zhè", pos: "Det", vi: "đây, này", cat: "VOCAB_1", exH: "這是烏龍茶。", exP: "Zhè shì Wūlóng chá.", exV: "Đây là trà Ô Long." },
+            { hanzi: "先生", pinyin: "xiansheng", pos: "N", vi: "ông, ngài, tiên sinh", cat: "VOCAB_1", exH: "王先生，你好。", exP: "Wáng xiansheng, nǐ hǎo.", exV: "Chào ông Vương." },
+            { hanzi: "好", pinyin: "hǎo", pos: "Vs", vi: "tốt, khỏe, ngon", cat: "VOCAB_1", exH: "這茶很好。", exP: "Zhè chá hěn hǎo.", exV: "Trà này rất tốt." },
+            { hanzi: "姓", pinyin: "xìng", pos: "Vst", vi: "mang họ, họ là", cat: "VOCAB_1", exH: "我姓李。", exP: "Wǒ xìng Lǐ.", exV: "Tôi họ Lý." },
+            { hanzi: "叫", pinyin: "jiào", pos: "Vst", vi: "gọi là, tên là", cat: "VOCAB_1", exH: "你叫什麼名字？", exP: "Nǐ jiào shénme míngzi?", exV: "Bạn tên là gì?" },
+            { hanzi: "你們", pinyin: "nǐmen", pos: "N", vi: "các bạn, các anh/chị", cat: "VOCAB_1", exH: "歡迎你們！", exP: "Huānyíng nǐmen!", exV: "Chào mừng các bạn!" },
+
+            // Places
+            { hanzi: "台灣", pinyin: "Táiwān", pos: "N", vi: "Đài Loan", cat: "PLACES", exH: "他去台灣。", exP: "Tā qù Táiwān.", exV: "Anh ấy đi Đài Loan." },
+
+            // Phrases 1
+            { hanzi: "歡迎", pinyin: "huānyíng", pos: "Phrase", vi: "hoan nghênh, chào mừng", cat: "PHRASES_1", exH: "歡迎來台灣！", exP: "Huānyíng lái Táiwān!", exV: "Chào mừng đến Đài Loan!" },
+            { hanzi: "請問", pinyin: "qǐngwèn", pos: "Phrase", vi: "xin hỏi, cho hỏi...", cat: "PHRASES_1", exH: "請問，你姓什麼？", exP: "Qǐngwèn, nǐ xìng shénme?", exV: "Xin hỏi, bạn họ gì?" },
+            { hanzi: "是的", pinyin: "shìde", pos: "Phrase", vi: "vâng, đúng vậy", cat: "PHRASES_1", exH: "是的，我是陳小姐。", exP: "Shìde, wǒ shì Chén xiǎojie.", exV: "Đúng vậy, tôi là cô Trần." },
+            { hanzi: "謝謝", pinyin: "xièxie", pos: "Phrase", vi: "cảm ơn", cat: "PHRASES_1", exH: "謝謝你！", exP: "Xièxie nǐ!", exV: "Cảm ơn bạn!" },
+            { hanzi: "不客氣", pinyin: "búkèqì", pos: "Phrase", vi: "không có gì, đừng khách sáo", cat: "PHRASES_1", exH: "不客氣。", exP: "Búkèqì.", exV: "Không có gì." },
+            { hanzi: "你好", pinyin: "nǐ hǎo", pos: "Phrase", vi: "xin chào", cat: "PHRASES_1", exH: "你好，李先生。", exP: "Nǐ hǎo, Lǐ xiansheng.", exV: "Xin chào ông Lý." },
+
+            // Vocab 2
+            { hanzi: "請", pinyin: "qǐng", pos: "V", vi: "xin, mời", cat: "VOCAB_2", exH: "請喝茶。", exP: "Qǐng hē chá.", exV: "Mời uống trà." },
+            { hanzi: "喝", pinyin: "hē", pos: "V", vi: "uống", cat: "VOCAB_2", exH: "你喝咖啡嗎？", exP: "Nǐ hē kāfēi ma?", exV: "Bạn uống cà phê không?" },
+            { hanzi: "茶", pinyin: "chá", pos: "N", vi: "trà", cat: "VOCAB_2", exH: "台灣茶很好喝。", exP: "Táiwān chá hěn hǎohē.", exV: "Trà Đài Loan rất ngon." },
+            { hanzi: "很", pinyin: "hěn", pos: "Adv", vi: "rất", cat: "VOCAB_2", exH: "咖啡很好喝。", exP: "Kāfēi hěn hǎohē.", exV: "Cà phê rất ngon." },
+            { hanzi: "好喝", pinyin: "hǎohē", pos: "Vs", vi: "ngon (đồ uống)", cat: "VOCAB_2", exH: "烏龍茶很好喝。", exP: "Wūlóng chá hěn hǎohē.", exV: "Trà Ô Long rất ngon." },
+            { hanzi: "什麼", pinyin: "shénme", pos: "N", vi: "cái gì, gì", cat: "VOCAB_2", exH: "你要喝什麼？", exP: "Nǐ yào hē shénme?", exV: "Bạn muốn uống cái gì?" },
+            { hanzi: "人", pinyin: "rén", pos: "N", vi: "người", cat: "VOCAB_2", exH: "他是美國人。", exP: "Tā shì Měiguó rén.", exV: "Anh ấy là người Mỹ." },
+            { hanzi: "喜歡", pinyin: "xǐhuan", pos: "Vst", vi: "thích", cat: "VOCAB_2", exH: "我喜歡喝茶。", exP: "Wǒ xǐhuan hē chá.", exV: "Tôi thích uống trà." },
+            { hanzi: "呢", pinyin: "ne", pos: "Ptc", vi: "thì sao? (hỏi ngược)", cat: "VOCAB_2", exH: "我喝茶，你呢？", exP: "Wǒ hē chá, nǐ ne?", exV: "Tôi uống trà, còn bạn thì sao?" },
+            { hanzi: "他", pinyin: "tā", pos: "N", vi: "anh ấy, ông ấy", cat: "VOCAB_2", exH: "他不喜歡咖啡。", exP: "Tā bù xǐhuan kāfēi.", exV: "Anh ấy không thích cà phê." },
+            { hanzi: "不", pinyin: "bù", pos: "Adv", vi: "không (phủ định)", cat: "VOCAB_2", exH: "我不姓李。", exP: "Wǒ bù xìng Lǐ.", exV: "Tôi không họ Lý." },
+            { hanzi: "哪", pinyin: "nǎ", pos: "Det", vi: "nào, cái nào", cat: "VOCAB_2", exH: "你是哪國人？", exP: "Nǐ shì nǎ guó rén?", exV: "Bạn là người nước nào?" },
+            { hanzi: "要", pinyin: "yào", pos: "Vaux", vi: "muốn, cần", cat: "VOCAB_2", exH: "我要喝咖啡。", exP: "Wǒ yào hē kāfēi.", exV: "Tôi muốn uống cà phê." },
+            { hanzi: "咖啡", pinyin: "kāfēi", pos: "N", vi: "cà phê", cat: "VOCAB_2", exH: "這咖啡很香。", exP: "Zhè kāfēi hěn xiāng.", exV: "Cà phê này rất thơm." },
+
+            // Proper names
+            { hanzi: "烏龍茶", pinyin: "Wūlóng chá", pos: "N", vi: "Trà Ô Long", cat: "PROPER_NAMES", exH: "我喝烏龍茶。", exP: "Wǒ hē Wūlóng chá.", exV: "Tôi uống trà Ô Long." },
+            { hanzi: "日本", pinyin: "Rìběn", pos: "N", vi: "Nhật Bản", cat: "PROPER_NAMES", exH: "他不是日本人。", exP: "Tā bú shì Rìběn rén.", exV: "Anh ấy không phải người Nhật." },
+            { hanzi: "美國", pinyin: "Měiguó", pos: "N", vi: "Mỹ", cat: "PROPER_NAMES", exH: "王開文是美國人。", exP: "Wáng Kāiwén shì Měiguó rén.", exV: "Vương Khai Văn là người Mỹ." },
+            { hanzi: "對不起", pinyin: "duìbùqǐ", pos: "Phrase", vi: "xin lỗi", cat: "PROPER_NAMES", exH: "對不起，我不知道。", exP: "Duìbùqǐ, wǒ bù zhīdào.", exV: "Xin lỗi, tôi không biết." },
+            { hanzi: "哪國", pinyin: "nǎ guó", pos: "Phrase", vi: "nước nào", cat: "PROPER_NAMES", exH: "你是哪國人？", exP: "Nǐ shì nǎ guó rén?", exV: "Bạn là người nước nào?" }
+        ];
+
+        // STATE VARIABLES
+        let filteredWords = [...rawData];
+        let currentCardIdx = 0;
+        let isFlipped = false;
+        
+        // Quiz State
+        let quizMode = 'PINYIN'; // PINYIN or MEANING
+        let currentQuizWord = null;
+        let quizCorrectCount = 0;
+        let quizWrongCount = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let selectedMatchCards = [];
+        let matchTimerInterval = null;
+        let matchTime = 0;
+
+        // Spell State
+        let spellCurrentWord = null;
+
+        // INITIALIZATION
+        window.onload = () => {
+            updateFlashcard();
+            setupKeyboardShortcuts();
+            initQuiz();
+            startMatchGame();
+            initSpell();
+        };
+
+        // FILTER CONTROL
+        function changeCategory() {
+            const cat = document.getElementById('categoryFilter').value;
+            if (cat === 'ALL') {
+                filteredWords = [...rawData];
+            } else {
+                filteredWords = rawData.filter(w => w.cat === cat);
+            }
+            currentCardIdx = 0;
+            updateFlashcard();
+            initQuiz();
+            startMatchGame();
+            initSpell();
+        }
+
+        // TAB SWITCHING
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabId === 'matchTab') {
+                startMatchGame();
+            }
+        }
+
+        // TTS FUNCTION (zh-CN)
+        function speakHanzi(e, text = null) {
+            if (e) e.stopPropagation();
+            const word = text || filteredWords[currentCardIdx].hanzi;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // 1. FLASHCARD LOGIC
+        function flipCard() {
+            const card = document.getElementById('flashcard');
+            card.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function updateFlashcard() {
+            if (filteredWords.length === 0) return;
+            const item = filteredWords[currentCardIdx];
+
+            // Reset image container
+            document.getElementById('aiImageContainer').style.display = 'none';
+            document.getElementById('aiImg').src = '';
+
+            document.getElementById('cardHanzi').innerText = item.hanzi;
+            document.getElementById('cardPos').innerText = item.pos;
+            document.getElementById('cardCategory').innerText = item.cat;
+            document.getElementById('cardCategoryBack').innerText = item.cat;
+            document.getElementById('cardPinyin').innerText = item.pinyin;
+            document.getElementById('cardVietnamese').innerText = item.vi;
+            document.getElementById('cardExHanzi').innerText = item.exH;
+            document.getElementById('cardExPinyin').innerText = item.exP;
+            document.getElementById('cardExVi').innerText = item.exV;
+
+            document.getElementById('cardProgress').innerText = `${currentCardIdx + 1} / ${filteredWords.length}`;
+
+            // Make sure card is not flipped when navigating
+            const card = document.getElementById('flashcard');
+            card.classList.remove('flipped');
+            isFlipped = false;
+        }
+
+        function nextCard() {
+            if (currentCardIdx < filteredWords.length - 1) {
+                currentCardIdx++;
+                updateFlashcard();
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIdx > 0) {
+                currentCardIdx--;
+                updateFlashcard();
+            }
+        }
+
+        function generateAiImage(e) {
+            e.stopPropagation();
+            const item = filteredWords[currentCardIdx];
+            const imgContainer = document.getElementById('aiImageContainer');
+            const imgTag = document.getElementById('aiImg');
+
+            imgContainer.style.display = 'flex';
+            imgTag.src = 'https://images.placeholders.dev/?width=300&height=120&text=AI%20Generating...';
+
+            const encodedPrompt = encodeURIComponent(`minimalistic visual illustration for Chinese concept ${item.vi}`);
+            const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=500&height=200&nologo=true`;
+
+            imgTag.src = aiUrl;
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('flashcardTab').classList.contains('active')) {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        flipCard();
+                    } else if (e.code === 'ArrowRight') {
+                        nextCard();
+                    } else if (e.code === 'ArrowLeft') {
+                        prevCard();
+                    }
+                }
+            });
+        }
+
+        // 2. QUIZ LOGIC
+        function setQuizMode(mode) {
+            quizMode = mode;
+            document.getElementById('modePinyinBtn').classList.toggle('active', mode === 'PINYIN');
+            document.getElementById('modeMeaningBtn').classList.toggle('active', mode === 'MEANING');
+            initQuiz();
+        }
+
+        function initQuiz() {
+            if (filteredWords.length === 0) return;
+            const randomIdx = Math.floor(Math.random() * filteredWords.length);
+            currentQuizWord = filteredWords[randomIdx];
+
+            document.getElementById('quizHanzi').innerText = currentQuizWord.hanzi;
+            document.getElementById('quizPos').innerText = currentQuizWord.cat;
+
+            // Generate options
+            let options = [currentQuizWord];
+            while (options.length < 4 && options.length < filteredWords.length) {
+                const rand = filteredWords[Math.floor(Math.random() * filteredWords.length)];
+                if (!options.includes(rand)) {
+                    options.push(rand);
+                }
+            }
+
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = quizMode === 'PINYIN' ? opt.pinyin : opt.vi;
+                btn.onclick = () => checkQuizAnswer(btn, opt);
+                grid.appendChild(btn);
+            });
+        }
+
+        function speakCurrentQuiz() {
+            if (currentQuizWord) speakHanzi(null, currentQuizWord.hanzi);
+        }
+
+        function checkQuizAnswer(btn, selectedOpt) {
+            const isCorrect = selectedOpt.hanzi === currentQuizWord.hanzi;
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                quizCorrectCount++;
+            } else {
+                btn.classList.add('wrong');
+                quizWrongCount++;
+                // Show correct answer
+                allBtns.forEach(b => {
+                    const text = quizMode === 'PINYIN' ? currentQuizWord.pinyin : currentQuizWord.vi;
+                    if (b.innerText === text) b.classList.add('correct');
+                });
+            }
+
+            // Update Stats
+            document.getElementById('quizCorrect').innerText = quizCorrectCount;
+            document.getElementById('quizWrong').innerText = quizWrongCount;
+            const total = quizCorrectCount + quizWrongCount;
+            const acc = Math.round((quizCorrectCount / total) * 100);
+            document.getElementById('quizAccuracy').innerText = `${acc}%`;
+
+            setTimeout(initQuiz, 1500);
+        }
+
+        // 3. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            matchTime = 0;
+            document.getElementById('matchTimer').innerText = '0.0s';
+
+            // Pick 4 random words
+            let pool = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, 4);
+            
+            let cards = [];
+            pool.forEach((item, index) => {
+                cards.push({ id: index, type: 'HANZI', text: item.hanzi, matchId: index });
+                cards.push({ id: index, type: 'VI', text: item.vi, matchId: index });
+            });
+
+            cards.sort(() => Math.random() - 0.5);
+            matchCards = cards;
+            selectedMatchCards = [];
+
+            const grid = document.getElementById('matchGrid');
+            grid.innerHTML = '';
+
+            cards.forEach((card, idx) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = `match-card ${card.type === 'HANZI' ? 'hanzi' : ''}`;
+                cardEl.innerText = card.text;
+                cardEl.onclick = () => selectMatchCard(cardEl, card, idx);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchTimerInterval = setInterval(() => {
+                matchTime += 0.1;
+                document.getElementById('matchTimer').innerText = matchTime.toFixed(1) + 's';
+            }, 100);
+        }
+
+        function selectMatchCard(el, cardObj, idx) {
+            if (el.classList.contains('matched') || el.classList.contains('selected')) return;
+
+            el.classList.add('selected');
+            selectedMatchCards.push({ element: el, data: cardObj });
+
+            if (selectedMatchCards.length === 2) {
+                const [first, second] = selectedMatchCards;
+
+                if (first.data.matchId === second.data.matchId && first.data.type !== second.data.type) {
+                    // Match found!
+                    setTimeout(() => {
+                        first.element.classList.add('matched');
+                        second.element.classList.add('matched');
+                        checkMatchGameWin();
+                    }, 300);
+                } else {
+                    // Wrong match
+                    setTimeout(() => {
+                        first.element.classList.remove('selected');
+                        second.element.classList.remove('selected');
+                    }, 500);
+                }
+                selectedMatchCards = [];
+            }
+        }
+
+        function checkMatchGameWin() {
+            const remaining = document.querySelectorAll('.match-card:not(.matched)');
+            if (remaining.length === 0) {
+                clearInterval(matchTimerInterval);
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        // 4. LISTEN & SPELL LOGIC
+        function initSpell() {
+            if (filteredWords.length === 0) return;
+            spellCurrentWord = filteredWords[Math.floor(Math.random() * filteredWords.length)];
+            document.getElementById('spellHint').innerText = `Gợi ý nghĩa: ${spellCurrentWord.vi}`;
+            document.getElementById('spellInput').value = '';
+            document.getElementById('spellFeedback').innerText = '';
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellCurrentWord) speakHanzi(null, spellCurrentWord.hanzi);
+        }
+
+        function checkSpellEnter(e) {
+            if (e.key === 'Enter') checkSpellAnswer();
+        }
+
+        function checkSpellAnswer() {
+            const val = document.getElementById('spellInput').value.trim().toLowerCase();
+            const feedback = document.getElementById('spellFeedback');
+
+            const targetHanzi = spellCurrentWord.hanzi.toLowerCase();
+            const targetPinyin = spellCurrentWord.pinyin.toLowerCase();
+
+            if (val === targetHanzi || val === targetPinyin) {
+                feedback.className = 'spell-feedback correct';
+                feedback.innerText = ' chính xác! CHÚC MỪNG BẠN!';
+                setTimeout(initSpell, 1500);
+            } else {
+                feedback.className = 'spell-feedback wrong';
+                feedback.innerText = ` Chưa đúng! Đáp án: ${spellCurrentWord.hanzi} (${spellCurrentWord.pinyin})`;
+            }
+        }
+    </script>
+</body>
+</html>
