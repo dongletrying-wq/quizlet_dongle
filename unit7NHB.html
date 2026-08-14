@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Master - Unit 7: Favourite things</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* CSS cho hiệu ứng 3D Flashcard */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-heart text-2xl text-pink-500"></i>
+                <h1 class="font-bold text-xl tracking-wide text-pink-400">Quizlet<span class="text-white">Lite</span></h1>
+                <span class="text-xs bg-pink-950 text-pink-200 px-2.5 py-0.5 rounded border border-pink-700/50">Unit 7: Favourite things</span>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <nav class="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 text-sm font-medium overflow-x-auto">
+                <button onclick="switchTab('flashcards')" id="btn-flashcards" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition bg-indigo-600 text-white">
+                    <i class="fa-solid fa-clone"></i> Flashcards
+                </button>
+                <button onclick="switchTab('match')" id="btn-match" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
+                </button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-circle-question"></i> Kiểm tra
+                </button>
+                <button onclick="switchTab('spell')" id="btn-spell" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
+                    <i class="fa-solid fa-headphones"></i> Nghe & Viết
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <section class="bg-slate-800/50 border-b border-slate-700/50 py-2.5">
+        <div class="max-w-6xl mx-auto px-4 flex items-center gap-3">
+            <label for="category-filter" class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <i class="fa-solid fa-filter"></i> Danh mục:
+            </label>
+            <select id="category-filter" onchange="handleCategoryChange()" class="bg-slate-900 text-slate-200 text-sm rounded-lg px-3 py-1.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                <!-- Dynamically Populated -->
+            </select>
+            <span id="word-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">0 từ</span>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+
+        <!-- 1. MODE: FLASHCARDS -->
+        <div id="mode-flashcards" class="tab-content flex flex-col items-center gap-6">
+            <div class="w-full max-w-lg perspective-1000">
+                <div id="card-inner" onclick="flipCard()" class="relative w-full h-80 rounded-2xl bg-slate-800 border-2 border-slate-700 shadow-2xl cursor-pointer transform-style-3d transition-transform duration-500 hover:border-indigo-500 flex flex-col justify-between p-6">
+                    
+                    <!-- Card Front -->
+                    <div class="absolute inset-0 backface-hidden flex flex-col justify-between p-6 bg-slate-800 rounded-2xl">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-2">
+                                <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
+                                <span id="card-type-front" class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
+                            </div>
+                            <button onclick="event.stopPropagation(); speakCurrentWord()" class="text-slate-400 hover:text-indigo-400 text-xl p-2 rounded-full hover:bg-slate-700/50 transition">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center my-auto space-y-2">
+                            <i id="card-icon-front" class="text-4xl text-indigo-400 mb-2 block"></i>
+                            <h2 id="card-word" class="text-3xl font-extrabold text-white tracking-wide"></h2>
+                            <p id="card-ipa" class="text-slate-400 font-mono text-sm"></p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-regular fa-keyboard"></i> Space: Lật</span>
+                            <span>Mặt trước</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Back -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-slate-800 border-indigo-500 rounded-2xl">
+                        <div class="flex justify-between items-start">
+                            <span id="card-type-back" class="text-xs font-semibold text-amber-400 italic bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" class="text-xs bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2.5 py-1 rounded-lg border border-indigo-500/50 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh
+                            </button>
+                        </div>
+
+                        <div class="text-center my-auto flex flex-col items-center justify-center gap-3">
+                            <div id="ai-img-container" class="hidden w-32 h-32 rounded-lg overflow-hidden border border-slate-600 bg-slate-900 relative">
+                                <img id="ai-img" src="" alt="AI Illustration" class="w-full h-full object-cover">
+                                <div id="ai-loading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center hidden">
+                                    <i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xl"></i>
+                                </div>
+                            </div>
+
+                            <h3 id="card-meaning" class="text-2xl font-bold text-emerald-400"></h3>
+                            <p id="card-example" class="text-xs text-slate-300 italic max-w-xs mt-1"></p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span><i class="fa-solid fa-arrows-left-right"></i> Phím ← / →: Chuyển</span>
+                            <span>Mặt sau</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-6">
+                <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 10</span>
+                <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
+                    <i class="fa-solid fa-arrow-right text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. MODE: MATCH GAME -->
+        <div id="mode-match" class="tab-content hidden flex-col items-center gap-4">
+            <div class="flex justify-between items-center w-full max-w-2xl bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-stopwatch text-indigo-400 text-xl"></i>
+                    <span id="match-timer" class="font-mono text-2xl font-bold text-white">0.0s</span>
+                </div>
+                <button onclick="initMatchGame()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
+                </button>
+            </div>
+
+            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full max-w-2xl">
+                <!-- Cards injected dynamically -->
+            </div>
+        </div>
+
+        <!-- 3. MODE: QUIZ / LEARN -->
+        <div id="mode-quiz" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
+            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                    <span id="quiz-progress" class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Câu hỏi 1/10</span>
+                    <span id="quiz-score" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">Điểm: 0</span>
+                </div>
+
+                <div class="text-center mb-8">
+                    <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
+                    <div class="flex items-center justify-center gap-2">
+                        <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
+                        <span id="quiz-target-type" class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
+                    </div>
+                    <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 gap-3">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <div id="quiz-feedback" class="mt-6 text-center text-sm font-semibold h-6"></div>
+            </div>
+        </div>
+
+        <!-- 4. MODE: LISTEN & SPELL -->
+        <div id="mode-spell" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
+            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl flex flex-col items-center gap-6">
+                <div class="text-center">
+                    <button onclick="speakSpellWord()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl transition transform hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/30 mb-3">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <p class="text-xs text-slate-400">Click để nghe lại từ phát âm</p>
+                </div>
+
+                <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 w-full text-center">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Gợi ý nghĩa</span>
+                    <p id="spell-hint" class="text-lg font-bold text-emerald-400"></p>
+                </div>
+
+                <form onsubmit="handleSpellSubmit(event)" class="w-full flex flex-col gap-3">
+                    <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh tương ứng..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                        Kiểm tra
+                    </button>
+                </form>
+
+                <div id="spell-feedback" class="text-center font-semibold text-sm h-6"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATASET: Unit 7 – Favourite things ---
+        const rawVocabulary = [
+            { word: "adore", type: "v", ipa: "/əˈdɔː(r)/", meaning: "yêu thích, mê", example: "Do you like cats? Oh yes! I adore them!", category: "General Vocabulary", icon: "fa-solid fa-heart" },
+            { word: "anything", type: "pron", ipa: "/ˈenɪθɪŋ/", meaning: "bất cứ thứ gì, cái gì", example: "Sure. Anything to eat?", category: "General Vocabulary", icon: "fa-solid fa-box-open" },
+            { word: "app", type: "n", ipa: "/æp/", meaning: "ứng dụng (điện thoại/máy tính)", example: "It’s a Premier League app.", category: "General Vocabulary", icon: "fa-solid fa-mobile-screen-button" },
+            { word: "aspirin", type: "n", ipa: "/ˈæsprɪn/", meaning: "thuốc aspirin", example: "Can I have some aspirin, please?", category: "Shopping & Places", icon: "fa-solid fa-pills" },
+            { word: "beach", type: "n", ipa: "/ˈbiːtʃ/", meaning: "bãi biển", example: "There are no green parks, but there are lovely golden beaches.", category: "General Vocabulary", icon: "fa-solid fa-umbrella-beach" },
+            { word: "because", type: "conj", ipa: "/bɪˈkɒz/", meaning: "bởi vì, vì", example: "I learn English because it’s an international language.", category: "General Vocabulary", icon: "fa-solid fa-link" },
+            { word: "bedroom", type: "n", ipa: "/ˈbedruːm/", meaning: "phòng ngủ", example: "How many bedrooms do you have?", category: "General Vocabulary", icon: "fa-solid fa-bed" },
+            { word: "café", type: "n", ipa: "/ˈæfeɪ/", meaning: "quán cà phê", example: "How about having a coffee in this café?", category: "Shopping & Places", icon: "fa-solid fa-mug-hot" },
+            { word: "card", type: "n", ipa: "/kɑːd/", meaning: "thẻ (ngân hàng, từ...)", example: "Put your card in the machine and enter your PIN.", category: "Shopping & Places", icon: "fa-solid fa-credit-card" },
+            { word: "catch", type: "v", ipa: "/kætʃ/", meaning: "bắt, đón (tàu, xe...)", example: "You catch a train at a railway station.", category: "General Vocabulary", icon: "fa-solid fa-bus" },
+            { word: "cat", type: "n", ipa: "/kæt/", meaning: "con mèo", example: "Do you like cats? Oh yes! I adore them!", category: "General Vocabulary", icon: "fa-solid fa-cat" },
+            { word: "changing rooms", type: "n pl", ipa: "/ˈtʃeɪndʒɪŋ ˌruːmz/", meaning: "phòng thay đồ", example: "The changing rooms are over there.", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-door-closed" },
+            { word: "cheap", type: "adj", ipa: "/tʃiːp/", meaning: "rẻ, rẻ tiền", example: "It's a cheap handbag.", category: "Adjectives", icon: "fa-solid fa-tag" },
+            { word: "chemist’s", type: "n", ipa: "/ˈkemɪsts/", meaning: "hiệu thuốc, cửa hàng dược", example: "You can buy some aspirin at the chemist's.", category: "Shopping & Places", icon: "fa-solid fa-prescription-bottle-medical" },
+            { word: "clean", type: "adj", ipa: "/kliːn/", meaning: "sạch, sạch sẽ", example: "Your hands are clean.", category: "Adjectives", icon: "fa-solid fa-sparkles" },
+            { word: "close", type: "adj", ipa: "/kləʊs/", meaning: "gần gũi, thân thiết", example: "We are very close to him and his lovely family.", category: "Adjectives", icon: "fa-solid fa-people-roof" },
+            { word: "clothes", type: "n pl", ipa: "/kləʊðz/", meaning: "quần áo", example: "You can try on a jumper in a clothes shop.", category: "Shopping & Places", icon: "fa-solid fa-shirt" },
+            { word: "coat", type: "n", ipa: "/kəʊt/", meaning: "áo khoác, áo choàng", example: "Is this your coat?", category: "Shopping & Places", icon: "fa-solid fa-user-ninja" },
+            { word: "cold", type: "adj", ipa: "/kəʊld/", meaning: "lạnh", example: "It’s so cold today, isn’t it?", category: "Adjectives", icon: "fa-solid fa-snowflake" },
+            { word: "comfortable", type: "adj", ipa: "/ˈkʌmftəbl/", meaning: "thoải mái, dễ chịu", example: "Our hotel is fantastic – really new and comfortable.", category: "Adjectives", icon: "fa-solid fa-couch" },
+            { word: "cookbook", type: "n", ipa: "/ˈkʊkbʊk/", meaning: "sách nấu ăn", example: "I have all your cookbooks and your recipes are fantastic.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-book-open" },
+            { word: "credit card", type: "n", ipa: "/ˈkredɪt ˌkɑːd/", meaning: "thẻ tín dụng", example: "Can I pay by credit card?", category: "Shopping & Places", icon: "fa-solid fa-credit-card" },
+            { word: "degrees", type: "n pl", ipa: "/dɪˈgriːz/", meaning: "độ (nhiệt độ)", example: "It's 30 degrees today.", category: "General Vocabulary", icon: "fa-solid fa-temperature-three-quarters" },
+            { word: "deliver", type: "v", ipa: "/dɪˈlɪvə(r)/", meaning: "giao hàng, vận chuyển", example: "His friend, Pedro, delivers the oil to his restaurant every week.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-truck-fast" },
+            { word: "desert", type: "n", ipa: "/ˈdezət/", meaning: "sa mạc", example: "You can see all the way to the sand of the desert.", category: "General Vocabulary", icon: "fa-solid fa-sun" },
+            { word: "diamond", type: "n", ipa: "/ˈdaɪəmənd/", meaning: "kim cương", example: "I like that diamond ring.", category: "General Vocabulary", icon: "fa-solid fa-gem" },
+            { word: "dirty", type: "adj", ipa: "/ˈdɜːti/", meaning: "dơ bẩn, bẩn", example: "Your hands are dirty.", category: "Adjectives", icon: "fa-solid fa-ban" },
+            { word: "dish", type: "n", ipa: "/dɪʃ/", meaning: "món ăn, đĩa thức ăn", example: "What olive oil do you use in your dishes?", category: "General Vocabulary", icon: "fa-solid fa-plate-wheat" },
+            { word: "door", type: "n", ipa: "/dɔː(r)/", meaning: "cửa, cánh cửa", example: "My house has a green door.", category: "General Vocabulary", icon: "fa-solid fa-door-closed" },
+            { word: "estate", type: "n", ipa: "/ɪˈsteɪt/", meaning: "khu điền trang, trang trại", example: "Our friend, Pedro, works on the Bramasole estate.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-house-chimney-window" },
+            { word: "every", type: "det", ipa: "/ˈevri/", meaning: "mỗi, mọi", example: "My mother still cooks for me and my wife every Sunday.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-calendar-check" },
+            { word: "excellent", type: "adj", ipa: "/ˈeksələnt/", meaning: "xuất sắc, tuyệt vời", example: "My mother is an excellent cook.", category: "Adjectives", icon: "fa-solid fa-star" },
+            { word: "expensive", type: "adj", ipa: "/ɪkˈspensɪv/", meaning: "đắt, đắt đỏ", example: "It's an expensive handbag.", category: "Adjectives", icon: "fa-solid fa-coins" },
+            { word: "farm", type: "n", ipa: "/fɑːm/", meaning: "trang trại", example: "We visit my brother and his family on their farm.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-tractor" },
+            { word: "free time", type: "n", ipa: "/ˌfriː ˈtaɪm/", meaning: "thời gian rảnh rỗi", example: "What do you do in your free time?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-hourglass-half" },
+            { word: "fresh", type: "adj", ipa: "/freʃ/", meaning: "tươi, tươi ngon", example: "I love fresh food and we grow a lot for the restaurant.", category: "Adjectives", icon: "fa-solid fa-leaf" },
+            { word: "golden", type: "adj", ipa: "/ˈɡəʊldən/", meaning: "có màu vàng, óng ánh", example: "There are no green parks, but there are lovely golden beaches.", category: "Adjectives", icon: "fa-solid fa-sun" },
+            { word: "grow", type: "v", ipa: "/ɡrəʊ/", meaning: "trồng (cây), lớn lên", example: "I love fresh food and we grow a lot for the restaurant.", category: "General Vocabulary", icon: "fa-solid fa-seedling" },
+            { word: "hate", type: "v", ipa: "/heɪt/", meaning: "ghét, không thích", example: "Do you like golf? No, I hate it!", category: "General Vocabulary", icon: "fa-solid fa-thumbs-down" },
+            { word: "hill", type: "n", ipa: "/hɪl/", meaning: "ngọn đồi", example: "We have a house in the hills, it’s our country home.", category: "General Vocabulary", icon: "fa-solid fa-mountain" },
+            { word: "hot", type: "adj", ipa: "/hɒt/", meaning: "nóng, nóng nực", example: "It’s really hot – too hot to walk", category: "Adjectives", icon: "fa-solid fa-[#4255ff] fa-temperature-high" },
+            { word: "How many?", type: "phr", ipa: "/ˌhaʊ ˈmeni/", meaning: "Bao nhiêu? (đếm được)", example: "How many bedrooms do you have?", category: "General Vocabulary", icon: "fa-solid fa-arrow-down-1-9" },
+            { word: "Indian", type: "adj", ipa: "/ˈɪndiən/", meaning: "(thuộc) Ấn Độ", example: "The Indian restaurant is my favourite.", category: "Adjectives", icon: "fa-solid fa-bowl-food" },
+            { word: "international", type: "adj", ipa: "/ˌɪntəˈnæʃnəl/", meaning: "quốc tế, mang tính quốc tế", example: "I learn English because it’s an international language.", category: "Adjectives", icon: "fa-solid fa-globe" },
+            { word: "jacket", type: "n", ipa: "/ˈdʒækɪt/", meaning: "áo khoác ngắn, jacket", example: "I like your jacket.", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-user-tie" },
+            { word: "jumper", type: "n", ipa: "/ˈdʒʌmpə(r)/", meaning: "áo len chui đầu", example: "Can I try on this jumper, please?", category: "Shopping & Places", icon: "fa-solid fa-shirt" },
+            { word: "large", type: "adj", ipa: "/lɑːdʒ/", meaning: "lớn, to lớn", example: "Large or small? Pardon? A large latte or a small latte?", category: "Adjectives", icon: "fa-solid fa-maximize" },
+            { word: "latte", type: "n", ipa: "/ˈlɑːteɪ/", meaning: "cà phê latte", example: "Large or small? Pardon? A large latte or a small latte?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-mug-saucer" },
+            { word: "machine", type: "n", ipa: "/məˈʃiːn/", meaning: "máy móc, thiết bị", example: "Put your card in the machine and enter your PIN.", category: "General Vocabulary", icon: "fa-solid fa-gear" },
+            { word: "modern", type: "adj", ipa: "/ˈmɒdn/", meaning: "hiện đại, tân tiến", example: "Dubai is an interesting place – very modern.", category: "Adjectives", icon: "fa-solid fa-city" },
+            { word: "money", type: "n", ipa: "/ˈmʌni/", meaning: "tiền, tiền bạc", example: "How much money do you have on you?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-money-bill-wave" },
+            { word: "neighbours", type: "n pl", ipa: "/ˈneɪbəz/", meaning: "hàng xóm, láng giềng", example: "Do you like your neighbours?", category: "General Vocabulary", icon: "fa-solid fa-people-roof" },
+            { word: "newspaper", type: "n", ipa: "/ˈnjuːzpeɪpə(r)/", meaning: "tờ báo, báo giấy", example: "I like to read the newspaper.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-newspaper" },
+            { word: "nice", type: "adj", ipa: "/naɪs/", meaning: "đẹp, tốt, tử tế", example: "They’re really nice, aren’t they?", category: "Adjectives", icon: "fa-solid fa-face-smile" },
+            { word: "No problem.", type: "phr", ipa: "/ˈnəʊ ˌprɒbləm/", meaning: "Không có vấn đề gì", example: "Can I pay by credit card? No problem.", category: "Phrases & Greetings", icon: "fa-solid fa-thumbs-up" },
+            { word: "old", type: "adj", ipa: "/əʊld/", meaning: "cũ, già", example: "I have an old car.", category: "Adjectives", icon: "fa-solid fa-[#4255ff] fa-[#4255ff] fa-clock-rotate-left" },
+            { word: "olive oil", type: "n", ipa: "/ˌɒlɪv ˈɔɪl/", meaning: "dầu ô-liu", example: "Bramasole is my favourite olive oil. It’s from Tuscany", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-bottle-droplet" },
+            { word: "owner", type: "n", ipa: "/ˈəʊnə(r)/", meaning: "chủ sở hữu, người chủ", example: "Alfio Arcardi is the owner of a Michelin star restaurant.", category: "General Vocabulary", icon: "fa-solid fa-user-check" },
+            { word: "packet", type: "n", ipa: "/ˈpækɪt/", meaning: "gói nhỏ, hộp nhỏ", example: "Do you want a packet of twelve or twenty-four?", category: "Shopping & Places", icon: "fa-solid fa-box" },
+            { word: "parcel", type: "n", ipa: "/ˈpɑːsl/", meaning: "bưu kiện, bưu phẩm", example: "Put the parcel on the scales.", category: "Shopping & Places", icon: "fa-solid fa-box-tissue" },
+            { word: "Pardon?", type: "excl", ipa: "/ˈpɑːdn/", meaning: "Cái gì cơ? / Nói lại được không?", example: "Large or small? Pardon? A large latte or a small latte?", category: "Phrases & Greetings", icon: "fa-solid fa-circle-question" },
+            { word: "park", type: "n", ipa: "/pɑːk/", meaning: "công viên", example: "There are no green parks, but there are lovely golden beaches.", category: "Shopping & Places", icon: "fa-solid fa-tree" },
+            { word: "pastry chef", type: "n", ipa: "/ˈpeɪstri ʃef/", meaning: "đầu bếp làm bánh ngọt", example: "Maria Arcardi is a pastry chef.", category: "General Vocabulary", icon: "fa-solid fa-cake-candles" },
+            { word: "PIN", type: "n", ipa: "/ˈpɪn/", meaning: "mã PIN (bảo mật)", example: "Put your card in the machine and enter your PIN.", category: "Shopping & Places", icon: "fa-solid fa-lock" },
+            { word: "place", type: "n", ipa: "/pleɪs/", meaning: "địa điểm, nơi chốn", example: "Dubai is an interesting place – very modern.", category: "General Vocabulary", icon: "fa-solid fa-location-dot" },
+            { word: "pop music", type: "n", ipa: "/ˈpɒp ˌmjuːzɪk/", meaning: "nhạc pop", example: "I don't like pop music.", category: "General Vocabulary", icon: "fa-solid fa-music" },
+            { word: "post", type: "v", ipa: "/pəʊst/", meaning: "gửi thư bưu điện / đăng bài", example: "You can post letters at the post office.", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-envelope" },
+            { word: "post office", type: "n", ipa: "/ˈpəʊst ˌɒfɪs/", meaning: "bưu điện", example: "You can post letters at the post office.", category: "Shopping & Places", icon: "fa-solid fa-building" },
+            { word: "postcard", type: "n", ipa: "/ˈpəʊstkɑːd/", meaning: "bưu thiếp", example: "How much is a stamp for a postcard to the United States?", category: "Shopping & Places", icon: "fa-solid fa-image" },
+            { word: "quiet", type: "adj", ipa: "/ˈkwaɪət/", meaning: "yên tĩnh, thanh bình", example: "Tivoli is beautiful and quiet.", category: "Adjectives", icon: "fa-solid fa-[#4255ff] fa-volume-xmark" },
+            { word: "railway station", type: "n", ipa: "/ˈreɪlweɪ ˌsteɪʃn/", meaning: "nhà ga xe lửa", example: "You catch a train at a railway station.", category: "Shopping & Places", icon: "fa-solid fa-train" },
+            { word: "rain", type: "n", ipa: "/reɪn/", meaning: "cơn mưa, mưa", example: "There's more rain again today.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-cloud-rain" },
+            { word: "recipe", type: "n", ipa: "/ˈresəpi/", meaning: "công thức nấu ăn", example: "I have all your cookbooks and your recipes are fantastic.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-receipt" },
+            { word: "return ticket", type: "n", ipa: "/rɪˈtɜːn ˌtɪkɪt/", meaning: "vé khứ hồi", example: "Can I have a return ticket to Oxford, please?", category: "Shopping & Places", icon: "fa-solid fa-ticket" },
+            { word: "right", type: "adj", ipa: "/raɪt/", meaning: "đúng, chính xác", example: "Your answer is right.", category: "Adjectives", icon: "fa-solid fa-circle-check" },
+            { word: "ring", type: "n", ipa: "/rɪŋ/", meaning: "chiếc nhẫn", example: "I like that diamond ring.", category: "General Vocabulary", icon: "fa-solid fa-ring" },
+            { word: "sand", type: "n", ipa: "/sænd/", meaning: "cát", example: "You can see all the way to the sand of the desert.", category: "General Vocabulary", icon: "fa-solid fa-umbrella-beach" },
+            { word: "scales", type: "n pl", ipa: "/skeɪlz/", meaning: "cái cân", example: "Put the parcel on the scales.", category: "Shopping & Places", icon: "fa-solid fa-scale-balanced" },
+            { word: "shampoo", type: "n", ipa: "/ʃæmˈpuː/", meaning: "dầu gội đầu", example: "Can I have some shampoo, please?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-pump-soap" },
+            { word: "silly", type: "adj", ipa: "/ˈsɪli/", meaning: "ngớ ngẩn, khờ khạo", example: "Don't be silly!", category: "Adjectives", icon: "fa-solid fa-[#4255ff] fa-face-rolling-eyes" },
+            { word: "single ticket", type: "n", ipa: "/ˈsɪŋgl ˌtɪkɪt/", meaning: "vé một chiều", example: "A single ticket to Newcastle, please.", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-ticket" },
+            { word: "stamp", type: "n", ipa: "/stæmp/", meaning: "tem thư", example: "How much is a stamp for a postcard to the United States?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-stamp" },
+            { word: "super", type: "adj", ipa: "/ˈsuːpə(r)/", meaning: "siêu, cực kỳ tuyệt vời", example: "This is a super holiday. It’s great in Dubai!", category: "Adjectives", icon: "fa-solid fa-wand-magic-sparkles" },
+            { word: "tall", type: "adj", ipa: "/tɔːl/", meaning: "cao (chiều cao cơ thể/nhà)", example: "All the buildings are so big and tall.", category: "Adjectives", icon: "fa-solid fa-text-height" },
+            { word: "teach", type: "v", ipa: "/tiːtʃ/", meaning: "dạy học, giảng dạy", example: "She teaches English.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-chalkboard-user" },
+            { word: "teddy bear", type: "n", ipa: "/ˈtedi beə(r)/", meaning: "gấu bông", example: "This is my favourite teddy bear.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-[#4255ff] fa-paw" },
+            { word: "that", type: "det", ipa: "/ðæt/", meaning: "đó, kia", example: "Look at that!", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-hand-pointer" },
+            { word: "toothpaste", type: "n", ipa: "/ˈtuːθpeɪst/", meaning: "kem đánh răng", example: "Can I have some toothpaste, please?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-tooth" },
+            { word: "town", type: "n", ipa: "/taʊn/", meaning: "thị trấn, thị xã", example: "He works In an office in the centre of town.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-building" },
+            { word: "train", type: "n", ipa: "/treɪn/", meaning: "tàu hỏa, xe lửa", example: "You catch a train at a railway station.", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-train" },
+            { word: "travel", type: "v", ipa: "/ˈtrævl/", meaning: "du lịch, dịch chuyển", example: "We always travel by car.", category: "General Vocabulary", icon: "fa-solid fa-plane" },
+            { word: "try on", type: "phr v", ipa: "/traɪ ˈɒn/", meaning: "mặc thử (quần áo)", example: "Can I try on this jumper, please?", category: "Shopping & Places", icon: "fa-solid fa-[#4255ff] fa-shirt" },
+            { word: "T-shirt", type: "n", ipa: "/ˈtiːʃɜːt/", meaning: "áo thun, áo phông", example: "That's a nice T-shirt!", category: "Shopping & Places", icon: "fa-solid fa-shirt" },
+            { word: "very much", type: "phr", ipa: "/ˌveri ˈmʌtʃ/", meaning: "rất nhiều", example: "I love my family very much.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-heart" },
+            { word: "visit", type: "v", ipa: "/ˈvɪzɪt/", meaning: "thăm, ghé thăm", example: "We visit my brother and his family on their farm.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-house-chimney-user" },
+            { word: "website", type: "n", ipa: "/ˈwebsaɪt/", meaning: "trang web", example: "They have a good website.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-globe" },
+            { word: "Who?", type: "pron", ipa: "/huː/", meaning: "Ai?", example: "Who’s your favourite pop singer?", category: "General Vocabulary", icon: "fa-solid fa-circle-question" },
+            { word: "Why?", type: "adv", ipa: "/waɪ/", meaning: "Tại sao?", example: "Why do you want to learn English?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-circle-question" },
+            { word: "wonderful", type: "adj", ipa: "/ˈwʌndəfl/", meaning: "tuyệt vời, kỳ diệu", example: "The Indian restaurant is my favourite. It’s wonderful!", category: "Adjectives", icon: "fa-solid fa-wand-magic-sparkles" },
+            { word: "wrong", type: "adj", ipa: "/rɒŋ/", meaning: "sai, không đúng", example: "Your answer is wrong.", category: "Adjectives", icon: "fa-solid fa-circle-xmark" }
+        ];
+
+        // --- GLOBAL APP STATE ---
+        let currentVocabList = [...rawVocabulary];
+        let activeTab = 'flashcards';
+
+        // Flashcards state
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        // Match Game state
+        let matchTimerInterval = null;
+        let matchStartTime = 0;
+        let selectedMatchCards = [];
+        let matchedPairs = 0;
+
+        // Quiz state
+        let quizIndex = 0;
+        let quizScore = 0;
+        let quizList = [];
+
+        // Spell state
+        let spellIndex = 0;
+        let spellList = [];
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            populateCategories();
+            updateFilteredList();
+            setupKeyboardShortcuts();
+        });
+
+        function populateCategories() {
+            const categories = ["Tất cả (All)", ...new Set(rawVocabulary.map(v => v.category))];
+            const select = document.getElementById('category-filter');
+            select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        }
+
+        function handleCategoryChange() {
+            updateFilteredList();
+            switchTab(activeTab);
+        }
+
+        function updateFilteredList() {
+            const selectedCat = document.getElementById('category-filter').value;
+            if (selectedCat === "Tất cả (All)") {
+                currentVocabList = [...rawVocabulary];
+            } else {
+                currentVocabList = rawVocabulary.filter(v => v.category === selectedCat);
+            }
+            document.getElementById('word-count-badge').textContent = `${currentVocabList.length} từ`;
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('hover:bg-slate-800', 'text-slate-400');
+            });
+            const activeBtn = document.getElementById(`btn-${tab}`);
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            activeBtn.classList.remove('hover:bg-slate-800', 'text-slate-400');
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`mode-${tab}`).classList.remove('hidden');
+            document.getElementById(`mode-${tab}`).classList.add('flex');
+
+            if (tab === 'flashcards') initFlashcards();
+            if (tab === 'match') initMatchGame();
+            if (tab === 'quiz') initQuizMode();
+            if (tab === 'spell') initSpellMode();
+        }
+
+        // --- TEXT TO SPEECH (TTS) ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const cleanText = text.replace(/\([^)]*\)/g, '').trim();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- 1. MODE: FLASHCARDS LOGIC ---
+        function initFlashcards() {
+            currentCardIndex = 0;
+            isCardFlipped = false;
+            renderCard();
+        }
+
+        function renderCard() {
+            if (currentVocabList.length === 0) return;
+            const item = currentVocabList[currentCardIndex];
+            
+            const cardInner = document.getElementById('card-inner');
+            cardInner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            document.getElementById('ai-img-container').classList.add('hidden');
+
+            setTimeout(() => {
+                // Front
+                document.getElementById('card-cat-front').textContent = item.category;
+                document.getElementById('card-type-front').textContent = `(${item.type})`;
+                document.getElementById('card-word').textContent = item.word;
+                document.getElementById('card-ipa').textContent = item.ipa;
+                document.getElementById('card-icon-front').className = `${item.icon} text-4xl text-indigo-400 mb-2 block`;
+
+                // Back
+                document.getElementById('card-type-back').textContent = `(${item.type})`;
+                document.getElementById('card-meaning').textContent = item.meaning;
+                document.getElementById('card-example').textContent = item.example ? `"${item.example}"` : '';
+
+                // Counter
+                document.getElementById('card-progress').textContent = `${currentCardIndex + 1} / ${currentVocabList.length}`;
+            }, 150);
+        }
+
+        function flipCard() {
+            const cardInner = document.getElementById('card-inner');
+            isCardFlipped = !isCardFlipped;
+            if (isCardFlipped) {
+                cardInner.classList.add('rotate-y-180');
+            } else {
+                cardInner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            if (currentVocabList.length === 0) return;
+            currentCardIndex = (currentCardIndex + 1) % currentVocabList.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            if (currentVocabList.length === 0) return;
+            currentCardIndex = (currentCardIndex - 1 + currentVocabList.length) % currentVocabList.length;
+            renderCard();
+        }
+
+        function speakCurrentWord() {
+            if (currentVocabList[currentCardIndex]) {
+                speakText(currentVocabList[currentCardIndex].word);
+            }
+        }
+
+        function generateAIImage() {
+            const item = currentVocabList[currentCardIndex];
+            if (!item) return;
+
+            const container = document.getElementById('ai-img-container');
+            const img = document.getElementById('ai-img');
+            const loading = document.getElementById('ai-loading');
+
+            container.classList.remove('hidden');
+            loading.classList.remove('hidden');
+
+            const prompt = encodeURIComponent(`digital illustration of ${item.word}, minimalist, clean educational style`);
+            const url = `https://pollinations.ai/p/${prompt}?width=200&height=200&seed=${Math.floor(Math.random()*1000)}`;
+
+            img.onload = () => {
+                loading.classList.add('hidden');
+            };
+            img.src = url;
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (activeTab !== 'flashcards') return;
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // --- 2. MODE: MATCH GAME LOGIC ---
+        function initMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-timer').textContent = "0.0s";
+            matchedPairs = 0;
+            selectedMatchCards = [];
+
+            const pool = [...currentVocabList].sort(() => 0.5 - Math.random()).slice(0, 6);
+            
+            let cards = [];
+            pool.forEach((item, index) => {
+                cards.push({ id: index, text: item.word, type: 'en', matched: false });
+                cards.push({ id: index, text: item.meaning, type: 'vi', matched: false });
+            });
+
+            cards.sort(() => 0.5 - Math.random());
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = cards.map((card) => `
+                <div onclick="handleMatchCardClick(this, ${card.id}, '${card.type}')" 
+                     data-card-id="${card.id}" data-card-type="${card.type}"
+                     class="match-card bg-slate-800 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium cursor-pointer transition transform hover:scale-105 active:scale-95 text-sm select-none">
+                     ${card.text}
+                </div>
+            `).join('');
+
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = (Date.now() - matchStartTime) / 1000;
+                document.getElementById('match-timer').textContent = `${elapsed.toFixed(1)}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(element, id, type) {
+            if (element.classList.contains('bg-emerald-900/50') || element.classList.contains('border-indigo-500')) return;
+            if (selectedMatchCards.length === 1 && selectedMatchCards[0].element === element) return;
+
+            element.classList.add('border-indigo-500', 'bg-indigo-950/40');
+            selectedMatchCards.push({ element, id, type });
+
+            if (selectedMatchCards.length === 2) {
+                const [first, second] = selectedMatchCards;
+                
+                if (first.id === second.id && first.type !== second.type) {
+                    setTimeout(() => {
+                        first.element.className = "bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium text-sm opacity-40 cursor-default";
+                        second.element.className = "bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium text-sm opacity-40 cursor-default";
+                    }, 200);
+
+                    matchedPairs++;
+                    if (matchedPairs === Math.min(currentVocabList.length, 6)) {
+                        clearInterval(matchTimerInterval);
+                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                    }
+                } else {
+                    setTimeout(() => {
+                        first.element.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                        second.element.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                        first.element.classList.add('border-red-500/50');
+                        second.element.classList.add('border-red-500/50');
+                        setTimeout(() => {
+                            first.element.classList.remove('border-red-500/50');
+                            second.element.classList.remove('border-red-500/50');
+                        }, 400);
+                    }, 200);
+                }
+                selectedMatchCards = [];
+            }
+        }
+
+        // --- 3. MODE: QUIZ / LEARN LOGIC ---
+        function initQuizMode() {
+            quizIndex = 0;
+            quizScore = 0;
+            quizList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            if (quizIndex >= quizList.length) {
+                document.getElementById('quiz-options').innerHTML = `
+                    <div class="text-center py-6">
+                        <i class="fa-solid fa-trophy text-5xl text-amber-400 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">Hoàn thành bài kiểm tra!</h3>
+                        <p class="text-slate-300">Điểm số của bạn: <span class="text-emerald-400 font-bold text-xl">${quizScore} / ${quizList.length}</span></p>
+                        <button onclick="initQuizMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
+                            Làm lại bài test
+                        </button>
+                    </div>
+                `;
+                document.getElementById('quiz-feedback').textContent = "";
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
+
+            const current = quizList[quizIndex];
+            document.getElementById('quiz-progress').textContent = `Câu hỏi ${quizIndex + 1}/${quizList.length}`;
+            document.getElementById('quiz-score').textContent = `Điểm: ${quizScore}`;
+            document.getElementById('quiz-target-word').textContent = current.word;
+            document.getElementById('quiz-target-type').textContent = `(${current.type})`;
+            document.getElementById('quiz-target-ipa').textContent = current.ipa;
+            document.getElementById('quiz-feedback').textContent = "";
+
+            const distractors = rawVocabulary
+                .filter(v => v.word !== current.word)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(v => v.meaning);
+
+            const options = [...distractors, current.meaning].sort(() => 0.5 - Math.random());
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = options.map(opt => `
+                <button onclick="checkQuizAnswer(this, '${opt.replace(/'/g, "\\'")}', '${current.meaning.replace(/'/g, "\\'")}')" 
+                        class="quiz-opt-btn w-full bg-slate-900/80 hover:bg-slate-700/80 border border-slate-700/80 text-left px-5 py-3.5 rounded-xl text-slate-200 transition font-medium text-sm flex items-center justify-between">
+                    <span>${opt}</span>
+                    <i class="fa-regular fa-circle text-slate-500"></i>
+                </button>
+            `).join('');
+        }
+
+        function checkQuizAnswer(button, selected, correct) {
+            document.querySelectorAll('.quiz-opt-btn').forEach(btn => btn.disabled = true);
+
+            const feedback = document.getElementById('quiz-feedback');
+            if (selected === correct) {
+                button.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-300');
+                feedback.className = "mt-6 text-center text-sm font-semibold text-emerald-400";
+                feedback.textContent = "Chính xác! 🎉";
+                quizScore++;
+                speakText(quizList[quizIndex].word);
+            } else {
+                button.classList.add('bg-red-950', 'border-red-500', 'text-red-300');
+                feedback.className = "mt-6 text-center text-sm font-semibold text-red-400";
+                feedback.textContent = `Chưa đúng! Đáp án là: ${correct}`;
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                renderQuizQuestion();
+            }, 1500);
+        }
+
+        // --- 4. MODE: LISTEN & SPELL LOGIC ---
+        function initSpellMode() {
+            spellIndex = 0;
+            spellList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            renderSpellQuestion();
+        }
+
+        function renderSpellQuestion() {
+            if (spellIndex >= spellList.length) {
+                document.getElementById('mode-spell').innerHTML = `
+                    <div class="text-center py-6 bg-slate-800 rounded-2xl border border-slate-700 p-8 w-full max-w-xl">
+                        <i class="fa-solid fa-circle-check text-5xl text-emerald-400 mb-3"></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">Tuyệt vời!</h3>
+                        <p class="text-slate-300">Bạn đã luyện nghe và viết xong tất cả từ vựng trong danh mục này.</p>
+                        <button onclick="initSpellMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
+                            Luyện tập lại
+                        </button>
+                    </div>
+                `;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
+
+            const current = spellList[spellIndex];
+            document.getElementById('spell-hint').textContent = current.meaning;
+            document.getElementById('spell-input').value = "";
+            document.getElementById('spell-feedback').textContent = "";
+            document.getElementById('spell-input').focus();
+
+            setTimeout(() => speakSpellWord(), 300);
+        }
+
+        function speakSpellWord() {
+            if (spellList[spellIndex]) {
+                speakText(spellList[spellIndex].word);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input').value.trim().toLowerCase();
+            const current = spellList[spellIndex];
+            const targetWord = current.word.toLowerCase();
+
+            const feedback = document.getElementById('spell-feedback');
+
+            if (input === targetWord) {
+                feedback.className = "text-center font-semibold text-sm text-emerald-400";
+                feedback.textContent = "Chính xác! ✨";
+                setTimeout(() => {
+                    spellIndex++;
+                    renderSpellQuestion();
+                }, 1000);
+            } else {
+                feedback.className = "text-center font-semibold text-sm text-red-400";
+                feedback.textContent = `Chưa đúng. Đáp án đúng: "${current.word}"`;
+                speakSpellWord();
+            }
+        }
+    </script>
+</body>
+</html>
