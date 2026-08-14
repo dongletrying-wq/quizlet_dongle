@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet Unit 12: Thank You Very Much!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #4255ff;
+            --primary-hover: #2e3ed4;
+            --bg-main: #f6f7fb;
+            --card-bg: #ffffff;
+            --text-main: #1a1d28;
+            --text-muted: #646f90;
+            --border-color: #e2e8f0;
+            --success: #23b26d;
+            --danger: #ff495c;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        nav.nav-tabs { display: flex; justify-content: center; gap: 10px; padding: 1rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .tab-btn:hover { background: #f1f3f9; color: var(--text-main); }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        main { flex: 1; max-width: 800px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+
+        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); font-weight: 600; margin-bottom: 1rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 380px; }
+
+        /* Flashcard 3D */
+        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 380px; margin-bottom: 1.5rem; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
+        .card-back { transform: rotateY(180deg); background: #fafbff; }
+        .card-category { position: absolute; top: 15px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(66, 85, 255, 0.08); padding: 4px 12px; border-radius: 12px; }
+        .ai-gen-btn { position: absolute; top: 15px; right: 20px; background: #f0f4ff; color: var(--primary); border: 1px solid rgba(66, 85, 255, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .card-word { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.2rem; }
+        .card-type { font-size: 0.9rem; font-weight: 700; color: #8e44ad; background: #f3e8f5; padding: 2px 8px; border-radius: 6px; margin-bottom: 0.4rem; }
+        .card-phonetic { font-size: 1rem; color: var(--text-muted); margin-bottom: 0.8rem; font-family: monospace; }
+        .card-meaning { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
+        .card-example { font-size: 0.95rem; color: var(--text-muted); font-style: italic; max-width: 90%; line-height: 1.4; }
+        .controls-bar { display: flex; justify-content: space-between; align-items: center; }
+        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+        /* Match Game */
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; }
+        .match-card.selected { border-color: var(--primary); background: rgba(66, 85, 255, 0.08); color: var(--primary); }
+        .match-card.correct { border-color: var(--success); background: rgba(35, 178, 109, 0.1); opacity: 0.2; pointer-events: none; }
+
+        /* Quiz & Spell */
+        .quiz-card { background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.5rem; }
+        .option-btn { padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 600; cursor: pointer; text-align: left; }
+        .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
+        .input-box input { flex: 1; padding: 0.8rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; outline: none; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fa-solid fa-utensils"></i> Quizlet - Unit 12: Thank You Very Much!</div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ ghi nhớ</button>
+        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép từ</button>
+        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Kiểm tra</button>
+        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện nghe & Viết</button>
+    </nav>
+
+    <main>
+        <select id="categoryFilter" class="filter-select" onchange="filterCategory(this.value)">
+            <option value="ALL">Tất cả từ vựng Unit 12 (70+ từ)</option>
+            <option value="Food & Drinks">Món ăn & Đồ uống</option>
+            <option value="Eating Out & Restaurant">Nhà hàng & Gọi món</option>
+            <option value="Signs & Directions">Biển báo & Hướng đi</option>
+            <option value="General Vocabulary">Từ vựng chung & Khác</option>
+        </select>
+
+        <!-- 1. Flashcards -->
+        <div id="flashcards-view" class="view-panel active">
+            <div class="flashcard-wrapper">
+                <div class="flashcard" id="mainCard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span class="card-category" id="cardCategory">Category</span>
+                        <button class="ai-gen-btn" onclick="generateAIImage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh</button>
+                        <i class="fa-solid fa-burger" id="cardIcon" style="font-size: 2.8rem; color: var(--primary); margin-bottom: 0.8rem;"></i>
+                        <img id="cardImg" style="display:none; max-width: 140px; max-height: 100px; border-radius: 8px; margin-bottom: 0.8rem; object-fit: contain;">
+                        <div class="card-word" id="cardWord">apple pie</div>
+                        <span class="card-type" id="cardType">n</span>
+                        <div class="card-phonetic" id="cardPhonetic">/ˌæpl ˈpaɪ/</div>
+                        <button class="ctrl-btn" style="width: 36px; height: 36px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
+                    <div class="card-face card-back">
+                        <span class="card-category">Nghĩa & Ví dụ</span>
+                        <div class="card-meaning" id="cardMeaning">bánh táo</div>
+                        <div class="card-example" id="cardExample">"I'd like some apple pie and ice cream."</div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-bar">
+                <button class="ctrl-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="cardProgress" style="font-weight: bold;">1 / 70</span>
+                <button class="ctrl-btn" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
+                Dùng phím <kbd>Space</kbd> để lật | Phím <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+            </div>
+        </div>
+
+        <!-- 2. Match Game -->
+        <div id="match-view" class="view-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="font-weight: bold; color: var(--primary);">Thời gian: <span id="matchTimer">0.0</span>s</div>
+                <button class="btn-submit" style="padding: 6px 16px;" onclick="startMatch()">Chơi lại</button>
+            </div>
+            <div class="match-grid" id="matchGrid"></div>
+        </div>
+
+        <!-- 3. Quiz -->
+        <div id="quiz-view" class="view-panel">
+            <div class="quiz-card" id="quizContainer"></div>
+        </div>
+
+        <!-- 4. Listen & Spell -->
+        <div id="spell-view" class="view-panel">
+            <div class="quiz-card" style="text-align: center;">
+                <button class="ctrl-btn" style="width: 70px; height: 70px; font-size: 1.8rem; margin: 0 auto 1rem;" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
+                <div>Nghe phát âm và gõ lại từ vựng chính xác:</div>
+                <div class="input-box" style="max-width: 400px; margin: 1rem auto;">
+                    <input type="text" id="spellInput" placeholder="Nhập từ tiếng Anh..." onkeyup="if(event.key==='Enter') checkSpell()">
+                    <button class="btn-submit" onclick="checkSpell()">Gửi</button>
+                </div>
+                <div id="spellFeedback" style="margin-top: 1rem; font-weight: bold;"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const rawVocabulary = [
+            // Food & Drinks
+            { word: "apple pie", type: "n", phonetic: "/ˌæpl ˈpaɪ/", meaning: "bánh táo", example: "I'd like some apple pie and ice cream.", category: "Food & Drinks", icon: "fa-pie" },
+            { word: "bacon", type: "n", phonetic: "/ˈbeɪkən/", meaning: "thịt ba rọi muối, thịt xông khói", example: "We like sausages, bacon and eggs!", category: "Food & Drinks", icon: "fa-bacon" },
+            { word: "bread", type: "n", phonetic: "/bred/", meaning: "bánh mì", example: "We don't have any bread.", category: "Food & Drinks", icon: "fa-bread-slice" },
+            { word: "burrito", type: "n", phonetic: "/bʊˈriːtəʊ/", meaning: "bánh burrito Mexico", example: "The university canteen has Mexican burritos.", category: "Food & Drinks", icon: "fa-scroll" },
+            { word: "butter", type: "n", phonetic: "/ˈbʌtə(r)/", meaning: "bơ", example: "Sometimes we eat bread and butter with jam.", category: "Food & Drinks", icon: "fa-cubes" },
+            { word: "cabbage", type: "n", phonetic: "/ˈkæbɪdʒ/", meaning: "bắp cải", example: "Jjigae and kimchi is stew and cabbage with rice.", category: "Food & Drinks", icon: "fa-seedling" },
+            { word: "cocoa", type: "n", phonetic: "/ˈkəʊkəʊ/", meaning: "ca-cao", example: "We drink tea or cocoa.", category: "Food & Drinks", icon: "fa-mug-hot" },
+            { word: "curry", type: "n", phonetic: "/ˈkʌri/", meaning: "món cà ri", example: "The university canteen has Thai curries.", category: "Food & Drinks", icon: "fa-bowl-rice" },
+            { word: "dessert", type: "n", phonetic: "/dɪˈzɜːt/", meaning: "món tráng miệng", example: "What's for dessert, Mum?", category: "Food & Drinks", icon: "fa-ice-cream" },
+            { word: "fish", type: "n", phonetic: "/fɪʃ/", meaning: "cá, món cá", example: "Kimbap is egg, ham or fish and vegetables.", category: "Food & Drinks", icon: "fa-fish" },
+            { word: "garlic bread", type: "n", phonetic: "/ˈɡɑːlɪk bred/", meaning: "bánh mì tỏi", example: "I’d like the salmon salad with some garlic bread.", category: "Food & Drinks", icon: "fa-bread-slice" },
+            { word: "glass of wine", type: "n", phonetic: "/ˌglɑːs əv ˈwaɪn/", meaning: "một ly rượu vang", example: "What would you like? A glass of wine, please.", category: "Food & Drinks", icon: "fa-wine-glass" },
+            { word: "ham", type: "n", phonetic: "/hæm/", meaning: "thịt giăm bông", example: "Kimbap is egg, ham or fish and vegetables.", category: "Food & Drinks", icon: "fa-drumstick-bite" },
+            { word: "herbal tea", type: "n", phonetic: "/ˈhɜːbl tiː/", meaning: "trà thảo mộc", example: "We drink a lot of herbal tea in South Korea.", category: "Food & Drinks", icon: "fa-leaf" },
+            { word: "jam", type: "n", phonetic: "/dʒæm/", meaning: "mứt", example: "Sometimes we eat bread and butter with jam.", category: "Food & Drinks", icon: "fa-jar" },
+            { word: "juice", type: "n", phonetic: "/dʒuːs/", meaning: "nước ép trái cây", example: "Do you have any apple juice?", category: "Food & Drinks", icon: "fa-wine-bottle" },
+            { word: "kebab", type: "n", phonetic: "/kɪˈbæb/", meaning: "thịt nướng xiên", example: "My children love hamburgers and kebabs.", category: "Food & Drinks", icon: "fa-utensils" },
+            { word: "meat", type: "n", phonetic: "/miːt/", meaning: "thịt", example: "My wife doesn’t like red meat.", category: "Food & Drinks", icon: "fa-drumstick-bite" },
+            { word: "olive", type: "n", phonetic: "/ˈɒlɪv/", meaning: "quả ô-liu", example: "I’m afraid I don't have any green olives.", category: "Food & Drinks", icon: "fa-circle" },
+            { word: "pâté", type: "n", phonetic: "/ˈpæteɪ/", meaning: "pa-tê", example: "I’d like the toast and pâté.", category: "Food & Drinks", icon: "fa-cheese" },
+            { word: "pepper", type: "n", phonetic: "/ˈpepə(r)/", meaning: "quả ớt chuông / hạt tiêu", example: "My family has bread, sausage, cheese and peppers.", category: "Food & Drinks", icon: "fa-pepper-hot" },
+            { word: "potato", type: "n", phonetic: "/pəˈteɪtəʊ/", meaning: "khoai tây", example: "Goulash and potatoes are our favourites.", category: "Food & Drinks", icon: "fa-bowl-food" },
+            { word: "slice", type: "n", phonetic: "/ˈslaɪs/", meaning: "lát, miếng mỏng", example: "I'd just like one slice, please.", category: "Food & Drinks", icon: "fa-pizza-slice" },
+            { word: "snack", type: "n", phonetic: "/snæk/", meaning: "đồ ăn nhẹ, món ăn phụ", example: "I have a snack at about 2.00.", category: "Food & Drinks", icon: "fa-cookie" },
+            { word: "soup", type: "n", phonetic: "/suːp/", meaning: "món súp, món canh", example: "I’d like the vegetable soup to start, please.", category: "Food & Drinks", icon: "fa-bowl-rice" },
+            { word: "sparkling water", type: "n", phonetic: "/ˈspɑːklɪŋ wɔːtə(r)/", meaning: "nước khoáng có ga", example: "We’d like a large bottle of sparkling water.", category: "Food & Drinks", icon: "fa-bottle-water" },
+            { word: "stew", type: "n", phonetic: "/stjuː/", meaning: "món hầm", example: "Jjigae and kimchi is stew and cabbage with rice.", category: "Food & Drinks", icon: "fa-fire-burner" },
+            { word: "still water", type: "n", phonetic: "/stɪl ˈwɔːtə(r)/", meaning: "nước lọc (không ga)", example: "Would you like still water or sparkling?", category: "Food & Drinks", icon: "fa-glass-water" },
+
+            // Eating Out & Restaurant
+            { word: "Anything else?", type: "phr", phonetic: "/ˌeniθɪŋ ˈels/", meaning: "Còn gì nữa không?", example: "Anything else? That’s it, thanks.", category: "Eating Out & Restaurant", icon: "fa-circle-question" },
+            { word: "bottle", type: "n", phonetic: "/ˈbɒtl/", meaning: "chai, lọ", example: "We’d like a large bottle of sparkling water, please.", category: "Eating Out & Restaurant", icon: "fa-wine-bottle" },
+            { word: "canteen", type: "n", phonetic: "/kænˈtiːn/", meaning: "nhà ăn, căng-tin", example: "The university canteen has Thai curries.", category: "Eating Out & Restaurant", icon: "fa-shop" },
+            { word: "customer", type: "n", phonetic: "/ˈkʌstəmə(r)/", meaning: "khách hàng", example: "There are a lot of customers in that café.", category: "Eating Out & Restaurant", icon: "fa-users" },
+            { word: "follow", type: "v", phonetic: "/tə ˈfɒləʊ/", meaning: "theo sau, tiếp theo", example: "And to follow? I’d like the salmon salad.", category: "Eating Out & Restaurant", icon: "fa-arrow-right" },
+            { word: "followed by", type: "phr", phonetic: "/ˈfɒləʊd baɪ/", meaning: "theo sau bởi, tiếp theo là", example: "I’d like the toast, followed by hamburger.", category: "Eating Out & Restaurant", icon: "fa-turn-down" },
+            { word: "kilo", type: "n", phonetic: "/ˈkiːləʊ/", meaning: "cân, ki-lô-gam", example: "I’d like a kilo of potatoes, please.", category: "Eating Out & Restaurant", icon: "fa-weight-scale" },
+            { word: "main", type: "n", phonetic: "/meɪn/", meaning: "món ăn chính", example: "The starters cost £4.99 and the mains are £9.99.", category: "Eating Out & Restaurant", icon: "fa-utensils" },
+            { word: "menu", type: "n", phonetic: "/ˈmenjuː/", meaning: "thực đơn", example: "This is the dessert menu.", category: "Eating Out & Restaurant", icon: "fa-book-open" },
+            { word: "on the side", type: "phr", phonetic: "/ˌɒn ðə ˈsaɪd/", meaning: "ăn kèm, để riêng bên cạnh", example: "I’d like the salad with garlic bread on the side.", category: "Eating Out & Restaurant", icon: "fa-plus" },
+            { word: "order", type: "v", phonetic: "/ˈɔːdə(r)/", meaning: "gọi món, đặt hàng", example: "Are you ready to order?", category: "Eating Out & Restaurant", icon: "fa-clipboard-list" },
+            { word: "sir", type: "n", phonetic: "/sɜː/", meaning: "ngài, quý ông", example: "And you, sir? What would you like?", category: "Eating Out & Restaurant", icon: "fa-user-tie" },
+            { word: "starter", type: "n", phonetic: "/ˈstɑːtə/", meaning: "món khai vị", example: "The starters cost £4.99 and the mains are £9.99.", category: "Eating Out & Restaurant", icon: "fa-bowl-food" },
+
+            // Signs & Directions
+            { word: "entrance", type: "n", phonetic: "/ˈentrəns/", meaning: "lối vào, cổng vào", example: "The entrance is over there.", category: "Signs & Directions", icon: "fa-door-open" },
+            { word: "entry", type: "n", phonetic: "/ˈentri/", meaning: "lối vào, sự đi vào", example: "The sign says 'no entry'.", category: "Signs & Directions", icon: "fa-ban" },
+            { word: "exit", type: "n", phonetic: "/ˈeksɪt/", meaning: "lối ra, cửa thoát hiểm", example: "Where's the exit?", category: "Signs & Directions", icon: "fa-person-through-window" },
+            { word: "gents", type: "n pl", phonetic: "/dʒents/", meaning: "nhà vệ sinh nam", example: "Where are the gents, please?", category: "Signs & Directions", icon: "fa-person" },
+            { word: "private", type: "adj", phonetic: "/ˈpraɪvət/", meaning: "tư nhân, riêng tư (cấm vào)", example: "It's private so you can't go in.", category: "Signs & Directions", icon: "fa-lock" },
+            { word: "pull", type: "v", phonetic: "/pʊl/", meaning: "kéo (cửa)", example: "The sign on the door says 'push' not 'pull'!", category: "Signs & Directions", icon: "fa-hand" },
+            { word: "push", type: "v", phonetic: "/pʊʃ/", meaning: "đẩy (cửa)", example: "The sign on the door says 'push' not 'pull'!", category: "Signs & Directions", icon: "fa-hand-back-fist" },
+            { word: "queue", type: "v", phonetic: "/kjuː/", meaning: "xếp hàng", example: "We have to queue here to buy a ticket.", category: "Signs & Directions", icon: "fa-people-line" },
+            { word: "sign", type: "n", phonetic: "/saɪn/", meaning: "biển hiệu, biển báo", example: "The sign says 'no entry'.", category: "Signs & Directions", icon: "fa-diamond-turn-right" },
+            { word: "stand", type: "v", phonetic: "/stænd/", meaning: "đứng", example: "Stand and wait here, please.", category: "Signs & Directions", icon: "fa-person" },
+
+            // General Vocabulary
+            { word: "anyone", type: "pron", phonetic: "/ˈeniwʌn/", meaning: "bất kỳ ai", example: "Just don’t tell anyone it’s my birthday.", category: "General Vocabulary", icon: "fa-user" },
+            { word: "around", type: "prep", phonetic: "/əˈraʊnd/", meaning: "xung quanh, khắp", example: "Meal times around the world are different.", category: "General Vocabulary", icon: "fa-earth-americas" },
+            { word: "bike", type: "n", phonetic: "/baɪk/", meaning: "xe đạp", example: "I like riding my bike to work.", category: "General Vocabulary", icon: "fa-bicycle" },
+            { word: "describe", type: "v", phonetic: "/dɪˈskraɪb/", meaning: "mô tả, miêu tả", example: "We asked them to describe what they eat.", category: "General Vocabulary", icon: "fa-pen" },
+            { word: "diet", type: "n", phonetic: "/ˈdaɪət/", meaning: "chế độ ăn uống, ăn kiêng", example: "Do you have a good diet?", category: "General Vocabulary", icon: "fa-apple-whole" },
+            { word: "forget", type: "v", phonetic: "/fəˈget/", meaning: "quên", example: "I think I'd like to forget my birthday this year.", category: "General Vocabulary", icon: "fa-brain" },
+            { word: "immediately", type: "adv", phonetic: "/ɪˈmiːdiətli/", meaning: "ngay lập tức", example: "I’ll bring your drinks immediately.", category: "General Vocabulary", icon: "fa-bolt" },
+            { word: "just", type: "adv", phonetic: "/dʒʌst/", meaning: "chỉ, vừa mới", example: "Just don’t tell anyone it’s my birthday.", category: "General Vocabulary", icon: "fa-clock" },
+            { word: "maybe", type: "adv", phonetic: "/ˈmeɪbi/", meaning: "có lẽ, có thể", example: "Maybe one day when I have more time!", category: "General Vocabulary", icon: "fa-question" },
+            { word: "movie", type: "n", phonetic: "/ˈmuːvi/", meaning: "bộ phim", example: "I‘d like to see a really good action movie!", category: "General Vocabulary", icon: "fa-film" },
+            { word: "present", type: "n", phonetic: "/ˈpreznt/", meaning: "món quà, quà tặng", example: "You don’t want any presents! Why not?", category: "General Vocabulary", icon: "fa-gift" },
+            { word: "strong", type: "adj", phonetic: "/strɒŋ/", meaning: "mạnh, đậm đặc", example: "I like a strong cup of coffee in the morning.", category: "General Vocabulary", icon: "fa-dumbbell" },
+            { word: "subway", type: "n", phonetic: "/ˈsʌbweɪ/", meaning: "tàu điện ngầm", example: "I take the subway to work.", category: "General Vocabulary", icon: "fa-train-subway" },
+            { word: "till", type: "prep", phonetic: "/tɪl/", meaning: "cho đến khi", example: "We're open 7 till 11 every day.", category: "General Vocabulary", icon: "fa-hourglass" },
+            { word: "too much", type: "phr", phonetic: "/ˌtuː ˈmʌtʃ/", meaning: "quá nhiều", example: "Don’t drink too much coffee.", category: "General Vocabulary", icon: "fa-gauge-high" },
+            { word: "wait", type: "v", phonetic: "/weɪt/", meaning: "chờ, đợi", example: "Stand and wait here, please.", category: "General Vocabulary", icon: "fa-clock" }
+        ];
+
+        let dataset = [...rawVocabulary];
+        let index = 0;
+
+        function loadCard() {
+            document.getElementById('mainCard').classList.remove('flipped');
+            let item = dataset[index];
+            document.getElementById('cardCategory').innerText = item.category;
+            document.getElementById('cardWord').innerText = item.word;
+            document.getElementById('cardType').innerText = item.type || 'word';
+            document.getElementById('cardPhonetic').innerText = item.phonetic;
+            document.getElementById('cardMeaning').innerText = item.meaning;
+            document.getElementById('cardExample').innerText = item.example ? `"${item.example}"` : '';
+            document.getElementById('cardProgress').innerText = `${index + 1} / ${dataset.length}`;
+
+            let imgEl = document.getElementById('cardImg');
+            let iconEl = document.getElementById('cardIcon');
+            
+            if (item.customImg) {
+                imgEl.src = item.customImg;
+                imgEl.style.display = 'block';
+                iconEl.style.display = 'none';
+            } else {
+                imgEl.style.display = 'none';
+                iconEl.style.display = 'block';
+                iconEl.className = `fa-solid ${item.icon || 'fa-utensils'}`;
+            }
+            speakWord();
+        }
+
+        function filterCategory(cat) {
+            dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
+            index = 0;
+            loadCard();
+        }
+
+        function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
+        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
+        function prevCard() { if(index > 0) { index--; loadCard(); } }
+
+        function speakWord(e) {
+            if(e) e.stopPropagation();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(dataset[index].word);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Tích hợp AI Tạo Ảnh trực tiếp từ Pollinations AI
+        function generateAIImage(e) {
+            e.stopPropagation();
+            let btn = e.currentTarget;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang sinh ảnh...';
+            
+            let word = dataset[index].word;
+            let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('simple clean food illustration of ' + word)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
+            
+            let tempImg = new Image();
+            tempImg.src = imageUrl;
+            tempImg.onload = () => {
+                dataset[index].customImg = imageUrl;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo ảnh';
+                loadCard();
+            };
+            tempImg.onerror = () => {
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
+            };
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${tab}-view`).classList.add('active');
+            if(tab === 'match') startMatch();
+            if(tab === 'quiz') startQuiz();
+            if(tab === 'spell') startSpell();
+        }
+
+        // Match Game
+        let selectedMatch = [], timerInt, time = 0;
+        function startMatch() {
+            clearInterval(timerInt);
+            time = 0;
+            document.getElementById('matchTimer').innerText = '0.0';
+            timerInt = setInterval(() => { time += 0.1; document.getElementById('matchTimer').innerText = time.toFixed(1); }, 100);
+
+            let grid = document.getElementById('matchGrid');
+            grid.innerHTML = '';
+            let items = [...dataset].sort(() => 0.5 - Math.random()).slice(0, 6);
+            let cards = [];
+            items.forEach((item, i) => {
+                cards.push({ id: i, text: item.word });
+                cards.push({ id: i, text: item.meaning });
+            });
+            cards.sort(() => 0.5 - Math.random());
+            cards.forEach(c => {
+                let div = document.createElement('div');
+                div.className = 'match-card';
+                div.innerText = c.text;
+                div.onclick = () => {
+                    if (div.classList.contains('correct') || div.classList.contains('selected')) return;
+                    div.classList.add('selected');
+                    selectedMatch.push({ el: div, id: c.id });
+                    if(selectedMatch.length === 2) {
+                        if(selectedMatch[0].id === selectedMatch[1].id) {
+                            selectedMatch[0].el.className = 'match-card correct';
+                            selectedMatch[1].el.className = 'match-card correct';
+                            if(document.querySelectorAll('.match-card:not(.correct)').length === 0) {
+                                clearInterval(timerInt);
+                                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                            }
+                        } else {
+                            let a = selectedMatch[0].el, b = selectedMatch[1].el;
+                            setTimeout(() => { a.classList.remove('selected'); b.classList.remove('selected'); }, 400);
+                        }
+                        selectedMatch = [];
+                    }
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        // Quiz
+        let qIndex = 0;
+        function startQuiz() { qIndex = 0; renderQuiz(); }
+        function renderQuiz() {
+            let container = document.getElementById('quizContainer');
+            if(qIndex >= Math.min(dataset.length, 5)) {
+                container.innerHTML = '<h3>Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin-top:1rem; padding:0.8rem 1.5rem;" onclick="startQuiz()">Làm lại</button>';
+                return;
+            }
+            let q = dataset[qIndex];
+            let opts = [q.meaning];
+            while(opts.length < 4) {
+                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => 0.5 - Math.random());
+            container.innerHTML = `
+                <div>Câu ${qIndex + 1}: Từ "<b>${q.word}</b>" (${q.type || 'word'} ${q.phonetic}) nghĩa là gì?</div>
+                <div class="options-grid">
+                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
+                </div>
+            `;
+        }
+        function ansQuiz(btn, isCorrect) {
+            btn.style.background = isCorrect ? '#23b26d' : '#ff495c';
+            btn.style.color = 'white';
+            setTimeout(() => { qIndex++; renderQuiz(); }, 800);
+        }
+
+        // Spell
+        let sIndex = 0;
+        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
+        function speakSpellWord() {
+            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
+            u.lang = 'en-US';
+            window.speechSynthesis.speak(u);
+        }
+        function checkSpell() {
+            let input = document.getElementById('spellInput').value.trim().toLowerCase();
+            let target = dataset[sIndex].word.toLowerCase();
+            let fb = document.getElementById('spellFeedback');
+            if(input === target) {
+                fb.style.color = '#23b26d';
+                fb.innerText = 'Chính xác!';
+                setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 800);
+            } else {
+                fb.style.color = '#ff495c';
+                fb.innerText = `Chưa đúng! Gợi ý nghĩa: ${dataset[sIndex].meaning}`;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
+            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if(e.code === 'ArrowRight') nextCard();
+            if(e.code === 'ArrowLeft') prevCard();
+        });
+
+        window.onload = loadCard;
+    </script>
+</body>
+</html>
