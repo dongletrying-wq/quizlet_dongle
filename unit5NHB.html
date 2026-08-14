@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizlet Master - Unit 6: Every day</title>
+    <title>Quizlet Master - Unit 5: Things I like!</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -33,9 +33,9 @@
     <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <i class="fa-solid fa-sun text-2xl text-amber-500"></i>
-                <h1 class="font-bold text-xl tracking-wide text-amber-400">Quizlet<span class="text-white">Lite</span></h1>
-                <span class="text-xs bg-amber-950 text-amber-200 px-2.5 py-0.5 rounded border border-amber-700/50">Unit 6: Every day</span>
+                <i class="fa-solid fa-heart text-2xl text-rose-500"></i>
+                <h1 class="font-bold text-xl tracking-wide text-rose-400">Quizlet<span class="text-white">Lite</span></h1>
+                <span class="text-xs bg-rose-950 text-rose-200 px-2.5 py-0.5 rounded border border-rose-700/50">Unit 5: Things I like!</span>
             </div>
 
             <!-- Mode Selector Tabs -->
@@ -215,88 +215,85 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // --- DATASET: Unit 6 – Every day ---
+        // --- DATASET: Unit 5 – Things I like! ---
         const rawVocabulary = [
-            // General Vocabulary Unit 6
-            { word: "always", type: "adv", ipa: "/ˈɔːlweɪz/", meaning: "luôn luôn", example: "She always works late.", category: "General Vocabulary", icon: "fa-solid fa-clock font-bold" },
-            { word: "as usual", type: "phr", ipa: "/əz ˈjuːʒuəl/", meaning: "như thường lệ", example: "I’m fine, thanks. Just busy as usual.", category: "General Vocabulary", icon: "fa-solid fa-rotate-right" },
-            { word: "at the weekend", type: "phr", ipa: "/ət ðə ˌwiːkˈend/", meaning: "vào cuối tuần", example: "I usually see friends at the weekend.", category: "General Vocabulary", icon: "fa-solid fa-calendar-week" },
-            { word: "bed", type: "n", ipa: "/bed/", meaning: "giường, chiếc giường", example: "Does she go to bed early?", category: "General Vocabulary", icon: "fa-solid fa-bed" },
-            { word: "breakfast", type: "n", ipa: "/ˈbrekfəst/", meaning: "bữa sáng, bữa ăn sáng", example: "I have breakfast at 8am.", category: "General Vocabulary", icon: "fa-solid fa-utensils" },
-            { word: "busy", type: "adj", ipa: "/ˈbɪzi/", meaning: "bận rộn", example: "The hospital is always busy.", category: "General Vocabulary", icon: "fa-solid fa-business-time" },
-            { word: "buy", type: "v", ipa: "/baɪ/", meaning: "mua", example: "She sometimes buys a Chinese takeaway and eats it at home.", category: "General Vocabulary", icon: "fa-solid fa-cart-shopping" },
-            { word: "cello", type: "n", ipa: "/ˈtʃeləʊ/", meaning: "đàn cello (trung vĩ cầm)", example: "You play the cello every day!", category: "General Vocabulary", icon: "fa-solid fa-music" },
-            { word: "come", type: "v", ipa: "/kʌm/", meaning: "đến, tới", example: "Well, come and meet us at the pub.", category: "General Vocabulary", icon: "fa-solid fa-person-walking-arrow-right" },
-            { word: "cook", type: "v", ipa: "/kʊk/", meaning: "nấu ăn", example: "I sometimes cook for friends.", category: "General Vocabulary", icon: "fa-solid fa-kitchen-set" },
-            { word: "cycle", type: "v", ipa: "/ˈsaɪkl/", meaning: "đạp xe, đi xe đạp", example: "I cycle to work.", category: "General Vocabulary", icon: "fa-solid fa-person-biking" },
-            { word: "dinner", type: "n", ipa: "/ˈdɪnə(r)/", meaning: "bữa tối, bữa ăn tối", example: "Toby McMann always plays his cello after dinner.", category: "General Vocabulary", icon: "fa-solid fa-utensils" },
-            { word: "dog walker", type: "n", ipa: "/ˈdɒɡ ˌwɔːkə(r)/", meaning: "người dắt chó đi dạo", example: "Toby is a dog walker and a student of music.", category: "General Vocabulary", icon: "fa-solid fa-dog" },
-            { word: "drive", type: "v", ipa: "/draɪv/", meaning: "lái xe", example: "Anna doesn't drive to work.", category: "General Vocabulary", icon: "fa-solid fa-car" },
-            { word: "early", type: "adv", ipa: "/ˈɜːli/", meaning: "sớm", example: "Does she go to bed early?", category: "General Vocabulary", icon: "fa-solid fa-clock" },
-            { word: "eggs", type: "n pl", ipa: "/egz/", meaning: "những quả trứng", example: "He has a big breakfast – tea, sausages, eggs and lots of toast.", category: "General Vocabulary", icon: "fa-solid fa-egg" },
-            { word: "exam", type: "n", ipa: "/ɪɡˈzæm/", meaning: "kỳ thi, bài kiểm tra", example: "Does she work for her exams in the evening?", category: "General Vocabulary", icon: "fa-solid fa-file-pen" },
-            { word: "fill", type: "v", ipa: "/fɪl/", meaning: "lấp đầy, tràn ngập", example: "Toby fills his day with lots of walks, fresh air and fun!", category: "General Vocabulary", icon: "fa-solid fa-fill-drip" },
-            { word: "fizzy drinks", type: "n pl", ipa: "/ˈfɪzi drɪŋks/", meaning: "đồ uống có ga", example: "Do you drink fizzy drinks?", category: "General Vocabulary", icon: "fa-solid fa-bottle-droplet" },
-            { word: "flat", type: "n", ipa: "/flæt/", meaning: "căn hộ", example: "Toby shares a small flat with his sister, Anna.", category: "General Vocabulary", icon: "fa-solid fa-building" },
-            { word: "flatmate", type: "n", ipa: "/ˈflætmeɪt/", meaning: "bạn cùng căn hộ", example: "Anna has a flatmate, Toby, her brother.", category: "General Vocabulary", icon: "fa-solid fa-user-group" },
-            { word: "fruit", type: "n", ipa: "/fruːt/", meaning: "trái cây, hoa quả", example: "Do you eat a lot of fruit?", category: "General Vocabulary", icon: "fa-solid fa-apple-whole" },
-            { word: "get home", type: "phr", ipa: "/ˌget ˈhəʊm/", meaning: "về nhà, về tới nhà", example: "I get home at five o’clock, have tea, and watch TV.", category: "General Vocabulary", icon: "fa-solid fa-house-user" },
-            { word: "get up", type: "phr v", ipa: "/ˌget ˈʌp/", meaning: "thức dậy, ngủ dậy", example: "I always get up at six forty-five on work days.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-sun" },
-            { word: "go out", type: "phr v", ipa: "/ˌgəʊ ˈaʊt/", meaning: "đi ra ngoài, đi chơi", example: "He doesn't go out in the evening.", category: "General Vocabulary", icon: "fa-solid fa-door-open" },
-            { word: "go to bed", type: "phr", ipa: "/ˌgəʊ tə ˈbed/", meaning: "đi ngủ", example: "What time does he go to bed?", category: "General Vocabulary", icon: "fa-solid fa-bed" },
-            { word: "Good idea!", type: "phr", ipa: "/ˌgʊd aɪˈdiə/", meaning: "Ý kiến hay đấy!", example: "That is a good idea.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-lightbulb" },
-            { word: "have a shower", type: "phr", ipa: "/ˌhæv ə ˈʃaʊə(r)/", meaning: "tắm vòi hoa sen", example: "Anna gets up at 6 o’clock and she has a shower.", category: "General Vocabulary", icon: "fa-solid fa-shower" },
-            { word: "hungry", type: "adj", ipa: "/ˈhʌŋɡri/", meaning: "đói, đói bụng", example: "He is always hungry in the evening because he never eats lunch.", category: "General Vocabulary", icon: "fa-solid fa-face-frown" },
-            { word: "in", type: "prep", ipa: "/ɪn/", meaning: "trong, ở trong", example: "Anna doesn't work in a school.", category: "General Vocabulary", icon: "fa-solid fa-box-open" },
-            { word: "in the week", type: "phr", ipa: "/ˌɪn ðə ˈwiːk/", meaning: "trong tuần (ngày thường)", example: "Anna doesn't visit friends in the week.", category: "General Vocabulary", icon: "fa-solid fa-calendar-days" },
-            { word: "late", type: "adv", ipa: "/leɪt/", meaning: "muộn, trễ", example: "Does she work late?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-clock" },
-            { word: "leave", type: "v", ipa: "/liːv/", meaning: "rời đi, rời khỏi", example: "It leaves at 8.00.", category: "General Vocabulary", icon: "fa-solid fa-person-walking-arrow-right" },
-            { word: "lesson", type: "n", ipa: "/ˈlesn/", meaning: "bài học, tiết học", example: "Do you have English lessons at nine o’clock?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-chalkboard-user" },
-            { word: "life", type: "n", ipa: "/laɪf/", meaning: "cuộc sống, đời sống", example: "It's a typical day in my life.", category: "General Vocabulary", icon: "fa-solid fa-heart" },
-            { word: "lifestyle", type: "n", ipa: "/ˈlaɪfstaɪl/", meaning: "phong cách sống, lối sống", example: "It’s a lifestyle questionnaire.", category: "General Vocabulary", icon: "fa-solid fa-person-running" },
-            { word: "lunch", type: "n", ipa: "/lʌntʃ/", meaning: "bữa trưa, bữa ăn trưa", example: "He is always hungry in the evening because he never eats lunch.", category: "General Vocabulary", icon: "fa-solid fa-burger" },
-            { word: "morning", type: "n", ipa: "/ˈmɔːnɪŋ/", meaning: "buổi sáng", example: "He usually goes to bed very late, at one o’clock in the morning.", category: "General Vocabulary", icon: "fa-solid fa-sun" },
-            { word: "never", type: "adv", ipa: "/ˈnevə(r)/", meaning: "không bao giờ", example: "He is always hungry in the evening because he never eats lunch.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-ban" },
-            { word: "next", type: "adj", ipa: "/nekst/", meaning: "tiếp theo, tới", example: "What about next week?", category: "General Vocabulary", icon: "fa-solid fa-forward" },
-            { word: "o’clock", type: "adv", ipa: "/əˈklɒk/", meaning: "giờ (giờ đúng)", example: "Do you have English lessons at nine o’clock?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-clock" },
-            { word: "often", type: "adv", ipa: "/ˈɒfn, ˈɒftən/", meaning: "thường, thường xuyên", example: "We often go for a walk on Sunday.", category: "General Vocabulary", icon: "fa-solid fa-rotate" },
-            { word: "part-time", type: "adj", ipa: "/pɑːt taɪm/", meaning: "bán thời gian", example: "Toby is a part-time student at the London College of Music.", category: "General Vocabulary", icon: "fa-solid fa-business-time" },
-            { word: "pub", type: "n", ipa: "/pʌb/", meaning: "quán rượu, quán bia", example: "Well, come and meet us at the pub.", category: "General Vocabulary", icon: "fa-solid fa-beer-mug-empty" },
-            { word: "questionnaire", type: "n", ipa: "/ˌkwestʃəˈneə(r)/", meaning: "bảng câu hỏi, khảo sát", example: "It’s a lifestyle questionnaire.", category: "General Vocabulary", icon: "fa-solid fa-clipboard-question" },
-            { word: "relax", type: "v", ipa: "/rɪˈlæks/", meaning: "thư giãn, nghỉ ngơi", example: "I sometimes relax and see my friends!", category: "General Vocabulary", icon: "fa-solid fa-couch" },
-            { word: "salad", type: "n", ipa: "/ˈsæləd/", meaning: "sa-lát, rau trộn", example: "She has a wrap and salad for lunch.", category: "General Vocabulary", icon: "fa-solid fa-leaf" },
-            { word: "sausages", type: "n pl", ipa: "/ˈsɒsɪdʒɪz/", meaning: "xúc xích", example: "He has a big breakfast – tea, sausages, eggs and lots of toast.", category: "General Vocabulary", icon: "fa-solid fa-hotdog" },
-            { word: "share", type: "v", ipa: "/ʃeə(r)/", meaning: "chia sẻ, ở chung", example: "Toby shares a small flat with his sister, Anna.", category: "General Vocabulary", icon: "fa-solid fa-share-nodes" },
-            { word: "shop assistant", type: "n", ipa: "/ʃɒp əˈsɪstənt/", meaning: "nhân viên bán hàng", example: "Felipe is a shop assistant at a big supermarket.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-store" },
-            { word: "shower", type: "n", ipa: "/ˈʃaʊə(r)/", meaning: "vòi hoa sen, tắm", example: "She gets up at 6 o’clock and she has a shower.", category: "General Vocabulary", icon: "fa-solid fa-shower" },
-            { word: "soon", type: "adv", ipa: "/suːn/", meaning: "sớm, chẳng bao lâu nữa", example: "I have exams soon.", category: "General Vocabulary", icon: "fa-solid fa-forward-fast" },
-            { word: "stay", type: "v", ipa: "/steɪ/", meaning: "ở lại, lưu trú", example: "I never stay at home on Saturday evenings.", category: "General Vocabulary", icon: "fa-solid fa-house" },
-            { word: "stop", type: "v", ipa: "/stɒp/", meaning: "dừng lại, ngừng", example: "You never stop!", category: "General Vocabulary", icon: "fa-solid fa-circle-stop" },
-            { word: "supermarket", type: "n", ipa: "/ˈsuːpəmɑːkɪt/", meaning: "siêu thị", example: "Felipe is a shop assistant at a big supermarket.", category: "General Vocabulary", icon: "fa-solid fa-cart-shopping" },
-            { word: "takeaway", type: "n", ipa: "/ˈteɪkəweɪ/", meaning: "đồ ăn mang đi", example: "Toby sometimes shares a Chinese takeaway with Anna.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-box" },
-            { word: "time", type: "n", ipa: "/taɪm/", meaning: "thời gian, giờ giấc", example: "What time does she get up?", category: "General Vocabulary", icon: "fa-solid fa-clock" },
-            { word: "tired", type: "adj", ipa: "/ˈtaɪəd/", meaning: "mệt mỏi, mệt", example: "Evening, Anna. You look tired.", category: "General Vocabulary", icon: "fa-solid fa-face-tired" },
-            { word: "toast", type: "n", ipa: "/təʊst/", meaning: "bánh mì nướng", example: "He has a big breakfast – tea, sausages, eggs and lots of toast.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-bread-slice" },
-            { word: "today", type: "adv", ipa: "/təˈdeɪ/", meaning: "hôm nay", example: "What day is it today?", category: "General Vocabulary", icon: "fa-solid fa-calendar-day" },
-            { word: "tomorrow", type: "adv", ipa: "/təˈmɒrəʊ/", meaning: "ngày mai", example: "What day is it tomorrow?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-calendar-plus" },
-            { word: "TV", type: "n", ipa: "/ˌtiː ˈviː/", meaning: "ti vi, truyền hình", example: "Do you watch TV the evening?", category: "General Vocabulary", icon: "fa-solid fa-tv" },
-            { word: "typical", type: "adj", ipa: "/ˈtɪpɪkl/", meaning: "điển hình, tiêu biểu", example: "It's a typical day in my life.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-circle-info" },
-            { word: "usually", type: "adv", ipa: "/ˈjuːʒuəli/", meaning: "thông thường, thường xuyên", example: "He usually works late.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-rotate" },
-            { word: "visit", type: "v", ipa: "/ˈvɪzɪt/", meaning: "ghé thăm, tới thăm", example: "Anna doesn't visit friends in the week.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-house-chimney-user" },
-            { word: "walk", type: "n / v", ipa: "/wɔːk/", meaning: "đi bộ / cuộc đi dạo", example: "Toby fills his day with lots of walks, fresh air and fun!", category: "General Vocabulary", icon: "fa-solid fa-person-walking" },
-            { word: "watch", type: "v", ipa: "/wɒtʃ/", meaning: "xem, theo dõi", example: "Do you watch TV the evening", category: "General Vocabulary", icon: "fa-solid fa-eye" },
-            { word: "week", type: "n", ipa: "/wiːk/", meaning: "tuần, tuần lễ", example: "Anna doesn't visit friends in the week.", category: "General Vocabulary", icon: "fa-solid fa-calendar-week" },
-            { word: "When?", type: "adv", ipa: "/wen/", meaning: "Khi nào?", example: "When does Anna leave home in the morning?", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-circle-question" },
-            { word: "wrap", type: "n", ipa: "/ræp/", meaning: "bánh cuộn nhân", example: "She has a wrap and salad for lunch.", category: "General Vocabulary", icon: "fa-solid fa-burger" },
+            // General Vocabulary Unit 5
+            { word: "Arabic", type: "n", ipa: "/ˈærəbɪk/", meaning: "tiếng Ả Rập", example: "They speak Arabic in Egypt.", category: "General Vocabulary", icon: "fa-solid fa-language" },
+            { word: "ballroom dancer", type: "n", ipa: "/ˈbɔːlrʊm ˌdɑːnsə(r)/", meaning: "vũ công khiêu vũ thể thao", example: "Alek Brosko is a ballroom dancer.", category: "General Vocabulary", icon: "fa-solid fa-person-dancing" },
+            { word: "baseball", type: "n", ipa: "/ˈbeɪsbɔːl/", meaning: "môn bóng chày", example: "Do you like baseball?", category: "General Vocabulary", icon: "fa-solid fa-baseball-bat-ball" },
+            { word: "beer", type: "n", ipa: "/bɪə(r)/", meaning: "bia", example: "I don’t like beer, but all my English friends love it!", category: "General Vocabulary", icon: "fa-solid fa-beer-mug-empty" },
+            { word: "boring", type: "adj", ipa: "/ˈbɔːrɪŋ/", meaning: "tẻ nhạt, nhàm chán", example: "Baseball is boring!", category: "General Vocabulary", icon: "fa-solid fa-face-rolling-eyes" },
+            { word: "bread", type: "n", ipa: "/bred/", meaning: "bánh mì", example: "I like French bread.", category: "General Vocabulary", icon: "fa-solid fa-bread-slice" },
+            { word: "car wash", type: "n", ipa: "/ˈkɑː(r) wɒʃ/", meaning: "tiệm rửa xe, dịch vụ rửa xe", example: "Alek Brosko has his own car wash business.", category: "General Vocabulary", icon: "fa-solid fa-car-wash" },
+            { word: "cheese", type: "n", ipa: "/tʃiːz/", meaning: "phô mai", example: "How much is the cheese sandwich?", category: "General Vocabulary", icon: "fa-solid fa-cheese" },
+            { word: "chicken", type: "n", ipa: "/ˈtʃɪkɪn/", meaning: "con gà, thịt gà", example: "I don’t like chicken, and I really don’t like tomatoes.", category: "General Vocabulary", icon: "fa-solid fa-drumstick-bite" },
+            { word: "chocolate", type: "n", ipa: "/ˈtʃɒklət/", meaning: "sô-cô-la", example: "I like chocolate.", category: "General Vocabulary", icon: "fa-solid fa-box" },
+            { word: "coffee", type: "n", ipa: "/ˈkɒfi/", meaning: "cà phê", example: "Do you drink coffee?", category: "General Vocabulary", icon: "fa-solid fa-mug-hot" },
+            { word: "cold", type: "adj", ipa: "/kəʊld/", meaning: "lạnh", example: "It’s cold today.", category: "General Vocabulary", icon: "fa-solid fa-snowflake" },
+            { word: "come from", type: "phr v", ipa: "/ˈkʌm frɒm/", meaning: "đến từ, xuất thân từ", example: "I come from Warsaw in Poland.", category: "General Vocabulary", icon: "fa-solid fa-plane-arrival" },
+            { word: "cool", type: "adj", ipa: "/kuːl/", meaning: "ngầu, mát mẻ, tuyệt vời", example: "It’s really cool!", category: "General Vocabulary", icon: "fa-solid fa-face-glasses" },
+            { word: "crisps", type: "n pl", ipa: "/krɪsps/", meaning: "khoai tây chiên lát mỏng (snack)", example: "Well, I like ice cream and crisps.", category: "General Vocabulary", icon: "fa-solid fa-box-open" },
+            { word: "delicious", type: "adj", ipa: "/dɪˈlɪʃəs/", meaning: "ngon miệng, thơm ngon", example: "I really love strawberry milkshake. It’s delicious!", category: "General Vocabulary", icon: "fa-solid fa-face-savoring-food" },
+            { word: "dictionary", type: "n", ipa: "/ˈdɪkʃənri/", meaning: "từ điển", example: "It’s an English dictionary.", category: "General Vocabulary", icon: "fa-solid fa-book" },
+            { word: "disgusting", type: "adj", ipa: "/dɪsˈɡʌstɪŋ/", meaning: "kinh tởm, đáng ghét", example: "I hate tomatoes. They’re disgusting.", category: "General Vocabulary", icon: "fa-solid fa-face-vomiting" },
+            { word: "dislikes", type: "n pl", ipa: "/dɪsˈlaɪks/", meaning: "những thứ không thích, sự ghét", example: "What are your likes and dislikes?", category: "General Vocabulary", icon: "fa-solid fa-thumbs-down" },
+            { word: "do", type: "v", ipa: "/duː/", meaning: "làm, thực hiện", example: "We do a good job!", category: "General Vocabulary", icon: "fa-solid fa-circle-check" },
+            { word: "drink", type: "v", ipa: "/drɪŋk/", meaning: "uống", example: "Do you drink English beer?", category: "General Vocabulary", icon: "fa-solid fa-glass-water" },
+            { word: "eat", type: "v", ipa: "/iːt/", meaning: "ăn", example: "I eat a lot of Italian food.", category: "General Vocabulary", icon: "fa-solid fa-utensils" },
+            { word: "exciting", type: "adj", ipa: "/ɪkˈsaɪtɪŋ/", meaning: "thú vị, hào hứng, sôi động", example: "New York is an exciting city.", category: "General Vocabulary", icon: "fa-solid fa-star" },
+            { word: "food", type: "n", ipa: "/fuːd/", meaning: "thức ăn, thực phẩm", example: "I eat a lot of Italian food.", category: "General Vocabulary", icon: "fa-solid fa-bowl-food" },
+            { word: "French", type: "adj", ipa: "/frentʃ/", meaning: "(thuộc) nước Pháp / tiếng Pháp", example: "I like French bread.", category: "General Vocabulary", icon: "fa-solid fa-flag" },
+            { word: "Gaelic", type: "n", ipa: "/ˈɡeɪlɪk/", meaning: "tiếng Xen-tơ (ở Ireland)", example: "They speak English and Gaelic In Ireland.", category: "General Vocabulary", icon: "fa-solid fa-language" },
+            { word: "get", type: "v", ipa: "/get/", meaning: "nhận được, có được", example: "What do I get for £10?", category: "General Vocabulary", icon: "fa-solid fa-hand-holding" },
+            { word: "goal", type: "n", ipa: "/ɡəʊl/", meaning: "bàn thắng", example: "It was a great goal!", category: "General Vocabulary", icon: "fa-solid fa-futbol" },
+            { word: "golf", type: "n", ipa: "/ɡɒlf/", meaning: "môn đánh gôn (golf)", example: "I don’t like golf, but my dad loves it!", category: "General Vocabulary", icon: "fa-solid fa-golf-ball-tee" },
+            { word: "horrible", type: "adj", ipa: "/ˈhɒrəbl/", meaning: "tồi tệ, dễ ghét, xấu tính", example: "I sometimes don’t like Dexter when he’s horrible to me.", category: "General Vocabulary", icon: "fa-solid fa-face-frown" },
+            { word: "How much?", type: "phr", ipa: "/ˌhaʊ ˈmʌtʃ/", meaning: "Bao nhiêu? (hỏi giá cả)", example: "How much is it?", category: "General Vocabulary", icon: "fa-solid fa-tag" },
+            { word: "ice cream", type: "n", ipa: "/ˈaɪskriːm/", meaning: "kem", example: "Dexter and Daisy like ice cream.", category: "General Vocabulary", icon: "fa-solid fa-ice-cream" },
+            { word: "Japanese", type: "n/adj", ipa: "/ˌdʒæpəˈniːz/", meaning: "tiếng Nhật, người Nhật / thuộc Nhật", example: "They speak Japanese in Japan.", category: "General Vocabulary", icon: "fa-solid fa-flag" },
+            { word: "jeans", type: "n pl", ipa: "/dʒiːnz/", meaning: "quần bò, quần jeans", example: "They're American jeans.", category: "General Vocabulary", icon: "fa-solid fa-user" },
+            { word: "know", type: "v", ipa: "/nəʊ/", meaning: "biết, hiểu biết", example: "I don’t know Berlin or Paris.", category: "General Vocabulary", icon: "fa-solid fa-brain" },
+            { word: "languages", type: "n pl", ipa: "/ˈlæŋgwɪdʒɪz/", meaning: "các ngôn ngữ nước ngoài", example: "I don’t know any foreign languages!", category: "General Vocabulary", icon: "fa-solid fa-language" },
+            { word: "likes", type: "n pl", ipa: "/laɪks/", meaning: "những thứ thích, sở thích", example: "What are your likes and dislikes?", category: "General Vocabulary", icon: "fa-solid fa-thumbs-up" },
+            { word: "live", type: "v", ipa: "/lɪv/", meaning: "sống, sinh sống", example: "Now I live and work in Bristol.", category: "General Vocabulary", icon: "fa-solid fa-house" },
+            { word: "milkshake", type: "n", ipa: "/ˈmɪlkʃeɪk/", meaning: "sữa lắc", example: "I really love strawberry milkshake. It’s delicious!", category: "General Vocabulary", icon: "fa-solid fa-glass-water" },
+            { word: "party", type: "n", ipa: "/ˈpɑːti/", meaning: "bữa tiệc", example: "This is a great party … and I don’t usually like parties.", category: "General Vocabulary", icon: "fa-solid fa-cake-candles" },
+            { word: "play", type: "v", ipa: "/pleɪ/", meaning: "chơi (thể thao, nhạc cụ...)", example: "We play baseball on Sunday mornings.", category: "General Vocabulary", icon: "fa-solid fa-gamepad" },
+            { word: "Portuguese", type: "n/adj", ipa: "/ˌpɔːtʃuˈɡiːz/", meaning: "tiếng Bồ Đào Nha, người BĐN", example: "They speak Portuguese in Brazil.", category: "General Vocabulary", icon: "fa-solid fa-flag" },
+            { word: "pound", type: "n", ipa: "/paʊnd/", meaning: "đồng bảng Anh (£)", example: "It's three pounds forty-five.", category: "General Vocabulary", icon: "fa-solid fa-sterling-sign" },
+            { word: "prices", type: "n pl", ipa: "/ˈpraɪsɪz/", meaning: "giá cả", example: "The prices are very high in this shop.", category: "General Vocabulary", icon: "fa-solid fa-tags" },
+            { word: "ready", type: "adj", ipa: "/ˈredi/", meaning: "sẵn sàng", example: "Are you all ready?", category: "General Vocabulary", icon: "fa-solid fa-flag-checkered" },
+            { word: "shoes", type: "n pl", ipa: "/ʃuːz/", meaning: "giày, đôi giày", example: "They're Italian shoes.", category: "General Vocabulary", icon: "fa-solid fa-shoe-prints" },
+            { word: "speak", type: "v", ipa: "/spiːk/", meaning: "nói (một ngôn ngữ)", example: "What language do they speak in Ireland?", category: "General Vocabulary", icon: "fa-solid fa-comments" },
+            { word: "strawberries", type: "n pl", ipa: "/ˈstrɔːbəriz/", meaning: "quả dâu tây", example: "I like tea, strawberries and swimming.", category: "General Vocabulary", icon: "fa-solid fa-apple-whole" },
+            { word: "swimming", type: "n", ipa: "/ˈswɪmɪŋ/", meaning: "môn bơi lội, việc bơi lội", example: "I like tea, strawberries and swimming.", category: "General Vocabulary", icon: "fa-solid fa-person-swimming" },
+            { word: "Switzerland", type: "n", ipa: "/ˈswɪtsələnd/", meaning: "nước Thụy Sĩ", example: "My watch is from Switzerland.", category: "General Vocabulary", icon: "fa-solid fa-mountain" },
+            { word: "tea", type: "n", ipa: "/tiː/", meaning: "trà, nước chè", example: "I like tea, strawberries and swimming.", category: "General Vocabulary", icon: "fa-solid fa-mug-hot" },
+            { word: "tomatoes", type: "n pl", ipa: "/təˈmɑːtəʊz/", meaning: "quả cà chua", example: "I don’t like chicken, and I really don’t like tomatoes.", category: "General Vocabulary", icon: "fa-solid fa-circle" },
+            { word: "wine", type: "n", ipa: "/waɪn/", meaning: "rượu vang", example: "I like French wine.", category: "General Vocabulary", icon: "fa-solid fa-wine-glass" },
+            { word: "work", type: "v", ipa: "/wɜːk/", meaning: "làm việc", example: "I work in an office.", category: "General Vocabulary", icon: "fa-solid fa-briefcase" },
 
-            // Days of the week
-            { word: "Monday", type: "n", ipa: "/ˈmʌndeɪ/", meaning: "Thứ Hai", example: "It's Monday today.", category: "Days of the week", icon: "fa-solid fa-calendar-day" },
-            { word: "Tuesday", type: "n", ipa: "/ˈtjuːzdeɪ/", meaning: "Thứ Ba", example: "Is Tuesday OK for you?", category: "Days of the week", icon: "fa-solid fa-calendar-day" },
-            { word: "Wednesday", type: "n", ipa: "/ˈwenzdeɪ/", meaning: "Thứ Tư", example: "Tomorrow is Wednesday.", category: "Days of the week", icon: "fa-solid fa-calendar-day" },
-            { word: "Thursday", type: "n", ipa: "/ˈθɜːzdeɪ/", meaning: "Thứ Năm", example: "I have English lessons every Thursday.", category: "Days of the week", icon: "fa-solid fa-calendar-day" },
-            { word: "Friday", type: "n", ipa: "/ˈfraɪdeɪ/", meaning: "Thứ Sáu", example: "My favourite day is Friday.", category: "Days of the week", icon: "fa-solid fa-calendar-day" },
-            { word: "Saturday", type: "n", ipa: "/ˈsætədeɪ/", meaning: "Thứ Bảy", example: "I usually visit my parents on Saturday.", category: "Days of the week", icon: "fa-solid fa-[#4255ff] fa-calendar-check" },
-            { word: "Sunday", type: "n", ipa: "/ˈsʌndeɪ/", meaning: "Chủ Nhật", example: "I get up early on Sunday.", category: "Days of the week", icon: "fa-solid fa-[#4255ff] fa-calendar-check" }
+            // Nationalities
+            { word: "American", type: "adj", ipa: "/əˈmerɪkən/", meaning: "thuộc nước Mỹ / người Mỹ", example: "American cars", category: "Nationalities", icon: "fa-solid fa-flag-usa" },
+            { word: "Brazilian", type: "adj", ipa: "/brəˈzɪliən/", meaning: "thuộc nước Brazil / người Brazil", example: "Brazilian coffee", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Chinese", type: "adj", ipa: "/tʃaɪˈniːz/", meaning: "thuộc Trung Quốc / người/tiếng TQ", example: "Chinese restaurant", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "German", type: "adj", ipa: "/ˈdʒɜːmən/", meaning: "thuộc nước Đức / người/tiếng Đức", example: "German bread", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Irish", type: "adj", ipa: "/ˈaɪrɪʃ/", meaning: "thuộc nước Ireland / người Ireland", example: "Irish music", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Italian", type: "adj", ipa: "/ɪˈtæliən/", meaning: "thuộc nước Ý / người/tiếng Ý", example: "Italian shoes", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Mexican", type: "adj", ipa: "/ˈmeksɪkən/", meaning: "thuộc nước Mexico / người Mexico", example: "Mexican food", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Polish", type: "adj", ipa: "/ˈpəʊlɪʃ/", meaning: "thuộc nước Ba Lan / người Ba Lan", example: "Polish beer", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Scottish", type: "adj", ipa: "/ˈskɒtɪʃ/", meaning: "thuộc nước Scotland / người Scotland", example: "Scottish weather", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Spanish", type: "adj", ipa: "/ˈspænɪʃ/", meaning: "thuộc Tây Ban Nha / người/tiếng TBN", example: "Spanish wine", category: "Nationalities", icon: "fa-solid fa-flag" },
+            { word: "Swiss", type: "adj", ipa: "/swɪs/", meaning: "thuộc nước Thụy Sĩ / người Thụy Sĩ", example: "Swiss watches", category: "Nationalities", icon: "fa-solid fa-flag" },
+
+            // Numbers 40-100
+            { word: "forty", type: "num", ipa: "/ˈfɔːti/", meaning: "bốn mươi (40)", example: "forty pounds (40 bảng Anh)", category: "Numbers 40–100", icon: "fa-solid fa-4" },
+            { word: "fifty", type: "num", ipa: "/ˈfɪfti/", meaning: "năm mươi (50)", example: "three dollars fifty (3 đô la 50 xu)", category: "Numbers 40–100", icon: "fa-solid fa-5" },
+            { word: "sixty", type: "num", ipa: "/ˈsɪksti/", meaning: "sáu mươi (60)", example: "two euros and sixty cents (2 euro 60 xu)", category: "Numbers 40–100", icon: "fa-solid fa-6" },
+            { word: "seventy", type: "num", ipa: "/ˈsevnti/", meaning: "bảy mươi (70)", example: "seventy pence (70 xu Anh)", category: "Numbers 40–100", icon: "fa-solid fa-7" },
+            { word: "eighty", type: "num", ipa: "/ˈeɪti/", meaning: "tám mươi (80)", example: "sixteen pounds eighty (16 bảng 80 xu)", category: "Numbers 40–100", icon: "fa-solid fa-8" },
+            { word: "ninety", type: "num", ipa: "/ˈnaɪnti/", meaning: "chín mươi (90)", example: "ninety-nine cents (99 xu)", category: "Numbers 40–100", icon: "fa-solid fa-9" },
+            { word: "one hundred", type: "num", ipa: "/wʌn ˈhʌndrəd/", meaning: "một trăm (100)", example: "one hundred years (một trăm năm)", category: "Numbers 40–100", icon: "fa-solid fa-1" }
         ];
 
         // --- GLOBAL APP STATE ---
@@ -457,7 +454,7 @@
             container.classList.remove('hidden');
             loading.classList.remove('hidden');
 
-            const prompt = encodeURIComponent(`digital illustration of ${item.word}, daily routine, minimalist, clean educational style`);
+            const prompt = encodeURIComponent(`digital illustration of ${item.word}, minimalist, clean educational style`);
             const url = `https://pollinations.ai/p/${prompt}?width=200&height=200&seed=${Math.floor(Math.random()*1000)}`;
 
             img.onload = () => {
