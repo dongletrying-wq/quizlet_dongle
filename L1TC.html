@@ -982,30 +982,43 @@
             initSpell();
         }
 
-        // TEXT-TO-SPEECH (Chuẩn hóa cho iOS Safari & Webview)
-        let activeUtterance = null; // Khai báo biến toàn cục để tránh bị iOS Garbage Collector xoá mất
+        // TEXT-TO-SPEECH (Ưu tiên giọng Nâng cao / Enhanced trên iOS)
+        let activeUtterance = null;
 
         function speakHanzi(text) {
-            if (!('speechSynthesis' in window)) return;
+            if (!('speechSynthesis' in window) || !text) return;
 
-            // 1. Huỷ lệnh đọc bị kẹt trước đó (cực kỳ quan trọng trên Safari iOS)
+            // 1. Huỷ lệnh đọc trước đó
             window.speechSynthesis.cancel();
 
-            // 2. Tạo đối tượng đọc và gán vào biến toàn cục
+            // 2. Tạo đối tượng phát âm
             activeUtterance = new SpeechSynthesisUtterance(text);
-            
-            // 3. Thiết lập ngôn ngữ
             activeUtterance.lang = 'zh-TW';
-            activeUtterance.rate = 0.85;
+            activeUtterance.rate = 0.85; // Tốc độ vừa phải, dễ nghe
 
-            // 4. Tìm giọng đọc tiếng Trung sẵn có trên thiết bị iOS (nếu có)
+            // 3. Lấy toàn bộ danh sách giọng trong máy
             const voices = window.speechSynthesis.getVoices();
-            const twVoice = voices.find(v => v.lang === 'zh-TW' || v.lang.startsWith('zh'));
-            if (twVoice) {
-                activeUtterance.voice = twVoice;
+            
+            // Lọc tất cả các giọng tiếng Trung (zh-TW hoặc zh-CN)
+            const chineseVoices = voices.filter(v => v.lang === 'zh-TW' || v.lang.startsWith('zh'));
+
+            if (chineseVoices.length > 0) {
+                // Ưu tiên 1: Tìm giọng có chứa chữ "Enhanced" hoặc "Premium"
+                let bestVoice = chineseVoices.find(v => 
+                    v.name.includes('Enhanced') || 
+                    v.name.includes('Premium') || 
+                    v.name.includes('nâng cao')
+                );
+
+                // Ưu tiên 2: Nếu không thấy chữ Enhanced, ưu tiên giọng zh-TW (Đài Loan)
+                if (!bestVoice) {
+                    bestVoice = chineseVoices.find(v => v.lang === 'zh-TW') || chineseVoices[0];
+                }
+
+                activeUtterance.voice = bestVoice;
             }
 
-            // 5. Kích hoạt phát âm
+            // 4. Phát âm
             window.speechSynthesis.speak(activeUtterance);
         }
 
@@ -1220,7 +1233,6 @@
             document.getElementById('spellClue').innerText = `Gợi ý: ${currentSpellItem.vi} (${currentSpellItem.eng})`;
             document.getElementById('spellInput').value = '';
             document.getElementById('spellResult').innerText = '';
-            // playSpellCurrentAudio(); // Tắt dòng này lúc khởi tạo vì iOS sẽ chặn âm thanh tự phát
         }
 
         function playSpellCurrentAudio() {
