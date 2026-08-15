@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizlet Master - Solutions Elementary Unit 2: School days</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Quizlet Master - Solutions Elementary Unit 2: School Days</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
             --primary: #4255ff;
             --primary-hover: #2e3ed4;
+            --primary-light: #eef2ff;
             --bg-color: #f6f7fb;
             --card-bg: #ffffff;
             --text-dark: #1a1d28;
@@ -16,14 +24,17 @@
             --border-color: #e3e8ee;
             --accent-green: #23b26d;
             --accent-red: #ff4949;
-            --shadow: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 16px 32px rgba(66, 85, 255, 0.1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Lexend', sans-serif;
+            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -37,54 +48,66 @@
         header {
             background: #ffffff;
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 0.85rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .logo-badge {
             background: var(--primary);
             color: white;
-            font-weight: 700;
+            font-weight: 800;
             padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.15rem;
         }
 
         .app-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
         }
 
         nav {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             background: #eef2f6;
             padding: 4px;
             border-radius: 12px;
+            overflow-x: auto;
         }
 
         .nav-btn {
-            padding: 10px 16px;
+            padding: 8px 14px;
             border: none;
             background: transparent;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
             border-radius: 8px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
             transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
         }
 
         .nav-btn.active {
@@ -103,7 +126,7 @@
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
 
         .tab-content.active {
@@ -111,7 +134,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -121,36 +144,41 @@
             align-items: center;
             justify-content: space-between;
             background: white;
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 12px 18px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .filter-label {
             font-weight: 600;
             color: var(--text-dark);
-            font-size: 0.95rem;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .filter-select {
             padding: 8px 14px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             background-color: #f8fafc;
             color: var(--text-dark);
             outline: none;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* Flashcards Mode */
+        /* 1. Flashcards Mode */
         .flashcard-container {
             perspective: 1000px;
             width: 100%;
-            height: 400px;
+            height: 420px;
             margin: 1rem 0;
         }
 
@@ -159,10 +187,10 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             border-radius: 20px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-md);
         }
 
         .flashcard.flipped {
@@ -179,48 +207,60 @@
             border: 2px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 2rem;
+            padding: 1.8rem;
             text-align: center;
         }
 
         .card-back {
             transform: rotateY(180deg);
-            background: #f8fafc;
+            background: #fafcff;
+        }
+
+        .card-header-tag {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .card-category {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             color: var(--primary);
-            background: #eef2ff;
+            background: var(--primary-light);
             padding: 4px 12px;
             border-radius: 20px;
         }
 
         .audio-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             background: #f1f5f9;
+            color: var(--text-dark);
             border: none;
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .audio-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.08);
         }
 
         .card-img-box {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 0.8rem;
+            margin: 0.5rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -234,59 +274,87 @@
         }
 
         .card-icon {
-            font-size: 3.5rem;
+            font-size: 4rem;
         }
 
         .card-text {
-            font-size: 1.7rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--text-dark);
+            letter-spacing: -0.01em;
         }
 
         .card-ipa {
             font-size: 1.05rem;
             color: var(--text-muted);
-            font-weight: 400;
+            font-weight: 500;
             margin-top: 4px;
-            margin-bottom: 0.5rem;
         }
 
         .ai-gen-btn {
-            margin-top: 6px;
-            padding: 6px 12px;
-            font-size: 0.8rem;
-            background: #f0fdf4;
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
+            margin-top: 4px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            color: white;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s;
+        }
+
+        .ai-gen-btn:hover {
+            opacity: 0.9;
         }
 
         .controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 1rem;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.92rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .btn-primary { background: var(--primary); color: white; }
-        .btn-outline { background: white; border: 2px solid var(--border-color); color: var(--text-dark); }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background: white; border: 1.5px solid var(--border-color); color: var(--text-dark); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Match Game Mode */
+        .shortcut-hint {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* 2. Match Game Mode */
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
         .match-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-            margin-top: 1.5rem;
         }
 
         .match-card {
@@ -294,7 +362,7 @@
             border: 2px solid var(--border-color);
             border-radius: 12px;
             padding: 1.2rem 0.8rem;
-            min-height: 90px;
+            min-height: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -302,22 +370,44 @@
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            user-select: none;
+            transition: all 0.2s ease;
         }
 
-        .match-card.selected { border-color: var(--primary); background: #eef2ff; }
-        .match-card.correct { border-color: var(--accent-green); background: #e6f4ea; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
-        .match-card.wrong { border-color: var(--accent-red); background: #fce8e6; }
+        .match-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
 
-        /* Quiz & Spell Mode */
+        .match-card.selected { 
+            border-color: var(--primary); 
+            background: var(--primary-light); 
+            color: var(--primary);
+        }
+
+        .match-card.matched { 
+            visibility: hidden; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: all 0.3s ease; 
+        }
+
+        /* 3. Quiz & Spell Mode */
         .quiz-card, .spell-card {
             background: white;
             border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
+            padding: 2.2rem;
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
         }
 
-        .quiz-options { display: grid; gap: 12px; margin: 1.5rem 0; }
+        .quiz-options { 
+            display: grid; 
+            gap: 12px; 
+            margin: 1.5rem 0; 
+        }
+
         .quiz-option {
             padding: 14px 20px;
             border: 2px solid var(--border-color);
@@ -326,34 +416,77 @@
             font-size: 1rem;
             text-align: left;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
         }
 
-        .quiz-option.correct { background: #e6f4ea; border-color: var(--accent-green); color: #137333; }
-        .quiz-option.wrong { background: #fce8e6; border-color: var(--accent-red); color: #c5221f; }
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #fafbff;
+        }
+
+        .quiz-option.correct { 
+            background: #e6f4ea !important; 
+            border-color: var(--accent-green) !important; 
+            color: #137333 !important; 
+        }
+
+        .quiz-option.wrong { 
+            background: #fce8e6 !important; 
+            border-color: var(--accent-red) !important; 
+            color: #c5221f !important; 
+        }
+
+        .spell-speaker {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), #06b6d4);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin: 0.5rem auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s;
+        }
+
+        .spell-speaker:hover {
+            transform: scale(1.08);
+        }
+
+        .spell-input-box {
+            display: flex;
+            max-width: 440px;
+            margin: 1.5rem auto 1rem;
+            gap: 8px;
+        }
 
         .spell-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 20px;
-            font-size: 1.2rem;
+            flex: 1;
+            padding: 12px 18px;
+            font-size: 1.1rem;
             border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
-            margin: 1rem 0;
+            font-weight: 600;
             outline: none;
         }
 
-        .shortcut-hint {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        .spell-input:focus {
+            border-color: var(--primary);
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .match-grid { grid-template-columns: repeat(2, 1fr); }
-            .app-title { display: none; }
+            .flashcard-container { height: 460px; }
+            .card-text { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -362,13 +495,21 @@
     <header>
         <div class="logo-area">
             <div class="logo-badge">Q</div>
-            <div class="app-title">Solutions Elementary - Unit 2: School days</div>
+            <div class="app-title">Solutions Elementary - Unit 2: School Days</div>
         </div>
         <nav>
-            <button class="nav-btn active" onclick="switchTab('cards')">🃏 Flashcards</button>
-            <button class="nav-btn" onclick="switchTab('match')">🧩 Ghép từ</button>
-            <button class="nav-btn" onclick="switchTab('quiz')">📝 Kiểm tra</button>
-            <button class="nav-btn" onclick="switchTab('spell')">🎧 Nghe & Viết</button>
+            <button class="nav-btn active" onclick="switchTab('cards')">
+                <i class="fa-solid fa-clone"></i> Flashcards
+            </button>
+            <button class="nav-btn" onclick="switchTab('match')">
+                <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
+            </button>
+            <button class="nav-btn" onclick="switchTab('quiz')">
+                <i class="fa-solid fa-circle-question"></i> Kiểm tra
+            </button>
+            <button class="nav-btn" onclick="switchTab('spell')">
+                <i class="fa-solid fa-headphones"></i> Nghe & Viết
+            </button>
         </nav>
     </header>
 
@@ -376,54 +517,80 @@
         <!-- TAB 1: FLASHCARDS -->
         <div id="tab-cards" class="tab-content active">
             <div class="filter-container">
-                <span class="filter-label">📂 Chọn danh mục bài học:</span>
+                <span class="filter-label"><i class="fa-solid fa-filter"></i> Chọn chủ đề bài học:</span>
                 <select class="filter-select" id="category-filter" onchange="filterCategory()">
-                    <option value="ALL">-- Tất cả từ vựng --</option>
+                    <option value="ALL">🌟 Tất cả từ vựng (53 từ)</option>
                     <option value="1. Daily routine">1. Daily routine (Thói quen hàng ngày)</option>
                     <option value="2. School subjects">2. School subjects (Các môn học)</option>
                     <option value="3. Days of the week">3. Days of the week (Thứ trong tuần)</option>
                     <option value="4. Landscape">4. Landscape (Phong cảnh thiên nhiên)</option>
                     <option value="5. Feelings">5. Feelings (Cảm xúc & Trạng thái)</option>
                     <option value="6. School events">6. School events (Sự kiện & Hoạt động trường)</option>
-                    <option value="7. Adjectives for places">7. Adjectives (Tính từ miêu tả địa điểm/đồ vật)</option>
+                    <option value="7. Adjectives for places">7. Adjectives (Tính từ miêu tả)</option>
                     <option value="8. Adverbs of frequency">8. Adverbs of frequency (Trạng từ chỉ tần suất)</option>
                 </select>
             </div>
 
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <!-- Mặt trước -->
                     <div class="card-face card-front">
-                        <span class="card-category" id="card-cat">Category</span>
-                        <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentTerm()">🔊</button>
-                        <div class="card-img-box" id="card-img-container">
-                            <span class="card-icon" id="card-icon">🏫</span>
+                        <div class="card-header-tag">
+                            <span class="card-category" id="card-cat">Daily routine</span>
+                            <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentTerm()">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
                         </div>
-                        <div class="card-text" id="card-term">Term</div>
-                        <div class="card-ipa" id="card-ipa">/ipa/</div>
-                        <button class="ai-gen-btn" onclick="event.stopPropagation(); generateAIImage()">✨ AI Tạo Ảnh Minh Họa</button>
+                        
+                        <div class="card-img-box" id="card-img-container">
+                            <span class="card-icon" id="card-icon">⏰</span>
+                        </div>
+
+                        <div>
+                            <div class="card-text" id="card-term">wake up</div>
+                            <div class="card-ipa" id="card-ipa">/weɪk ʌp/</div>
+                        </div>
+
+                        <button class="ai-gen-btn" onclick="event.stopPropagation(); generateAIImage()">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Tạo Ảnh Minh Họa
+                        </button>
                     </div>
+
+                    <!-- Mặt sau -->
                     <div class="card-face card-back">
-                        <span class="card-category">Nghĩa tiếng Việt</span>
-                        <div class="card-text" id="card-def" style="color: var(--primary);">Definition</div>
+                        <div class="card-header-tag">
+                            <span class="card-category">Nghĩa tiếng Việt</span>
+                            <button class="audio-btn" onclick="event.stopPropagation(); speakCurrentTerm()">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+
+                        <div style="margin: auto 0;">
+                            <div class="card-text" id="card-def" style="color: var(--primary);">Thức dậy</div>
+                            <div id="card-sub-term" style="margin-top: 0.5rem; color: var(--text-muted); font-weight: 500;">wake up</div>
+                        </div>
+
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">(Nhấn hoặc bấm Space để lật lại)</span>
                     </div>
                 </div>
             </div>
 
             <div class="controls">
-                <button class="btn btn-outline" onclick="prevCard()">← Thẻ trước</button>
-                <div style="font-weight: 600; color: var(--text-muted);" id="card-counter">1 / 50</div>
-                <button class="btn btn-outline" onclick="nextCard()">Thẻ sau →</button>
+                <button class="btn btn-outline" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i> Thẻ trước</button>
+                <div style="font-weight: 700; color: var(--text-muted);" id="card-counter">1 / 53</div>
+                <button class="btn btn-outline" onclick="nextCard()">Thẻ sau <i class="fa-solid fa-arrow-right"></i></button>
             </div>
+
             <div class="shortcut-hint">
-                💡 Phím tắt: <kbd>Space</kbd> để lật thẻ | <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+                💡 Phím tắt: <strong>Space</strong> để lật thẻ | <strong>← / →</strong> để chuyển thẻ
             </div>
         </div>
 
         <!-- TAB 2: MATCH GAME -->
         <div id="tab-match" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="match-timer">⏱️ 0.0s</div>
-                <button class="btn btn-outline" onclick="initMatchGame()">🔄 Ván mới</button>
+            <div class="match-header">
+                <div style="font-size: 1.25rem; font-weight: 800; color: var(--primary);" id="match-timer">⏱️ 0.0s</div>
+                <button class="btn btn-outline" onclick="initMatchGame()"><i class="fa-solid fa-rotate-right"></i> Ván mới</button>
             </div>
             <div class="match-grid" id="match-grid"></div>
         </div>
@@ -436,16 +603,21 @@
         <!-- TAB 4: LISTEN & SPELL -->
         <div id="tab-spell" class="tab-content">
             <div class="spell-card" style="text-align: center;" id="spell-box">
-                <button class="audio-btn" style="position: static; width: 70px; height: 70px; margin: 0 auto 1rem; font-size: 2rem;" onclick="speakCurrentSpellWord()">🔊</button>
-                <p style="color: var(--text-muted);" id="spell-hint">Nghe phát âm và gõ lại từ chính xác</p>
-                <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tại đây..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpellAnswer()">
-                <div><button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button></div>
-                <div style="margin-top: 1rem; font-weight: 600;" id="spell-feedback"></div>
+                <button class="spell-speaker" onclick="speakCurrentSpellWord()">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <p style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark);" id="spell-hint">Gợi ý nghĩa: Thức dậy</p>
+                <div class="spell-input-box">
+                    <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tiếng Anh..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpellAnswer()">
+                    <button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button>
+                </div>
+                <div style="margin-top: 1rem; font-weight: 700; font-size: 1.05rem;" id="spell-feedback"></div>
             </div>
         </div>
     </main>
 
     <script>
+        // FULL VOCABULARY DATA (Solutions Elementary Unit 2)
         const vocabData = [
             // 1. Daily routine
             {term: "wake up", ipa: "/weɪk ʌp/", definition: "Thức dậy", category: "1. Daily routine", icon: "⏰"},
@@ -467,28 +639,28 @@
             {term: "geography", ipa: "/dʒiˈɒɡ.rə.fi/", definition: "Địa lý", category: "2. School subjects", icon: "🌍"},
             {term: "German", ipa: "/ˈdʒɜː.mən/", definition: "Tiếng Đức", category: "2. School subjects", icon: "🇩🇪"},
             {term: "history", ipa: "/ˈhɪs.tər.i/", definition: "Lịch sử", category: "2. School subjects", icon: "📜"},
-            {term: "I.C.T.", ipa: "/ˌaɪ.siːˈtiː/", definition: "Công nghệ thông tin và truyền thông", category: "2. School subjects", icon: "💻"},
+            {term: "I.C.T.", ipa: "/ˌaɪ.siːˈtiː/", definition: "Công nghệ thông tin (ICT)", category: "2. School subjects", icon: "💻"},
             {term: "maths", ipa: "/mæθs/", definition: "Toán học", category: "2. School subjects", icon: "➕"},
             {term: "music", ipa: "/ˈmjuː.zɪk/", definition: "Âm nhạc", category: "2. School subjects", icon: "🎵"},
             {term: "P.E.", ipa: "/ˌpiːˈiː/", definition: "Thể dục (Physical Education)", category: "2. School subjects", icon: "⚽"},
             {term: "physics", ipa: "/ˈfɪz.ɪks/", definition: "Vật lý", category: "2. School subjects", icon: "⚛️"},
-            {term: "R.E.", ipa: "/ˌɑːˈiː/", definition: "Giáo dục tôn giáo (Religious Education)", category: "2. School subjects", icon: "⛪"},
+            {term: "R.E.", ipa: "/ˌɑːˈiː/", definition: "Giáo dục tôn giáo (R.E.)", category: "2. School subjects", icon: "⛪"},
 
             // 3. Days of the week
             {term: "Monday", ipa: "/ˈmʌn.deɪ/", definition: "Thứ Hai", category: "3. Days of the week", icon: "📅"},
             {term: "Tuesday", ipa: "/ˈtjuːz.deɪ/", definition: "Thứ Ba", category: "3. Days of the week", icon: "📅"},
-            {term: "Wednesday", ipa: "/ˈwed.nəz-di/", definition: "Thứ Tư", category: "3. Days of the week", icon: "📅"},
+            {term: "Wednesday", ipa: "/ˈwed.nəz-deɪ/", definition: "Thứ Tư", category: "3. Days of the week", icon: "📅"},
             {term: "Thursday", ipa: "/ˈθɜːz.deɪ/", definition: "Thứ Năm", category: "3. Days of the week", icon: "📅"},
             {term: "Friday", ipa: "/ˈfraɪ.deɪ/", definition: "Thứ Sáu", category: "3. Days of the week", icon: "📅"},
             {term: "Saturday", ipa: "/ˈsæt.ə.deɪ/", definition: "Thứ Bảy", category: "3. Days of the week", icon: "🎉"},
-            {term: "Sunday", ipa: "/ˈsandi/", definition: "Chủ Nhật", category: "3. Days of the week", icon: "☀️"},
+            {term: "Sunday", ipa: "/ˈsʌn.deɪ/", definition: "Chủ Nhật", category: "3. Days of the week", icon: "☀️"},
 
             // 4. Landscape
             {term: "boat", ipa: "/bəʊt/", definition: "Con thuyền", category: "4. Landscape", icon: "⛵"},
             {term: "bridge", ipa: "/brɪdʒ/", definition: "Cây cầu", category: "4. Landscape", icon: "🌉"},
             {term: "jungle", ipa: "/ˈdʒʌŋ.ɡəl/", definition: "Rừng rậm nhiệt đới", category: "4. Landscape", icon: "🌴"},
             {term: "mountain", ipa: "/ˈmaʊn.tɪn/", definition: "Ngọn núi", category: "4. Landscape", icon: "⛰️"},
-            {term: "path", ipa: "/pɑːθ/", definition: "Lối đi, con đường mòn", category: "4. Landscape", icon: "🚶"},
+            {term: "path", ipa: "/pɑːθ/", definition: "Lối đi, đường mòn", category: "4. Landscape", icon: "🚶"},
             {term: "river", ipa: "/ˈrɪv.ər/", definition: "Dòng sông", category: "4. Landscape", icon: "🌊"},
             {term: "rope", ipa: "/rəʊp/", definition: "Dây thừng", category: "4. Landscape", icon: "🪢"},
             {term: "valley", ipa: "/ˈvæl.i/", definition: "Thung lũng", category: "4. Landscape", icon: "🏞️"},
@@ -506,7 +678,7 @@
             {term: "musical play", ipa: "/ˈmjuː.zɪ.kəl pleɪ/", definition: "Vở nhạc kịch", category: "6. School events", icon: "🎭"},
             {term: "school camp", ipa: "/skuːl kæmp/", definition: "Cắm trại trường học", category: "6. School events", icon: "🏕️"},
             {term: "school club", ipa: "/skuːl klʌb/", definition: "Câu lạc bộ trường học", category: "6. School events", icon: "👥"},
-            {term: "school trip", ipa: "/skuːl trɪp/", definition: "Chuyến dã ngoại của trường", category: "6. School events", icon: "🚌"},
+            {term: "school trip", ipa: "/skuːl trɪp/", definition: "Chuyến dã ngoại", category: "6. School events", icon: "🚌"},
             {term: "sports day", ipa: "/spɔːts deɪ/", definition: "Ngày hội thể thao", category: "6. School events", icon: "🏆"},
 
             // 7. Adjectives for places
@@ -532,13 +704,38 @@
         let currentCardIdx = 0;
         let aiImageCache = {};
 
-        window.onload = () => {
+        // Audio & TTS Engine (Được tối ưu cho mọi trình duyệt)
+        let activeUtterance = null;
+        function speakText(text) {
+            if (!('speechSynthesis' in window) || !text) return;
+            window.speechSynthesis.cancel(); // Huỷ lệnh đọc trước đó
+            activeUtterance = new SpeechSynthesisUtterance(text);
+            activeUtterance.lang = 'en-US';
+            activeUtterance.rate = 0.9;
+            window.speechSynthesis.speak(activeUtterance);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
             updateFlashcard();
             initMatchGame();
             initQuiz();
             initSpell();
-        };
+        });
 
+        // Tab Navigation
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabName === 'match') initMatchGame();
+            if (tabName === 'quiz') initQuiz();
+            if (tabName === 'spell') initSpell();
+        }
+
+        // Filter Category
         function filterCategory() {
             const selectedCat = document.getElementById('category-filter').value;
             if (selectedCat === 'ALL') {
@@ -548,56 +745,45 @@
             }
             currentCardIdx = 0;
             updateFlashcard();
+            initMatchGame();
+            initQuiz();
+            initSpell();
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
-            if (tabName === 'match') initMatchGame();
-            if (tabName === 'quiz') initQuiz();
-            if (tabName === 'spell') initSpell();
-        }
-
-        // --- FLASHCARDS MODE ---
+        // 1. FLASHCARD LOGIC
         function updateFlashcard() {
             if (filteredVocab.length === 0) return;
             const item = filteredVocab[currentCardIdx];
             document.getElementById('card-term').innerText = item.term;
             document.getElementById('card-ipa').innerText = item.ipa || '';
             document.getElementById('card-def').innerText = item.definition;
+            document.getElementById('card-sub-term').innerText = item.term;
             document.getElementById('card-cat').innerText = item.category;
             document.getElementById('card-counter').innerText = `${currentCardIdx + 1} / ${filteredVocab.length}`;
             
             const imgContainer = document.getElementById('card-img-container');
             if (aiImageCache[item.term]) {
-                imgContainer.innerHTML = `<img src="${aiImageCache[item.term]}" alt="AI Image">`;
+                imgContainer.innerHTML = `<img src="${aiImageCache[item.term]}" alt="AI Visual">`;
             } else {
                 imgContainer.innerHTML = `<span class="card-icon">${item.icon || '📌'}</span>`;
             }
             document.getElementById('flashcard').classList.remove('flipped');
         }
 
-        function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+        function flipCard() { 
+            document.getElementById('flashcard').classList.toggle('flipped'); 
+        }
+
         function nextCard() { 
             if (filteredVocab.length === 0) return;
             currentCardIdx = (currentCardIdx + 1) % filteredVocab.length; 
             updateFlashcard(); 
         }
+
         function prevCard() { 
             if (filteredVocab.length === 0) return;
             currentCardIdx = (currentCardIdx - 1 + filteredVocab.length) % filteredVocab.length; 
             updateFlashcard(); 
-        }
-
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                window.speechSynthesis.speak(utterance);
-            }
         }
 
         function speakCurrentTerm() { 
@@ -611,16 +797,16 @@
             if (filteredVocab.length === 0) return;
             const item = filteredVocab[currentCardIdx];
             const imgContainer = document.getElementById('card-img-container');
-            imgContainer.innerHTML = `<span style="font-size:0.8rem; color:var(--primary);">✨ AI đang vẽ...</span>`;
+            imgContainer.innerHTML = `<span style="font-size:0.85rem; color:var(--primary); font-weight:600;"><i class="fa-solid fa-spinner fa-spin"></i> AI đang vẽ...</span>`;
             
             const cleanTerm = item.term.split('(')[0].trim();
-            const prompt = encodeURIComponent(`digital art illustration of ${cleanTerm}, high quality, clean background`);
+            const prompt = encodeURIComponent(`minimalist clean 3D illustration of ${cleanTerm}, high quality`);
             const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=200&height=200&nologo=true`;
 
             const img = new Image();
             img.onload = () => {
                 aiImageCache[item.term] = imageUrl;
-                imgContainer.innerHTML = `<img src="${imageUrl}" alt="AI Image">`;
+                imgContainer.innerHTML = `<img src="${imageUrl}" alt="AI Visual">`;
             };
             img.src = imageUrl;
         }
@@ -633,185 +819,161 @@
             }
         });
 
-        // --- MATCH GAME MODE ---
-        let matchTimer, matchStartTime, matchSelected = nullDưới đây là mã nguồn trọn gói cho ứng dụng **Web App HTML/JS tương tác đơn trong 1 file** duy nhất. 
+        // 2. MATCH GAME LOGIC
+        let matchTimerInterval, matchTime = 0, firstSelected = null;
 
-Bạn chỉ cần tạo một file có tên `index.html`, dán toàn bộ đoạn mã bên dưới vào và mở trực tiếp bằng bất kỳ trình duyệt web nào (Chrome, Edge, Safari, Firefox).
+        function initMatchGame() {
+            clearInterval(matchTimerInterval);
+            matchTime = 0;
+            document.getElementById('match-timer').innerText = '⏱️ 0.0s';
+            firstSelected = null;
 
-```html
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizlet Master - Solutions Elementary Unit 2</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-    <!-- Canvas Confetti -->
-    <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
+            let sample = [...filteredVocab].sort(() => Math.random() - 0.5).slice(0, 4);
+            let deck = [];
+            sample.forEach((item, i) => {
+                deck.push({ id: i, type: 'TERM', label: item.term });
+                deck.push({ id: i, type: 'DEF', label: item.definition });
+            });
+            deck.sort(() => Math.random() - 0.5);
 
-    <style>
-        /* CSS cho hiệu ứng 3D Flashcard */
-        .perspective-1000 {
-            perspective: 1000px;
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+
+            deck.forEach(card => {
+                const el = document.createElement('div');
+                el.className = 'match-card';
+                el.innerText = card.label;
+                el.onclick = () => handleMatchClick(el, card);
+                grid.appendChild(el);
+            });
+
+            matchTimerInterval = setInterval(() => {
+                matchTime += 0.1;
+                document.getElementById('match-timer').innerText = `⏱️ ${matchTime.toFixed(1)}s`;
+            }, 100);
         }
-        .transform-style-3d {
-            transform-style: preserve-3d;
+
+        function handleMatchClick(el, card) {
+            if (el.classList.contains('matched') || el.classList.contains('selected')) return;
+            el.classList.add('selected');
+
+            if (!firstSelected) {
+                firstSelected = { el, card };
+            } else {
+                const secondSelected = { el, card };
+                if (firstSelected.card.id === secondSelected.card.id && firstSelected.card.type !== secondSelected.card.type) {
+                    setTimeout(() => {
+                        firstSelected.el.classList.add('matched');
+                        secondSelected.el.classList.add('matched');
+                        firstSelected = null;
+                        checkMatchVictory();
+                    }, 200);
+                } else {
+                    setTimeout(() => {
+                        firstSelected.el.classList.remove('selected');
+                        secondSelected.el.classList.remove('selected');
+                        firstSelected = null;
+                    }, 400);
+                }
+            }
         }
-        .backface-hidden {
-            backface-visibility: hidden;
+
+        function checkMatchVictory() {
+            if (document.querySelectorAll('.match-card:not(.matched)').length === 0) {
+                clearInterval(matchTimerInterval);
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
         }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
+
+        // 3. QUIZ LOGIC
+        let currentQuizItem = null;
+        let quizScore = 0;
+
+        function initQuiz() {
+            if (filteredVocab.length === 0) return;
+            currentQuizItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
+
+            let options = [currentQuizItem];
+            while (options.length < 4 && options.length < filteredVocab.length) {
+                let rand = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
+                if (!options.includes(rand)) options.push(rand);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const quizBox = document.getElementById('quiz-box');
+            quizBox.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <span style="font-weight:700; color:var(--primary); font-size:0.9rem;">CHỌN NGHĨA ĐÚNG CỦA TỪ</span>
+                    <span style="font-weight:700; color:var(--accent-green);">Điểm: ${quizScore}</span>
+                </div>
+                <div style="text-align:center; margin-bottom:1.5rem;">
+                    <div style="font-size:2.2rem; font-weight:800; color:var(--text-dark);">${currentQuizItem.term}</div>
+                    <div style="color:var(--text-muted); font-size:1rem; margin-top:4px;">${currentQuizItem.ipa}</div>
+                </div>
+                <div class="quiz-options">
+                    ${options.map(opt => `
+                        <button class="quiz-option" onclick="checkQuizAnswer(this, '${opt.term}')">
+                            <span>${opt.definition}</span>
+                            <i class="fa-regular fa-circle"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
         }
-    </style>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
-    <!-- Header Navigation -->
-    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-[#4255ff] fa-layer-group text-2xl text-indigo-500"></i>
-                <h1 class="font-bold text-xl tracking-wide text-indigo-400">Quizlet<span class="text-white">Lite</span></h1>
-                <span class="text-xs bg-indigo-900 text-indigo-200 px-2 py-0.5 rounded border border-indigo-700">Unit 2: School Days</span>
-            </div>
+        function checkQuizAnswer(btn, selectedTerm) {
+            const allBtns = document.querySelectorAll('.quiz-option');
+            allBtns.forEach(b => b.disabled = true);
 
-            <!-- Mode Selector Tabs -->
-            <nav class="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 text-sm font-medium overflow-x-auto">
-                <button onclick="switchTab('flashcards')" id="btn-flashcards" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition bg-indigo-600 text-white">
-                    <i class="fa-solid fa-clone"></i> Flashcards
-                </button>
-                <button onclick="switchTab('match')" id="btn-match" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
-                    <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
-                </button>
-                <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
-                    <i class="fa-solid fa-circle-question"></i> Kiểm tra
-                </button>
-                <button onclick="switchTab('spell')" id="btn-spell" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
-                    <i class="fa-solid fa-headphones"></i> Nghe & Viết
-                </button>
-            </nav>
-        </div>
-    </header>
+            if (selectedTerm === currentQuizItem.term) {
+                btn.classList.add('correct');
+                btn.querySelector('i').className = 'fa-solid fa-circle-check';
+                quizScore += 10;
+            } else {
+                btn.classList.add('wrong');
+                btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                allBtns.forEach(b => {
+                    if (b.innerText.includes(currentQuizItem.definition)) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+            setTimeout(initQuiz, 1400);
+        }
 
-    <!-- Filter Bar -->
-    <section class="bg-slate-800/50 border-b border-slate-700/50 py-2.5">
-        <div class="max-w-6xl mx-auto px-4 flex items-center gap-3">
-            <label for="category-filter" class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                <i class="fa-solid fa-filter"></i> Danh mục:
-            </label>
-            <select id="category-filter" onchange="handleCategoryChange()" class="bg-slate-900 text-slate-200 text-sm rounded-lg px-3 py-1.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
-                <!-- Dynamically Populated -->
-            </select>
-            <span id="word-count-badge" class="text-xs bg-slate-700 px-2.5 py-1 rounded-full text-slate-300">0 từ</span>
-        </div>
-    </section>
+        // 4. LISTEN & SPELL LOGIC
+        let currentSpellItem = null;
 
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+        function initSpell() {
+            if (filteredVocab.length === 0) return;
+            currentSpellItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
+            document.getElementById('spell-hint').innerText = `Gợi ý nghĩa: ${currentSpellItem.definition}`;
+            document.getElementById('spell-input').value = '';
+            document.getElementById('spell-feedback').innerText = '';
+        }
 
-        <!-- 1. MODE: FLASHCARDS -->
-        <div id="mode-flashcards" class="tab-content flex flex-col items-center gap-6">
-            <div class="w-full max-w-lg perspective-1000">
-                <div id="card-inner" onclick="flipCard()" class="relative w-full h-80 rounded-2xl bg-slate-800 border-2 border-slate-700 shadow-2xl cursor-pointer transform-style-3d transition-transform duration-500 hover:border-indigo-500 flex flex-col justify-between p-6">
-                    
-                    <!-- Card Front -->
-                    <div class="absolute inset-0 backface-hidden flex flex-col justify-between p-6 bg-slate-800 rounded-2xl">
-                        <div class="flex justify-between items-start">
-                            <span id="card-cat-front" class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50"></span>
-                            <button onclick="event.stopPropagation(); speakCurrentWord()" class="text-slate-400 hover:text-indigo-400 text-xl p-2 rounded-full hover:bg-slate-700/50 transition">
-                                <i class="fa-solid fa-volume-high"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="text-center my-auto space-y-2">
-                            <i id="card-icon-front" class="text-4xl text-indigo-400 mb-2 block"></i>
-                            <h2 id="card-word" class="text-3xl font-extrabold text-white tracking-wide"></h2>
-                            <p id="card-ipa" class="text-slate-400 font-mono text-sm"></p>
-                        </div>
+        function speakCurrentSpellWord() {
+            if (currentSpellItem) {
+                const term = currentSpellItem.term.split('(')[0].trim();
+                speakText(term);
+            }
+        }
 
-                        <div class="flex justify-between items-center text-xs text-slate-500">
-                            <span><i class="fa-regular fa-keyboard"></i> Space: Lật</span>
-                            <span>Mặt trước</span>
-                        </div>
-                    </div>
+        function checkSpellAnswer() {
+            const val = document.getElementById('spellInput' || 'spell-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('spell-feedback');
+            if (!val) return;
 
-                    <!-- Card Back -->
-                    <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-slate-850 rounded-2xl bg-slate-800 border-indigo-500">
-                        <div class="flex justify-between items-start">
-                            <span id="card-type-back" class="text-xs font-semibold text-slate-400 italic"></span>
-                            <button onclick="event.stopPropagation(); generateAIImage()" class="text-xs bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2.5 py-1 rounded-lg border border-indigo-500/50 transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh
-                            </button>
-                        </div>
-
-                        <div class="text-center my-auto flex flex-col items-center justify-center gap-3">
-                            <!-- Pollinations AI Image Container -->
-                            <div id="ai-img-container" class="hidden w-32 h-32 rounded-lg overflow-hidden border border-slate-600 bg-slate-900 relative">
-                                <img id="ai-img" src="" alt="AI Illustration" class="w-full h-full object-cover">
-                                <div id="ai-loading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center hidden">
-                                    <i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xl"></i>
-                                </div>
-                            </div>
-
-                            <h3 id="card-meaning" class="text-2xl font-bold text-emerald-400"></h3>
-                        </div>
-
-                        <div class="flex justify-between items-center text-xs text-slate-500">
-                            <span><i class="fa-solid fa-arrows-left-right"></i> Phím ← / →: Chuyển</span>
-                            <span>Mặt sau</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <div class="flex items-center gap-6">
-                <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
-                    <i class="fa-solid fa-arrow-left text-lg"></i>
-                </button>
-                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 10</span>
-                <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
-                    <i class="fa-solid fa-arrow-right text-lg"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- 2. MODE: MATCH GAME -->
-        <div id="mode-match" class="tab-content hidden flex-col items-center gap-4">
-            <div class="flex justify-between items-center w-full max-w-2xl bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-stopwatch text-indigo-400 text-xl"></i>
-                    <span id="match-timer" class="font-mono text-2xl font-bold text-white">0.0s</span>
-                </div>
-                <button onclick="initMatchGame()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
-                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
-                </button>
-            </div>
-
-            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full max-w-2xl">
-                <!-- Cards will be dynamically injected -->
-            </div>
-        </div>
-
-        <!-- 3. MODE: QUIZ / LEARN -->
-        <div id="mode-quiz" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
-            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
-                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
-                    <span id="quiz-progress" class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Câu hỏi 1/10</span>
-                    <span id="quiz-score" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">Điểm: 0</span>
-                </div>
-
-                <div class="text-center mb-8">
-                    <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
-                    <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
-                    <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
-                </div>
-
-                <div id="quiz-options" class="grid grid-cols-1 gap-3">
-                    <!-- Options injected dynamically -->
-                </div>
+            const target = currentSpellItem.term.toLowerCase();
+            if (val === target) {
+                feedback.style.color = 'var(--accent-green)';
+                feedback.innerHTML = '<i class="fa-solid fa-check"></i> Chính xác! Rất tuyệt vời!';
+                setTimeout(initSpell, 1400);
+            } else {
+                feedback.style.color = 'var(--accent-red)';
+                feedback.innerHTML = `<i class="fa-solid fa-xmark"></i> Chưa đúng! Đáp án: <strong>${currentSpellItem.term}</strong>`;
+            }
+        }
+    </script>
+</body>
+</html>
