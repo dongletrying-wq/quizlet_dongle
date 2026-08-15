@@ -78,6 +78,7 @@
             display: flex;
             flex-direction: column;
             line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .hanzi-font {
@@ -748,7 +749,7 @@
                             <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.75rem;">(Bấm hoặc nhấn Space để lật thẻ)</p>
                         </div>
                         <div class="card-bottom">
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Phát âm Phổ thông (zh-CN/TW)</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Phát âm Phổ thông (zh-TW/CN)</span>
                             <button class="speak-btn" onclick="playAudioCurrent(event)">
                                 <i class="fa-solid fa-volume-high"></i>
                             </button>
@@ -981,17 +982,38 @@
             initSpell();
         }
 
-        // TEXT-TO-SPEECH
+        // TEXT-TO-SPEECH (Chuẩn hóa cho iOS Safari & Webview)
+        let activeUtterance = null; // Khai báo biến toàn cục để tránh bị iOS Garbage Collector xoá mất
+
         function speakHanzi(text) {
             if (!('speechSynthesis' in window)) return;
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'zh-TW';
-            utter.rate = 0.85;
-            window.speechSynthesis.speak(utter);
+
+            // 1. Huỷ lệnh đọc bị kẹt trước đó (cực kỳ quan trọng trên Safari iOS)
+            window.speechSynthesis.cancel();
+
+            // 2. Tạo đối tượng đọc và gán vào biến toàn cục
+            activeUtterance = new SpeechSynthesisUtterance(text);
+            
+            // 3. Thiết lập ngôn ngữ
+            activeUtterance.lang = 'zh-TW';
+            activeUtterance.rate = 0.85;
+
+            // 4. Tìm giọng đọc tiếng Trung sẵn có trên thiết bị iOS (nếu có)
+            const voices = window.speechSynthesis.getVoices();
+            const twVoice = voices.find(v => v.lang === 'zh-TW' || v.lang.startsWith('zh'));
+            if (twVoice) {
+                activeUtterance.voice = twVoice;
+            }
+
+            // 5. Kích hoạt phát âm
+            window.speechSynthesis.speak(activeUtterance);
         }
 
         function playAudioCurrent(e) {
-            if (e) e.stopPropagation();
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
             const cur = activeVocabList[currentIdx];
             if (cur) speakHanzi(cur.hanzi);
         }
@@ -1198,7 +1220,7 @@
             document.getElementById('spellClue').innerText = `Gợi ý: ${currentSpellItem.vi} (${currentSpellItem.eng})`;
             document.getElementById('spellInput').value = '';
             document.getElementById('spellResult').innerText = '';
-            playSpellCurrentAudio();
+            // playSpellCurrentAudio(); // Tắt dòng này lúc khởi tạo vì iOS sẽ chặn âm thanh tự phát
         }
 
         function playSpellCurrentAudio() {
