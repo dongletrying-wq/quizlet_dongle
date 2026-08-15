@@ -704,11 +704,11 @@
         let currentCardIdx = 0;
         let aiImageCache = {};
 
-        // Audio & TTS Engine (Được tối ưu cho mọi trình duyệt)
+        // Audio & TTS Engine (Tối ưu cho cả iOS & PC)
         let activeUtterance = null;
         function speakText(text) {
             if (!('speechSynthesis' in window) || !text) return;
-            window.speechSynthesis.cancel(); // Huỷ lệnh đọc trước đó
+            window.speechSynthesis.cancel();
             activeUtterance = new SpeechSynthesisUtterance(text);
             activeUtterance.lang = 'en-US';
             activeUtterance.rate = 0.9;
@@ -885,7 +885,7 @@
             }
         }
 
-        // 3. QUIZ LOGIC
+        // 3. QUIZ LOGIC (FIXED & FULLY SAFE)
         let currentQuizItem = null;
         let quizScore = 0;
 
@@ -893,10 +893,13 @@
             if (filteredVocab.length === 0) return;
             currentQuizItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
 
+            // Chọn 3 đáp án ngẫu nhiên khác
             let options = [currentQuizItem];
-            while (options.length < 4 && options.length < filteredVocab.length) {
-                let rand = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
-                if (!options.includes(rand)) options.push(rand);
+            let pool = filteredVocab.filter(item => item.term !== currentQuizItem.term);
+            pool.sort(() => Math.random() - 0.5);
+            
+            for (let i = 0; i < Math.min(3, pool.length); i++) {
+                options.push(pool[i]);
             }
             options.sort(() => Math.random() - 0.5);
 
@@ -907,18 +910,24 @@
                     <span style="font-weight:700; color:var(--accent-green);">Điểm: ${quizScore}</span>
                 </div>
                 <div style="text-align:center; margin-bottom:1.5rem;">
-                    <div style="font-size:2.2rem; font-weight:800; color:var(--text-dark);">${currentQuizItem.term}</div>
-                    <div style="color:var(--text-muted); font-size:1rem; margin-top:4px;">${currentQuizItem.ipa}</div>
+                    <div style="font-size:2.2rem; font-weight:800; color:var(--text-dark);">${escapeHtml(currentQuizItem.term)}</div>
+                    <div style="color:var(--text-muted); font-size:1rem; margin-top:4px;">${escapeHtml(currentQuizItem.ipa || '')}</div>
                 </div>
-                <div class="quiz-options">
-                    ${options.map(opt => `
-                        <button class="quiz-option" onclick="checkQuizAnswer(this, '${opt.term}')">
-                            <span>${opt.definition}</span>
-                            <i class="fa-regular fa-circle"></i>
-                        </button>
-                    `).join('')}
-                </div>
+                <div class="quiz-options" id="quiz-options-list"></div>
             `;
+
+            const optionsList = document.getElementById('quiz-options-list');
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.dataset.term = opt.term;
+                btn.innerHTML = `
+                    <span>${escapeHtml(opt.definition)}</span>
+                    <i class="fa-regular fa-circle"></i>
+                `;
+                btn.onclick = () => checkQuizAnswer(btn, opt.term);
+                optionsList.appendChild(btn);
+            });
         }
 
         function checkQuizAnswer(btn, selectedTerm) {
@@ -932,13 +941,19 @@
             } else {
                 btn.classList.add('wrong');
                 btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                // Đánh dấu đáp án đúng
                 allBtns.forEach(b => {
-                    if (b.innerText.includes(currentQuizItem.definition)) {
+                    if (b.dataset.term === currentQuizItem.term) {
                         b.classList.add('correct');
+                        b.querySelector('i').className = 'fa-solid fa-circle-check';
                     }
                 });
             }
-            setTimeout(initQuiz, 1400);
+            setTimeout(initQuiz, 1300);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
         // 4. LISTEN & SPELL LOGIC
@@ -960,7 +975,8 @@
         }
 
         function checkSpellAnswer() {
-            const val = document.getElementById('spellInput' || 'spell-input').value.trim().toLowerCase();
+            const inputElem = document.getElementById('spell-input');
+            const val = inputElem.value.trim().toLowerCase();
             const feedback = document.getElementById('spell-feedback');
             if (!val) return;
 
