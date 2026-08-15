@@ -440,53 +440,66 @@
             color: #c5221f !important; 
         }
 
+        /* 4. Listen & Spell Custom */
         .spell-speaker {
-            width: 72px;
-            height: 72px;
+            width: 76px;
+            height: 76px;
             background: linear-gradient(135deg, var(--primary), #06b6d4);
             color: white;
             border-radius: 50%;
             border: none;
-            font-size: 1.8rem;
+            font-size: 1.85rem;
             cursor: pointer;
             margin: 0.5rem auto 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: var(--shadow-md);
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .spell-speaker:hover {
             transform: scale(1.08);
+            box-shadow: var(--shadow-lg);
         }
 
         .spell-input-box {
             display: flex;
-            max-width: 440px;
-            margin: 1.5rem auto 1rem;
+            max-width: 480px;
+            margin: 1.25rem auto 0.75rem;
             gap: 8px;
         }
 
         .spell-input {
             flex: 1;
             padding: 12px 18px;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             border: 2px solid var(--border-color);
             border-radius: 10px;
             text-align: center;
             font-weight: 600;
             outline: none;
+            background: #f8fafc;
+            transition: border-color 0.2s;
         }
 
         .spell-input:focus {
             border-color: var(--primary);
+            background: white;
+        }
+
+        .spell-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
         }
 
         @media (max-width: 650px) {
             .match-grid { grid-template-columns: repeat(2, 1fr); }
             .flashcard-container { height: 460px; }
             .card-text { font-size: 1.6rem; }
+            .spell-input-box { flex-direction: column; }
         }
     </style>
 </head>
@@ -600,24 +613,44 @@
             <div class="quiz-card" id="quiz-box"></div>
         </div>
 
-        <!-- TAB 4: LISTEN & SPELL -->
+        <!-- TAB 4: LISTEN & SPELL (ĐÃ SỬA & NÂNG CẤP HOÀN TOÀN) -->
         <div id="tab-spell" class="tab-content">
             <div class="spell-card" style="text-align: center;" id="spell-box">
-                <button class="spell-speaker" onclick="speakCurrentSpellWord()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-weight: 700; color: var(--primary); font-size: 0.9rem;">🎧 LUYỆN NGHE & CHÍNH TẢ</span>
+                    <span style="font-weight: 700; color: var(--accent-green);" id="spell-score">Điểm: 0</span>
+                </div>
+
+                <button class="spell-speaker" onclick="speakCurrentSpellWord()" title="Bấm để nghe phát âm">
                     <i class="fa-solid fa-volume-high"></i>
                 </button>
-                <p style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark);" id="spell-hint">Gợi ý nghĩa: Thức dậy</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">(Bấm loa để nghe phát âm tiếng Anh)</p>
+
+                <p style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;" id="spell-hint">
+                    Gợi ý nghĩa: Thức dậy
+                </p>
+
                 <div class="spell-input-box">
-                    <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tiếng Anh..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpellAnswer()">
+                    <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tiếng Anh tại đây..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                     <button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button>
                 </div>
-                <div style="margin-top: 1rem; font-weight: 700; font-size: 1.05rem;" id="spell-feedback"></div>
+
+                <div class="spell-actions">
+                    <button class="btn btn-outline" style="font-size: 0.82rem; padding: 6px 14px;" onclick="showSpellAnswer()">
+                        <i class="fa-regular fa-eye"></i> Xem đáp án
+                    </button>
+                    <button class="btn btn-outline" style="font-size: 0.82rem; padding: 6px 14px;" onclick="initSpell()">
+                        <i class="fa-solid fa-forward-step"></i> Đổi từ khác
+                    </button>
+                </div>
+
+                <div style="margin-top: 1.2rem; font-weight: 700; font-size: 1.05rem; min-height: 1.6rem;" id="spell-feedback"></div>
             </div>
         </div>
     </main>
 
     <script>
-        // FULL VOCABULARY DATA (Solutions Elementary Unit 2)
+        // FULL VOCABULARY DATA
         const vocabData = [
             // 1. Daily routine
             {term: "wake up", ipa: "/weɪk ʌp/", definition: "Thức dậy", category: "1. Daily routine", icon: "⏰"},
@@ -704,15 +737,34 @@
         let currentCardIdx = 0;
         let aiImageCache = {};
 
-        // Audio & TTS Engine (Tối ưu cho cả iOS & PC)
+        // Audio & TTS Engine (Hỗ trợ kép Web Speech + Online Fallback)
         let activeUtterance = null;
+        let fallbackAudioPlayer = new Audio();
+
         function speakText(text) {
-            if (!('speechSynthesis' in window) || !text) return;
-            window.speechSynthesis.cancel();
-            activeUtterance = new SpeechSynthesisUtterance(text);
-            activeUtterance.lang = 'en-US';
-            activeUtterance.rate = 0.9;
-            window.speechSynthesis.speak(activeUtterance);
+            if (!text) return;
+            const clean = text.split('(')[0].trim();
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                activeUtterance = new SpeechSynthesisUtterance(clean);
+                activeUtterance.lang = 'en-US';
+                activeUtterance.rate = 0.9;
+                
+                activeUtterance.onerror = () => {
+                    playOnlineAudioFallback(clean);
+                };
+
+                window.speechSynthesis.speak(activeUtterance);
+            } else {
+                playOnlineAudioFallback(clean);
+            }
+        }
+
+        function playOnlineAudioFallback(text) {
+            const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+            fallbackAudioPlayer.src = url;
+            fallbackAudioPlayer.play().catch(e => console.log('Audio error:', e));
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -720,6 +772,7 @@
             initMatchGame();
             initQuiz();
             initSpell();
+            setupSpellInputListener();
         });
 
         // Tab Navigation
@@ -732,7 +785,10 @@
 
             if (tabName === 'match') initMatchGame();
             if (tabName === 'quiz') initQuiz();
-            if (tabName === 'spell') initSpell();
+            if (tabName === 'spell') {
+                initSpell();
+                setTimeout(() => document.getElementById('spell-input').focus(), 150);
+            }
         }
 
         // Filter Category
@@ -788,8 +844,7 @@
 
         function speakCurrentTerm() { 
             if (filteredVocab.length > 0) {
-                const term = filteredVocab[currentCardIdx].term.split('(')[0].trim();
-                speakText(term);
+                speakText(filteredVocab[currentCardIdx].term);
             }
         }
 
@@ -885,7 +940,7 @@
             }
         }
 
-        // 3. QUIZ LOGIC (FIXED & FULLY SAFE)
+        // 3. QUIZ LOGIC
         let currentQuizItem = null;
         let quizScore = 0;
 
@@ -893,7 +948,6 @@
             if (filteredVocab.length === 0) return;
             currentQuizItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
 
-            // Chọn 3 đáp án ngẫu nhiên khác
             let options = [currentQuizItem];
             let pool = filteredVocab.filter(item => item.term !== currentQuizItem.term);
             pool.sort(() => Math.random() - 0.5);
@@ -941,7 +995,6 @@
             } else {
                 btn.classList.add('wrong');
                 btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
-                // Đánh dấu đáp án đúng
                 allBtns.forEach(b => {
                     if (b.dataset.term === currentQuizItem.term) {
                         b.classList.add('correct');
@@ -956,39 +1009,76 @@
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        // 4. LISTEN & SPELL LOGIC
+        // 4. LISTEN & SPELL LOGIC (ĐÃ SỬA & HOÀN THIỆN)
         let currentSpellItem = null;
+        let spellScore = 0;
 
         function initSpell() {
             if (filteredVocab.length === 0) return;
             currentSpellItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
+            
             document.getElementById('spell-hint').innerText = `Gợi ý nghĩa: ${currentSpellItem.definition}`;
-            document.getElementById('spell-input').value = '';
-            document.getElementById('spell-feedback').innerText = '';
+            const inputField = document.getElementById('spell-input');
+            inputField.value = '';
+            document.getElementById('spell-feedback').innerHTML = '';
+            document.getElementById('spell-score').innerText = `Điểm: ${spellScore}`;
+
+            // Phát âm tự động khi người dùng đã chủ động vào tab
+            speakCurrentSpellWord();
+            inputField.focus();
         }
 
         function speakCurrentSpellWord() {
             if (currentSpellItem) {
-                const term = currentSpellItem.term.split('(')[0].trim();
-                speakText(term);
+                speakText(currentSpellItem.term);
             }
+        }
+
+        function setupSpellInputListener() {
+            const inputField = document.getElementById('spell-input');
+            inputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    checkSpellAnswer();
+                }
+            });
+        }
+
+        // Hàm chuẩn hóa chuỗi để so sánh linh hoạt (bỏ dấu chấm, dấu cách thừa, viết thường)
+        function normalizeWord(str) {
+            return str
+                .toLowerCase()
+                .replace(/[\.\,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
         }
 
         function checkSpellAnswer() {
             const inputElem = document.getElementById('spell-input');
-            const val = inputElem.value.trim().toLowerCase();
+            const val = inputElem.value.trim();
             const feedback = document.getElementById('spell-feedback');
             if (!val) return;
 
-            const target = currentSpellItem.term.toLowerCase();
-            if (val === target) {
+            const userNorm = normalizeWord(val);
+            const targetNorm = normalizeWord(currentSpellItem.term);
+
+            if (userNorm === targetNorm) {
                 feedback.style.color = 'var(--accent-green)';
-                feedback.innerHTML = '<i class="fa-solid fa-check"></i> Chính xác! Rất tuyệt vời!';
-                setTimeout(initSpell, 1400);
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Chính xác! Rất xuất sắc!';
+                spellScore += 10;
+                document.getElementById('spell-score').innerText = `Điểm: ${spellScore}`;
+                setTimeout(initSpell, 1300);
             } else {
                 feedback.style.color = 'var(--accent-red)';
-                feedback.innerHTML = `<i class="fa-solid fa-xmark"></i> Chưa đúng! Đáp án: <strong>${currentSpellItem.term}</strong>`;
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Chưa đúng! Bạn hãy thử lại hoặc bấm "Xem đáp án".`;
             }
+        }
+
+        function showSpellAnswer() {
+            if (!currentSpellItem) return;
+            const feedback = document.getElementById('spell-feedback');
+            feedback.style.color = 'var(--primary)';
+            feedback.innerHTML = `💡 Đáp án đúng là: <strong>${currentSpellItem.term}</strong> (${currentSpellItem.ipa || ''})`;
+            document.getElementById('spell-input').value = currentSpellItem.term;
         }
     </script>
 </body>
