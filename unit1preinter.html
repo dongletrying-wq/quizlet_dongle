@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solutions Pre-Inter: Unit Introduction Vocab</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --primary: #4255ff;
+      --primary-hover: #2e3dc7;
+      --bg: #f6f7fb;
+      --card-bg: #ffffff;
+      --text-main: #1a1d28;
+      --text-sub: #646f79;
+      --accent: #23b26d;
+      --danger: #ff5252;
+      --border: #e6e8ee;
+      --shadow: 0 8px 24px rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .brand-badge { background: #eef1ff; color: var(--primary); font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 20px; }
+
+    .nav-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-sub);
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { background: #edf0f8; color: var(--text-main); }
+    .tab-btn.active { background: var(--primary); color: #fff; }
+
+    .category-select {
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      background: var(--card-bg);
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+    }
+
+    main { flex: 1; max-width: 900px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
+
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    /* Flashcards */
+    .flashcard-container { perspective: 1000px; width: 100%; height: 420px; margin-bottom: 1.5rem; }
+    .flashcard {
+      width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      cursor: pointer; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .card-face {
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+      border-radius: var(--radius); background: var(--card-bg);
+      padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;
+      border: 2px solid transparent;
+    }
+    .card-back { transform: rotateY(180deg); background: linear-gradient(135deg, #ffffff, #f9faff); border-color: #e5ebff; }
+    .card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-sub); }
+    .card-center { text-align: center; margin: auto; }
+    .card-term { font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; }
+    .card-ipa { font-size: 1.2rem; color: var(--primary); font-family: 'Lucida Sans', sans-serif; margin-bottom: 0.5rem; }
+    .card-pos { display: inline-block; background: #eef1ff; color: var(--primary); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; }
+    .card-def { font-size: 2rem; font-weight: 700; color: #2e3dc7; margin-bottom: 1rem; }
+    .card-example { font-style: italic; color: var(--text-sub); line-height: 1.5; }
+    .card-img { max-height: 140px; border-radius: 12px; margin-top: 1rem; object-fit: cover; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    
+    .card-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
+    .btn-action {
+      background: var(--card-bg); border: 1px solid var(--border); padding: 0.6rem 1.2rem;
+      border-radius: 10px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;
+    }
+    .btn-action:hover { background: #f0f2f8; transform: translateY(-1px); }
+
+    .nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+    .btn-circle {
+      width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--card-bg);
+      box-shadow: var(--shadow); cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+      transition: 0.2s;
+    }
+    .btn-circle:hover { background: var(--primary); color: #fff; }
+
+    /* Match Game */
+    .match-stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 600; }
+    .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .match-card {
+      min-height: 100px; background: var(--card-bg); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 1rem; display: flex; align-items: center; justify-content: center; text-align: center;
+      cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.2s; user-select: none;
+    }
+    .match-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .match-card.selected { border-color: var(--primary); background: #eef1ff; color: var(--primary); }
+    .match-card.matched { visibility: hidden; opacity: 0; transform: scale(0.8); }
+
+    /* Quiz Mode */
+    .quiz-container { background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); }
+    .quiz-progress { height: 6px; background: #e6e8ee; border-radius: 3px; margin-bottom: 1.5rem; overflow: hidden; }
+    .quiz-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+    .quiz-question { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; }
+    .quiz-btn {
+      padding: 1rem; border: 2px solid var(--border); border-radius: 12px; background: none;
+      text-align: left; font-size: 1rem; cursor: pointer; transition: 0.2s; font-weight: 500;
+    }
+    .quiz-btn:hover:not(:disabled) { border-color: var(--primary); background: #fafbff; }
+    .quiz-btn.correct { background: #e6f9f0; border-color: var(--accent); color: var(--accent); font-weight: 700; }
+    .quiz-btn.wrong { background: #ffebeb; border-color: var(--danger); color: var(--danger); font-weight: 700; }
+
+    /* Spell Mode */
+    .spell-container { background: var(--card-bg); border-radius: var(--radius); padding: 2.5rem; text-align: center; box-shadow: var(--shadow); }
+    .spell-input {
+      width: 100%; max-width: 400px; padding: 0.8rem 1.2rem; font-size: 1.2rem; border-radius: 10px;
+      border: 2px solid var(--border); outline: none; margin: 1.5rem 0; text-align: center;
+    }
+    .spell-input:focus { border-color: var(--primary); }
+
+    .btn-primary {
+      background: var(--primary); color: #fff; border: none; padding: 0.8rem 1.8rem;
+      border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .center-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>📚 VocabMaster</span>
+      <span class="brand-badge">Solutions Pre-Int</span>
+    </div>
+    
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchView('flashcards')">🗂️ Thẻ ghi nhớ</button>
+      <button class="tab-btn" onclick="switchView('match')">🧩 Ghép từ</button>
+      <button class="tab-btn" onclick="switchView('quiz')">📝 Trắc nghiệm</button>
+      <button class="tab-btn" onclick="switchView('spell')">🎧 Nghe & Viết</button>
+    </div>
+
+    <select class="category-select" id="catFilter" onchange="onCategoryChange()">
+      <option value="ALL">Tất cả bài học (Unit Intro)</option>
+      <option value="IA">IA: Sports & Hobbies</option>
+      <option value="IB">IB: Everyday Activities</option>
+      <option value="IC">IC: Appearance & Clothes</option>
+      <option value="ID">ID: School Facilities</option>
+    </select>
+  </header>
+
+  <main>
+    <!-- View: Flashcard -->
+    <div id="view-flashcards" class="view-panel active">
+      <div class="flashcard-container">
+        <div class="flashcard" id="flashcard" onclick="flipCard()">
+          <div class="card-face card-front">
+            <div class="card-top">
+              <span id="fc-category">Unit Intro</span>
+              <span>Ấn để lật thẻ ↻</span>
+            </div>
+            <div class="card-center">
+              <div class="card-term" id="fc-term">Loading...</div>
+              <div class="card-ipa" id="fc-ipa">/.../</div>
+              <span class="card-pos" id="fc-pos">n</span>
+              <div><img id="fc-img" class="card-img" alt="AI illustration" /></div>
+            </div>
+            <div class="card-top" style="justify-content: center; font-size: 0.8rem;">
+              Phím tắt: Space (Lật) | ← → (Chuyển từ)
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-top">
+              <span>Nghĩa & Ví dụ</span>
+              <span>Ấn để lật lại ↻</span>
+            </div>
+            <div class="card-center">
+              <div class="card-def" id="fc-def">Đang tải...</div>
+              <div class="card-example" id="fc-example">"..."</div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-action" onclick="speakCurrentTerm()">🔊 Phát âm</button>
+        <button class="btn-action" onclick="generateAIImage()">🎨 Tạo ảnh AI (Pollinations)</button>
+      </div>
+
+      <div class="nav-controls">
+        <button class="btn-circle" onclick="prevCard()">←</button>
+        <span id="fc-counter" style="font-weight: 700;">1 / 50</span>
+        <button class="btn-circle" onclick="nextCard()">→</button>
+      </div>
+    </div>
+
+    <!-- View: Match Game -->
+    <div id="view-match" class="view-panel">
+      <div class="match-stats">
+        <span>⏱️ Thời gian: <span id="match-timer">0.0s</span></span>
+        <span>Ghép đúng từ với định nghĩa tiếng Việt tương ứng</span>
+        <button class="btn-action" onclick="initMatchGame()">Làm mới</button>
+      </div>
+      <div class="match-grid" id="matchGrid"></div>
+    </div>
+
+    <!-- View: Quiz Mode -->
+    <div id="view-quiz" class="view-panel">
+      <div class="quiz-container">
+        <div class="quiz-progress"><div class="quiz-bar" id="quizBar"></div></div>
+        <div id="quizContent">
+          <div class="quiz-question" id="quizQuestion">Câu hỏi trắc nghiệm</div>
+          <div class="quiz-options" id="quizOptions"></div>
+        </div>
+        <div id="quizResult" style="display:none;" class="center-content">
+          <h2>🎉 Hoàn thành bài kiểm tra!</h2>
+          <p id="quizScoreText" style="font-size: 1.2rem;"></p>
+          <button class="btn-primary" onclick="initQuiz()">Làm lại bài kiểm tra</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Listen & Spell -->
+    <div id="view-spell" class="view-panel">
+      <div class="spell-container">
+        <h3 style="color: var(--text-sub);">Nghe và viết lại từ chính xác</h3>
+        <div style="margin: 2rem 0;">
+          <button class="btn-circle" style="width: 70px; height: 70px; margin: 0 auto;" onclick="speakCurrentSpell()">🔊</button>
+        </div>
+        <p id="spellHint" style="font-size: 1.1rem; color: var(--text-sub); margin-bottom: 0.5rem;"></p>
+        <input type="text" id="spellInput" class="spell-input" placeholder="Gõ từ tiếng Anh tại đây..." autocomplete="off" />
+        <div>
+          <button class="btn-primary" onclick="checkSpell()">Kiểm tra (Enter)</button>
+        </div>
+        <p id="spellFeedback" style="margin-top: 1rem; font-weight: 600;"></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const rawData = [
+      // IA: Sports & Hobbies
+      { term: "Hobby", pos: "n", ipa: "/ˈhɒbi/", def: "sở thích", cat: "IA", ex: "Photography is an expensive hobby." },
+      { term: "Sport", pos: "n", ipa: "/spɔːt/", def: "thể thao", cat: "IA", ex: "I play a lot of sport in my free time." },
+      { term: "Board game", pos: "n", ipa: "/ˈbɔːd ɡeɪm/", def: "trò chơi bàn cờ", cat: "IA", ex: "Monopoly is a popular board game." },
+      { term: "Chess", pos: "n", ipa: "/tʃes/", def: "cờ vua", cat: "IA", ex: "Do you play chess regularly?" },
+      { term: "Drawing", pos: "n", ipa: "/ˈdrɔːɪŋ/", def: "bức vẽ, hoạt động vẽ tranh", cat: "IA", ex: "She is good at charcoal drawing." },
+      { term: "Cycling", pos: "n", ipa: "/ˈsaɪklɪŋ/", def: "đi xe đạp dã ngoại/thể thao", cat: "IA", ex: "We went cycling around the lake." },
+      { term: "Dancing", pos: "n", ipa: "/ˈdɑːnsɪŋ/", def: "nhảy múa, khiêu vũ", cat: "IA", ex: "Her favourite activity is dancing." },
+      { term: "Skateboarding", pos: "n", ipa: "/ˈskeɪtbɔːdɪŋ/", def: "trượt ván", cat: "IA", ex: "Skateboarding requires good balance." },
+      { term: "Ice skating", pos: "n", ipa: "/ˈaɪs skeɪtɪŋ/", def: "trượt băng", cat: "IA", ex: "We went ice skating in winter." },
+      { term: "Ice hockey", pos: "n", ipa: "/ˈaɪs ˌhɒki/", def: "khúc côn cầu trên băng", cat: "IA", ex: "Ice hockey is fast and exciting." },
+      { term: "Gymnastics", pos: "n", ipa: "/dʒɪmˈnæstɪks/", def: "thể dục dụng cụ", cat: "IA", ex: "She does gymnastics every morning." },
+      { term: "Bowling", pos: "n", ipa: "/ˈbəʊlɪŋ/", def: "trò chơi bowling", cat: "IA", ex: "We went bowling on Saturday night." },
+      { term: "Basketball", pos: "n", ipa: "/ˈbɑːskɪtbɔːl/", def: "bóng rổ", cat: "IA", ex: "He plays basketball for the school team." },
+      { term: "Volleyball", pos: "n", ipa: "/ˈvɒlibɔːl/", def: "bóng chuyền", cat: "IA", ex: "They play beach volleyball in summer." },
+      { term: "Football", pos: "n", ipa: "/ˈfʊtbɔːl/", def: "bóng đá", cat: "IA", ex: "Football is the most popular sport here." },
+      { term: "Swimming", pos: "n", ipa: "/ˈswɪmɪŋ/", def: "bơi lội", cat: "IA", ex: "Swimming is good for your health." },
+      { term: "Video game", pos: "n", ipa: "/ˈvɪdiəʊ ɡeɪm/", def: "trò chơi điện tử", cat: "IA", ex: "He loves playing action video games." },
+      { term: "Drama", pos: "n", ipa: "/ˈdrɑːmə/", def: "môn kịch nghệ, kịch", cat: "IA", ex: "She joined the drama club at school." },
+      { term: "Information technology (IT)", pos: "n", ipa: "/ˌɪnfəˈmeɪʃn tekˈnɒlədʒi/", def: "công nghệ thông tin", cat: "IA", ex: "IT skills are essential today." },
+      { term: "Subject", pos: "n", ipa: "/ˈsʌbdʒɪkt/", def: "môn học", cat: "IA", ex: "What is your favourite school subject?" },
+      { term: "To watch", pos: "v", ipa: "/wɒtʃ/", def: "xem, theo dõi", cat: "IA", ex: "I watch films on weekends." },
+      { term: "To listen", pos: "v", ipa: "/ˈlɪsn/", def: "nghe", cat: "IA", ex: "Listen carefully to the instructions." },
+
+      // IB: Everyday Activities
+      { term: "Activity", pos: "n", ipa: "/ækˈtɪvəti/", def: "hoạt động", cat: "IB", ex: "Outdoor activities keep you fit." },
+      { term: "Everyday", pos: "adj", ipa: "/ˈevrideɪ/", def: "thường nhật, hàng ngày", cat: "IB", ex: "These are problems of everyday life." },
+      { term: "Homework", pos: "n", ipa: "/ˈhəʊmwɜːk/", def: "bài tập về nhà", cat: "IB", ex: "I have finished my English homework." },
+      { term: "Shopping", pos: "n", ipa: "/ˈʃɒpɪŋ/", def: "mua sắm", cat: "IB", ex: "Let's go grocery shopping." },
+      { term: "Walk", pos: "n/v", ipa: "/wɔːk/", def: "đi bộ, đi dạo", cat: "IB", ex: "We took a long walk in the park." },
+      { term: "Picnic", pos: "n", ipa: "/ˈpɪknɪk/", def: "dã ngoại", cat: "IB", ex: "They had a picnic by the river." },
+      { term: "Bike", pos: "n", ipa: "/baɪk/", def: "xe đạp", cat: "IB", ex: "He rides his bike to school every day." },
+      { term: "Ride", pos: "n/v", ipa: "/raɪd/", def: "lượt đi xe, đạp xe / cưỡi ngựa", cat: "IB", ex: "Can you ride a horse?" },
+      { term: "Relative", pos: "n", ipa: "/ˈrelətɪv/", def: "họ hàng, người thân", cat: "IB", ex: "All our relatives came to the party." },
+      { term: "Friend", pos: "n", ipa: "/frend/", def: "bạn bè", cat: "IB", ex: "A friend in need is a friend indeed." },
+      { term: "To smile", pos: "v", ipa: "/smaɪl/", def: "mỉm cười", cat: "IB", ex: "She smiled warmly at the guests." },
+      { term: "To laugh", pos: "v", ipa: "/lɑːf/", def: "cười lớn, cười to", cat: "IB", ex: "The joke made everyone laugh." },
+      { term: "To wear", pos: "v", ipa: "/weə(r)/", def: "mặc, mang, đeo", cat: "IB", ex: "He wears glasses for reading." },
+      { term: "To visit", pos: "v", ipa: "/ˈvɪzɪt/", def: "ghé thăm, thăm hỏi", cat: "IB", ex: "We plan to visit our grandparents." },
+      { term: "To play", pos: "v", ipa: "/pleɪ/", def: "chơi (thể thao, nhạc cụ...)", cat: "IB", ex: "He plays guitar very well." },
+      { term: "To read", pos: "v", ipa: "/riːd/", def: "đọc", cat: "IB", ex: "I like to read novels before sleeping." },
+
+      // IC: Appearance & Clothes
+      { term: "Straight", pos: "adj", ipa: "/streɪt/", def: "thẳng (tóc thẳng)", cat: "IC", ex: "She has long straight dark hair." },
+      { term: "Wavy", pos: "adj", ipa: "/ˈweɪvi/", def: "gợn sóng, xoăn nhẹ", cat: "IC", ex: "His hair is naturally wavy." },
+      { term: "Fair", pos: "adj", ipa: "/feə(r)/", def: "sáng màu (da), vàng hoe (tóc)", cat: "IC", ex: "She has fair hair and blue eyes." },
+      { term: "Length", pos: "n", ipa: "/leŋθ/", def: "chiều dài (tóc)", cat: "IC", ex: "Her hair reached waist length." },
+      { term: "Medium-length", pos: "adj", ipa: "/ˌmiːdiəm ˈleŋθ/", def: "dài trung bình (ngang vai)", cat: "IC", ex: "He has medium-length brown hair." },
+      { term: "Cardigan", pos: "n", ipa: "/ˈkɑːdɪɡən/", def: "áo khoác len cài cúc trước", cat: "IC", ex: "Put on a cardigan if you feel chilly." },
+      { term: "Sweater", pos: "n", ipa: "/ˈswetə(r)/", def: "áo len chui đầu", cat: "IC", ex: "I bought a warm wool sweater." },
+      { term: "Sweatshirt", pos: "n", ipa: "/ˈswetʃɜːt/", def: "áo nỉ dài tay thể thao", cat: "IC", ex: "He wore a grey cotton sweatshirt." },
+      { term: "Hoodie", pos: "n", ipa: "/ˈhʊdi/", def: "áo nỉ thể thao có mũ", cat: "IC", ex: "Teenagers love wearing oversized hoodies." },
+      { term: "Coat", pos: "n", ipa: "/kəʊt/", def: "áo khoác dáng dài, áo măng tô", cat: "IC", ex: "Don't forget your winter coat." },
+      { term: "Jacket", pos: "n", ipa: "/ˈdʒækɪt/", def: "áo khoác ngắn", cat: "IC", ex: "He wore a black leather jacket." },
+      { term: "Tracksuit", pos: "n", ipa: "/ˈtræksuːt/", def: "bộ đồ thể thao đồng bộ", cat: "IC", ex: "She wears a tracksuit when jogging." },
+      { term: "T-shirt", pos: "n", ipa: "/ˈtiː ʃɜːt/", def: "áo thun, áo phông", cat: "IC", ex: "A simple white T-shirt goes with anything." },
+      { term: "Shirt", pos: "n", ipa: "/ʃɜːt/", def: "áo sơ mi", cat: "IC", ex: "He wore a formal blue shirt." },
+      { term: "Top", pos: "n", ipa: "/tɒp/", def: "áo kiểu nữ", cat: "IC", ex: "She paired a silk top with jeans." },
+      { term: "Dress", pos: "n", ipa: "/dres/", def: "váy liền, đầm", cat: "IC", ex: "She wore an elegant evening dress." },
+      { term: "Skirt", pos: "n", ipa: "/skɜːt/", def: "chân váy", cat: "IC", ex: "A pleated skirt looks very stylish." },
+      { term: "Jeans", pos: "n", ipa: "/dʒiːnz/", def: "quần bò, quần jeans", cat: "IC", ex: "Blue jeans are durable and comfortable." },
+      { term: "Trousers", pos: "n", ipa: "/ˈtraʊzəz/", def: "quần dài (âu)", cat: "IC", ex: "He wore formal dark trousers." },
+      { term: "Leggings", pos: "n", ipa: "/ˈleɡɪŋz/", def: "quần thun bó ôm sát", cat: "IC", ex: "Leggings are ideal for yoga practice." },
+      { term: "Shorts", pos: "n", ipa: "/ʃɔːts/", def: "quần đùi, quần soóc", cat: "IC", ex: "Wear shorts for beach volleyball." },
+      { term: "Boot", pos: "n", ipa: "/buːt/", def: "giày cao cổ, ủng, bốt", cat: "IC", ex: "Leather boots keep feet warm in rain." },
+      { term: "Trainer", pos: "n", ipa: "/ˈtreɪnə(r)/", def: "giày thể thao", cat: "IC", ex: "He bought a new pair of running trainers." },
+      { term: "Tie", pos: "n", ipa: "/taɪ/", def: "cà vạt", cat: "IC", ex: "He tied a red tie for the meeting." },
+      { term: "Scarf", pos: "n", ipa: "/skɑːf/", def: "khăn quàng cổ", cat: "IC", ex: "Wrap a warm scarf around your neck." },
+      { term: "Glove", pos: "n", ipa: "/ɡlʌv/", def: "găng tay", cat: "IC", ex: "Wear wool gloves to protect your hands." },
+      { term: "Sock", pos: "n", ipa: "/sɒk/", def: "tất, vớ", cat: "IC", ex: "Cotton socks absorb sweat well." },
+
+      // ID: School Facilities
+      { term: "Canteen", pos: "n", ipa: "/kænˈtiːn/", def: "nhà ăn, căng tin", cat: "ID", ex: "Students have lunch at the canteen." },
+      { term: "Classroom", pos: "n", ipa: "/ˈklɑːsruːm/", def: "phòng học, lớp học", cat: "ID", ex: "Our classroom has large windows." },
+      { term: "Corridor", pos: "n", ipa: "/ˈkɒrɪdɔː(r)/", def: "hành lang", cat: "ID", ex: "Do not run in the corridor." },
+      { term: "Gym", pos: "n", ipa: "/dʒɪm/", def: "phòng tập thể chất, thể dục", cat: "ID", ex: "We do PE classes in the indoor gym." },
+      { term: "Hall", pos: "n", ipa: "/hɔːl/", def: "hội trường, đại sảnh", cat: "ID", ex: "The morning assembly was held in the hall." },
+      { term: "Reception", pos: "n", ipa: "/rɪˈsepʃn/", def: "quầy tiếp tân, khu vực đón tiếp", cat: "ID", ex: "Please sign in at the school reception." },
+      { term: "Staff room", pos: "n", ipa: "/ˈstɑːfruːm/", def: "phòng nghỉ giáo viên", cat: "ID", ex: "Teachers meet in the staff room." },
+      { term: "Playing field", pos: "n", ipa: "/ˈpleɪɪŋ fiːld/", def: "sân chơi thể thao, sân vận động trường", cat: "ID", ex: "Students play football on the playing field." },
+      { term: "Desk", pos: "n", ipa: "/desk/", def: "bàn học, bàn làm việc", cat: "ID", ex: "Keep your study desk neat and tidy." },
+      { term: "Whiteboard", pos: "n", ipa: "/ˈwaɪtbɔːd/", def: "bảng trắng", cat: "ID", ex: "The teacher wrote equations on the whiteboard." },
+      { term: "Interactive whiteboard", pos: "n", ipa: "/ɪntərˌæktɪv ˈwaɪtbɔːd/", def: "bảng tương tác thông minh", cat: "ID", ex: "The classroom is fitted with an interactive whiteboard." },
+      { term: "Notice board", pos: "n", ipa: "/ˈnəʊtɪs bɔːd/", def: "bảng thông báo", cat: "ID", ex: "Exam schedules are pinned on the notice board." },
+      { term: "Textbook", pos: "n", ipa: "/ˈtekstbʊk/", def: "sách giáo khoa", cat: "ID", ex: "Open your English textbook to page 10." },
+      { term: "Laptop", pos: "n", ipa: "/ˈlæptɒp/", def: "máy tính xách tay", cat: "ID", ex: "Students use laptops for project research." }
+    ];
+
+    let currentDataset = [...rawData];
+    let fcIndex = 0;
+    let isFlipped = false;
+
+    // Filter Logic
+    function onCategoryChange() {
+      const val = document.getElementById('catFilter').value;
+      currentDataset = (val === 'ALL') ? [...rawData] : rawData.filter(item => item.cat === val);
+      fcIndex = 0;
+      updateFlashcard();
+      initMatchGame();
+      initQuiz();
+      initSpell();
+    }
+
+    // Switch Tabs
+    function switchView(viewName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+      document.getElementById(`view-${viewName}`).classList.add('active');
+
+      if (viewName === 'match') initMatchGame();
+      if (viewName === 'quiz') initQuiz();
+      if (viewName === 'spell') initSpell();
+    }
+
+    // Flashcard Logic
+    function updateFlashcard() {
+      if (currentDataset.length === 0) return;
+      const item = currentDataset[fcIndex];
+      const cardEl = document.getElementById('flashcard');
+      cardEl.classList.remove('flipped');
+      isFlipped = false;
+
+      document.getElementById('fc-term').innerText = item.term;
+      document.getElementById('fc-ipa').innerText = item.ipa;
+      document.getElementById('fc-pos').innerText = item.pos;
+      document.getElementById('fc-def').innerText = item.def;
+      document.getElementById('fc-example').innerText = `"${item.ex}"`;
+      document.getElementById('fc-category').innerText = `Lesson ${item.cat}`;
+      document.getElementById('fc-counter').innerText = `${fcIndex + 1} / ${currentDataset.length}`;
+      
+      const img = document.getElementById('fc-img');
+      img.style.display = 'none';
+      img.src = '';
+    }
+
+    function flipCard() {
+      isFlipped = !isFlipped;
+      document.getElementById('flashcard').classList.toggle('flipped', isFlipped);
+    }
+
+    function nextCard() {
+      fcIndex = (fcIndex + 1) % currentDataset.length;
+      updateFlashcard();
+    }
+
+    function prevCard() {
+      fcIndex = (fcIndex - 1 + currentDataset.length) % currentDataset.length;
+      updateFlashcard();
+    }
+
+    function speakCurrentTerm() {
+      const term = currentDataset[fcIndex].term.replace(/^To\s+/i, '');
+      const utter = new SpeechSynthesisUtterance(term);
+      utter.lang = 'en-GB';
+      window.speechSynthesis.speak(utter);
+    }
+
+    function generateAIImage() {
+      const item = currentDataset[fcIndex];
+      const cleanTerm = encodeURIComponent(item.term.replace(/^To\s+/i, ''));
+      const url = `https://image.pollinations.ai/prompt/simple%20clean%20vector%20illustration%20of%20${cleanTerm}?width=400&height=300&nologo=true`;
+      const img = document.getElementById('fc-img');
+      img.src = url;
+      img.style.display = 'block';
+    }
+
+    // Match Game Logic
+    let matchTimerInterval, matchStartTime, selectedMatchCard = null, matchesLeft = 0;
+    function initMatchGame() {
+      clearInterval(matchTimerInterval);
+      const grid = document.getElementById('matchGrid');
+      grid.innerHTML = '';
+      document.getElementById('match-timer').innerText = '0.0s';
+
+      const sample = [...currentDataset].sort(() => 0.5 - Math.random()).slice(0, 6);
+      matchesLeft = sample.length;
+
+      let cards = [];
+      sample.forEach((item, idx) => {
+        cards.push({ id: idx, text: item.term, type: 'term' });
+        cards.push({ id: idx, text: item.def, type: 'def' });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      cards.forEach(cardData => {
+        const card = document.createElement('div');
+        card.className = 'match-card';
+        card.innerText = cardData.text;
+        card.dataset.id = cardData.id;
+        card.dataset.type = cardData.type;
+        card.onclick = () => handleMatchClick(card);
+        grid.appendChild(card);
+      });
+
+      matchStartTime = Date.now();
+      matchTimerInterval = setInterval(() => {
+        const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+        document.getElementById('match-timer').innerText = `${elapsed}s`;
+      }, 100);
+    }
+
+    function handleMatchClick(card) {
+      if (card.classList.contains('matched') || card === selectedMatchCard) return;
+
+      if (!selectedMatchCard) {
+        selectedMatchCard = card;
+        card.classList.add('selected');
+      } else {
+        if (selectedMatchCard.dataset.id === card.dataset.id && selectedMatchCard.dataset.type !== card.dataset.type) {
+          card.classList.add('matched');
+          selectedMatchCard.classList.add('matched');
+          selectedMatchCard.classList.remove('selected');
+          selectedMatchCard = null;
+          matchesLeft--;
+
+          if (matchesLeft === 0) {
+            clearInterval(matchTimerInterval);
+            confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+          }
+        } else {
+          card.classList.add('selected');
+          setTimeout(() => {
+            card.classList.remove('selected');
+            if (selectedMatchCard) selectedMatchCard.classList.remove('selected');
+            selectedMatchCard = null;
+          }, 400);
+        }
+      }
+    }
+
+    // Quiz Logic
+    let quizList = [], quizIdx = 0, quizScore = 0;
+    function initQuiz() {
+      quizList = [...currentDataset].sort(() => 0.5 - Math.random()).slice(0, 10);
+      quizIdx = 0;
+      quizScore = 0;
+      document.getElementById('quizContent').style.display = 'block';
+      document.getElementById('quizResult').style.display = 'none';
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      if (quizIdx >= quizList.length) {
+        document.getElementById('quizContent').style.display = 'none';
+        document.getElementById('quizResult').style.display = 'flex';
+        document.getElementById('quizScoreText').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizList.length} câu hỏi!`;
+        if (quizScore >= quizList.length * 0.8) confetti({ particleCount: 100 });
+        return;
+      }
+
+      const q = quizList[quizIdx];
+      document.getElementById('quizBar').style.width = `${((quizIdx) / quizList.length) * 100}%`;
+      document.getElementById('quizQuestion').innerHTML = `Từ nào có nghĩa là: <span style="color:var(--primary)">"${q.def}"</span> (${q.pos})?`;
+
+      let options = [q];
+      const distractors = rawData.filter(item => item.term !== q.term).sort(() => 0.5 - Math.random()).slice(0, 3);
+      options = options.concat(distractors).sort(() => 0.5 - Math.random());
+
+      const optionsEl = document.getElementById('quizOptions');
+      optionsEl.innerHTML = '';
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-btn';
+        btn.innerHTML = `${opt.term} <span style="color:var(--text-sub); font-size:0.9rem;">${opt.ipa}</span>`;
+        btn.onclick = () => {
+          document.querySelectorAll('.quiz-btn').forEach(b => b.disabled = true);
+          if (opt.term === q.term) {
+            btn.classList.add('correct');
+            quizScore++;
+          } else {
+            btn.classList.add('wrong');
+            optionsEl.querySelectorAll('.quiz-btn').forEach(b => {
+              if (b.innerText.includes(q.term)) b.classList.add('correct');
+            });
+          }
+          setTimeout(() => { quizIdx++; renderQuizQuestion(); }, 1200);
+        };
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    // Spell Logic
+    let spellIndex = 0;
+    function initSpell() {
+      spellIndex = 0;
+      loadSpellWord();
+    }
+
+    function loadSpellWord() {
+      if (currentDataset.length === 0) return;
+      const item = currentDataset[spellIndex];
+      document.getElementById('spellHint').innerText = `Gợi ý nghĩa: ${item.def} (${item.pos})`;
+      const input = document.getElementById('spellInput');
+      input.value = '';
+      input.focus();
+      document.getElementById('spellFeedback').innerText = '';
+      speakCurrentSpell();
+    }
+
+    function speakCurrentSpell() {
+      const item = currentDataset[spellIndex];
+      const term = item.term.replace(/^To\s+/i, '');
+      const utter = new SpeechSynthesisUtterance(term);
+      utter.lang = 'en-GB';
+      window.speechSynthesis.speak(utter);
+    }
+
+    function checkSpell() {
+      const item = currentDataset[spellIndex];
+      const inputVal = document.getElementById('spellInput').value.trim().toLowerCase();
+      const expected = item.term.toLowerCase();
+      const fb = document.getElementById('spellFeedback');
+
+      if (inputVal === expected || inputVal === expected.replace(/^to\s+/i, '')) {
+        fb.innerText = '✅ Chính xác!';
+        fb.style.color = 'var(--accent)';
+        setTimeout(() => {
+          spellIndex = (spellIndex + 1) % currentDataset.length;
+          loadSpellWord();
+        }, 1000);
+      } else {
+        fb.innerText = `❌ Chưa đúng. Đáp án: ${item.term}`;
+        fb.style.color = 'var(--danger)';
+      }
+    }
+
+    // Global Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (document.getElementById('view-flashcards').classList.contains('active')) {
+        if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+        if (e.code === 'ArrowRight') { nextCard(); }
+        if (e.code === 'ArrowLeft') { prevCard(); }
+      }
+      if (document.getElementById('view-spell').classList.contains('active')) {
+        if (e.key === 'Enter') { checkSpell(); }
+      }
+    });
+
+    // Start App
+    updateFlashcard();
+  </script>
+</body>
+</html>
