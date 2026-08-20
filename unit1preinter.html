@@ -1,615 +1,731 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solutions Pre-Inter: Unit Introduction Vocab</title>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <style>
-    :root {
-      --primary: #4255ff;
-      --primary-hover: #2e3dc7;
-      --bg: #f6f7fb;
-      --card-bg: #ffffff;
-      --text-main: #1a1d28;
-      --text-sub: #646f79;
-      --accent: #23b26d;
-      --danger: #ff5252;
-      --border: #e6e8ee;
-      --shadow: 0 8px 24px rgba(0,0,0,0.08);
-      --radius: 16px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions Pre-Intermediate - Unit 1: Feelings & Personality</title>
+    <!-- Tailwind CSS for modern responsive UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti for winning effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-
-    header {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.3rem; font-weight: 700; color: var(--primary); }
-    .brand-badge { background: #eef1ff; color: var(--primary); font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 20px; }
-
-    .nav-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      color: var(--text-sub);
-      transition: all 0.2s;
-    }
-    .tab-btn:hover { background: #edf0f8; color: var(--text-main); }
-    .tab-btn.active { background: var(--primary); color: #fff; }
-
-    .category-select {
-      padding: 0.6rem 1rem;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-weight: 600;
-      background: var(--card-bg);
-      color: var(--text-main);
-      outline: none;
-      cursor: pointer;
-    }
-
-    main { flex: 1; max-width: 900px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
-
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-
-    /* Flashcards */
-    .flashcard-container { perspective: 1000px; width: 100%; height: 420px; margin-bottom: 1.5rem; }
-    .flashcard {
-      width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-      cursor: pointer; border-radius: var(--radius); box-shadow: var(--shadow);
-    }
-    .flashcard.flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-      border-radius: var(--radius); background: var(--card-bg);
-      padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;
-      border: 2px solid transparent;
-    }
-    .card-back { transform: rotateY(180deg); background: linear-gradient(135deg, #ffffff, #f9faff); border-color: #e5ebff; }
-    .card-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-sub); }
-    .card-center { text-align: center; margin: auto; }
-    .card-term { font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; }
-    .card-ipa { font-size: 1.2rem; color: var(--primary); font-family: 'Lucida Sans', sans-serif; margin-bottom: 0.5rem; }
-    .card-pos { display: inline-block; background: #eef1ff; color: var(--primary); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; }
-    .card-def { font-size: 2rem; font-weight: 700; color: #2e3dc7; margin-bottom: 1rem; }
-    .card-example { font-style: italic; color: var(--text-sub); line-height: 1.5; }
-    .card-img { max-height: 140px; border-radius: 12px; margin-top: 1rem; object-fit: cover; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    
-    .card-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
-    .btn-action {
-      background: var(--card-bg); border: 1px solid var(--border); padding: 0.6rem 1.2rem;
-      border-radius: 10px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s;
-    }
-    .btn-action:hover { background: #f0f2f8; transform: translateY(-1px); }
-
-    .nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
-    .btn-circle {
-      width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--card-bg);
-      box-shadow: var(--shadow); cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
-      transition: 0.2s;
-    }
-    .btn-circle:hover { background: var(--primary); color: #fff; }
-
-    /* Match Game */
-    .match-stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 600; }
-    .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-    .match-card {
-      min-height: 100px; background: var(--card-bg); border: 2px solid var(--border); border-radius: var(--radius);
-      padding: 1rem; display: flex; align-items: center; justify-content: center; text-align: center;
-      cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.2s; user-select: none;
-    }
-    .match-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
-    .match-card.selected { border-color: var(--primary); background: #eef1ff; color: var(--primary); }
-    .match-card.matched { visibility: hidden; opacity: 0; transform: scale(0.8); }
-
-    /* Quiz Mode */
-    .quiz-container { background: var(--card-bg); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); }
-    .quiz-progress { height: 6px; background: #e6e8ee; border-radius: 3px; margin-bottom: 1.5rem; overflow: hidden; }
-    .quiz-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-    .quiz-question { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
-    .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; }
-    .quiz-btn {
-      padding: 1rem; border: 2px solid var(--border); border-radius: 12px; background: none;
-      text-align: left; font-size: 1rem; cursor: pointer; transition: 0.2s; font-weight: 500;
-    }
-    .quiz-btn:hover:not(:disabled) { border-color: var(--primary); background: #fafbff; }
-    .quiz-btn.correct { background: #e6f9f0; border-color: var(--accent); color: var(--accent); font-weight: 700; }
-    .quiz-btn.wrong { background: #ffebeb; border-color: var(--danger); color: var(--danger); font-weight: 700; }
-
-    /* Spell Mode */
-    .spell-container { background: var(--card-bg); border-radius: var(--radius); padding: 2.5rem; text-align: center; box-shadow: var(--shadow); }
-    .spell-input {
-      width: 100%; max-width: 400px; padding: 0.8rem 1.2rem; font-size: 1.2rem; border-radius: 10px;
-      border: 2px solid var(--border); outline: none; margin: 1.5rem 0; text-align: center;
-    }
-    .spell-input:focus { border-color: var(--primary); }
-
-    .btn-primary {
-      background: var(--primary); color: #fff; border: none; padding: 0.8rem 1.8rem;
-      border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s;
-    }
-    .btn-primary:hover { background: var(--primary-hover); }
-
-    .center-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
-  </style>
-</head>
-<body>
-
-  <header>
-    <div class="brand">
-      <span>📚 VocabMaster</span>
-      <span class="brand-badge">Solutions Pre-Int</span>
-    </div>
-    
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchView('flashcards')">🗂️ Thẻ ghi nhớ</button>
-      <button class="tab-btn" onclick="switchView('match')">🧩 Ghép từ</button>
-      <button class="tab-btn" onclick="switchView('quiz')">📝 Trắc nghiệm</button>
-      <button class="tab-btn" onclick="switchView('spell')">🎧 Nghe & Viết</button>
-    </div>
-
-    <select class="category-select" id="catFilter" onchange="onCategoryChange()">
-      <option value="ALL">Tất cả bài học (Unit Intro)</option>
-      <option value="IA">IA: Sports & Hobbies</option>
-      <option value="IB">IB: Everyday Activities</option>
-      <option value="IC">IC: Appearance & Clothes</option>
-      <option value="ID">ID: School Facilities</option>
-    </select>
-  </header>
-
-  <main>
-    <!-- View: Flashcard -->
-    <div id="view-flashcards" class="view-panel active">
-      <div class="flashcard-container">
-        <div class="flashcard" id="flashcard" onclick="flipCard()">
-          <div class="card-face card-front">
-            <div class="card-top">
-              <span id="fc-category">Unit Intro</span>
-              <span>Ấn để lật thẻ ↻</span>
-            </div>
-            <div class="card-center">
-              <div class="card-term" id="fc-term">Loading...</div>
-              <div class="card-ipa" id="fc-ipa">/.../</div>
-              <span class="card-pos" id="fc-pos">n</span>
-              <div><img id="fc-img" class="card-img" alt="AI illustration" /></div>
-            </div>
-            <div class="card-top" style="justify-content: center; font-size: 0.8rem;">
-              Phím tắt: Space (Lật) | ← → (Chuyển từ)
-            </div>
-          </div>
-          <div class="card-face card-back">
-            <div class="card-top">
-              <span>Nghĩa & Ví dụ</span>
-              <span>Ấn để lật lại ↻</span>
-            </div>
-            <div class="card-center">
-              <div class="card-def" id="fc-def">Đang tải...</div>
-              <div class="card-example" id="fc-example">"..."</div>
-            </div>
-            <div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-actions">
-        <button class="btn-action" onclick="speakCurrentTerm()">🔊 Phát âm</button>
-        <button class="btn-action" onclick="generateAIImage()">🎨 Tạo ảnh AI (Pollinations)</button>
-      </div>
-
-      <div class="nav-controls">
-        <button class="btn-circle" onclick="prevCard()">←</button>
-        <span id="fc-counter" style="font-weight: 700;">1 / 50</span>
-        <button class="btn-circle" onclick="nextCard()">→</button>
-      </div>
-    </div>
-
-    <!-- View: Match Game -->
-    <div id="view-match" class="view-panel">
-      <div class="match-stats">
-        <span>⏱️ Thời gian: <span id="match-timer">0.0s</span></span>
-        <span>Ghép đúng từ với định nghĩa tiếng Việt tương ứng</span>
-        <button class="btn-action" onclick="initMatchGame()">Làm mới</button>
-      </div>
-      <div class="match-grid" id="matchGrid"></div>
-    </div>
-
-    <!-- View: Quiz Mode -->
-    <div id="view-quiz" class="view-panel">
-      <div class="quiz-container">
-        <div class="quiz-progress"><div class="quiz-bar" id="quizBar"></div></div>
-        <div id="quizContent">
-          <div class="quiz-question" id="quizQuestion">Câu hỏi trắc nghiệm</div>
-          <div class="quiz-options" id="quizOptions"></div>
-        </div>
-        <div id="quizResult" style="display:none;" class="center-content">
-          <h2>🎉 Hoàn thành bài kiểm tra!</h2>
-          <p id="quizScoreText" style="font-size: 1.2rem;"></p>
-          <button class="btn-primary" onclick="initQuiz()">Làm lại bài kiểm tra</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- View: Listen & Spell -->
-    <div id="view-spell" class="view-panel">
-      <div class="spell-container">
-        <h3 style="color: var(--text-sub);">Nghe và viết lại từ chính xác</h3>
-        <div style="margin: 2rem 0;">
-          <button class="btn-circle" style="width: 70px; height: 70px; margin: 0 auto;" onclick="speakCurrentSpell()">🔊</button>
-        </div>
-        <p id="spellHint" style="font-size: 1.1rem; color: var(--text-sub); margin-bottom: 0.5rem;"></p>
-        <input type="text" id="spellInput" class="spell-input" placeholder="Gõ từ tiếng Anh tại đây..." autocomplete="off" />
-        <div>
-          <button class="btn-primary" onclick="checkSpell()">Kiểm tra (Enter)</button>
-        </div>
-        <p id="spellFeedback" style="margin-top: 1rem; font-weight: 600;"></p>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    const rawData = [
-      // IA: Sports & Hobbies
-      { term: "Hobby", pos: "n", ipa: "/ˈhɒbi/", def: "sở thích", cat: "IA", ex: "Photography is an expensive hobby." },
-      { term: "Sport", pos: "n", ipa: "/spɔːt/", def: "thể thao", cat: "IA", ex: "I play a lot of sport in my free time." },
-      { term: "Board game", pos: "n", ipa: "/ˈbɔːd ɡeɪm/", def: "trò chơi bàn cờ", cat: "IA", ex: "Monopoly is a popular board game." },
-      { term: "Chess", pos: "n", ipa: "/tʃes/", def: "cờ vua", cat: "IA", ex: "Do you play chess regularly?" },
-      { term: "Drawing", pos: "n", ipa: "/ˈdrɔːɪŋ/", def: "bức vẽ, hoạt động vẽ tranh", cat: "IA", ex: "She is good at charcoal drawing." },
-      { term: "Cycling", pos: "n", ipa: "/ˈsaɪklɪŋ/", def: "đi xe đạp dã ngoại/thể thao", cat: "IA", ex: "We went cycling around the lake." },
-      { term: "Dancing", pos: "n", ipa: "/ˈdɑːnsɪŋ/", def: "nhảy múa, khiêu vũ", cat: "IA", ex: "Her favourite activity is dancing." },
-      { term: "Skateboarding", pos: "n", ipa: "/ˈskeɪtbɔːdɪŋ/", def: "trượt ván", cat: "IA", ex: "Skateboarding requires good balance." },
-      { term: "Ice skating", pos: "n", ipa: "/ˈaɪs skeɪtɪŋ/", def: "trượt băng", cat: "IA", ex: "We went ice skating in winter." },
-      { term: "Ice hockey", pos: "n", ipa: "/ˈaɪs ˌhɒki/", def: "khúc côn cầu trên băng", cat: "IA", ex: "Ice hockey is fast and exciting." },
-      { term: "Gymnastics", pos: "n", ipa: "/dʒɪmˈnæstɪks/", def: "thể dục dụng cụ", cat: "IA", ex: "She does gymnastics every morning." },
-      { term: "Bowling", pos: "n", ipa: "/ˈbəʊlɪŋ/", def: "trò chơi bowling", cat: "IA", ex: "We went bowling on Saturday night." },
-      { term: "Basketball", pos: "n", ipa: "/ˈbɑːskɪtbɔːl/", def: "bóng rổ", cat: "IA", ex: "He plays basketball for the school team." },
-      { term: "Volleyball", pos: "n", ipa: "/ˈvɒlibɔːl/", def: "bóng chuyền", cat: "IA", ex: "They play beach volleyball in summer." },
-      { term: "Football", pos: "n", ipa: "/ˈfʊtbɔːl/", def: "bóng đá", cat: "IA", ex: "Football is the most popular sport here." },
-      { term: "Swimming", pos: "n", ipa: "/ˈswɪmɪŋ/", def: "bơi lội", cat: "IA", ex: "Swimming is good for your health." },
-      { term: "Video game", pos: "n", ipa: "/ˈvɪdiəʊ ɡeɪm/", def: "trò chơi điện tử", cat: "IA", ex: "He loves playing action video games." },
-      { term: "Drama", pos: "n", ipa: "/ˈdrɑːmə/", def: "môn kịch nghệ, kịch", cat: "IA", ex: "She joined the drama club at school." },
-      { term: "Information technology (IT)", pos: "n", ipa: "/ˌɪnfəˈmeɪʃn tekˈnɒlədʒi/", def: "công nghệ thông tin", cat: "IA", ex: "IT skills are essential today." },
-      { term: "Subject", pos: "n", ipa: "/ˈsʌbdʒɪkt/", def: "môn học", cat: "IA", ex: "What is your favourite school subject?" },
-      { term: "To watch", pos: "v", ipa: "/wɒtʃ/", def: "xem, theo dõi", cat: "IA", ex: "I watch films on weekends." },
-      { term: "To listen", pos: "v", ipa: "/ˈlɪsn/", def: "nghe", cat: "IA", ex: "Listen carefully to the instructions." },
-
-      // IB: Everyday Activities
-      { term: "Activity", pos: "n", ipa: "/ækˈtɪvəti/", def: "hoạt động", cat: "IB", ex: "Outdoor activities keep you fit." },
-      { term: "Everyday", pos: "adj", ipa: "/ˈevrideɪ/", def: "thường nhật, hàng ngày", cat: "IB", ex: "These are problems of everyday life." },
-      { term: "Homework", pos: "n", ipa: "/ˈhəʊmwɜːk/", def: "bài tập về nhà", cat: "IB", ex: "I have finished my English homework." },
-      { term: "Shopping", pos: "n", ipa: "/ˈʃɒpɪŋ/", def: "mua sắm", cat: "IB", ex: "Let's go grocery shopping." },
-      { term: "Walk", pos: "n/v", ipa: "/wɔːk/", def: "đi bộ, đi dạo", cat: "IB", ex: "We took a long walk in the park." },
-      { term: "Picnic", pos: "n", ipa: "/ˈpɪknɪk/", def: "dã ngoại", cat: "IB", ex: "They had a picnic by the river." },
-      { term: "Bike", pos: "n", ipa: "/baɪk/", def: "xe đạp", cat: "IB", ex: "He rides his bike to school every day." },
-      { term: "Ride", pos: "n/v", ipa: "/raɪd/", def: "lượt đi xe, đạp xe / cưỡi ngựa", cat: "IB", ex: "Can you ride a horse?" },
-      { term: "Relative", pos: "n", ipa: "/ˈrelətɪv/", def: "họ hàng, người thân", cat: "IB", ex: "All our relatives came to the party." },
-      { term: "Friend", pos: "n", ipa: "/frend/", def: "bạn bè", cat: "IB", ex: "A friend in need is a friend indeed." },
-      { term: "To smile", pos: "v", ipa: "/smaɪl/", def: "mỉm cười", cat: "IB", ex: "She smiled warmly at the guests." },
-      { term: "To laugh", pos: "v", ipa: "/lɑːf/", def: "cười lớn, cười to", cat: "IB", ex: "The joke made everyone laugh." },
-      { term: "To wear", pos: "v", ipa: "/weə(r)/", def: "mặc, mang, đeo", cat: "IB", ex: "He wears glasses for reading." },
-      { term: "To visit", pos: "v", ipa: "/ˈvɪzɪt/", def: "ghé thăm, thăm hỏi", cat: "IB", ex: "We plan to visit our grandparents." },
-      { term: "To play", pos: "v", ipa: "/pleɪ/", def: "chơi (thể thao, nhạc cụ...)", cat: "IB", ex: "He plays guitar very well." },
-      { term: "To read", pos: "v", ipa: "/riːd/", def: "đọc", cat: "IB", ex: "I like to read novels before sleeping." },
-
-      // IC: Appearance & Clothes
-      { term: "Straight", pos: "adj", ipa: "/streɪt/", def: "thẳng (tóc thẳng)", cat: "IC", ex: "She has long straight dark hair." },
-      { term: "Wavy", pos: "adj", ipa: "/ˈweɪvi/", def: "gợn sóng, xoăn nhẹ", cat: "IC", ex: "His hair is naturally wavy." },
-      { term: "Fair", pos: "adj", ipa: "/feə(r)/", def: "sáng màu (da), vàng hoe (tóc)", cat: "IC", ex: "She has fair hair and blue eyes." },
-      { term: "Length", pos: "n", ipa: "/leŋθ/", def: "chiều dài (tóc)", cat: "IC", ex: "Her hair reached waist length." },
-      { term: "Medium-length", pos: "adj", ipa: "/ˌmiːdiəm ˈleŋθ/", def: "dài trung bình (ngang vai)", cat: "IC", ex: "He has medium-length brown hair." },
-      { term: "Cardigan", pos: "n", ipa: "/ˈkɑːdɪɡən/", def: "áo khoác len cài cúc trước", cat: "IC", ex: "Put on a cardigan if you feel chilly." },
-      { term: "Sweater", pos: "n", ipa: "/ˈswetə(r)/", def: "áo len chui đầu", cat: "IC", ex: "I bought a warm wool sweater." },
-      { term: "Sweatshirt", pos: "n", ipa: "/ˈswetʃɜːt/", def: "áo nỉ dài tay thể thao", cat: "IC", ex: "He wore a grey cotton sweatshirt." },
-      { term: "Hoodie", pos: "n", ipa: "/ˈhʊdi/", def: "áo nỉ thể thao có mũ", cat: "IC", ex: "Teenagers love wearing oversized hoodies." },
-      { term: "Coat", pos: "n", ipa: "/kəʊt/", def: "áo khoác dáng dài, áo măng tô", cat: "IC", ex: "Don't forget your winter coat." },
-      { term: "Jacket", pos: "n", ipa: "/ˈdʒækɪt/", def: "áo khoác ngắn", cat: "IC", ex: "He wore a black leather jacket." },
-      { term: "Tracksuit", pos: "n", ipa: "/ˈtræksuːt/", def: "bộ đồ thể thao đồng bộ", cat: "IC", ex: "She wears a tracksuit when jogging." },
-      { term: "T-shirt", pos: "n", ipa: "/ˈtiː ʃɜːt/", def: "áo thun, áo phông", cat: "IC", ex: "A simple white T-shirt goes with anything." },
-      { term: "Shirt", pos: "n", ipa: "/ʃɜːt/", def: "áo sơ mi", cat: "IC", ex: "He wore a formal blue shirt." },
-      { term: "Top", pos: "n", ipa: "/tɒp/", def: "áo kiểu nữ", cat: "IC", ex: "She paired a silk top with jeans." },
-      { term: "Dress", pos: "n", ipa: "/dres/", def: "váy liền, đầm", cat: "IC", ex: "She wore an elegant evening dress." },
-      { term: "Skirt", pos: "n", ipa: "/skɜːt/", def: "chân váy", cat: "IC", ex: "A pleated skirt looks very stylish." },
-      { term: "Jeans", pos: "n", ipa: "/dʒiːnz/", def: "quần bò, quần jeans", cat: "IC", ex: "Blue jeans are durable and comfortable." },
-      { term: "Trousers", pos: "n", ipa: "/ˈtraʊzəz/", def: "quần dài (âu)", cat: "IC", ex: "He wore formal dark trousers." },
-      { term: "Leggings", pos: "n", ipa: "/ˈleɡɪŋz/", def: "quần thun bó ôm sát", cat: "IC", ex: "Leggings are ideal for yoga practice." },
-      { term: "Shorts", pos: "n", ipa: "/ʃɔːts/", def: "quần đùi, quần soóc", cat: "IC", ex: "Wear shorts for beach volleyball." },
-      { term: "Boot", pos: "n", ipa: "/buːt/", def: "giày cao cổ, ủng, bốt", cat: "IC", ex: "Leather boots keep feet warm in rain." },
-      { term: "Trainer", pos: "n", ipa: "/ˈtreɪnə(r)/", def: "giày thể thao", cat: "IC", ex: "He bought a new pair of running trainers." },
-      { term: "Tie", pos: "n", ipa: "/taɪ/", def: "cà vạt", cat: "IC", ex: "He tied a red tie for the meeting." },
-      { term: "Scarf", pos: "n", ipa: "/skɑːf/", def: "khăn quàng cổ", cat: "IC", ex: "Wrap a warm scarf around your neck." },
-      { term: "Glove", pos: "n", ipa: "/ɡlʌv/", def: "găng tay", cat: "IC", ex: "Wear wool gloves to protect your hands." },
-      { term: "Sock", pos: "n", ipa: "/sɒk/", def: "tất, vớ", cat: "IC", ex: "Cotton socks absorb sweat well." },
-
-      // ID: School Facilities
-      { term: "Canteen", pos: "n", ipa: "/kænˈtiːn/", def: "nhà ăn, căng tin", cat: "ID", ex: "Students have lunch at the canteen." },
-      { term: "Classroom", pos: "n", ipa: "/ˈklɑːsruːm/", def: "phòng học, lớp học", cat: "ID", ex: "Our classroom has large windows." },
-      { term: "Corridor", pos: "n", ipa: "/ˈkɒrɪdɔː(r)/", def: "hành lang", cat: "ID", ex: "Do not run in the corridor." },
-      { term: "Gym", pos: "n", ipa: "/dʒɪm/", def: "phòng tập thể chất, thể dục", cat: "ID", ex: "We do PE classes in the indoor gym." },
-      { term: "Hall", pos: "n", ipa: "/hɔːl/", def: "hội trường, đại sảnh", cat: "ID", ex: "The morning assembly was held in the hall." },
-      { term: "Reception", pos: "n", ipa: "/rɪˈsepʃn/", def: "quầy tiếp tân, khu vực đón tiếp", cat: "ID", ex: "Please sign in at the school reception." },
-      { term: "Staff room", pos: "n", ipa: "/ˈstɑːfruːm/", def: "phòng nghỉ giáo viên", cat: "ID", ex: "Teachers meet in the staff room." },
-      { term: "Playing field", pos: "n", ipa: "/ˈpleɪɪŋ fiːld/", def: "sân chơi thể thao, sân vận động trường", cat: "ID", ex: "Students play football on the playing field." },
-      { term: "Desk", pos: "n", ipa: "/desk/", def: "bàn học, bàn làm việc", cat: "ID", ex: "Keep your study desk neat and tidy." },
-      { term: "Whiteboard", pos: "n", ipa: "/ˈwaɪtbɔːd/", def: "bảng trắng", cat: "ID", ex: "The teacher wrote equations on the whiteboard." },
-      { term: "Interactive whiteboard", pos: "n", ipa: "/ɪntərˌæktɪv ˈwaɪtbɔːd/", def: "bảng tương tác thông minh", cat: "ID", ex: "The classroom is fitted with an interactive whiteboard." },
-      { term: "Notice board", pos: "n", ipa: "/ˈnəʊtɪs bɔːd/", def: "bảng thông báo", cat: "ID", ex: "Exam schedules are pinned on the notice board." },
-      { term: "Textbook", pos: "n", ipa: "/ˈtekstbʊk/", def: "sách giáo khoa", cat: "ID", ex: "Open your English textbook to page 10." },
-      { term: "Laptop", pos: "n", ipa: "/ˈlæptɒp/", def: "máy tính xách tay", cat: "ID", ex: "Students use laptops for project research." }
-    ];
-
-    let currentDataset = [...rawData];
-    let fcIndex = 0;
-    let isFlipped = false;
-
-    // Filter Logic
-    function onCategoryChange() {
-      const val = document.getElementById('catFilter').value;
-      currentDataset = (val === 'ALL') ? [...rawData] : rawData.filter(item => item.cat === val);
-      fcIndex = 0;
-      updateFlashcard();
-      initMatchGame();
-      initQuiz();
-      initSpell();
-    }
-
-    // Switch Tabs
-    function switchView(viewName) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
-      document.getElementById(`view-${viewName}`).classList.add('active');
-
-      if (viewName === 'match') initMatchGame();
-      if (viewName === 'quiz') initQuiz();
-      if (viewName === 'spell') initSpell();
-    }
-
-    // Flashcard Logic
-    function updateFlashcard() {
-      if (currentDataset.length === 0) return;
-      const item = currentDataset[fcIndex];
-      const cardEl = document.getElementById('flashcard');
-      cardEl.classList.remove('flipped');
-      isFlipped = false;
-
-      document.getElementById('fc-term').innerText = item.term;
-      document.getElementById('fc-ipa').innerText = item.ipa;
-      document.getElementById('fc-pos').innerText = item.pos;
-      document.getElementById('fc-def').innerText = item.def;
-      document.getElementById('fc-example').innerText = `"${item.ex}"`;
-      document.getElementById('fc-category').innerText = `Lesson ${item.cat}`;
-      document.getElementById('fc-counter').innerText = `${fcIndex + 1} / ${currentDataset.length}`;
-      
-      const img = document.getElementById('fc-img');
-      img.style.display = 'none';
-      img.src = '';
-    }
-
-    function flipCard() {
-      isFlipped = !isFlipped;
-      document.getElementById('flashcard').classList.toggle('flipped', isFlipped);
-    }
-
-    function nextCard() {
-      fcIndex = (fcIndex + 1) % currentDataset.length;
-      updateFlashcard();
-    }
-
-    function prevCard() {
-      fcIndex = (fcIndex - 1 + currentDataset.length) % currentDataset.length;
-      updateFlashcard();
-    }
-
-    function speakCurrentTerm() {
-      const term = currentDataset[fcIndex].term.replace(/^To\s+/i, '');
-      const utter = new SpeechSynthesisUtterance(term);
-      utter.lang = 'en-GB';
-      window.speechSynthesis.speak(utter);
-    }
-
-    function generateAIImage() {
-      const item = currentDataset[fcIndex];
-      const cleanTerm = encodeURIComponent(item.term.replace(/^To\s+/i, ''));
-      const url = `https://image.pollinations.ai/prompt/simple%20clean%20vector%20illustration%20of%20${cleanTerm}?width=400&height=300&nologo=true`;
-      const img = document.getElementById('fc-img');
-      img.src = url;
-      img.style.display = 'block';
-    }
-
-    // Match Game Logic
-    let matchTimerInterval, matchStartTime, selectedMatchCard = null, matchesLeft = 0;
-    function initMatchGame() {
-      clearInterval(matchTimerInterval);
-      const grid = document.getElementById('matchGrid');
-      grid.innerHTML = '';
-      document.getElementById('match-timer').innerText = '0.0s';
-
-      const sample = [...currentDataset].sort(() => 0.5 - Math.random()).slice(0, 6);
-      matchesLeft = sample.length;
-
-      let cards = [];
-      sample.forEach((item, idx) => {
-        cards.push({ id: idx, text: item.term, type: 'term' });
-        cards.push({ id: idx, text: item.def, type: 'def' });
-      });
-      cards.sort(() => 0.5 - Math.random());
-
-      cards.forEach(cardData => {
-        const card = document.createElement('div');
-        card.className = 'match-card';
-        card.innerText = cardData.text;
-        card.dataset.id = cardData.id;
-        card.dataset.type = cardData.type;
-        card.onclick = () => handleMatchClick(card);
-        grid.appendChild(card);
-      });
-
-      matchStartTime = Date.now();
-      matchTimerInterval = setInterval(() => {
-        const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
-        document.getElementById('match-timer').innerText = `${elapsed}s`;
-      }, 100);
-    }
-
-    function handleMatchClick(card) {
-      if (card.classList.contains('matched') || card === selectedMatchCard) return;
-
-      if (!selectedMatchCard) {
-        selectedMatchCard = card;
-        card.classList.add('selected');
-      } else {
-        if (selectedMatchCard.dataset.id === card.dataset.id && selectedMatchCard.dataset.type !== card.dataset.type) {
-          card.classList.add('matched');
-          selectedMatchCard.classList.add('matched');
-          selectedMatchCard.classList.remove('selected');
-          selectedMatchCard = null;
-          matchesLeft--;
-
-          if (matchesLeft === 0) {
-            clearInterval(matchTimerInterval);
-            confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-          }
-        } else {
-          card.classList.add('selected');
-          setTimeout(() => {
-            card.classList.remove('selected');
-            if (selectedMatchCard) selectedMatchCard.classList.remove('selected');
-            selectedMatchCard = null;
-          }, 400);
+    <style>
+        .perspective-1000 {
+            perspective: 1000px;
         }
-      }
-    }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
 
-    // Quiz Logic
-    let quizList = [], quizIdx = 0, quizScore = 0;
-    function initQuiz() {
-      quizList = [...currentDataset].sort(() => 0.5 - Math.random()).slice(0, 10);
-      quizIdx = 0;
-      quizScore = 0;
-      document.getElementById('quizContent').style.display = 'block';
-      document.getElementById('quizResult').style.display = 'none';
-      renderQuizQuestion();
-    }
+    <!-- Header Navigation -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 1: Feelings</h1>
+                    <p class="text-xs text-indigo-200 font-medium">Pre-Intermediate 3rd Edition</p>
+                </div>
+            </div>
 
-    function renderQuizQuestion() {
-      if (quizIdx >= quizList.length) {
-        document.getElementById('quizContent').style.display = 'none';
-        document.getElementById('quizResult').style.display = 'flex';
-        document.getElementById('quizScoreText').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizList.length} câu hỏi!`;
-        if (quizScore >= quizList.length * 0.8) confetti({ particleCount: 100 });
-        return;
-      }
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-indigo-700/60 p-1.5 rounded-xl border border-indigo-500/40">
+                <i class="fa-solid fa-filter text-xs text-indigo-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-indigo-200">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-indigo-900/80 text-white text-xs font-medium rounded-lg px-3 py-1.5 border border-indigo-400/30 focus:outline-none focus:ring-2 focus:ring-amber-300">
+                    <option value="all">🌟 Tất cả bài học (36 từ)</option>
+                    <option value="1A">Lesson 1A: Adjectives of Feelings (17 từ)</option>
+                    <option value="adv">Modifying Adverbs (5 từ)</option>
+                    <option value="1BC">Lesson 1B & 1C: Personality (10 từ)</option>
+                    <option value="1F">Lesson 1F: Accidents & Injuries (12 từ)</option>
+                </select>
+            </div>
+        </div>
 
-      const q = quizList[quizIdx];
-      document.getElementById('quizBar').style.width = `${((quizIdx) / quizList.length) * 100}%`;
-      document.getElementById('quizQuestion').innerHTML = `Từ nào có nghĩa là: <span style="color:var(--primary)">"${q.def}"</span> (${q.pos})?`;
+        <!-- Mode Tabs -->
+        <nav class="bg-indigo-700 border-t border-indigo-500/40">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-indigo-700 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-indigo-100 hover:bg-indigo-600 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-indigo-100 hover:bg-indigo-600 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-indigo-100 hover:bg-indigo-600 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-      let options = [q];
-      const distractors = rawData.filter(item => item.term !== q.term).sort(() => 0.5 - Math.random()).slice(0, 3);
-      options = options.concat(distractors).sort(() => 0.5 - Math.random());
+    <!-- Main Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
 
-      const optionsEl = document.getElementById('quizOptions');
-      optionsEl.innerHTML = '';
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 36</span>
+                <span class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full" id="card-category-badge">Lesson 1A</span>
+            </div>
 
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-btn';
-        btn.innerHTML = `${opt.term} <span style="color:var(--text-sub); font-size:0.9rem;">${opt.ipa}</span>`;
-        btn.onclick = () => {
-          document.querySelectorAll('.quiz-btn').forEach(b => b.disabled = true);
-          if (opt.term === q.term) {
-            btn.classList.add('correct');
-            quizScore++;
-          } else {
-            btn.classList.add('wrong');
-            optionsEl.querySelectorAll('.quiz-btn').forEach(b => {
-              if (b.innerText.includes(q.term)) b.classList.add('correct');
+            <!-- 3D Card Area -->
+            <div class="w-full h-[400px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md" id="card-type-front">adj</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-indigo-50 text-indigo-600 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">😰</div>
+                            <h2 id="card-term" class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">Anxious</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈæŋkʃəs/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc phím Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-indigo-50 border-2 border-indigo-200 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-700 bg-indigo-200/60 px-2.5 py-1 rounded-md" id="card-type-back">adj</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo hình ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-bold text-indigo-950 mb-2">lo lắng, bồn chồn (lo sợ điều xấu xảy ra)</h3>
+                            
+                            <div class="bg-white/80 border border-indigo-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2">
+                                <p class="font-medium text-slate-900" id="card-example">"She was anxious about the exam results."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Cô ấy rất lo lắng về kết quả bài thi."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-indigo-400">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại từ vựng
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn từ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Trắc nghiệm</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Điểm số</span>
+                        <div class="text-lg font-black text-emerald-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">adj • /ˈæŋkʃəs/</span>
+                        <h3 id="quiz-question-word" class="text-3xl font-extrabold text-slate-900 mt-3">Anxious</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt chính xác nhất</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 8/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại bài khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Luyện nghe & Viết</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-indigo-50 border-2 border-indigo-200 text-indigo-600 rounded-full flex items-center justify-center text-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-indigo-600 uppercase" id="spell-hint-type">(adj)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">lo lắng, bồn chồn</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-indigo-600 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện chính tả!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-indigo-600"></i>
+                        <span id="match-timer" class="font-mono font-bold text-indigo-900 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">✨🎯✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Tuyệt vời! Hoàn thành xuất sắc!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành của bạn: <strong id="match-final-time" class="text-indigo-600 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Lượt Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt hữu ích: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        // Database of Vocabulary
+        const vocabData = [
+            // 1. Lesson 1A: Adjectives of Feelings
+            { id: 1, category: "1A", term: "Anxious", type: "adj", ipa: "/ˈæŋkʃəs/", meaning: "lo lắng, bồn chồn (lo sợ điều xấu xảy ra)", icon: "😰", example: "She was anxious about the exam results.", exampleVi: "Cô ấy lo lắng về kết quả bài kiểm tra." },
+            { id: 2, category: "1A", term: "Ashamed", type: "adj", ipa: "/əˈʃeɪmd/", meaning: "xấu hổ, ngượng ngùng (vì làm sai việc gì đó)", icon: "😳", example: "He was ashamed of his rude behavior.", exampleVi: "Anh ấy thấy xấu hổ về cách hành xử thô lỗ của mình." },
+            { id: 3, category: "1A", term: "Bored", type: "adj", ipa: "/bɔːd/", meaning: "buồn chán, tẻ nhạt", icon: "🥱", example: "I was bored with watching television all day.", exampleVi: "Tôi cảm thấy buồn chán khi xem ti vi cả ngày." },
+            { id: 4, category: "1A", term: "Confused", type: "adj", ipa: "/kənˈfjuːzd/", meaning: "bối rối, lúng túng (không hiểu chuyện gì)", icon: "😕", example: "The complex instructions left him confused.", exampleVi: "Hướng dẫn phức tạp làm anh ấy bối rối." },
+            { id: 5, category: "1A", term: "Cross", type: "adj", ipa: "/krɒs/", meaning: "bực mình, cáu gắt (tương đương angry)", icon: "😠", example: "Mum was cross because I arrived home late.", exampleVi: "Mẹ đã rất tức giận vì tôi về nhà trễ." },
+            { id: 6, category: "1A", term: "Delighted", type: "adj", ipa: "/dɪˈlaɪtɪd/", meaning: "vui mừng, cực kỳ hạnh phúc", icon: "😃", example: "They were delighted with their wedding presents.", exampleVi: "Họ vô cùng vui sướng với những món quà cưới." },
+            { id: 7, category: "1A", term: "Disappointed", type: "adj", ipa: "/ˌdɪsəˈpɔɪntɪd/", meaning: "thất vọng (kết quả không như ý)", icon: "😞", example: "I was disappointed when the match was cancelled.", exampleVi: "Tôi rất thất vọng khi trận đấu bị hủy." },
+            { id: 8, category: "1A", term: "Embarrassed", type: "adj", ipa: "/ɪmˈbærəst/", meaning: "ngượng, xấu hổ (tình huống khó xử trước người khác)", icon: "🙈", example: "I felt embarrassed when I dropped the glasses.", exampleVi: "Tôi ngượng đỏ mặt khi làm rơi vỡ những chiếc ly." },
+            { id: 9, category: "1A", term: "Envious", type: "adj", ipa: "/ˈenviəs/", meaning: "ghen tị, đố kị (thèm muốn của người khác)", icon: "😒", example: "She was envious of her colleague's success.", exampleVi: "Cô ấy ghen tị với sự thành công của đồng nghiệp." },
+            { id: 10, category: "1A", term: "Excited", type: "adj", ipa: "/ɪkˈsaɪtɪd/", meaning: "phấn khích, hào hứng", icon: "🤩", example: "The children are excited about visiting the zoo.", exampleVi: "Lũ trẻ đang rất hào hứng với chuyến đi thảo cầm viên." },
+            { id: 11, category: "1A", term: "Frightened", type: "adj", ipa: "/ˈfraɪtnd/", meaning: "sợ hãi, hoảng sợ", icon: "😱", example: "The little dog was frightened of thunder.", exampleVi: "Chú cún nhỏ hoảng sợ tiếng sấm sét." },
+            { id: 12, category: "1A", term: "Proud", type: "adj", ipa: "/praʊd/", meaning: "tự hào, hãnh diện", icon: "🏆", example: "His parents were deeply proud of his graduation.", exampleVi: "Bố mẹ anh ấy vô cùng tự hào về lễ tốt nghiệp của anh." },
+            { id: 13, category: "1A", term: "Relieved", type: "adj", ipa: "/rɪˈliːvd/", meaning: "nhẹ nhõm, bớt căng thẳng (trút bỏ lo âu)", icon: "😌", example: "We were relieved to hear that everyone was safe.", exampleVi: "Chúng tôi thở phào nhẹ nhõm khi biết mọi người đều an toàn." },
+            { id: 14, category: "1A", term: "Shocked", type: "adj", ipa: "/ʃɒkt/", meaning: "bị sốc, ngạc nhiên tột độ", icon: "😲", example: "I was shocked by the sudden bad news.", exampleVi: "Tôi bị sốc trước tin buồn đột ngột." },
+            { id: 15, category: "1A", term: "Suspicious", type: "adj", ipa: "/səˈspɪʃəs/", meaning: "nghi ngờ, hoài nghi (làm điều mờ ám)", icon: "🧐", example: "The police were suspicious of his strange answers.", exampleVi: "Cảnh sát hoài nghi những câu trả lời kỳ lạ của anh ta." },
+            { id: 16, category: "1A", term: "Upset", type: "adj", ipa: "/ʌpˈset/", meaning: "buồn bã, thất vọng, đau lòng", icon: "😢", example: "She is upset about losing her favorite necklace.", exampleVi: "Cô ấy rất buồn vì đánh mất sợi dây chuyền yêu thích." },
+            { id: 17, category: "1A", term: "Terrified", type: "adj", ipa: "/ˈterɪfaɪd/", meaning: "khiếp sợ, kinh hoàng (mức độ sợ rất lớn)", icon: "👻", example: "He was terrified of being alone in the dark.", exampleVi: "Anh ấy khiếp đảm việc phải ở một mình trong bóng tối." },
+
+            // 2. Modifying Adverbs
+            { id: 18, category: "adv", term: "Extremely", type: "adv", ipa: "/ɪkˈstriːmli/", meaning: "cực kỳ, vô cùng (mức độ rất mạnh)", icon: "🔥", example: "It is extremely cold outside today.", exampleVi: "Hôm nay ngoài trời cực kỳ lạnh." },
+            { id: 19, category: "adv", term: "Very", type: "adv", ipa: "/ˈveri/", meaning: "rất", icon: "⭐", example: "She was very happy with the result.", exampleVi: "Cô ấy rất hài lòng với kết quả đạt được." },
+            { id: 20, category: "adv", term: "Rather", type: "adv", ipa: "/ˈrɑːðə(r)/", meaning: "khá, tương đối", icon: "⚖️", example: "The test was rather difficult for the students.", exampleVi: "Bài kiểm tra khá khó đối với các học sinh." },
+            { id: 21, category: "adv", term: "A bit / A little bit", type: "adv", ipa: "/ə bɪt/", meaning: "một chút, hơi", icon: "🤏", example: "I am feeling a bit tired after the workout.", exampleVi: "Tôi cảm thấy hơi mệt một chút sau buổi tập." },
+            { id: 22, category: "adv", term: "Slightly", type: "adv", ipa: "/ˈslaɪtli/", meaning: "nhẹ, một chút", icon: "🍃", example: "The price is slightly higher than last week.", exampleVi: "Mức giá có nhỉnh hơn một chút so với tuần trước." },
+
+            // 3. Lesson 1B & 1C: Personality
+            { id: 23, category: "1BC", term: "Ambitious", type: "adj", ipa: "/æmˈbɪʃəs/", meaning: "tham vọng, có hoài bão lớn", icon: "🚀", example: "She is an ambitious student who aims for the top.", exampleVi: "Cô ấy là một học sinh đầy tham vọng luôn hướng tới vị trí dẫn đầu." },
+            { id: 24, category: "1BC", term: "Impatient", type: "adj", ipa: "/ɪmˈpeɪʃnt/", meaning: "mất kiên nhẫn, nôn nóng", icon: "⏱️", example: "Don't be impatient; the train will arrive soon.", exampleVi: "Đừng nôn nóng; chuyến tàu sẽ tới sớm thôi." },
+            { id: 25, category: "1BC", term: "Intolerant", type: "adj", ipa: "/ɪnˈtɒlərənt/", meaning: "cố chấp, thiếu bao dung", icon: "🚫", example: "He is intolerant of different political opinions.", exampleVi: "Anh ấy rất thiếu khoan dung trước những ý kiến khác biệt." },
+            { id: 26, category: "1BC", term: "Shy", type: "adj", ipa: "/ʃaɪ/", meaning: "nhút nhát, rụt rè", icon: "🙈", example: "The little girl was too shy to speak to strangers.", exampleVi: "Bé gái quá rụt rè để bắt chuyện với người lạ." },
+            { id: 27, category: "1BC", term: "Loyal", type: "adj", ipa: "/ˈlɔɪəl/", meaning: "trung thành, chung thủy", icon: "🐕", example: "Dogs are known as loyal companions.", exampleVi: "Chó được biết đến là loài bạn đồng hành trung thành." },
+            { id: 28, category: "1BC", term: "Sensible", type: "adj", ipa: "/ˈsensəbl/", meaning: "khôn ngoan, thực tế, biết điều", icon: "🧠", example: "Wearing a warm coat was a sensible decision.", exampleVi: "Mặc áo ấm là một quyết định hết sức thực tế và khôn ngoan." },
+            { id: 29, category: "1BC", term: "Sensitive", type: "adj", ipa: "/ˈsensətɪv/", meaning: "nhạy cảm, dễ xúc động", icon: "💔", example: "He is very sensitive and easily gets hurt by criticism.", exampleVi: "Anh ấy rất nhạy cảm và dễ tổn thương bởi lời phê bình." },
+            { id: 30, category: "1BC", term: "Generous", type: "adj", ipa: "/ˈdʒenərəs/", meaning: "rộng lượng, hào phóng", icon: "🎁", example: "It was generous of you to pay for dinner.", exampleVi: "Bạn thật hào phóng khi mời bữa tối." },
+            { id: 31, category: "1BC", term: "Lazy", type: "adj", ipa: "/ˈleɪzi/", meaning: "lười biếng", icon: "🦥", example: "He spent a lazy Sunday lying on the couch.", exampleVi: "Anh ấy đã trải qua một ngày Chủ nhật lười biếng nằm dài trên ghế." },
+            { id: 32, category: "1BC", term: "Reliable", type: "adj", ipa: "/rɪˈlaɪəbl/", meaning: "đáng tin cậy", icon: "🤝", example: "She is a reliable worker who never misses a deadline.", exampleVi: "Cô ấy là một nhân viên đáng tin cậy chưa từng trễ hạn." },
+
+            // 4. Lesson 1F: Accidents & Injuries
+            { id: 33, category: "1F", term: "Bleed", type: "v", ipa: "/bliːd/", meaning: "chảy máu", icon: "🩸", example: "Your finger will bleed if you cut it.", exampleVi: "Ngón tay bạn sẽ chảy máu nếu bị cắt trúng." },
+            { id: 34, category: "1F", term: "Blood", type: "n", ipa: "/blʌd/", meaning: "máu", icon: "💉", example: "The doctor took a small sample of blood.", exampleVi: "Bác sĩ đã lấy một mẫu máu nhỏ để kiểm tra." },
+            { id: 35, category: "1F", term: "Break", type: "v", ipa: "/breɪk/", meaning: "gãy (xương, tay, chân...)", icon: "🦴", example: "He fell off the ladder and broke his leg.", exampleVi: "Anh ấy ngã khỏi thang và bị gãy chân." },
+            { id: 36, category: "1F", term: "Bruise", type: "n/v", ipa: "/bruːz/", meaning: "vết bầm tím / gây bầm tím", icon: "🟣", example: "She had a dark bruise on her knee after playing soccer.", exampleVi: "Cô ấy có vết bầm tím trên đầu gối sau trận đá bóng." },
+            { id: 37, category: "1F", term: "Burn", type: "n/v", ipa: "/bɜːn/", meaning: "vết bỏng / làm bỏng, thiêu đốt", icon: "🔥", example: "Be careful not to burn your hand on the stove.", exampleVi: "Cẩn thận kẻo bị bỏng tay trên bếp." },
+            { id: 38, category: "1F", term: "Cut", type: "n/v", ipa: "/kʌt/", meaning: "vết đứt, vết cắt / cắt trúng", icon: "✂️", example: "He accidentally cut his finger while slicing vegetables.", exampleVi: "Anh ấy vô tình cắt vào tay khi đang thái rau củ." },
+            { id: 39, category: "1F", term: "Hurt", type: "v", ipa: "/hɜːt/", meaning: "làm đau, làm tổn thương / cảm thấy đau", icon: "🤕", example: "My back hurts after carrying those heavy boxes.", exampleVi: "Lưng tôi bị đau sau khi vác những chiếc thùng nặng đó." },
+            { id: 40, category: "1F", term: "Injure yourself", type: "v", ipa: "/ˈɪndʒə(r)/", meaning: "tự làm bản thân bị thương", icon: "🚑", example: "Be careful with that knife or you will injure yourself.", exampleVi: "Cẩn thận với con dao đó kẻo bạn tự làm mình bị thương." },
+            { id: 41, category: "1F", term: "Pain", type: "n", ipa: "/peɪn/", meaning: "cơn đau, sự đau đớn", icon: "⚡", example: "The medicine will help relieve the sharp pain.", exampleVi: "Thuốc sẽ giúp làm dịu cơn đau nhói này." },
+            { id: 42, category: "1F", term: "Slip", type: "v", ipa: "/slɪp/", meaning: "trượt chân, trượt ngã", icon: "🍌", example: "She slipped on the wet floor and fell down.", exampleVi: "Cô ấy trượt chân trên sàn nhà ướt và ngã." },
+            { id: 43, category: "1F", term: "Sprain", type: "n/v", ipa: "/spreɪn/", meaning: "bong gân (cổ tay, cổ chân)", icon: "🦶", example: "He sprained his ankle during the basketball game.", exampleVi: "Anh ấy bị bong gân mắt cá chân trong trận bóng rổ." },
+            { id: 44, category: "1F", term: "Trip over", type: "v", ipa: "/trɪp ˈəʊvə(r)/", meaning: "vấp ngã (vấp phải vật gì)", icon: "📦", example: "I tripped over the cat in the dark hallway.", exampleVi: "Tôi vấp phải chú mèo ở hành lang tối." }
+        ];
+
+        // State variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Logic
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                // Restart other modes if active
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
             });
-          }
-          setTimeout(() => { quizIdx++; renderQuizQuestion(); }, 1200);
-        };
-        optionsEl.appendChild(btn);
-      });
-    }
+        }
 
-    // Spell Logic
-    let spellIndex = 0;
-    function initSpell() {
-      spellIndex = 0;
-      loadSpellWord();
-    }
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-indigo-100 hover:bg-indigo-600 transition-all";
+            });
 
-    function loadSpellWord() {
-      if (currentDataset.length === 0) return;
-      const item = currentDataset[spellIndex];
-      document.getElementById('spellHint').innerText = `Gợi ý nghĩa: ${item.def} (${item.pos})`;
-      const input = document.getElementById('spellInput');
-      input.value = '';
-      input.focus();
-      document.getElementById('spellFeedback').innerText = '';
-      speakCurrentSpell();
-    }
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-indigo-700 shadow-sm transition-all";
 
-    function speakCurrentSpell() {
-      const item = currentDataset[spellIndex];
-      const term = item.term.replace(/^To\s+/i, '');
-      const utter = new SpeechSynthesisUtterance(term);
-      utter.lang = 'en-GB';
-      window.speechSynthesis.speak(utter);
-    }
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
 
-    function checkSpell() {
-      const item = currentDataset[spellIndex];
-      const inputVal = document.getElementById('spellInput').value.trim().toLowerCase();
-      const expected = item.term.toLowerCase();
-      const fb = document.getElementById('spellFeedback');
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
 
-      if (inputVal === expected || inputVal === expected.replace(/^to\s+/i, '')) {
-        fb.innerText = '✅ Chính xác!';
-        fb.style.color = 'var(--accent)';
-        setTimeout(() => {
-          spellIndex = (spellIndex + 1) % currentDataset.length;
-          loadSpellWord();
-        }, 1000);
-      } else {
-        fb.innerText = `❌ Chưa đúng. Đáp án: ${item.term}`;
-        fb.style.color = 'var(--danger)';
-      }
-    }
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                '1A': 'Lesson 1A: Feelings',
+                'adv': 'Modifying Adverbs',
+                '1BC': 'Lesson 1B & 1C: Personality',
+                '1F': 'Lesson 1F: Accidents'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 1';
 
-    // Global Keyboard Shortcuts
-    window.addEventListener('keydown', (e) => {
-      if (document.getElementById('view-flashcards').classList.contains('active')) {
-        if (e.code === 'Space') { e.preventDefault(); flipCard(); }
-        if (e.code === 'ArrowRight') { nextCard(); }
-        if (e.code === 'ArrowLeft') { prevCard(); }
-      }
-      if (document.getElementById('view-spell').classList.contains('active')) {
-        if (e.key === 'Enter') { checkSpell(); }
-      }
-    });
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
 
-    // Start App
-    updateFlashcard();
-  </script>
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const word = textToSpeak || activeList[currentIndex].term;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean digital illustration of ${cleanTerm}, feelings and emotions psychology concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-indigo-500 hover:bg-indigo-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-indigo-600"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-indigo-500');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-indigo-500');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userText = input.value.trim().toLowerCase();
+            const targetText = currentItem.term.trim().toLowerCase();
+
+            if (userText === targetText) {
+                feedback.innerHTML = `<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án đúng: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2000);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card, idx) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-indigo-400 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-indigo-600', 'bg-indigo-50', 'text-indigo-900');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if matches
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                // Match success
+                setTimeout(() => {
+                    firstCard.classList.remove('border-indigo-600', 'bg-indigo-50', 'text-indigo-900');
+                    secondCard.classList.remove('border-indigo-600', 'bg-indigo-50', 'text-indigo-900');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                // Mismatch
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-indigo-600', 'bg-indigo-50', 'text-indigo-900', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-indigo-600', 'bg-indigo-50', 'text-indigo-900', 'border-rose-500', 'bg-rose-50');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
 </body>
 </html>
