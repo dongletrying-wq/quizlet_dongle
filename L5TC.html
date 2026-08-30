@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 5: 牛肉麵真好吃 (Mì thịt bò thật là ngon) - Flashcard & Game</title>
+    <!-- Google Font Noto Serif TC (Khải Thể / Phồn Thể chuẩn nét thư pháp giáo trình) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #c0392b;
+            --primary-hover: #962d22;
+            --bg-main: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #ebdcd0;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow-md: 0 10px 25px rgba(192, 57, 43, 0.08);
+            /* Bộ font Khải Thể chuẩn nét bút tập viết */
+            --font-kai: 'DFKai-SB', 'BiauKai', 'KaiTi', 'STKaiti', 'KaiTi_GB2312', 'Noto Serif TC', serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.3rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo span { font-family: var(--font-kai); font-weight: normal; }
+        
+        nav.nav-tabs { display: flex; justify-content: center; gap: 8px; padding: 0.8rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+        .tab-btn:hover { background: #fdf2e9; color: var(--primary); }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        main { flex: 1; max-width: 800px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+
+        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1.5px solid var(--border-color); background: var(--card-bg); font-weight: 700; margin-bottom: 1.2rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 420px; font-size: 0.95rem; }
+
+        /* Flashcard 3D */
+        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 410px; margin-bottom: 1.5rem; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
+        .card-back { transform: rotateY(180deg); background: #fffdf9; }
+        .card-category { position: absolute; top: 16px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(192, 57, 43, 0.08); padding: 5px 14px; border-radius: 12px; }
+        .ai-gen-btn { position: absolute; top: 16px; right: 20px; background: #fff0eb; color: var(--primary); border: 1px solid rgba(192, 57, 43, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        
+        /* Chữ Hán Font Khải Thể chuẩn nét bút tập viết */
+        .card-hanzi { font-family: var(--font-kai); font-size: 4.2rem; font-weight: normal; margin-bottom: 0.1rem; color: #1e272e; letter-spacing: 2px; }
+        .card-pinyin { font-size: 1.35rem; color: #d35400; margin-bottom: 0.4rem; font-weight: 700; }
+        .card-type { font-size: 0.85rem; font-weight: 700; color: #8e44ad; background: #f4ecf7; padding: 2px 10px; border-radius: 6px; margin-bottom: 0.8rem; }
+        .card-meaning { font-size: 1.9rem; font-weight: 800; color: var(--primary); margin-bottom: 0.8rem; }
+        .card-note { font-size: 1rem; color: var(--text-muted); font-style: italic; max-width: 90%; line-height: 1.4; }
+        .controls-bar { display: flex; justify-content: space-between; align-items: center; }
+        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; color: var(--text-main); transition: 0.2s; }
+        .ctrl-btn:hover { background: #fdf2e9; color: var(--primary); }
+
+        /* Match Game */
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; font-size: 1.15rem; transition: 0.2s; }
+        .match-card.hanzi-font { font-family: var(--font-kai); font-size: 1.65rem; font-weight: normal; }
+        .match-card.selected { border-color: var(--primary); background: rgba(192, 57, 43, 0.08); color: var(--primary); transform: scale(1.02); }
+        .match-card.correct { border-color: var(--success); background: rgba(39, 174, 96, 0.1); opacity: 0.2; pointer-events: none; }
+
+        /* Quiz & Spell */
+        .quiz-card { background: var(--card-bg); padding: 2.2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 1.5rem; }
+        .option-btn { padding: 1.1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 700; cursor: pointer; text-align: left; font-size: 1.05rem; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--primary); }
+        .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
+        .input-box input { flex: 1; padding: 0.9rem 1.2rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.15rem; outline: none; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.6rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-submit:hover { background: var(--primary-hover); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fa-solid fa-bowl-food"></i> Bài 5: <span>牛肉麵真好吃</span> (Mì thịt bò thật là ngon)</div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ ghi nhớ 3D</button>
+        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép từ</button>
+        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Kiểm tra</button>
+        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện nghe & Viết</button>
+    </nav>
+
+    <main>
+        <select id="categoryFilter" class="filter-select" onchange="filterCategory(this.value)">
+            <option value="ALL">Tất cả bài học (38 mục)</option>
+            <option value="Món ăn & Ẩm thực">Món ăn & Ẩm thực (美食)</option>
+            <option value="Từ vựng Phần I">Từ vựng Phần I (Quán ăn & Đánh giá)</option>
+            <option value="Từ vựng Phần II">Từ vựng Phần II (Nấu ăn & Trải nghiệm)</option>
+            <option value="Cụm từ thường dùng">Cụm từ thường dùng</option>
+        </select>
+
+        <!-- 1. Flashcards -->
+        <div id="flashcards-view" class="view-panel active">
+            <div class="flashcard-wrapper">
+                <div class="flashcard" id="mainCard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span class="card-category" id="cardCategory">Category</span>
+                        <button class="ai-gen-btn" onclick="generateAIImage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh</button>
+                        <i class="fa-solid fa-bowl-rice" id="cardIcon" style="font-size: 2.6rem; color: var(--primary); margin-bottom: 0.6rem;"></i>
+                        <img id="cardImg" style="display:none; max-width: 140px; max-height: 90px; border-radius: 8px; margin-bottom: 0.6rem; object-fit: contain;">
+                        <div class="card-hanzi" id="cardHanzi">牛肉麵</div>
+                        <div class="card-pinyin" id="cardPinyin">niúròumiàn</div>
+                        <span class="card-type" id="cardType">N</span>
+                        <button class="ctrl-btn" style="width: 38px; height: 38px; margin-top: 4px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
+                    <div class="card-face card-back">
+                        <span class="card-category">Dịch nghĩa & Ghi chú</span>
+                        <div class="card-meaning" id="cardMeaning">mì thịt bò</div>
+                        <div class="card-note" id="cardNote"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-bar">
+                <button class="ctrl-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="cardProgress" style="font-weight: 800; font-size: 1.1rem;">1 / 38</span>
+                <button class="ctrl-btn" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="text-align: center; margin-top: 1.2rem; color: var(--text-muted); font-size: 0.9rem;">
+                Phím <kbd>Space</kbd> để lật thẻ | Phím <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+            </div>
+        </div>
+
+        <!-- 2. Match Game -->
+        <div id="match-view" class="view-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="font-weight: 800; color: var(--primary); font-size: 1.1rem;">Thời gian phản xạ: <span id="matchTimer">0.0</span>s</div>
+                <button class="btn-submit" style="padding: 8px 18px;" onclick="startMatch()">Chơi lại</button>
+            </div>
+            <div class="match-grid" id="matchGrid"></div>
+        </div>
+
+        <!-- 3. Quiz -->
+        <div id="quiz-view" class="view-panel">
+            <div class="quiz-card" id="quizContainer"></div>
+        </div>
+
+        <!-- 4. Listen & Spell -->
+        <div id="spell-view" class="view-panel">
+            <div class="quiz-card" style="text-align: center;">
+                <button class="ctrl-btn" style="width: 75px; height: 75px; font-size: 2rem; margin: 0 auto 1.2rem; color: var(--primary);" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
+                <div style="font-size: 1.05rem; font-weight: 600;">Nghe phát âm và gõ lại chữ Hán (hoặc Pinyin không dấu):</div>
+                <div class="input-box" style="max-width: 420px; margin: 1.2rem auto;">
+                    <input type="text" id="spellInput" placeholder="Nhập chữ Hán hoặc pinyin..." onkeyup="if(event.key==='Enter') checkSpell()">
+                    <button class="btn-submit" onclick="checkSpell()">Kiểm tra</button>
+                </div>
+                <div id="spellFeedback" style="margin-top: 1rem; font-weight: 800; font-size: 1.05rem;"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const rawVocabulary = [
+            // Food & Specialties
+            { word: "牛肉", pinyin: "niúròu", type: "N", meaning: "thịt bò", note: "Thịt của con bò", category: "Món ăn & Ẩm thực", icon: "fa-drumstick-bite" },
+            { word: "麵", pinyin: "miàn", type: "N", meaning: "mì, sợi mì", note: "Món mì hoặc sợi mì nói chung", category: "Món ăn & Ẩm thực", icon: "fa-bowl-food" },
+            { word: "小吃", pinyin: "xiǎochī", type: "N", meaning: "món ăn vặt, đồ ăn nhẹ, thức ăn đường phố", note: "Đồ ăn vặt đặc sản đường phố", category: "Món ăn & Ẩm thực", icon: "fa-burger" },
+            { word: "湯", pinyin: "tāng", type: "N", meaning: "canh, nước súp", note: "Nước dùng hoặc canh súp", category: "Món ăn & Ẩm thực", icon: "fa-mug-hot" },
+            { word: "小籠包", pinyin: "xiǎolóngbāo", type: "N", meaning: "bánh tiểu long bao", note: "Bánh bao hấp nhỏ có nhân súp nổi tiếng Đài Loan", category: "Món ăn & Ẩm thực", icon: "fa-cookie" },
+            { word: "臭豆腐", pinyin: "chòudòufu", type: "N", meaning: "đậu phụ thối", note: "Món đậu hũ lên men đặc sản", category: "Món ăn & Ẩm thực", icon: "fa-cubes-stacked" },
+            { word: "甜點", pinyin: "tiándiǎn", type: "N", meaning: "món tráng miệng, đồ ngọt", note: "Bánh ngọt, chè tráng miệng", category: "Món ăn & Ẩm thực", icon: "fa-cake-candles" },
+
+            // Vocabulary I
+            { word: "真", pinyin: "zhēn", type: "Adv", meaning: "thật, thật là", note: "Phó từ biểu thị sự tán thưởng/cảm thán", category: "Từ vựng Phần I", icon: "fa-heart" },
+            { word: "好吃", pinyin: "hǎochī", type: "Vs", meaning: "ngon (đồ ăn)", note: "Khen món ăn thơm ngon", category: "Từ vựng Phần I", icon: "fa-face-grin-tongue-wink" },
+            { word: "說", pinyin: "shuō", type: "V", meaning: "nói", note: "Hành động nói, phát ngôn", category: "Từ vựng Phần I", icon: "fa-comment-dots" },
+            { word: "少", pinyin: "shǎo", type: "Vs-pred", meaning: "ít", note: "Chỉ số lượng ít", category: "Từ vựng Phần I", icon: "fa-arrow-down-short-wide" },
+            { word: "有名", pinyin: "yǒumíng", type: "Vs", meaning: "nổi tiếng", note: "Được nhiều người biết đến", category: "Từ vựng Phần I", icon: "fa-star" },
+            { word: "最", pinyin: "zuì", type: "Adv", meaning: "nhất", note: "Biểu thị mức độ tối cao: 最喜歡, 最好...", category: "Từ vựng Phần I", icon: "fa-award" },
+            { word: "這麼", pinyin: "zhème", type: "Adv", meaning: "như thế này, đến thế", note: "Phó từ chỉ mức độ", category: "Từ vựng Phần I", icon: "fa-wand-magic-sparkles" },
+            { word: "知道", pinyin: "zhīdào", type: "Vst", meaning: "biết", note: "Hiểu biết hoặc nắm được thông tin", category: "Từ vựng Phần I", icon: "fa-lightbulb" },
+            { word: "家", pinyin: "jiā", type: "M", meaning: "quán, tiệm, công ty (lượng từ)", note: "Lượng từ dùng cho quán ăn, cửa hàng, công ty", category: "Từ vựng Phần I", icon: "fa-shop" },
+            { word: "店", pinyin: "diàn", type: "N", meaning: "cửa hàng, tiệm", note: "Địa điểm kinh doanh, bán hàng", category: "Từ vựng Phần I", icon: "fa-store" },
+            { word: "一定", pinyin: "yídìng", type: "Adv", meaning: "nhất định, nhất thiết", note: "Chỉ sự chắc chắn, quyết tâm", category: "Từ vựng Phần I", icon: "fa-circle-check" },
+            { word: "點", pinyin: "diǎn", type: "V", meaning: "gọi (món ăn)", note: "Chọn và gọi món ăn tại quán", category: "Từ vựng Phần I", icon: "fa-clipboard-list" },
+            { word: "碗", pinyin: "wǎn", type: "M", meaning: "bát, tô (lượng từ)", note: "Lượng từ chứa đựng cho bát canh, tô mì...", category: "Từ vựng Phần I", icon: "fa-bowl-rice" },
+
+            // Vocabulary II
+            { word: "昨天", pinyin: "zuótiān", type: "N", meaning: "hôm qua", note: "Ngày trước ngày hôm nay", category: "Từ vựng Phần II", icon: "fa-clock-rotate-left" },
+            { word: "餐廳", pinyin: "cāntīng", type: "N", meaning: "nhà hàng, quán ăn", note: "Nơi phục vụ ăn uống trang trọng", category: "Từ vựng Phần II", icon: "fa-utensils" },
+            { word: "可是", pinyin: "kěshì", type: "Conj", meaning: "nhưng, nhưng mà", note: "Liên từ chuyển ý", category: "Từ vựng Phần II", icon: "fa-arrows-split-up-and-left" },
+            { word: "辣", pinyin: "là", type: "Vs", meaning: "cay", note: "Vị cay nồng của ớt, tiêu", category: "Từ vựng Phần II", icon: "fa-pepper-hot" },
+            { word: "怕", pinyin: "pà", type: "Vst", meaning: "sợ, không chịu được (cay/lạnh...)", note: "Sợ hãi hoặc không hợp với vị cay, lạnh...", category: "Từ vựng Phần II", icon: "fa-face-flushed" },
+            { word: "所以", pinyin: "suǒyǐ", type: "Conj", meaning: "cho nên, vì vậy", note: "Liên từ biểu thị kết quả", category: "Từ vựng Phần II", icon: "fa-arrow-right" },
+            { word: "自己", pinyin: "zìjǐ", type: "N", meaning: "tự mình, bản thân", note: "Chỉ chính bản thân người nói/chủ thể", category: "Từ vựng Phần II", icon: "fa-user-check" },
+            { word: "做飯", pinyin: "zuòfàn", type: "V-sep", meaning: "nấu ăn, làm cơm", note: "Động từ ly hợp", category: "Từ vựng Phần II", icon: "fa-kitchen-set" },
+            { word: "得", pinyin: "de", type: "Ptc", meaning: "trợ từ bổ ngữ mức độ", note: "Đứng sau động từ để miêu tả mức độ (做得好...)", category: "Từ vựng Phần II", icon: "fa-chart-line" },
+            { word: "會", pinyin: "huì", type: "Vaux", meaning: "biết (qua học hỏi), có thể", note: "Động từ năng nguyện biểu thị kỹ năng học được", category: "Từ vựng Phần II", icon: "fa-graduation-cap" },
+            { word: "不錯", pinyin: "búcuò", type: "Vs", meaning: "không tồi, khá tốt, ngon", note: "Khen ngợi chất lượng hoặc hương vị tốt", category: "Từ vựng Phần II", icon: "fa-thumbs-up" },
+            { word: "可以", pinyin: "kěyǐ", type: "Vaux", meaning: "có thể", note: "Động từ năng nguyện biểu thị sự cho phép/khả năng", category: "Từ vựng Phần II", icon: "fa-circle-check" },
+            { word: "教", pinyin: "jiāo", type: "V", meaning: "dạy, giảng dạy", note: "Truyền đạt kiến thức, hướng dẫn", category: "Từ vựng Phần II", icon: "fa-chalkboard-user" },
+            { word: "到", pinyin: "dào", type: "Prep", meaning: "đến, tới", note: "Chỉ phương hướng hoặc nơi chốn đến", category: "Từ vựng Phần II", icon: "fa-location-dot" },
+
+            // Phrases
+            { word: "是啊", pinyin: "shì a", type: "Phr", meaning: "Đúng vậy, đúng thế", note: "Đáp lại biểu thị sự đồng tình", category: "Cụm từ thường dùng", icon: "fa-circle-check" },
+            { word: "太好了", pinyin: "tài hǎo le", type: "Phr", meaning: "Tuyệt quá!, Tốt quá!", note: "Cảm thán khi có tin vui hoặc kết quả tốt", category: "Cụm từ thường dùng", icon: "fa-sparkles" },
+            { word: "有一點", pinyin: "yǒu yìdiǎn", type: "Phr", meaning: "Có một chút, hơi...", note: "Thường đứng trước tính từ chỉ sự không hài lòng (有一點辣)", category: "Cụm từ thường dùng", icon: "fa-scale-unbalanced" },
+            { word: "不好", pinyin: "bù hǎo", type: "Phr", meaning: "Không tốt, dở, không ngon", note: "Đánh giá phủ định chất lượng/tính chất", category: "Cụm từ thường dùng", icon: "fa-thumbs-down" }
+        ];
+
+        let dataset = [...rawVocabulary];
+        let index = 0;
+
+        // Quản lý Text-to-Speech hỗ trợ đa nền tảng (Android / iOS / PC)
+        let synth = window.speechSynthesis;
+        let voices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                voices = synth.getVoices();
+            }
+        }
+        loadVoices();
+        if ('speechSynthesis' in window && speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function loadCard() {
+            document.getElementById('mainCard').classList.remove('flipped');
+            let item = dataset[index];
+            document.getElementById('cardCategory').innerText = item.category;
+            document.getElementById('cardHanzi').innerText = item.word;
+            document.getElementById('cardPinyin').innerText = item.pinyin;
+            document.getElementById('cardType').innerText = item.type || 'N';
+            document.getElementById('cardMeaning').innerText = item.meaning;
+            document.getElementById('cardNote').innerText = item.note ? item.note : '';
+            document.getElementById('cardProgress').innerText = `${index + 1} / ${dataset.length}`;
+
+            let imgEl = document.getElementById('cardImg');
+            let iconEl = document.getElementById('cardIcon');
+            
+            if (item.customImg) {
+                imgEl.src = item.customImg;
+                imgEl.style.display = 'block';
+                iconEl.style.display = 'none';
+            } else {
+                imgEl.style.display = 'none';
+                iconEl.style.display = 'block';
+                iconEl.className = `fa-solid ${item.icon || 'fa-bowl-food'}`;
+            }
+        }
+
+        function filterCategory(cat) {
+            dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
+            index = 0;
+            loadCard();
+        }
+
+        function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
+        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
+        function prevCard() { if(index > 0) { index--; loadCard(); } }
+
+        function speakWord(e) {
+            if(e) e.stopPropagation();
+            if (!('speechSynthesis' in window)) return;
+            synth.cancel();
+
+            let utterance = new SpeechSynthesisUtterance(dataset[index].word);
+            utterance.lang = 'zh-TW';
+            utterance.rate = 0.85;
+
+            if (voices.length > 0) {
+                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
+                if (zhVoice) utterance.voice = zhVoice;
+            }
+            synth.speak(utterance);
+        }
+
+        // Tích hợp AI Tạo Ảnh trực tiếp từ Pollinations AI
+        function generateAIImage(e) {
+            e.stopPropagation();
+            let btn = e.currentTarget;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
+            
+            let query = dataset[index].meaning.split(',')[0].trim();
+            let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('delicious Taiwanese cuisine style illustration of ' + query)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
+            
+            let tempImg = new Image();
+            tempImg.src = imageUrl;
+            tempImg.onload = () => {
+                dataset[index].customImg = imageUrl;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo';
+                loadCard();
+            };
+            tempImg.onerror = () => {
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
+            };
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${tab}-view`).classList.add('active');
+            if(tab === 'match') startMatch();
+            if(tab === 'quiz') startQuiz();
+            if(tab === 'spell') startSpell();
+        }
+
+        // Match Game
+        let selectedMatch = [], timerInt, time = 0;
+        function startMatch() {
+            clearInterval(timerInt);
+            time = 0;
+            document.getElementById('matchTimer').innerText = '0.0';
+            timerInt = setInterval(() => { time += 0.1; document.getElementById('matchTimer').innerText = time.toFixed(1); }, 100);
+
+            let grid = document.getElementById('matchGrid');
+            grid.innerHTML = '';
+            let items = [...dataset].sort(() => 0.5 - Math.random()).slice(0, 6);
+            let cards = [];
+            items.forEach((item, i) => {
+                cards.push({ id: i, text: `${item.word}`, isHanzi: true });
+                cards.push({ id: i, text: `${item.meaning}`, isHanzi: false });
+            });
+            cards.sort(() => 0.5 - Math.random());
+            cards.forEach(c => {
+                let div = document.createElement('div');
+                div.className = 'match-card' + (c.isHanzi ? ' hanzi-font' : '');
+                div.innerText = c.text;
+                div.onclick = () => {
+                    if (div.classList.contains('correct') || div.classList.contains('selected')) return;
+                    div.classList.add('selected');
+                    selectedMatch.push({ el: div, id: c.id });
+                    if(selectedMatch.length === 2) {
+                        if(selectedMatch[0].id === selectedMatch[1].id) {
+                            selectedMatch[0].el.className = 'match-card correct';
+                            selectedMatch[1].el.className = 'match-card correct';
+                            if(document.querySelectorAll('.match-card:not(.correct)').length === 0) {
+                                clearInterval(timerInt);
+                                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                            }
+                        } else {
+                            let a = selectedMatch[0].el, b = selectedMatch[1].el;
+                            setTimeout(() => { a.classList.remove('selected'); b.classList.remove('selected'); }, 400);
+                        }
+                        selectedMatch = [];
+                    }
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        // Quiz
+        let qIndex = 0;
+        function startQuiz() { qIndex = 0; renderQuiz(); }
+        function renderQuiz() {
+            let container = document.getElementById('quizContainer');
+            if(qIndex >= Math.min(dataset.length, 6)) {
+                container.innerHTML = '<h3 style="text-align:center;">🎉 Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin:1.2rem auto 0; display:block; padding:0.8rem 1.6rem;" onclick="startQuiz()">Làm lại</button>';
+                return;
+            }
+            let q = dataset[qIndex];
+            let opts = [q.meaning];
+            while(opts.length < 4) {
+                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => 0.5 - Math.random());
+            container.innerHTML = `
+                <div style="font-size: 1.2rem;">Câu ${qIndex + 1}: Chữ Hán "<b style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal; color:var(--primary);">${q.word}</b>" (${q.pinyin} - ${q.type}) có nghĩa là gì?</div>
+                <div class="options-grid">
+                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
+                </div>
+            `;
+        }
+        function ansQuiz(btn, isCorrect) {
+            btn.style.background = isCorrect === 'true' ? '#27ae60' : '#e74c3c';
+            btn.style.color = 'white';
+            setTimeout(() => { qIndex++; renderQuiz(); }, 700);
+        }
+
+        // Spell
+        let sIndex = 0;
+        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
+        function speakSpellWord() {
+            if (!('speechSynthesis' in window)) return;
+            synth.cancel();
+            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
+            u.lang = 'zh-TW';
+            if (voices.length > 0) {
+                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
+                if (zhVoice) u.voice = zhVoice;
+            }
+            synth.speak(u);
+        }
+        function checkSpell() {
+            let input = document.getElementById('spellInput').value.trim().toLowerCase();
+            let targetWord = dataset[sIndex].word.toLowerCase();
+            let targetPinyin = dataset[sIndex].pinyin.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '');
+            let rawInput = input.replace(/\s+/g, '');
+            let fb = document.getElementById('spellFeedback');
+
+            if(input === targetWord || rawInput === targetPinyin) {
+                fb.style.color = '#27ae60';
+                fb.innerHTML = `Chính xác! (<span style="font-family:var(--font-kai); font-size:1.4rem;">${dataset[sIndex].word}</span> - ${dataset[sIndex].pinyin}: ${dataset[sIndex].meaning})`;
+                setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 1200);
+            } else {
+                fb.style.color = '#e74c3c';
+                fb.innerText = `Chưa đúng! Gợi ý: ${dataset[sIndex].meaning} (Pinyin: ${dataset[sIndex].pinyin})`;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
+            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if(e.code === 'ArrowRight') nextCard();
+            if(e.code === 'ArrowLeft') prevCard();
+        });
+
+        window.onload = loadCard;
+    </script>
+</body>
+</html>
