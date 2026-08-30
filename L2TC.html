@@ -24,7 +24,6 @@
             --radius-lg: 20px;
             --radius-md: 12px;
             --shadow-md: 0 10px 25px rgba(192, 57, 43, 0.08);
-            /* Bộ font Khải Thể chuẩn nét bút tập viết */
             --font-kai: 'DFKai-SB', 'BiauKai', 'KaiTi', 'STKaiti', 'KaiTi_GB2312', 'Noto Serif TC', serif;
         }
 
@@ -54,7 +53,6 @@
         .card-category { position: absolute; top: 16px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(192, 57, 43, 0.08); padding: 5px 14px; border-radius: 12px; }
         .ai-gen-btn { position: absolute; top: 16px; right: 20px; background: #fff0eb; color: var(--primary); border: 1px solid rgba(192, 57, 43, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         
-        /* Chữ Hán Font Khải Thể chuẩn nét bút tập viết */
         .card-hanzi { font-family: var(--font-kai); font-size: 4.2rem; font-weight: normal; margin-bottom: 0.1rem; color: #1e272e; letter-spacing: 2px; }
         .card-pinyin { font-size: 1.35rem; color: #d35400; margin-bottom: 0.4rem; font-weight: 700; }
         .card-type { font-size: 0.85rem; font-weight: 700; color: #8e44ad; background: #f4ecf7; padding: 2px 10px; border-radius: 6px; margin-bottom: 0.8rem; }
@@ -64,6 +62,16 @@
         .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; color: var(--text-main); transition: 0.2s; }
         .ctrl-btn:hover { background: #fdf2e9; color: var(--primary); }
 
+        /* Sub-navigation & Practice Mode */
+        .sub-nav { display: flex; justify-content: center; background: #f1f2f6; border-radius: 12px; padding: 4px; margin-bottom: 2rem; }
+        .sub-btn { flex: 1; border: none; background: transparent; padding: 10px 14px; font-weight: 700; font-size: 0.95rem; border-radius: 9px; cursor: pointer; color: var(--text-muted); transition: 0.2s; text-align: center; }
+        .sub-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+
+        .tag-badge { background: #eef2ff; color: #4f46e5; padding: 4px 14px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px; display: inline-block; text-transform: uppercase; }
+        .hanzi-display { font-family: var(--font-kai); font-size: 5rem; font-weight: normal; color: #1e272e; margin: 0.5rem 0 0.8rem; }
+        .sound-circle-btn { width: 48px; height: 48px; border-radius: 50%; background: #edf2f7; border: none; color: #4a5568; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: 0.2s; margin-bottom: 1.2rem; }
+        .sound-circle-btn:hover { background: #e2e8f0; color: var(--primary); }
+
         /* Match Game */
         .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
         .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; font-size: 1.15rem; transition: 0.2s; }
@@ -72,10 +80,10 @@
         .match-card.correct { border-color: var(--success); background: rgba(39, 174, 96, 0.1); opacity: 0.2; pointer-events: none; }
 
         /* Quiz & Spell */
-        .quiz-card { background: var(--card-bg); padding: 2.2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 1.5rem; }
-        .option-btn { padding: 1.1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 700; cursor: pointer; text-align: left; font-size: 1.05rem; transition: 0.2s; }
-        .option-btn:hover { border-color: var(--primary); }
+        .quiz-card { background: var(--card-bg); padding: 2.2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); text-align: center; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 1rem; }
+        .option-btn { padding: 1.1rem; border: 2px solid #edf2f7; border-radius: var(--radius-md); background: white; font-weight: 700; cursor: pointer; text-align: center; font-size: 1.15rem; color: #2d3748; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--primary); background: #fffbf9; }
         .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
         .input-box input { flex: 1; padding: 0.9rem 1.2rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.15rem; outline: none; }
         .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.6rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: 0.2s; }
@@ -89,10 +97,10 @@
     </header>
 
     <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ ghi nhớ 3D</button>
-        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép từ</button>
-        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Kiểm tra</button>
-        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện nghe & Viết</button>
+        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ Ghi Nhớ 3D</button>
+        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Luyện Chữ & Nghĩa</button>
+        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép Cặp (Match Game)</button>
+        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện Nghe & Viết</button>
     </nav>
 
     <main>
@@ -116,7 +124,7 @@
                         <div class="card-hanzi" id="cardHanzi">家人</div>
                         <div class="card-pinyin" id="cardPinyin">jiārén</div>
                         <span class="card-type" id="cardType">N</span>
-                        <button class="ctrl-btn" style="width: 38px; height: 38px; margin-top: 4px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
+                        <button class="ctrl-btn" style="width: 38px; height: 38px; margin-top: 4px;" onclick="speakCurrentWord(event)"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                     <div class="card-face card-back">
                         <span class="card-category">Dịch nghĩa & Ghi chú</span>
@@ -135,7 +143,16 @@
             </div>
         </div>
 
-        <!-- 2. Match Game -->
+        <!-- 2. Quiz / Luyện Chữ & Nghĩa -->
+        <div id="quiz-view" class="view-panel">
+            <div class="sub-nav">
+                <button class="sub-btn active" id="btnModePinyin" onclick="setQuizMode('hanzi_to_pinyin')">Chữ Hán → Pinyin</button>
+                <button class="sub-btn" id="btnModeMeaning" onclick="setQuizMode('hanzi_to_meaning')">Chữ Hán → Nghĩa Tiếng Việt</button>
+            </div>
+            <div class="quiz-card" id="quizContainer"></div>
+        </div>
+
+        <!-- 3. Match Game -->
         <div id="match-view" class="view-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <div style="font-weight: 800; color: var(--primary); font-size: 1.1rem;">Thời gian phản xạ: <span id="matchTimer">0.0</span>s</div>
@@ -144,14 +161,9 @@
             <div class="match-grid" id="matchGrid"></div>
         </div>
 
-        <!-- 3. Quiz -->
-        <div id="quiz-view" class="view-panel">
-            <div class="quiz-card" id="quizContainer"></div>
-        </div>
-
         <!-- 4. Listen & Spell -->
         <div id="spell-view" class="view-panel">
-            <div class="quiz-card" style="text-align: center;">
+            <div class="quiz-card">
                 <button class="ctrl-btn" style="width: 75px; height: 75px; font-size: 2rem; margin: 0 auto 1.2rem; color: var(--primary);" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
                 <div style="font-size: 1.05rem; font-weight: 600;">Nghe phát âm và gõ lại chữ Hán (hoặc Pinyin không dấu):</div>
                 <div class="input-box" style="max-width: 420px; margin: 1.2rem auto;">
@@ -165,11 +177,8 @@
 
     <script>
         const rawVocabulary = [
-            // Characters
             { word: "張怡君", pinyin: "Zhāng Yíjūn", type: "N", meaning: "Trương Di Quân", note: "Nhân vật nữ đến từ Đài Loan", category: "Nhân vật", icon: "fa-user" },
             { word: "馬安同", pinyin: "Mǎ Āntóng", type: "N", meaning: "Mã An Đồng", note: "Nhân vật nam đến từ Honduras", category: "Nhân vật", icon: "fa-user" },
-
-            // Vocabulary I
             { word: "的", pinyin: "de", type: "Ptc", meaning: "của (trợ từ sở hữu)", note: "Trợ từ liên kết biểu thị sở hữu", category: "Từ vựng Phần I", icon: "fa-link" },
             { word: "家人", pinyin: "jiārén", type: "N", meaning: "người nhà, thành viên gia đình", note: "Chỉ các thành viên trong gia đình", category: "Từ vựng Phần I", icon: "fa-people-roof" },
             { word: "家", pinyin: "jiā", type: "N", meaning: "nhà, gia đình", note: "Ngôi nhà hoặc gia đình", category: "Từ vựng Phần I", icon: "fa-house" },
@@ -182,16 +191,14 @@
             { word: "照片", pinyin: "zhàopiàn", type: "N", meaning: "bức ảnh, tấm ảnh", note: "Hình ảnh chụp lại", category: "Từ vựng Phần I", icon: "fa-image" },
             { word: "都", pinyin: "dōu", type: "Adv", meaning: "đều, tất cả", note: "Phó từ chỉ phạm vi toàn bộ", category: "Từ vựng Phần I", icon: "fa-asterisk" },
             { word: "照相", pinyin: "zhàoxiàng", type: "V-sep", meaning: "chụp ảnh", note: "Động từ ly hợp", category: "Từ vựng Phần I", icon: "fa-camera" },
-            { word: "張", pinyin: "zhāng", type: "M", meaning: "tấm, tờ, bức (lượng từ)", note: "Lượng từ cho vật mỏng phẳng: ảnh, giấy, vé...", category: "Từ vựng Phần I", icon: "fa-file" },
-            { word: "好看", pinyin: "hǎokàn", type: "Vs", meaning: "đẹp, dễ nhìn, hay (sách/phim)", note: "Khen hình thức hoặc nội dung cuốn hút", category: "Từ vựng Phần I", icon: "fa-eye" },
+            { word: "張", pinyin: "zhāng", type: "M", meaning: "tấm, tờ, bức (lượng từ)", note: "Lượng từ cho vật mỏng phẳng", category: "Từ vựng Phần I", icon: "fa-file" },
+            { word: "好看", pinyin: "hǎokàn", type: "Vs", meaning: "đẹp, dễ nhìn, hay (sách/phim)", note: "Khen hình thức hoặc nội dung", category: "Từ vựng Phần I", icon: "fa-eye" },
             { word: "誰", pinyin: "shéi / shuí", type: "N", meaning: "ai", note: "Đại từ nghi vấn chỉ người", category: "Từ vựng Phần I", icon: "fa-circle-question" },
             { word: "姐姐", pinyin: "jiějie", type: "N", meaning: "chị gái", note: "Chị gái trong gia đình", category: "Từ vựng Phần I", icon: "fa-person-dress" },
             { word: "妹妹", pinyin: "mèimei", type: "N", meaning: "em gái", note: "Em gái trong gia đình", category: "Từ vựng Phần I", icon: "fa-child-dress" },
             { word: "爸爸", pinyin: "bàba", type: "N", meaning: "bố, cha", note: "Người cha", category: "Từ vựng Phần I", icon: "fa-person" },
             { word: "媽媽", pinyin: "māmā", type: "N", meaning: "mẹ", note: "Người mẹ", category: "Từ vựng Phần I", icon: "fa-person-dress" },
-            
-            // Vocabulary II
-            { word: "伯母", pinyin: "bómǔ", type: "N", meaning: "bác gái", note: "Từ xưng hô lịch sự với mẹ của bạn bè", category: "Từ vựng Phần II", icon: "fa-user-tie" },
+            { word: "伯母", pinyin: "bómǔ", type: "N", meaning: "bác gái", note: "Xưng hô lịch sự với mẹ bạn bè", category: "Từ vựng Phần II", icon: "fa-user-tie" },
             { word: "您", pinyin: "nín", type: "N", meaning: "ngài, ông, bà, bác", note: "Ngôi thứ hai trang trọng, tôn kính", category: "Từ vựng Phần II", icon: "fa-handshake" },
             { word: "名字", pinyin: "míngzi", type: "N", meaning: "tên", note: "Họ và tên hoặc tên gọi", category: "Từ vựng Phần II", icon: "fa-id-card" },
             { word: "書", pinyin: "shū", type: "N", meaning: "sách", note: "Sách đọc", category: "Từ vựng Phần II", icon: "fa-book" },
@@ -200,14 +207,12 @@
             { word: "看書", pinyin: "kànshū", type: "V-sep", meaning: "đọc sách", note: "Động từ đọc xem sách", category: "Từ vựng Phần II", icon: "fa-book-open-reader" },
             { word: "幾", pinyin: "jǐ", type: "N", meaning: "mấy, bao nhiêu", note: "Hỏi số lượng nhỏ dưới 10", category: "Từ vựng Phần II", icon: "fa-hashtag" },
             { word: "個", pinyin: "ge", type: "M", meaning: "cái, chiếc, người (lượng từ)", note: "Lượng từ phổ biến nhất", category: "Từ vựng Phần II", icon: "fa-shapes" },
-            { word: "沒", pinyin: "méi", type: "Adv", meaning: "không, chưa", note: "Phó từ phủ định đi với '有' (沒有)", category: "Từ vựng Phần II", icon: "fa-ban" },
+            { word: "沒", pinyin: "méi", type: "Adv", meaning: "không, chưa", note: "Phó từ phủ định đi với '有'", category: "Từ vựng Phần II", icon: "fa-ban" },
             { word: "兄弟", pinyin: "xiōngdì", type: "N", meaning: "anh em trai", note: "Anh em trai nói chung", category: "Từ vựng Phần II", icon: "fa-users" },
             { word: "姐妹", pinyin: "jiěmèi", type: "N", meaning: "chị em gái", note: "Chị em gái nói chung", category: "Từ vựng Phần II", icon: "fa-users" },
             { word: "五", pinyin: "wǔ", type: "N", meaning: "số 5", note: "Số đếm 5", category: "Từ vựng Phần II", icon: "fa-5" },
-            { word: "兩", pinyin: "liǎng", type: "N", meaning: "hai", note: "Dùng trước lượng từ khi cân đo/đếm số lượng", category: "Từ vựng Phần II", icon: "fa-2" },
+            { word: "兩", pinyin: "liǎng", type: "N", meaning: "hai", note: "Dùng trước lượng từ khi đếm số lượng", category: "Từ vựng Phần II", icon: "fa-2" },
             { word: "弟弟", pinyin: "dìdi", type: "N", meaning: "em trai", note: "Em trai trong gia đình", category: "Từ vựng Phần II", icon: "fa-child" },
-
-            // Phrases
             { word: "請進", pinyin: "qǐng jìn", type: "Phr", meaning: "Xin mời vào!", note: "Lời chào mời khách vào nhà", category: "Cụm từ thường dùng", icon: "fa-door-open" },
             { word: "您好", pinyin: "nín hǎo", type: "Phr", meaning: "Chào ngài, chào bác!", note: "Cách chào lịch sự, tôn kính", category: "Cụm từ thường dùng", icon: "fa-handshake-angle" }
         ];
@@ -215,17 +220,27 @@
         let dataset = [...rawVocabulary];
         let index = 0;
 
-        // TTS Engine tương thích cao trên Android/iOS
         let synth = window.speechSynthesis;
         let voices = [];
         function loadVoices() {
-            if ('speechSynthesis' in window) {
-                voices = synth.getVoices();
-            }
+            if ('speechSynthesis' in window) voices = synth.getVoices();
         }
         loadVoices();
         if ('speechSynthesis' in window && speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function playSound(text) {
+            if (!('speechSynthesis' in window)) return;
+            synth.cancel();
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-TW';
+            utterance.rate = 0.85;
+            if (voices.length > 0) {
+                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
+                if (zhVoice) utterance.voice = zhVoice;
+            }
+            synth.speak(utterance);
         }
 
         function loadCard() {
@@ -241,7 +256,6 @@
 
             let imgEl = document.getElementById('cardImg');
             let iconEl = document.getElementById('cardIcon');
-            
             if (item.customImg) {
                 imgEl.src = item.customImg;
                 imgEl.style.display = 'block';
@@ -257,36 +271,20 @@
             dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
             index = 0;
             loadCard();
+            if(document.getElementById('quiz-view').classList.contains('active')) startQuiz();
         }
 
         function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
         function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
         function prevCard() { if(index > 0) { index--; loadCard(); } }
-
-        function speakWord(e) {
-            if(e) e.stopPropagation();
-            if (!('speechSynthesis' in window)) return;
-            synth.cancel();
-
-            let utterance = new SpeechSynthesisUtterance(dataset[index].word);
-            utterance.lang = 'zh-TW';
-            utterance.rate = 0.85;
-
-            if (voices.length > 0) {
-                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
-                if (zhVoice) utterance.voice = zhVoice;
-            }
-            synth.speak(utterance);
-        }
+        function speakCurrentWord(e) { if(e) e.stopPropagation(); playSound(dataset[index].word); }
 
         function generateAIImage(e) {
             e.stopPropagation();
             let btn = e.currentTarget;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
-            
             let query = dataset[index].meaning.split(',')[0].trim();
             let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('simple traditional chinese style illustration of ' + query)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
-            
             let tempImg = new Image();
             tempImg.src = imageUrl;
             tempImg.onload = () => {
@@ -294,9 +292,7 @@
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo';
                 loadCard();
             };
-            tempImg.onerror = () => {
-                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
-            };
+            tempImg.onerror = () => { btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại'; };
         }
 
         function switchTab(tab, btn) {
@@ -309,7 +305,74 @@
             if(tab === 'spell') startSpell();
         }
 
-        // Match Game
+        /* Quiz / Luyện Chữ & Nghĩa */
+        let qIndex = 0;
+        let quizMode = 'hanzi_to_pinyin';
+
+        function setQuizMode(mode) {
+            quizMode = mode;
+            document.getElementById('btnModePinyin').classList.toggle('active', mode === 'hanzi_to_pinyin');
+            document.getElementById('btnModeMeaning').classList.toggle('active', mode === 'hanzi_to_meaning');
+            startQuiz();
+        }
+
+        function startQuiz() {
+            qIndex = 0;
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            let container = document.getElementById('quizContainer');
+            if(qIndex >= dataset.length) {
+                container.innerHTML = `
+                    <h2 style="color:var(--primary); margin-bottom: 0.5rem;">🎉 Hoàn thành bài luyện tập!</h2>
+                    <p style="color:var(--text-muted);">Bạn đã hoàn thành tất cả các từ vựng trong danh mục này.</p>
+                    <button class="btn-submit" style="margin:1.5rem auto 0; display:inline-block; padding:0.8rem 2rem;" onclick="startQuiz()">Luyện tập lại</button>
+                `;
+                return;
+            }
+
+            let q = dataset[qIndex];
+            let isPinyinMode = quizMode === 'hanzi_to_pinyin';
+            let correctVal = isPinyinMode ? q.pinyin : q.meaning;
+
+            let pool = rawVocabulary.map(item => isPinyinMode ? item.pinyin : item.meaning).filter(val => val !== correctVal);
+            let opts = [correctVal];
+            while(opts.length < 4 && pool.length > 0) {
+                let randIdx = Math.floor(Math.random() * pool.length);
+                let randVal = pool.splice(randIdx, 1)[0];
+                if(!opts.includes(randVal)) opts.push(randVal);
+            }
+            opts.sort(() => 0.5 - Math.random());
+
+            container.innerHTML = `
+                <div><span class="tag-badge">${q.category}</span></div>
+                <div class="hanzi-display">${q.word}</div>
+                <div>
+                    <button class="sound-circle-btn" onclick="playSound('${q.word}')" title="Phát âm">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+                <div class="options-grid">
+                    ${opts.map(opt => `<button class="option-btn" onclick="checkQuizAnswer(this, ${opt === correctVal})">${opt}</button>`).join('')}
+                </div>
+                <div style="margin-top: 1.2rem; font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">
+                    Tiến độ: ${qIndex + 1} / ${dataset.length}
+                </div>
+            `;
+        }
+
+        function checkQuizAnswer(btn, isCorrect) {
+            btn.style.background = isCorrect ? 'var(--success)' : 'var(--danger)';
+            btn.style.borderColor = isCorrect ? 'var(--success)' : 'var(--danger)';
+            btn.style.color = 'white';
+            setTimeout(() => {
+                qIndex++;
+                renderQuiz();
+            }, 550);
+        }
+
+        /* Match Game */
         let selectedMatch = [], timerInt, time = 0;
         function startMatch() {
             clearInterval(timerInt);
@@ -353,49 +416,15 @@
             });
         }
 
-        // Quiz
-        let qIndex = 0;
-        function startQuiz() { qIndex = 0; renderQuiz(); }
-        function renderQuiz() {
-            let container = document.getElementById('quizContainer');
-            if(qIndex >= Math.min(dataset.length, 6)) {
-                container.innerHTML = '<h3 style="text-align:center;">🎉 Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin:1.2rem auto 0; display:block; padding:0.8rem 1.6rem;" onclick="startQuiz()">Làm lại</button>';
-                return;
-            }
-            let q = dataset[qIndex];
-            let opts = [q.meaning];
-            while(opts.length < 4) {
-                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
-                if(!opts.includes(r)) opts.push(r);
-            }
-            opts.sort(() => 0.5 - Math.random());
-            container.innerHTML = `
-                <div style="font-size: 1.2rem;">Câu ${qIndex + 1}: Chữ Hán "<b style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal; color:var(--primary);">${q.word}</b>" (${q.pinyin} - ${q.type}) có nghĩa là gì?</div>
-                <div class="options-grid">
-                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
-                </div>
-            `;
-        }
-        function ansQuiz(btn, isCorrect) {
-            btn.style.background = isCorrect === 'true' ? '#27ae60' : '#e74c3c';
-            btn.style.color = 'white';
-            setTimeout(() => { qIndex++; renderQuiz(); }, 700);
-        }
-
-        // Spell
+        /* Spell */
         let sIndex = 0;
-        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
-        function speakSpellWord() {
-            if (!('speechSynthesis' in window)) return;
-            synth.cancel();
-            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
-            u.lang = 'zh-TW';
-            if (voices.length > 0) {
-                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
-                if (zhVoice) u.voice = zhVoice;
-            }
-            synth.speak(u);
+        function startSpell() { 
+            sIndex = 0; 
+            document.getElementById('spellInput').value = ''; 
+            document.getElementById('spellFeedback').innerText = ''; 
+            speakSpellWord(); 
         }
+        function speakSpellWord() { playSound(dataset[sIndex].word); }
         function checkSpell() {
             let input = document.getElementById('spellInput').value.trim().toLowerCase();
             let targetWord = dataset[sIndex].word.toLowerCase();
