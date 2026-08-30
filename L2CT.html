@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 2: 我的家人 (Gia đình tôi) - Ứng dụng Từ Vựng</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #c0392b;
+            --primary-hover: #962d22;
+            --bg-main: #fcf8f2;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #ebdcd0;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-md: 0 8px 24px rgba(192, 57, 43, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", Roboto, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.3rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        nav.nav-tabs { display: flex; justify-content: center; gap: 8px; padding: 0.8rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; padding: 10px 16px; border-radius: var(--radius-md); font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .tab-btn:hover { background: #fbeee6; color: var(--text-main); }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        main { flex: 1; max-width: 780px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+
+        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); font-weight: 600; margin-bottom: 1rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 420px; }
+
+        /* Flashcard 3D */
+        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 380px; margin-bottom: 1.5rem; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
+        .card-back { transform: rotateY(180deg); background: #fffdfa; }
+        .card-category { position: absolute; top: 15px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(192, 57, 43, 0.08); padding: 4px 12px; border-radius: 12px; }
+        .ai-gen-btn { position: absolute; top: 15px; right: 20px; background: #fff0eb; color: var(--primary); border: 1px solid rgba(192, 57, 43, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .card-hanzi { font-size: 3.2rem; font-weight: 800; margin-bottom: 0.2rem; color: #2c3e50; }
+        .card-pinyin { font-size: 1.3rem; color: #d35400; margin-bottom: 0.5rem; font-weight: 600; }
+        .card-type { font-size: 0.85rem; font-weight: 700; color: #8e44ad; background: #f4ecf7; padding: 2px 8px; border-radius: 6px; margin-bottom: 0.8rem; }
+        .card-meaning { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
+        .card-note { font-size: 0.95rem; color: var(--text-muted); font-style: italic; max-width: 90%; line-height: 1.4; }
+        .controls-bar { display: flex; justify-content: space-between; align-items: center; }
+        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; color: var(--text-main); }
+
+        /* Match Game */
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; font-size: 1.05rem; }
+        .match-card.selected { border-color: var(--primary); background: rgba(192, 57, 43, 0.08); color: var(--primary); }
+        .match-card.correct { border-color: var(--success); background: rgba(39, 174, 96, 0.1); opacity: 0.2; pointer-events: none; }
+
+        /* Quiz & Spell */
+        .quiz-card { background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.5rem; }
+        .option-btn { padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 600; cursor: pointer; text-align: left; font-size: 1rem; }
+        .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
+        .input-box input { flex: 1; padding: 0.8rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.1rem; outline: none; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fa-solid fa-people-roof"></i> Bài 2: 我的家人 (Gia đình tôi)</div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ ghi nhớ</button>
+        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép từ</button>
+        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Kiểm tra</button>
+        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện nghe & Viết</button>
+    </nav>
+
+    <main>
+        <select id="categoryFilter" class="filter-select" onchange="filterCategory(this.value)">
+            <option value="ALL">Tất cả bài học (30 mục)</option>
+            <option value="Nhân vật">Nhân vật trong bài</option>
+            <option value="Từ vựng Phần I">Từ vựng Phần I</option>
+            <option value="Từ vựng Phần II">Từ vựng Phần II</option>
+            <option value="Cụm từ thường dùng">Cụm từ thường dùng</option>
+        </select>
+
+        <!-- 1. Flashcards -->
+        <div id="flashcards-view" class="view-panel active">
+            <div class="flashcard-wrapper">
+                <div class="flashcard" id="mainCard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <span class="card-category" id="cardCategory">Nhân vật</span>
+                        <button class="ai-gen-btn" onclick="generateAIImage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh</button>
+                        <i class="fa-solid fa-house-user" id="cardIcon" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 0.6rem;"></i>
+                        <img id="cardImg" style="display:none; max-width: 140px; max-height: 90px; border-radius: 8px; margin-bottom: 0.6rem; object-fit: contain;">
+                        <div class="card-hanzi" id="cardHanzi">家人</div>
+                        <div class="card-pinyin" id="cardPinyin">jiārén</div>
+                        <span class="card-type" id="cardType">N</span>
+                        <button class="ctrl-btn" style="width: 36px; height: 36px; margin-top: 4px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
+                    <div class="card-face card-back">
+                        <span class="card-category">Dịch nghĩa & Ghi chú</span>
+                        <div class="card-meaning" id="cardMeaning">người nhà, thành viên gia đình</div>
+                        <div class="card-note" id="cardNote"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-bar">
+                <button class="ctrl-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i></button>
+                <span id="cardProgress" style="font-weight: bold;">1 / 30</span>
+                <button class="ctrl-btn" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
+                Phím <kbd>Space</kbd> để lật | Phím <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
+            </div>
+        </div>
+
+        <!-- 2. Match Game -->
+        <div id="match-view" class="view-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="font-weight: bold; color: var(--primary);">Thời gian: <span id="matchTimer">0.0</span>s</div>
+                <button class="btn-submit" style="padding: 6px 16px;" onclick="startMatch()">Chơi lại</button>
+            </div>
+            <div class="match-grid" id="matchGrid"></div>
+        </div>
+
+        <!-- 3. Quiz -->
+        <div id="quiz-view" class="view-panel">
+            <div class="quiz-card" id="quizContainer"></div>
+        </div>
+
+        <!-- 4. Listen & Spell -->
+        <div id="spell-view" class="view-panel">
+            <div class="quiz-card" style="text-align: center;">
+                <button class="ctrl-btn" style="width: 70px; height: 70px; font-size: 1.8rem; margin: 0 auto 1rem;" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
+                <div>Nghe phát âm và gõ lại chữ Hán (hoặc Pinyin không dấu):</div>
+                <div class="input-box" style="max-width: 420px; margin: 1rem auto;">
+                    <input type="text" id="spellInput" placeholder="Nhập chữ Hán hoặc Pinyin..." onkeyup="if(event.key==='Enter') checkSpell()">
+                    <button class="btn-submit" onclick="checkSpell()">Kiểm tra</button>
+                </div>
+                <div id="spellFeedback" style="margin-top: 1rem; font-weight: bold;"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const rawVocabulary = [
+            // Characters
+            { word: "張怡君", pinyin: "Zhāng Yíjūn", type: "N", meaning: "Trương Di Quân", note: "Nhân vật nữ đến từ Đài Loan", category: "Nhân vật", icon: "fa-user" },
+            { word: "馬安同", pinyin: "Mǎ Āntóng", type: "N", meaning: "Mã An Đồng", note: "Nhân vật nam đến từ Honduras", category: "Nhân vật", icon: "fa-user" },
+
+            // Vocabulary I
+            { word: "的", pinyin: "de", type: "Ptc", meaning: "của (trợ từ sở hữu)", note: "Trợ từ liên kết biểu thị sở hữu", category: "Từ vựng Phần I", icon: "fa-link" },
+            { word: "家人", pinyin: "jiārén", type: "N", meaning: "người nhà, thành viên gia đình", note: "Chỉ các thành viên trong gia đình", category: "Từ vựng Phần I", icon: "fa-people-roof" },
+            { word: "家", pinyin: "jiā", type: "N", meaning: "nhà, gia đình", note: "Ngôi nhà hoặc gia đình", category: "Từ vựng Phần I", icon: "fa-house" },
+            { word: "漂亮", pinyin: "piàoliang", type: "Vs", meaning: "đẹp, xinh đẹp", note: "Dùng khen ngoại hình, cảnh vật, đồ vật", category: "Từ vựng Phần I", icon: "fa-wand-magic-sparkles" },
+            { word: "房子", pinyin: "fángzi", type: "N", meaning: "ngôi nhà, căn nhà", note: "Công trình nhà ở", category: "Từ vựng Phần I", icon: "fa-house-chimney" },
+            { word: "坐", pinyin: "zuò", type: "Vi", meaning: "ngồi", note: "Hành động ngồi", category: "Từ vựng Phần I", icon: "fa-chair" },
+            { word: "好", pinyin: "hǎo", type: "Ptc", meaning: "được, OK", note: "Biểu thị sự đồng ý hoặc tán thành", category: "Từ vựng Phần I", icon: "fa-thumbs-up" },
+            { word: "有", pinyin: "yǒu", type: "Vst", meaning: "có", note: "Biểu thị sự tồn tại hoặc sở hữu", category: "Từ vựng Phần I", icon: "fa-box-open" },
+            { word: "多", pinyin: "duō", type: "Vs-pred", meaning: "nhiều", note: "Chỉ số lượng nhiều", category: "Từ vựng Phần I", icon: "fa-cubes" },
+            { word: "照片", pinyin: "zhàopiàn", type: "N", meaning: "bức ảnh, tấm ảnh", note: "Hình ảnh chụp lại", category: "Từ vựng Phần I", icon: "fa-image" },
+            { word: "都", pinyin: "dōu", type: "Adv", meaning: "đều, tất cả", note: "Phó từ chỉ phạm vi toàn bộ", category: "Từ vựng Phần I", icon: "fa-asterisk" },
+            { word: "照相", pinyin: "zhàoxiàng", type: "V-sep", meaning: "chụp ảnh", note: "Động từ ly hợp", category: "Từ vựng Phần I", icon: "fa-camera" },
+            { word: "張", pinyin: "zhāng", type: "M", meaning: "tấm, tờ, bức (lượng từ)", note: "Lượng từ cho vật mỏng phẳng: ảnh, giấy, vé...", category: "Từ vựng Phần I", icon: "fa-file" },
+            { word: "好看", pinyin: "hǎokàn", type: "Vs", meaning: "đẹp, dễ nhìn, hay (sách/phim)", note: "Khen hình thức hoặc nội dung cuốn hút", category: "Từ vựng Phần I", icon: "fa-eye" },
+            { word: "誰", pinyin: "shéi / shuí", type: "N", meaning: "ai", note: "Đại từ nghi vấn chỉ người", category: "Từ vựng Phần I", icon: "fa-circle-question" },
+            { word: "姐姐", pinyin: "jiějie", type: "N", meaning: "chị gái", note: "Chị gái trong gia đình", category: "Từ vựng Phần I", icon: "fa-person-dress" },
+            { word: "妹妹", pinyin: "mèimei", type: "N", meaning: "em gái", note: "Em gái trong gia đình", category: "Từ vựng Phần I", icon: "fa-child-dress" },
+            { word: "爸爸", pinyin: "bàba", type: "N", meaning: "bố, cha", note: "Người cha", category: "Từ vựng Phần I", icon: "fa-person" },
+            { word: "媽媽", pinyin: "māmā", type: "N", meaning: "mẹ", note: "Người mẹ", category: "Từ vựng Phần I", icon: "fa-person-dress" },
+            
+            // Vocabulary II
+            { word: "伯母", pinyin: "bómǔ", type: "N", meaning: "bác gái", note: "Từ xưng hô lịch sự với mẹ của bạn bè", category: "Từ vựng Phần II", icon: "fa-user-tie" },
+            { word: "您", pinyin: "nín", type: "N", meaning: "ngài, ông, bà, bác", note: "Ngôi thứ hai trang trọng, tôn kính", category: "Từ vựng Phần II", icon: "fa-handshake" },
+            { word: "名字", pinyin: "míngzi", type: "N", meaning: "tên", note: "Họ và tên hoặc tên gọi", category: "Từ vựng Phần II", icon: "fa-id-card" },
+            { word: "書", pinyin: "shū", type: "N", meaning: "sách", note: "Sách đọc", category: "Từ vựng Phần II", icon: "fa-book" },
+            { word: "哥哥", pinyin: "gēge", type: "N", meaning: "anh trai", note: "Anh trai trong gia đình", category: "Từ vựng Phần II", icon: "fa-person" },
+            { word: "老師", pinyin: "lǎoshī", type: "N", meaning: "giáo viên, thầy/cô giáo", note: "Người dạy học", category: "Từ vựng Phần II", icon: "fa-chalkboard-user" },
+            { word: "看書", pinyin: "kànshū", type: "V-sep", meaning: "đọc sách", note: "Động từ đọc xem sách", category: "Từ vựng Phần II", icon: "fa-book-open-reader" },
+            { word: "幾", pinyin: "jǐ", type: "N", meaning: "mấy, bao nhiêu", note: "Hỏi số lượng nhỏ dưới 10", category: "Từ vựng Phần II", icon: "fa-hashtag" },
+            { word: "個", pinyin: "ge", type: "M", meaning: "cái, chiếc, người (lượng từ)", note: "Lượng từ phổ biến nhất", category: "Từ vựng Phần II", icon: "fa-shapes" },
+            { word: "沒", pinyin: "méi", type: "Adv", meaning: "không, chưa", note: "Phó từ phủ định đi với '有' (沒有)", category: "Từ vựng Phần II", icon: "fa-ban" },
+            { word: "兄弟", pinyin: "xiōngdì", type: "N", meaning: "anh em trai", note: "Anh em trai nói chung", category: "Từ vựng Phần II", icon: "fa-users" },
+            { word: "姐妹", pinyin: "jiěmèi", type: "N", meaning: "chị em gái", note: "Chị em gái nói chung", category: "Từ vựng Phần II", icon: "fa-users" },
+            { word: "五", pinyin: "wǔ", type: "N", meaning: "số 5", note: "Số đếm 5", category: "Từ vựng Phần II", icon: "fa-5" },
+            { word: "兩", pinyin: "liǎng", type: "N", meaning: "hai", note: "Dùng trước lượng từ khi cân đo/đếm số lượng", category: "Từ vựng Phần II", icon: "fa-2" },
+            { word: "弟弟", pinyin: "dìdi", type: "N", meaning: "em trai", note: "Em trai trong gia đình", category: "Từ vựng Phần II", icon: "fa-child" },
+
+            // Phrases
+            { word: "請進", pinyin: "qǐng jìn", type: "Phr", meaning: "Xin mời vào!", note: "Lời chào mời khách vào nhà", category: "Cụm từ thường dùng", icon: "fa-door-open" },
+            { word: "您好", pinyin: "nín hǎo", type: "Phr", meaning: "Chào ngài, chào bác!", note: "Cách chào lịch sự, tôn kính", category: "Cụm từ thường dùng", icon: "fa-handshake-angle" }
+        ];
+
+        let dataset = [...rawVocabulary];
+        let index = 0;
+
+        // Quản lý Text-to-Speech hỗ trợ chuẩn cả Android và iOS
+        let synth = window.speechSynthesis;
+        let voices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                voices = synth.getVoices();
+            }
+        }
+        loadVoices();
+        if ('speechSynthesis' in window && speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function loadCard() {
+            document.getElementById('mainCard').classList.remove('flipped');
+            let item = dataset[index];
+            document.getElementById('cardCategory').innerText = item.category;
+            document.getElementById('cardHanzi').innerText = item.word;
+            document.getElementById('cardPinyin').innerText = item.pinyin;
+            document.getElementById('cardType').innerText = item.type || 'N';
+            document.getElementById('cardMeaning').innerText = item.meaning;
+            document.getElementById('cardNote').innerText = item.note ? item.note : '';
+            document.getElementById('cardProgress').innerText = `${index + 1} / ${dataset.length}`;
+
+            let imgEl = document.getElementById('cardImg');
+            let iconEl = document.getElementById('cardIcon');
+            
+            if (item.customImg) {
+                imgEl.src = item.customImg;
+                imgEl.style.display = 'block';
+                iconEl.style.display = 'none';
+            } else {
+                imgEl.style.display = 'none';
+                iconEl.style.display = 'block';
+                iconEl.className = `fa-solid ${item.icon || 'fa-house-user'}`;
+            }
+        }
+
+        function filterCategory(cat) {
+            dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
+            index = 0;
+            loadCard();
+        }
+
+        function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
+        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
+        function prevCard() { if(index > 0) { index--; loadCard(); } }
+
+        function speakWord(e) {
+            if(e) e.stopPropagation();
+            if (!('speechSynthesis' in window)) return;
+            synth.cancel();
+
+            let utterance = new SpeechSynthesisUtterance(dataset[index].word);
+            utterance.lang = 'zh-TW'; // Ưu tiên phát âm chuẩn phồn thể
+            utterance.rate = 0.85;
+
+            if (voices.length > 0) {
+                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
+                if (zhVoice) utterance.voice = zhVoice;
+            }
+            synth.speak(utterance);
+        }
+
+        // Tích hợp AI Tạo Ảnh trực tiếp từ Pollinations AI
+        function generateAIImage(e) {
+            e.stopPropagation();
+            let btn = e.currentTarget;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
+            
+            let query = dataset[index].meaning.split(',')[0].trim();
+            let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('simple clean illustration of ' + query)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
+            
+            let tempImg = new Image();
+            tempImg.src = imageUrl;
+            tempImg.onload = () => {
+                dataset[index].customImg = imageUrl;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo';
+                loadCard();
+            };
+            tempImg.onerror = () => {
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
+            };
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${tab}-view`).classList.add('active');
+            if(tab === 'match') startMatch();
+            if(tab === 'quiz') startQuiz();
+            if(tab === 'spell') startSpell();
+        }
+
+        // Match Game
+        let selectedMatch = [], timerInt, time = 0;
+        function startMatch() {
+            clearInterval(timerInt);
+            time = 0;
+            document.getElementById('matchTimer').innerText = '0.0';
+            timerInt = setInterval(() => { time += 0.1; document.getElementById('matchTimer').innerText = time.toFixed(1); }, 100);
+
+            let grid = document.getElementById('matchGrid');
+            grid.innerHTML = '';
+            let items = [...dataset].sort(() => 0.5 - Math.random()).slice(0, 6);
+            let cards = [];
+            items.forEach((item, i) => {
+                cards.push({ id: i, text: `${item.word}` });
+                cards.push({ id: i, text: `${item.meaning}` });
+            });
+            cards.sort(() => 0.5 - Math.random());
+            cards.forEach(c => {
+                let div = document.createElement('div');
+                div.className = 'match-card';
+                div.innerText = c.text;
+                div.onclick = () => {
+                    if (div.classList.contains('correct') || div.classList.contains('selected')) return;
+                    div.classList.add('selected');
+                    selectedMatch.push({ el: div, id: c.id });
+                    if(selectedMatch.length === 2) {
+                        if(selectedMatch[0].id === selectedMatch[1].id) {
+                            selectedMatch[0].el.className = 'match-card correct';
+                            selectedMatch[1].el.className = 'match-card correct';
+                            if(document.querySelectorAll('.match-card:not(.correct)').length === 0) {
+                                clearInterval(timerInt);
+                                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                            }
+                        } else {
+                            let a = selectedMatch[0].el, b = selectedMatch[1].el;
+                            setTimeout(() => { a.classList.remove('selected'); b.classList.remove('selected'); }, 400);
+                        }
+                        selectedMatch = [];
+                    }
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        // Quiz
+        let qIndex = 0;
+        function startQuiz() { qIndex = 0; renderQuiz(); }
+        function renderQuiz() {
+            let container = document.getElementById('quizContainer');
+            if(qIndex >= Math.min(dataset.length, 6)) {
+                container.innerHTML = '<h3 style="text-align:center;">🎉 Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin:1rem auto 0; display:block; padding:0.8rem 1.5rem;" onclick="startQuiz()">Làm lại</button>';
+                return;
+            }
+            let q = dataset[qIndex];
+            let opts = [q.meaning];
+            while(opts.length < 4) {
+                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => 0.5 - Math.random());
+            container.innerHTML = `
+                <div style="font-size: 1.15rem;">Câu ${qIndex + 1}: Chữ Hán "<b>${q.word}</b>" (${q.pinyin} - ${q.type}) có nghĩa là gì?</div>
+                <div class="options-grid">
+                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
+                </div>
+            `;
+        }
+        function ansQuiz(btn, isCorrect) {
+            btn.style.background = isCorrect === 'true' ? '#27ae60' : '#e74c3c';
+            btn.style.color = 'white';
+            setTimeout(() => { qIndex++; renderQuiz(); }, 700);
+        }
+
+        // Spell
+        let sIndex = 0;
+        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
+        function speakSpellWord() {
+            if (!('speechSynthesis' in window)) return;
+            synth.cancel();
+            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
+            u.lang = 'zh-TW';
+            if (voices.length > 0) {
+                let zhVoice = voices.find(v => v.lang.includes('zh-TW') || v.lang.includes('zh-CN') || v.lang.startsWith('zh'));
+                if (zhVoice) u.voice = zhVoice;
+            }
+            synth.speak(u);
+        }
+        function checkSpell() {
+            let input = document.getElementById('spellInput').value.trim().toLowerCase();
+            let targetWord = dataset[sIndex].word.toLowerCase();
+            let targetPinyin = dataset[sIndex].pinyin.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '');
+            let rawInput = input.replace(/\s+/g, '');
+            let fb = document.getElementById('spellFeedback');
+
+            if(input === targetWord || rawInput === targetPinyin) {
+                fb.style.color = '#27ae60';
+                fb.innerText = `Chính xác! (${dataset[sIndex].word} - ${dataset[sIndex].pinyin}: ${dataset[sIndex].meaning})`;
+                setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 1200);
+            } else {
+                fb.style.color = '#e74c3c';
+                fb.innerText = `Chưa chính xác! Gợi ý: ${dataset[sIndex].meaning} (Pinyin: ${dataset[sIndex].pinyin})`;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
+            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if(e.code === 'ArrowRight') nextCard();
+            if(e.code === 'ArrowLeft') prevCard();
+        });
+
+        window.onload = loadCard;
+    </script>
+</body>
+</html>
