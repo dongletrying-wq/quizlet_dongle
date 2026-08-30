@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 2: 我的家人 (Gia đình tôi) - Flashcard & Game</title>
-    <!-- Google Fonts Noto Serif TC (Khải Thể / Phồn Thể chuẩn giáo trình) -->
+    <title>Bài 2: 我的家人 (Gia đình tôi) - Học Từ Vựng Phồn Thể</title>
+    <!-- Google Font Noto Serif TC (Khải Thể / Phồn Thể nét chuẩn) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -24,14 +24,15 @@
             --radius-lg: 20px;
             --radius-md: 12px;
             --shadow-md: 0 10px 25px rgba(192, 57, 43, 0.08);
-            --font-kai: 'Noto Serif TC', 'DFKai-SB', 'BiauKai', 'KaiTi', serif;
+            /* Bộ font Khải Thể chuẩn nét bút tập viết */
+            --font-kai: 'DFKai-SB', 'BiauKai', 'KaiTi', 'STKaiti', 'KaiTi_GB2312', 'Noto Serif TC', serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
         header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: 800; font-size: 1.3rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        .logo span { font-family: var(--font-kai); font-weight: 700; }
+        .logo span { font-family: var(--font-kai); font-weight: normal; }
         
         nav.nav-tabs { display: flex; justify-content: center; gap: 8px; padding: 0.8rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
         .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
@@ -45,7 +46,7 @@
         .filter-select { padding: 10px 18px; border-radius: 20px; border: 1.5px solid var(--border-color); background: var(--card-bg); font-weight: 700; margin-bottom: 1.2rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 420px; font-size: 0.95rem; }
 
         /* Flashcard 3D */
-        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 400px; margin-bottom: 1.5rem; }
+        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 410px; margin-bottom: 1.5rem; }
         .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
         .flashcard.flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
@@ -53,8 +54,8 @@
         .card-category { position: absolute; top: 16px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(192, 57, 43, 0.08); padding: 5px 14px; border-radius: 12px; }
         .ai-gen-btn { position: absolute; top: 16px; right: 20px; background: #fff0eb; color: var(--primary); border: 1px solid rgba(192, 57, 43, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         
-        /* Chữ Hán Font Khải Thể chuẩn sách */
-        .card-hanzi { font-family: var(--font-kai); font-size: 3.8rem; font-weight: 900; margin-bottom: 0.1rem; color: #1e272e; letter-spacing: 2px; }
+        /* Chữ Hán Font Khải Thể chuẩn nét bút tập viết */
+        .card-hanzi { font-family: var(--font-kai); font-size: 4.2rem; font-weight: normal; margin-bottom: 0.1rem; color: #1e272e; letter-spacing: 2px; }
         .card-pinyin { font-size: 1.35rem; color: #d35400; margin-bottom: 0.4rem; font-weight: 700; }
         .card-type { font-size: 0.85rem; font-weight: 700; color: #8e44ad; background: #f4ecf7; padding: 2px 10px; border-radius: 6px; margin-bottom: 0.8rem; }
         .card-meaning { font-size: 1.9rem; font-weight: 800; color: var(--primary); margin-bottom: 0.8rem; }
@@ -66,7 +67,7 @@
         /* Match Game */
         .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
         .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; font-size: 1.15rem; transition: 0.2s; }
-        .match-card.hanzi-font { font-family: var(--font-kai); font-size: 1.5rem; }
+        .match-card.hanzi-font { font-family: var(--font-kai); font-size: 1.65rem; font-weight: normal; }
         .match-card.selected { border-color: var(--primary); background: rgba(192, 57, 43, 0.08); color: var(--primary); transform: scale(1.02); }
         .match-card.correct { border-color: var(--success); background: rgba(39, 174, 96, 0.1); opacity: 0.2; pointer-events: none; }
 
@@ -369,7 +370,7 @@
             }
             opts.sort(() => 0.5 - Math.random());
             container.innerHTML = `
-                <div style="font-size: 1.2rem;">Câu ${qIndex + 1}: Chữ Hán "<b style="font-family:var(--font-kai); font-size:1.6rem; color:var(--primary);">${q.word}</b>" (${q.pinyin} - ${q.type}) có nghĩa là gì?</div>
+                <div style="font-size: 1.2rem;">Câu ${qIndex + 1}: Chữ Hán "<b style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal; color:var(--primary);">${q.word}</b>" (${q.pinyin} - ${q.type}) có nghĩa là gì?</div>
                 <div class="options-grid">
                     ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
                 </div>
@@ -404,7 +405,7 @@
 
             if(input === targetWord || rawInput === targetPinyin) {
                 fb.style.color = '#27ae60';
-                fb.innerHTML = `Chính xác! (<span style="font-family:var(--font-kai); font-size:1.3rem;">${dataset[sIndex].word}</span> - ${dataset[sIndex].pinyin}: ${dataset[sIndex].meaning})`;
+                fb.innerHTML = `Chính xác! (<span style="font-family:var(--font-kai); font-size:1.4rem;">${dataset[sIndex].word}</span> - ${dataset[sIndex].pinyin}: ${dataset[sIndex].meaning})`;
                 setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 1200);
             } else {
                 fb.style.color = '#e74c3c';
