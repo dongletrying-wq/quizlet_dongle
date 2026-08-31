@@ -1,389 +1,46 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizlet Unit 9: Past Times</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <style>
-        :root {
-            --primary: #4255ff;
-            --primary-hover: #2e3ed4;
-            --bg-main: #f6f7fb;
-            --card-bg: #ffffff;
-            --text-main: #1a1d28;
-            --text-muted: #646f90;
-            --border-color: #e2e8f0;
-            --success: #23b26d;
-            --danger: #ff495c;
-            --radius-lg: 16px;
-            --radius-md: 12px;
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        
-        nav.nav-tabs { display: flex; justify-content: center; gap: 10px; padding: 1rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
-        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-        .tab-btn:hover { background: #f1f3f9; color: var(--text-main); }
-        .tab-btn.active { background: var(--primary); color: white; }
-
-        main { flex: 1; max-width: 800px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
-        .view-panel { display: none; }
-        .view-panel.active { display: block; }
-
-        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); font-weight: 600; margin-bottom: 1rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 320px; }
-
-        /* Flashcard 3D */
-        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 380px; margin-bottom: 1.5rem; }
-        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-        .flashcard.flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
-        .card-back { transform: rotateY(180deg); background: #fafbff; }
-        .card-category { position: absolute; top: 15px; left: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: rgba(66, 85, 255, 0.08); padding: 4px 12px; border-radius: 12px; }
-        .ai-gen-btn { position: absolute; top: 15px; right: 20px; background: #f0f4ff; color: var(--primary); border: 1px solid rgba(66, 85, 255, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .card-word { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.2rem; }
-        .card-type { font-size: 0.9rem; font-weight: 700; color: #8e44ad; background: #f3e8f5; padding: 2px 8px; border-radius: 6px; margin-bottom: 0.4rem; }
-        .card-phonetic { font-size: 1rem; color: var(--text-muted); margin-bottom: 0.8rem; font-family: monospace; }
-        .card-meaning { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
-        .card-example { font-size: 0.95rem; color: var(--text-muted); font-style: italic; max-width: 90%; line-height: 1.4; }
-        .controls-bar { display: flex; justify-content: space-between; align-items: center; }
-        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-
-        /* Match Game */
-        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .match-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0.8rem; font-weight: 700; cursor: pointer; user-select: none; }
-        .match-card.selected { border-color: var(--primary); background: rgba(66, 85, 255, 0.08); color: var(--primary); }
-        .match-card.correct { border-color: var(--success); background: rgba(35, 178, 109, 0.1); opacity: 0.2; pointer-events: none; }
-
-        /* Quiz & Spell */
-        .quiz-card { background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.5rem; }
-        .option-btn { padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 600; cursor: pointer; text-align: left; }
-        .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
-        .input-box input { flex: 1; padding: 0.8rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; outline: none; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo"><i class="fa-solid fa-hourglass-half"></i> Quizlet - Unit 9: Past Times</div>
-    </header>
-
-    <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('flashcards', this)"><i class="fa-solid fa-clone"></i> Thẻ ghi nhớ</button>
-        <button class="tab-btn" onclick="switchTab('match', this)"><i class="fa-solid fa-puzzle-piece"></i> Ghép từ</button>
-        <button class="tab-btn" onclick="switchTab('quiz', this)"><i class="fa-solid fa-circle-question"></i> Kiểm tra</button>
-        <button class="tab-btn" onclick="switchTab('spell', this)"><i class="fa-solid fa-headphones"></i> Luyện nghe & Viết</button>
-    </nav>
-
-    <main>
-        <select id="categoryFilter" class="filter-select" onchange="filterCategory(this.value)">
-            <option value="ALL">Tất cả bài học (50+ từ)</option>
-            <option value="General Vocabulary">Từ vựng chung Unit 9</option>
-            <option value="Months of the year">Các tháng trong năm</option>
-            <option value="Ordinal numbers">Số thứ tự</option>
-        </select>
-
-        <!-- 1. Flashcards -->
-        <div id="flashcards-view" class="view-panel active">
-            <div class="flashcard-wrapper">
-                <div class="flashcard" id="mainCard" onclick="flipCard()">
-                    <div class="card-face card-front">
-                        <span class="card-category" id="cardCategory">Category</span>
-                        <button class="ai-gen-btn" onclick="generateAIImage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Ảnh</button>
-                        <i class="fa-solid fa-clock-rotate-left" id="cardIcon" style="font-size: 2.8rem; color: var(--primary); margin-bottom: 0.8rem;"></i>
-                        <img id="cardImg" style="display:none; max-width: 140px; max-height: 100px; border-radius: 8px; margin-bottom: 0.8rem; object-fit: contain;">
-                        <div class="card-word" id="cardWord">amazed</div>
-                        <span class="card-type" id="cardType">adj</span>
-                        <div class="card-phonetic" id="cardPhonetic">/əˈmeɪzd/</div>
-                        <button class="ctrl-btn" style="width: 36px; height: 36px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
-                    </div>
-                    <div class="card-face card-back">
-                        <span class="card-category">Nghĩa & Ví dụ</span>
-                        <div class="card-meaning" id="cardMeaning">kinh ngạc, sửng sốt</div>
-                        <div class="card-example" id="cardExample">"Tina was amazed to see her lottery numbers."</div>
-                    </div>
-                </div>
-            </div>
-            <div class="controls-bar">
-                <button class="ctrl-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i></button>
-                <span id="cardProgress" style="font-weight: bold;">1 / 50</span>
-                <button class="ctrl-btn" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-            <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
-                Dùng phím <kbd>Space</kbd> để lật | Phím <kbd>←</kbd> <kbd>→</kbd> để chuyển thẻ
-            </div>
-        </div>
-
-        <!-- 2. Match Game -->
-        <div id="match-view" class="view-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <div style="font-weight: bold; color: var(--primary);">Thời gian: <span id="matchTimer">0.0</span>s</div>
-                <button class="btn-submit" style="padding: 6px 16px;" onclick="startMatch()">Chơi lại</button>
-            </div>
-            <div class="match-grid" id="matchGrid"></div>
-        </div>
-
-        <!-- 3. Quiz -->
-        <div id="quiz-view" class="view-panel">
-            <div class="quiz-card" id="quizContainer"></div>
-        </div>
-
-        <!-- 4. Listen & Spell -->
-        <div id="spell-view" class="view-panel">
-            <div class="quiz-card" style="text-align: center;">
-                <button class="ctrl-btn" style="width: 70px; height: 70px; font-size: 1.8rem; margin: 0 auto 1rem;" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
-                <div>Nghe phát âm và gõ lại từ vựng chính xác:</div>
-                <div class="input-box" style="max-width: 400px; margin: 1rem auto;">
-                    <input type="text" id="spellInput" placeholder="Nhập từ tiếng Anh..." onkeyup="if(event.key==='Enter') checkSpell()">
-                    <button class="btn-submit" onclick="checkSpell()">Gửi</button>
-                </div>
-                <div id="spellFeedback" style="margin-top: 1rem; font-weight: bold;"></div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        const rawVocabulary = [
-            // General Vocabulary Unit 9
-            { word: "amazed", type: "adj", phonetic: "/əˈmeɪzd/", meaning: "kinh ngạc, sửng sốt", example: "Tina was amazed to see her lottery numbers.", category: "General Vocabulary", icon: "fa-face-surprise" },
-            { word: "angry", type: "adj", phonetic: "/ˈæŋɡri/", meaning: "tức giận, giận dữ", example: "She was angry with her grandson.", category: "General Vocabulary", icon: "fa-face-angry" },
-            { word: "astronaut", type: "n", phonetic: "/ˈæstrənɔːt/", meaning: "phi hành gia", example: "Neil Armstrong was an astronaut.", category: "General Vocabulary", icon: "fa-user-astronaut" },
-            { word: "back", type: "adj", phonetic: "/bæk/", meaning: "phía sau, đằng sau", example: "She put it in the back pocket of her jeans.", category: "General Vocabulary", icon: "fa-arrow-left" },
-            { word: "bad luck", type: "n", phonetic: "/bæd ˈlʌk/", meaning: "vận đen, sự không may", example: "Oh no! What bad luck!", category: "General Vocabulary", icon: "fa-clover" },
-            { word: "birthday", type: "n", phonetic: "/ˈbɜːθdeɪ/", meaning: "ngày sinh nhật", example: "When’s your birthday?", category: "General Vocabulary", icon: "fa-cake-candles" },
-            { word: "born", type: "adj", phonetic: "/bɔːn/", meaning: "được sinh ra", example: "What time were you born?", category: "General Vocabulary", icon: "fa-baby" },
-            { word: "boxer", type: "n", phonetic: "/ˈbɒksə(r)/", meaning: "võ sĩ quyền anh", example: "Muhammad Ali was a boxer.", category: "General Vocabulary", icon: "fa-mitten" },
-            { word: "check", type: "v", phonetic: "/tʃek/", meaning: "kiểm tra", example: "She went to check her lottery ticket.", category: "General Vocabulary", icon: "fa-square-check" },
-            { word: "do", type: "v", phonetic: "/duː/", meaning: "làm (quá khứ: did)", example: "The past simple of 'do' is 'did'.", category: "General Vocabulary", icon: "fa-list-check" },
-            { word: "explorer", type: "n", phonetic: "/ɪkˈsplɔːrə(r)/", meaning: "nhà thám hiểm", example: "Christopher Columbus was an explorer.", category: "General Vocabulary", icon: "fa-compass" },
-            { word: "find", type: "v", phonetic: "/faɪnd/", meaning: "tìm, tìm thấy", example: "She went to find the ticket in her bag.", category: "General Vocabulary", icon: "fa-magnifying-glass" },
-            { word: "go", type: "v", phonetic: "/ɡəʊ/", meaning: "đi (quá khứ: went)", example: "The past simple of 'go' is 'went'.", category: "General Vocabulary", icon: "fa-person-walking" },
-            { word: "good time", type: "phr", phonetic: "/ˌɡʊd ˈtaɪm/", meaning: "thời gian vui vẻ, tốt đẹp", example: "We had a really good time at the beach.", category: "General Vocabulary", icon: "fa-face-smile" },
-            { word: "housework", type: "n", phonetic: "/ˈhaʊswɜːk/", meaning: "việc nhà", example: "I did a lot of housework.", category: "General Vocabulary", icon: "fa-broom" },
-            { word: "inventor", type: "n", phonetic: "/ɪnˈventə(r)/", meaning: "nhà phát minh", example: "Steve Jobs was the inventor of Apple.", category: "General Vocabulary", icon: "fa-lightbulb" },
-            { word: "jackpot", type: "n", phonetic: "/ˈdʒækpɒt/", meaning: "giải độc đắc", example: "The jackpot was an amazing £35 million.", category: "General Vocabulary", icon: "fa-trophy" },
-            { word: "lottery", type: "n", phonetic: "/ˈlɒtəri/", meaning: "xổ số", example: "Tina was amazed to see her lottery numbers.", category: "General Vocabulary", icon: "fa-ticket" },
-            { word: "mess", type: "n", phonetic: "/mes/", meaning: "sự bừa bộn, hỗn độn", example: "My house was a mess.", category: "General Vocabulary", icon: "fa-dumpster" },
-            { word: "politician", type: "n", phonetic: "/ˌpɒləˈtɪʃn/", meaning: "chính trị gia", example: "Nelson Mandela was a politician.", category: "General Vocabulary", icon: "fa-landmark" },
-            { word: "scientist", type: "n", phonetic: "/ˈsaɪəntɪst/", meaning: "nhà khoa học", example: "Albert Einstein was a scientist.", category: "General Vocabulary", icon: "fa-flask" },
-            { word: "singer", type: "n", phonetic: "/ˈsɪŋə(r)/", meaning: "ca sĩ", example: "Amy Winehouse was a singer.", category: "General Vocabulary", icon: "fa-microphone" },
-            { word: "washing machine", type: "n", phonetic: "/ˈwɒʃɪŋ məʃiːn/", meaning: "máy giặt", example: "Her jeans were in the washing machine.", category: "General Vocabulary", icon: "fa-soap" },
-            { word: "writer", type: "n", phonetic: "/ˈraɪtə(r)/", meaning: "nhà văn", example: "Leo Tolstoy was a Russian writer.", category: "General Vocabulary", icon: "fa-pen-nib" },
-
-            // Months of the year
-            { word: "January", type: "n", phonetic: "/dʒænjuəri/", meaning: "Tháng Một", example: "the first of January", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "February", type: "n", phonetic: "/ˈfebruəri/", meaning: "Tháng Hai", example: "the second of February", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "March", type: "n", phonetic: "/mɑːtʃ/", meaning: "Tháng Ba", example: "the third of March", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "April", type: "n", phonetic: "/ˈeɪprəl/", meaning: "Tháng Tư", example: "the fourth of April", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "May", type: "n", phonetic: "/meɪ/", meaning: "Tháng Năm", example: "the fifth of May", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "June", type: "n", phonetic: "/dʒuːn/", meaning: "Tháng Sáu", example: "the sixth of June", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "July", type: "n", phonetic: "/dʒuˈlaɪ/", meaning: "Tháng Bảy", example: "the seventh of July", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "August", type: "n", phonetic: "/ˈɔːɡəst/", meaning: "Tháng Tám", example: "the eighth of August", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "September", type: "n", phonetic: "/sepˈtembə(r)/", meaning: "Tháng Chín", example: "the ninth of September", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "October", type: "n", phonetic: "/ɒkˈtəʊbə(r)/", meaning: "Tháng Mười", example: "the tenth of October", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "November", type: "n", phonetic: "/nəʊˈvembə(r)/", meaning: "Tháng Mười Một", example: "the eleventh of November", category: "Months of the year", icon: "fa-calendar-days" },
-            { word: "December", type: "n", phonetic: "/dɪˈsembə(r)/", meaning: "Tháng Mười Hai", example: "the twelfth of December", category: "Months of the year", icon: "fa-calendar-days" },
-
-            // Ordinal numbers
-            { word: "first", type: "adj", phonetic: "/fɜːst/", meaning: "thứ nhất / đầu tiên", example: "the first of January", category: "Ordinal numbers", icon: "fa-1" },
-            { word: "second", type: "adj", phonetic: "/ˈsekənd/", meaning: "thứ hai", example: "the second of February", category: "Ordinal numbers", icon: "fa-2" },
-            { word: "third", type: "adj", phonetic: "/θɜːd/", meaning: "thứ ba", example: "the third of March", category: "Ordinal numbers", icon: "fa-3" },
-            { word: "fourth", type: "adj", phonetic: "/fɔːθ/", meaning: "thứ tư", example: "the fourth of April", category: "Ordinal numbers", icon: "fa-4" },
-            { word: "fifth", type: "adj", phonetic: "/fɪfθ/", meaning: "thứ năm", example: "the fifth of May", category: "Ordinal numbers", icon: "fa-5" },
-            { word: "tenth", type: "adj", phonetic: "/tenθ/", meaning: "thứ mười", example: "the tenth of October", category: "Ordinal numbers", icon: "fa-hashtag" },
-            { word: "twentieth", type: "adj", phonetic: "/ˈtwentiəθ/", meaning: "thứ hai mươi", example: "the twentieth of August", category: "Ordinal numbers", icon: "fa-hashtag" }
-        ];
-
-        let dataset = [...rawVocabulary];
-        let index = 0;
-
-        function loadCard() {
-            document.getElementById('mainCard').classList.remove('flipped');
-            let item = dataset[index];
-            document.getElementById('cardCategory').innerText = item.category;
-            document.getElementById('cardWord').innerText = item.word;
-            document.getElementById('cardType').innerText = item.type || 'word';
-            document.getElementById('cardPhonetic').innerText = item.phonetic;
-            document.getElementById('cardMeaning').innerText = item.meaning;
-            document.getElementById('cardExample').innerText = item.example ? `"${item.example}"` : '';
-            document.getElementById('cardProgress').innerText = `${index + 1} / ${dataset.length}`;
-
-            let imgEl = document.getElementById('cardImg');
-            let iconEl = document.getElementById('cardIcon');
-            
-            if (item.customImg) {
-                imgEl.src = item.customImg;
-                imgEl.style.display = 'block';
-                iconEl.style.display = 'none';
-            } else {
-                imgEl.style.display = 'none';
-                iconEl.style.display = 'block';
-                iconEl.className = `fa-solid ${item.icon || 'fa-clock-rotate-left'}`;
-            }
-            speakWord();
-        }
-
-        function filterCategory(cat) {
-            dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
-            index = 0;
-            loadCard();
-        }
-
-        function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
-        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
-        function prevCard() { if(index > 0) { index--; loadCard(); } }
-
-        function speakWord(e) {
-            if(e) e.stopPropagation();
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(dataset[index].word);
-                utterance.lang = 'en-US';
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // Tích hợp AI Tạo Ảnh trực tiếp từ Pollinations AI
-        function generateAIImage(e) {
-            e.stopPropagation();
-            let btn = e.currentTarget;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang sinh ảnh...';
-            
-            let word = dataset[index].word;
-            let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('simple high quality illustration of ' + word)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
-            
-            let tempImg = new Image();
-            tempImg.src = imageUrl;
-            tempImg.onload = () => {
-                dataset[index].customImg = imageUrl;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo ảnh';
-                loadCard();
-            };
-            tempImg.onerror = () => {
-                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
-            };
-        }
-
-        function switchTab(tab, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`${tab}-view`).classList.add('active');
-            if(tab === 'match') startMatch();
-            if(tab === 'quiz') startQuiz();
-            if(tab === 'spell') startSpell();
-        }
-
-        // Match Game
-        let selectedMatch = [], timerInt, time = 0;
-        function startMatch() {
-            clearInterval(timerInt);
-            time = 0;
-            document.getElementById('matchTimer').innerText = '0.0';
-            timerInt = setInterval(() => { time += 0.1; document.getElementById('matchTimer').innerText = time.toFixed(1); }, 100);
-
-            let grid = document.getElementById('matchGrid');
-            grid.innerHTML = '';
-            let items = [...dataset].sort(() => 0.5 - Math.random()).slice(0, 6);
-            let cards = [];
-            items.forEach((item, i) => {
-                cards.push({ id: i, text: item.word });
-                cards.push({ id: i, text: item.meaning });
-            });
-            cards.sort(() => 0.5 - Math.random());
-            cards.forEach(c => {
-                let div = document.createElement('div');
-                div.className = 'match-card';
-                div.innerText = c.text;
-                div.onclick = () => {
-                    if (div.classList.contains('correct') || div.classList.contains('selected')) return;
-                    div.classList.add('selected');
-                    selectedMatch.push({ el: div, id: c.id });
-                    if(selectedMatch.length === 2) {
-                        if(selectedMatch[0].id === selectedMatch[1].id) {
-                            selectedMatch[0].el.className = 'match-card correct';
-                            selectedMatch[1].el.className = 'match-card correct';
-                            if(document.querySelectorAll('.match-card:not(.correct)').length === 0) {
-                                clearInterval(timerInt);
-                                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                            }
-                        } else {
-                            let a = selectedMatch[0].el, b = selectedMatch[1].el;
-                            setTimeout(() => { a.classList.remove('selected'); b.classList.remove('selected'); }, 400);
-                        }
-                        selectedMatch = [];
-                    }
-                };
-                grid.appendChild(div);
-            });
-        }
-
-        // Quiz
-        let qIndex = 0;
-        function startQuiz() { qIndex = 0; renderQuiz(); }
-        function renderQuiz() {
-            let container = document.getElementById('quizContainer');
-            if(qIndex >= Math.min(dataset.length, 5)) {
-                container.innerHTML = '<h3>Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin-top:1rem; padding:0.8rem 1.5rem;" onclick="startQuiz()">Làm lại</button>';
-                return;
-            }
-            let q = dataset[qIndex];
-            let opts = [q.meaning];
-            while(opts.length < 4) {
-                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
-                if(!opts.includes(r)) opts.push(r);
-            }
-            opts.sort(() => 0.5 - Math.random());
-            container.innerHTML = `
-                <div>Câu ${qIndex + 1}: Từ "<b>${q.word}</b>" (${q.type || 'word'} ${q.phonetic}) nghĩa là gì?</div>
-                <div class="options-grid">
-                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
-                </div>
-            `;
-        }
-        function ansQuiz(btn, isCorrect) {
-            btn.style.background = isCorrect ? '#23b26d' : '#ff495c';
-            btn.style.color = 'white';
-            setTimeout(() => { qIndex++; renderQuiz(); }, 800);
-        }
-
-        // Spell
+// Spell (Đã sửa lỗi không chuyển câu khi làm đúng)
         let sIndex = 0;
-        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
-        function speakSpellWord() {
-            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
-            u.lang = 'en-US';
-            window.speechSynthesis.speak(u);
+
+        function startSpell() { 
+            sIndex = 0; 
+            renderSpellWord(); 
         }
+
+        function renderSpellWord() {
+            const inputEl = document.getElementById('spellInput');
+            const fbEl = document.getElementById('spellFeedback');
+            if (inputEl) {
+                inputEl.value = '';
+                inputEl.focus();
+            }
+            if (fbEl) fbEl.innerText = '';
+            speakSpellWord();
+        }
+
+        function speakSpellWord() {
+            if ('speechSynthesis' in window && dataset[sIndex]) {
+                window.speechSynthesis.cancel();
+                let cleanWord = dataset[sIndex].word.replace(/[^\w\s-]/gi, '');
+                let u = new SpeechSynthesisUtterance(cleanWord);
+                u.lang = 'en-US';
+                window.speechSynthesis.speak(u);
+            }
+        }
+
         function checkSpell() {
             let input = document.getElementById('spellInput').value.trim().toLowerCase();
-            let target = dataset[sIndex].word.toLowerCase();
+            let target = dataset[sIndex].word.toLowerCase().replace(/[^\w\s-]/gi, '').trim();
             let fb = document.getElementById('spellFeedback');
-            if(input === target) {
+
+            if (input === target || input === dataset[sIndex].word.toLowerCase()) {
                 fb.style.color = '#23b26d';
-                fb.innerText = 'Chính xác!';
-                setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 800);
+                fb.innerText = ' Chính xác!';
+                setTimeout(() => { 
+                    sIndex = (sIndex + 1) % dataset.length; 
+                    renderSpellWord(); 
+                }, 800);
             } else {
                 fb.style.color = '#ff495c';
-                fb.innerText = `Chưa đúng! Gợi ý nghĩa: ${dataset[sIndex].meaning}`;
+                fb.innerText = ` Chưa đúng! Gợi ý nghĩa: ${dataset[sIndex].meaning}`;
             }
         }
-
-        document.addEventListener('keydown', (e) => {
-            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
-            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
-            if(e.code === 'ArrowRight') nextCard();
-            if(e.code === 'ArrowLeft') prevCard();
-        });
-
-        window.onload = loadCard;
-    </script>
-</body>
-</html>
