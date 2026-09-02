@@ -52,7 +52,8 @@
         .card-meaning { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
         .card-example { font-size: 0.95rem; color: var(--text-muted); font-style: italic; max-width: 90%; line-height: 1.4; }
         .controls-bar { display: flex; justify-content: space-between; align-items: center; }
-        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .ctrl-btn { background: var(--card-bg); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .ctrl-btn:hover { background: #f1f3f9; }
 
         /* Match Game */
         .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
@@ -63,10 +64,11 @@
         /* Quiz & Spell */
         .quiz-card { background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.5rem; }
-        .option-btn { padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 600; cursor: pointer; text-align: left; }
+        .option-btn { padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: white; font-weight: 600; cursor: pointer; text-align: left; transition: 0.2s; }
         .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
         .input-box input { flex: 1; padding: 0.8rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; outline: none; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-submit:hover { background: var(--primary-hover); }
     </style>
 </head>
 <body>
@@ -84,7 +86,7 @@
 
     <main>
         <select id="categoryFilter" class="filter-select" onchange="filterCategory(this.value)">
-            <option value="ALL">Tất cả từ vựng Unit 14 (60+ từ)</option>
+            <option value="ALL">Tất cả từ vựng Unit 14 (51 từ)</option>
             <option value="Travel & Transport">Du lịch & Phương tiện</option>
             <option value="Education & Subjects">Giáo dục & Môn học</option>
             <option value="Places & Geography">Địa điểm & Địa lý</option>
@@ -103,7 +105,7 @@
                         <div class="card-word" id="cardWord">abroad</div>
                         <span class="card-type" id="cardType">adv</span>
                         <div class="card-phonetic" id="cardPhonetic">/əˈbrɔːd/</div>
-                        <button class="ctrl-btn" style="width: 36px; height: 36px;" onclick="speakWord(event)"><i class="fa-solid fa-volume-high"></i></button>
+                        <button class="ctrl-btn" style="width: 38px; height: 38px;" onclick="speakWord(event)" title="Phát âm"><i class="fa-solid fa-volume-high"></i></button>
                     </div>
                     <div class="card-face card-back">
                         <span class="card-category">Nghĩa & Ví dụ</span>
@@ -114,7 +116,7 @@
             </div>
             <div class="controls-bar">
                 <button class="ctrl-btn" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i></button>
-                <span id="cardProgress" style="font-weight: bold;">1 / 60</span>
+                <span id="cardProgress" style="font-weight: bold;">1 / 51</span>
                 <button class="ctrl-btn" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
@@ -142,10 +144,10 @@
                 <button class="ctrl-btn" style="width: 70px; height: 70px; font-size: 1.8rem; margin: 0 auto 1rem;" onclick="speakSpellWord()"><i class="fa-solid fa-volume-high"></i></button>
                 <div>Nghe phát âm và gõ lại từ vựng chính xác:</div>
                 <div class="input-box" style="max-width: 400px; margin: 1rem auto;">
-                    <input type="text" id="spellInput" placeholder="Nhập từ tiếng Anh..." onkeyup="if(event.key==='Enter') checkSpell()">
+                    <input type="text" id="spellInput" placeholder="Nhập từ tiếng Anh..." autocomplete="off" onkeyup="if(event.key==='Enter') checkSpell()">
                     <button class="btn-submit" onclick="checkSpell()">Gửi</button>
                 </div>
-                <div id="spellFeedback" style="margin-top: 1rem; font-weight: bold;"></div>
+                <div id="spellFeedback" style="margin-top: 1rem; font-weight: bold; min-height: 24px;"></div>
             </div>
         </div>
     </main>
@@ -208,13 +210,44 @@
             { word: "plan", type: "n", phonetic: "/plæn/", meaning: "kế hoạch", example: "What are your future plans?", category: "General Vocabulary", icon: "fa-clipboard-list" },
             { word: "pleasure", type: "n", phonetic: "/ˈpleʒə(r)/", meaning: "niềm hân hạnh, niềm vui", example: "It was a pleasure. We enjoyed having you.", category: "General Vocabulary", icon: "fa-face-smile-beam" },
             { word: "research company", type: "n", phonetic: "/rɪˈsɜːtʃ ˌkʌmpəni/", meaning: "công ty nghiên cứu", example: "His mother works for the research company, Bayer.", category: "General Vocabulary", icon: "fa-building" },
-            { word: "sangria", type: "n", phonetic: "/ˈsæŋɡriə/", meaning: "rượu sangria (rượu vang trái cây)", example: "They want to have sangria and tapas in Madrid.", category: "General Vocabulary", icon: "fa-wine-glass" },
+            { word: "sangria", type: "n", phonetic: "/ˈsæŋɡriə/", meaning: "rượu sangria (vang trái cây)", example: "They want to have sangria and tapas in Madrid.", category: "General Vocabulary", icon: "fa-wine-glass" },
             { word: "tapas", type: "n pl", phonetic: "/ˈtæpəs/", meaning: "món khai vị kiểu Tây Ban Nha", example: "They want to have sangria and tapas in Madrid.", category: "General Vocabulary", icon: "fa-utensils" },
             { word: "there", type: "adv", phonetic: "/ðeə(r)/", meaning: "ở đó, tại đó", example: "I’m going put the photos on Facebook. You can see them there.", category: "General Vocabulary", icon: "fa-hand-point-right" }
         ];
 
         let dataset = [...rawVocabulary];
         let index = 0;
+        let systemVoices = [];
+
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                systemVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = initVoices;
+            initVoices();
+        }
+
+        function playAudioText(text) {
+            if (!('speechSynthesis' in window)) {
+                alert("Trình duyệt không hỗ trợ tính năng phát âm Web Speech API.");
+                return;
+            }
+            window.speechSynthesis.cancel();
+            
+            let cleanText = text.replace(/[()?,]/g, '').trim();
+            let utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.88;
+
+            if (systemVoices.length === 0) systemVoices = window.speechSynthesis.getVoices();
+            let englishVoice = systemVoices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha')));
+            if (!englishVoice) englishVoice = systemVoices.find(v => v.lang.startsWith('en'));
+            if (englishVoice) utterance.voice = englishVoice;
+
+            window.speechSynthesis.speak(utterance);
+        }
 
         function loadCard() {
             document.getElementById('mainCard').classList.remove('flipped');
@@ -239,7 +272,6 @@
                 iconEl.style.display = 'block';
                 iconEl.className = `fa-solid ${item.icon || 'fa-plane'}`;
             }
-            speakWord();
         }
 
         function filterCategory(cat) {
@@ -249,24 +281,18 @@
         }
 
         function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
-        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
-        function prevCard() { if(index > 0) { index--; loadCard(); } }
+        function nextCard() { if (index < dataset.length - 1) { index++; loadCard(); } }
+        function prevCard() { if (index > 0) { index--; loadCard(); } }
 
         function speakWord(e) {
-            if(e) e.stopPropagation();
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(dataset[index].word);
-                utterance.lang = 'en-US';
-                window.speechSynthesis.speak(utterance);
-            }
+            if (e) e.stopPropagation();
+            if (dataset[index]) playAudioText(dataset[index].word);
         }
 
-        // Tích hợp AI Tạo Ảnh trực tiếp từ Pollinations AI
         function generateAIImage(e) {
             e.stopPropagation();
             let btn = e.currentTarget;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang sinh ảnh...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
             
             let word = dataset[index].word;
             let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('simple clean travel illustration of ' + word)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
@@ -279,18 +305,19 @@
                 loadCard();
             };
             tempImg.onerror = () => {
-                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại';
+                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Thử lại';
             };
         }
 
         function switchTab(tab, btn) {
+            window.speechSynthesis.cancel();
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById(`${tab}-view`).classList.add('active');
-            if(tab === 'match') startMatch();
-            if(tab === 'quiz') startQuiz();
-            if(tab === 'spell') startSpell();
+            if (tab === 'match') startMatch();
+            if (tab === 'quiz') startQuiz();
+            if (tab === 'spell') startSpell();
         }
 
         // Match Game
@@ -318,11 +345,11 @@
                     if (div.classList.contains('correct') || div.classList.contains('selected')) return;
                     div.classList.add('selected');
                     selectedMatch.push({ el: div, id: c.id });
-                    if(selectedMatch.length === 2) {
-                        if(selectedMatch[0].id === selectedMatch[1].id) {
+                    if (selectedMatch.length === 2) {
+                        if (selectedMatch[0].id === selectedMatch[1].id) {
                             selectedMatch[0].el.className = 'match-card correct';
                             selectedMatch[1].el.className = 'match-card correct';
-                            if(document.querySelectorAll('.match-card:not(.correct)').length === 0) {
+                            if (document.querySelectorAll('.match-card:not(.correct)').length === 0) {
                                 clearInterval(timerInt);
                                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                             }
@@ -342,21 +369,21 @@
         function startQuiz() { qIndex = 0; renderQuiz(); }
         function renderQuiz() {
             let container = document.getElementById('quizContainer');
-            if(qIndex >= Math.min(dataset.length, 5)) {
+            if (qIndex >= Math.min(dataset.length, 5)) {
                 container.innerHTML = '<h3>Hoàn thành bài kiểm tra!</h3><button class="btn-submit" style="margin-top:1rem; padding:0.8rem 1.5rem;" onclick="startQuiz()">Làm lại</button>';
                 return;
             }
             let q = dataset[qIndex];
             let opts = [q.meaning];
-            while(opts.length < 4) {
-                let r = rawVocabulary[Math.floor(Math.random()*rawVocabulary.length)].meaning;
-                if(!opts.includes(r)) opts.push(r);
+            while (opts.length < 4) {
+                let r = rawVocabulary[Math.floor(Math.random() * rawVocabulary.length)].meaning;
+                if (!opts.includes(r)) opts.push(r);
             }
             opts.sort(() => 0.5 - Math.random());
             container.innerHTML = `
                 <div>Câu ${qIndex + 1}: Từ "<b>${q.word}</b>" (${q.type || 'word'} ${q.phonetic}) nghĩa là gì?</div>
                 <div class="options-grid">
-                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, '${o === q.meaning}')">${o}</button>`).join('')}
+                    ${opts.map(o => `<button class="option-btn" onclick="ansQuiz(this, ${o === q.meaning})">${o}</button>`).join('')}
                 </div>
             `;
         }
@@ -366,33 +393,45 @@
             setTimeout(() => { qIndex++; renderQuiz(); }, 800);
         }
 
-        // Spell
+        // Spell & Listen
         let sIndex = 0;
-        function startSpell() { sIndex = 0; document.getElementById('spellInput').value = ''; document.getElementById('spellFeedback').innerText = ''; speakSpellWord(); }
-        function speakSpellWord() {
-            let u = new SpeechSynthesisUtterance(dataset[sIndex].word);
-            u.lang = 'en-US';
-            window.speechSynthesis.speak(u);
+        function startSpell() { 
+            sIndex = 0; 
+            document.getElementById('spellInput').value = ''; 
+            document.getElementById('spellFeedback').innerText = ''; 
+            speakSpellWord(); 
         }
+
+        function speakSpellWord() {
+            if (dataset[sIndex]) playAudioText(dataset[sIndex].word);
+        }
+
         function checkSpell() {
             let input = document.getElementById('spellInput').value.trim().toLowerCase();
-            let target = dataset[sIndex].word.toLowerCase();
+            let target = dataset[sIndex].word.toLowerCase().replace(/[()?,]/g, '').trim();
+            let rawTarget = dataset[sIndex].word.toLowerCase().trim();
             let fb = document.getElementById('spellFeedback');
-            if(input === target) {
-                fb.style.color = '#23b26d';
+
+            if (input === target || input === rawTarget) {
+                fb.style.color = 'var(--success)';
                 fb.innerText = 'Chính xác!';
-                setTimeout(() => { sIndex = (sIndex + 1) % dataset.length; startSpell(); }, 800);
+                setTimeout(() => { 
+                    sIndex = (sIndex + 1) % dataset.length; 
+                    document.getElementById('spellInput').value = '';
+                    fb.innerText = '';
+                    speakSpellWord();
+                }, 900);
             } else {
-                fb.style.color = '#ff495c';
-                fb.innerText = `Chưa đúng! Gợi ý nghĩa: ${dataset[sIndex].meaning}`;
+                fb.style.color = 'var(--danger)';
+                fb.innerText = `Chưa đúng! Gợi ý: "${dataset[sIndex].meaning}"`;
             }
         }
 
         document.addEventListener('keydown', (e) => {
-            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
-            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
-            if(e.code === 'ArrowRight') nextCard();
-            if(e.code === 'ArrowLeft') prevCard();
+            if (!document.getElementById('flashcards-view').classList.contains('active')) return;
+            if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if (e.code === 'ArrowRight') nextCard();
+            if (e.code === 'ArrowLeft') prevCard();
         });
 
         window.onload = loadCard;
