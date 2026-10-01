@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solutions Pre-Intermediate - Unit 6: Tourism & Travel</title>
+    <title>Solutions Pre-Intermediate - Unit 7: Pocket Money & Shops</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -26,45 +26,44 @@
 <body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
 
     <!-- Header Navigation -->
-    <header class="bg-cyan-700 text-white shadow-lg sticky top-0 z-50">
+    <header class="bg-amber-600 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div class="flex items-center gap-3">
                 <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
-                    <i class="fa-solid fa-plane-departure text-2xl text-amber-300"></i>
+                    <i class="fa-solid fa-coins text-2xl text-amber-200"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 6: Tourism & Travel</h1>
-                    <p class="text-xs text-cyan-200 font-medium">Pre-Intermediate 3rd Edition • Destinations, Flight & Holidays</p>
+                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 7: Pocket Money</h1>
+                    <p class="text-xs text-amber-100 font-medium">Pre-Intermediate 3rd Edition • Shops, Services & Money</p>
                 </div>
             </div>
 
             <!-- Category Filter Selector -->
-            <div class="flex items-center gap-2 bg-cyan-800/80 p-1.5 rounded-xl border border-cyan-500/40">
-                <i class="fa-solid fa-filter text-xs text-cyan-300 ml-2"></i>
-                <label for="categoryFilter" class="text-xs font-semibold text-cyan-100">Chủ đề:</label>
-                <select id="categoryFilter" class="bg-cyan-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
-                    <option value="all">🌟 Tất cả bài học (48 từ)</option>
-                    <option value="6A_attractions">Lesson 6A: Địa điểm du lịch (17 từ)</option>
-                    <option value="6A_adj">Lesson 6A: Tính từ miêu tả (13 từ)</option>
-                    <option value="6E">Lesson 6E: Sân bay & Chuyến bay (10 từ)</option>
-                    <option value="6F">Lesson 6F: Đồ dùng & Hoạt động (8 từ)</option>
+            <div class="flex items-center gap-2 bg-amber-700/80 p-1.5 rounded-xl border border-amber-400/40">
+                <i class="fa-solid fa-filter text-xs text-amber-200 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-amber-100">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-amber-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-amber-400/40 focus:outline-none focus:ring-2 focus:ring-amber-200 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (44 từ)</option>
+                    <option value="7A_shops">Lesson 7A: Cửa hàng & Dịch vụ (20 từ)</option>
+                    <option value="7A_terms">Lesson 7A: Mua sắm & Tiền tệ (14 từ)</option>
+                    <option value="7C">Lesson 7C: Động từ & Cụm từ tiền bạc (10 từ)</option>
                 </select>
             </div>
         </div>
 
         <!-- Mode Tabs -->
-        <nav class="bg-cyan-800 border-t border-cyan-600/50">
+        <nav class="bg-amber-700 border-t border-amber-500/50">
             <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
-                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-800 shadow-sm transition-all">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-amber-800 shadow-sm transition-all">
                     <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
                 </button>
-                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-amber-100 hover:bg-amber-600 transition-all">
                     <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
                 </button>
-                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-amber-100 hover:bg-amber-600 transition-all">
                     <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
                 </button>
-                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-amber-100 hover:bg-amber-600 transition-all">
                     <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
                 </button>
             </div>
@@ -77,8 +76,8 @@
         <!-- 1. FLASHCARDS MODE -->
         <div id="view-flashcards" class="view-panel flex flex-col items-center">
             <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
-                <span id="card-progress">Thẻ 1 / 48</span>
-                <span class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full font-semibold border border-cyan-200" id="card-category-badge">Địa điểm du lịch</span>
+                <span id="card-progress">Thẻ 1 / 44</span>
+                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-semibold border border-amber-200" id="card-category-badge">Cửa hàng & Dịch vụ</span>
             </div>
 
             <!-- 3D Card Area -->
@@ -88,16 +87,16 @@
                     <!-- Front Face -->
                     <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
                         <div class="w-full flex justify-between items-center text-slate-400">
-                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-1 rounded-md" id="card-type-front">n</span>
-                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-cyan-50 text-cyan-700 transition" title="Nghe phát âm">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md" id="card-type-front">n</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-amber-50 text-amber-700 transition" title="Nghe phát âm">
                                 <i class="fa-solid fa-volume-high text-xl"></i>
                             </button>
                         </div>
 
                         <div class="my-auto flex flex-col items-center">
-                            <div id="card-icon" class="text-5xl mb-4">🐠</div>
-                            <h2 id="card-term" class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">Aquarium</h2>
-                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/əˈkweəriəm/</p>
+                            <div id="card-icon" class="text-5xl mb-4">🥖</div>
+                            <h2 id="card-term" class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">Baker's</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈbeɪkəz/</p>
                         </div>
 
                         <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
@@ -106,20 +105,20 @@
                     </div>
 
                     <!-- Back Face -->
-                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-cyan-50/80 border-2 border-cyan-300 text-center overflow-y-auto custom-scrollbar">
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-amber-50/80 border-2 border-amber-300 text-center overflow-y-auto custom-scrollbar">
                         <div class="w-full flex justify-between items-center">
-                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-800 bg-cyan-200/80 px-2.5 py-1 rounded-md" id="card-type-back">n</span>
-                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-200/80 px-2.5 py-1 rounded-md" id="card-type-back">n</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-amber-600 to-orange-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
                             </button>
                         </div>
 
                         <div class="my-3 flex flex-col items-center w-full">
-                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-cyan-950 mb-2">thủy cung, bể nuôi cá lớn</h3>
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-amber-950 mb-2">cửa hàng bánh mì / bánh ngọt</h3>
                             
-                            <div class="bg-white/90 border border-cyan-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
-                                <p class="font-bold text-slate-900" id="card-example">"We saw colorful exotic fish and sea turtles at the city aquarium."</p>
-                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Chúng tôi đã ngắm nhìn những loài cá rực rỡ và rùa biển tại thủy cung thành phố."</p>
+                            <div class="bg-white/90 border border-amber-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"I bought fresh bread and croissants at the local baker's this morning."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Tôi đã mua bánh mì tươi và bánh sừng bò ở tiệm bánh mì địa phương sáng nay."</p>
                             </div>
 
                             <!-- AI Image Container -->
@@ -128,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="text-xs font-semibold text-cyan-700 flex items-center gap-1">
+                        <div class="text-xs font-semibold text-amber-700 flex items-center gap-1">
                             <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
                         </div>
                     </div>
@@ -144,7 +143,7 @@
                 <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
                     <i class="fa-solid fa-shuffle"></i>
                 </button>
-                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md flex items-center gap-2">
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-amber-600 text-white font-bold hover:bg-amber-700 active:scale-95 transition shadow-md flex items-center gap-2">
                     <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
@@ -155,19 +154,19 @@
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trắc nghiệm nhanh</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Trắc nghiệm nhanh</span>
                         <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
                     </div>
                     <div class="text-right">
-                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Điểm số</span>
-                        <div class="text-lg font-black text-amber-600" id="quiz-score">0</div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Điểm số</span>
+                        <div class="text-lg font-black text-emerald-600" id="quiz-score">0</div>
                     </div>
                 </div>
 
                 <div id="quiz-content">
                     <div class="text-center my-6">
-                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n • /ˈækʃn fɪlm/</span>
-                        <h3 id="quiz-question-word" class="text-3xl font-black text-slate-900 mt-3">Aquarium</h3>
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n • /ˈbeɪkəz/</span>
+                        <h3 id="quiz-question-word" class="text-3xl font-black text-slate-900 mt-3">Baker's</h3>
                         <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng</p>
                     </div>
 
@@ -180,7 +179,7 @@
                     <div class="text-5xl mb-4">🏆</div>
                     <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
                     <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
-                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-amber-600 text-white font-bold hover:bg-amber-700 active:scale-95 transition shadow-md">
                         <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
                     </button>
                 </div>
@@ -191,24 +190,24 @@
         <div id="view-spell" class="view-panel hidden">
             <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Luyện Nghe & Viết Chính Tả</span>
                     <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
                 </div>
 
                 <div id="spell-content" class="flex flex-col items-center text-center">
-                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-cyan-50 border-2 border-cyan-300 text-cyan-700 rounded-full flex items-center justify-center text-2xl hover:bg-cyan-700 hover:text-white transition-all shadow-md group">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-amber-50 border-2 border-amber-300 text-amber-700 rounded-full flex items-center justify-center text-2xl hover:bg-amber-600 hover:text-white transition-all shadow-md group">
                         <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
                     </button>
                     <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
 
                     <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
-                        <span class="text-xs font-bold text-cyan-700 uppercase" id="spell-hint-type">(n)</span>
-                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">thủy cung, bể nuôi cá lớn</p>
+                        <span class="text-xs font-bold text-amber-700 uppercase" id="spell-hint-type">(n)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">cửa hàng bánh mì / bánh ngọt</p>
                     </div>
 
                     <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
-                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-cyan-600 text-center font-bold text-lg text-slate-800" />
-                        <button type="submit" class="w-full py-3 bg-cyan-700 text-white rounded-xl font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-amber-600 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 active:scale-95 transition shadow-md">
                             Kiểm tra kết quả
                         </button>
                     </form>
@@ -219,7 +218,7 @@
                     <div class="text-5xl mb-4">🎉</div>
                     <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
                     <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
-                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-amber-600 text-white font-bold hover:bg-amber-700 active:scale-95 transition shadow-md">
                         <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
                     </button>
                 </div>
@@ -231,12 +230,12 @@
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-6">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trò chơi ghép thẻ</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Trò chơi ghép thẻ</span>
                         <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
                     </div>
-                    <div class="bg-cyan-50 border border-cyan-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
-                        <i class="fa-regular fa-clock text-cyan-700"></i>
-                        <span id="match-timer" class="font-mono font-bold text-cyan-950 text-base">0.0s</span>
+                    <div class="bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-amber-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-amber-950 text-base">0.0s</span>
                     </div>
                 </div>
 
@@ -247,10 +246,10 @@
 
                 <!-- Win Screen -->
                 <div id="match-win" class="hidden text-center py-10">
-                    <div class="text-6xl mb-3">🏖️✈️✨</div>
-                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ chủ đề Du lịch & Nghỉ dưỡng!</h3>
-                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-cyan-700 text-lg">12.4s</strong></p>
-                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                    <div class="text-6xl mb-3">🛍️💳✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ chủ đề Tiền túi & Cửa hàng!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-amber-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-amber-600 text-white font-bold hover:bg-amber-700 active:scale-95 transition shadow-md">
                         <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
                     </button>
                 </div>
@@ -266,63 +265,58 @@
 
     <!-- Application Script -->
     <script>
-        // Database Vocabulary for Unit 6: Tourism / Travel
+        // Database Vocabulary for Unit 7: Pocket Money / Shops, Services & Money
         const vocabData = [
-            // 1. Lesson 6A: Tourist Attractions (Địa điểm du lịch)
-            { id: 1, category: "6A_attractions", term: "Aquarium", type: "n", ipa: "/əˈkweəriəm/", meaning: "thủy cung, bể nuôi cá lớn", icon: "🐠", example: "We saw colorful exotic fish and sea turtles at the city aquarium.", exampleVi: "Chúng tôi đã ngắm nhìn những loài cá rực rỡ và rùa biển tại thủy cung thành phố." },
-            { id: 2, category: "6A_attractions", term: "Botanical garden", type: "n", ipa: "/bəˈtænɪkl ˈɡɑːdn/", meaning: "vườn bách thảo", icon: "🌿", example: "The botanical garden features thousands of rare plant species.", exampleVi: "Vườn bách thảo trưng bày hàng ngàn loài thực vật quý hiếm." },
-            { id: 3, category: "6A_attractions", term: "Castle", type: "n", ipa: "/ˈkɑːsl/", meaning: "lâu đài, thành quách", icon: "🏰", example: "The medieval stone castle stands proudly on the hill overlooking the valley.", exampleVi: "Tòa lâu đài đá thời trung cổ sừng sững uy nghiêm trên ngọn đồi nhìn ra thung lũng." },
-            { id: 4, category: "6A_attractions", term: "Cathedral", type: "n", ipa: "/kəˈθiːdrəl/", meaning: "nhà thờ lớn, thánh đường", icon: "⛪", example: "Tourists marvelled at the soaring stained glass windows of the cathedral.", exampleVi: "Du khách trầm trồ thán phục trước những ô cửa kính màu cao vút của thánh đường." },
-            { id: 5, category: "6A_attractions", term: "Fountain", type: "n", ipa: "/ˈfaʊntən/", meaning: "đài phun nước", icon: "⛲", example: "Visitors threw small coins into the central fountain for good luck.", exampleVi: "Khách tham quan ném những đồng xu nhỏ vào đài phun nước trung tâm để cầu may mắn." },
-            { id: 6, category: "6A_attractions", term: "Harbor", type: "n", ipa: "/ˈhɑːbə(r)/", meaning: "bến cảng, cảng biển", icon: "⚓", example: "Luxury yachts and fishing boats anchored safely in the deep harbor.", exampleVi: "Những du thuyền sang trọng và thuyền đánh cá thả neo an toàn trong bến cảng sâu." },
-            { id: 7, category: "6A_attractions", term: "Market", type: "n", ipa: "/ˈmɑːkɪt/", meaning: "chợ, khu chợ truyền thống", icon: "🛍", example: "The outdoor weekend market sells fresh fruits, local cheeses, and handicrafts.", exampleVi: "Khu chợ ngoài trời cuối tuần bán hoa quả tươi, phô mai địa phương và đồ thủ công." },
-            { id: 8, category: "6A_attractions", term: "Mosque", type: "n", ipa: "/mɒsk/", meaning: "nhà thờ Hồi giáo", icon: "🕌", example: "Visitors must remove their shoes before entering the grand historical mosque.", exampleVi: "Khách tham quan phải cởi giày trước khi bước vào ngôi nhà thờ Hồi giáo cổ kính tráng lệ." },
-            { id: 9, category: "6A_attractions", term: "Museum", type: "n", ipa: "/mjuˈziːəm/", meaning: "bảo tàng", icon: "🏛️", example: "The national history museum displays ancient archaeological artifacts.", exampleVi: "Bảo tàng lịch sử quốc gia trưng bày nhiều cổ vật khảo cổ học xưa." },
-            { id: 10, category: "6A_attractions", term: "National park", type: "n", ipa: "/ˌnæʃnəl ˈpɑːk/", meaning: "vườn quốc gia, công viên quốc gia", icon: "🌲", example: "Yellowstone is one of the most famous and protected national parks.", exampleVi: "Yellowstone là một trong những công viên quốc gia nổi tiếng và được bảo tồn nghiêm ngặt nhất." },
-            { id: 11, category: "6A_attractions", term: "Palace", type: "n", ipa: "/ˈpæləs/", meaning: "cung điện, hoàng cung", icon: "👑", example: "The royal palace boasts over seven hundred luxurious rooms.", exampleVi: "Hoàng cung tự hào có hơn bảy trăm căn phòng sang trọng lộng lẫy." },
-            { id: 12, category: "6A_attractions", term: "Ruin", type: "n", ipa: "/ˈruːɪn/", meaning: "tàn tích, phế tích lịch sử (thường dùng số nhiều: ruins)", icon: "🏺", example: "We walked quietly among the ancient Roman temple ruins.", exampleVi: "Chúng tôi lặng lẽ rảo bước giữa những phế tích đền thờ La Mã cổ đại." },
-            { id: 13, category: "6A_attractions", term: "Statue", type: "n", ipa: "/ˈstætʃuː/", meaning: "bức tượng", icon: "🗽", example: "The bronze statue honours the heroic founder of the coastal town.", exampleVi: "Bức tượng đồng vinh danh người sáng lập anh hùng của thị trấn ven biển." },
-            { id: 14, category: "6A_attractions", term: "Temple", type: "n", ipa: "/ˈtempl/", meaning: "đền, miếu, đền thờ", icon: "⛩️", example: "Monks in orange robes chanted prayers inside the sacred golden temple.", exampleVi: "Các nhà sư trong trang phục áo cà sa màu cam tụng kinh bên trong ngôi đền vàng linh thiêng." },
-            { id: 15, category: "6A_attractions", term: "Theme park", type: "n", ipa: "/ˈθiːm pɑːk/", meaning: "công viên giải trí theo chủ đề", icon: "🎢", example: "Children were excited to ride thrilling roller coasters at the theme park.", exampleVi: "Lũ trẻ hào hứng đi tàu lượn siêu tốc kịch tính tại công viên giải trí theo chủ đề." },
-            { id: 16, category: "6A_attractions", term: "Tower", type: "n", ipa: "/ˈtaʊə(r)/", meaning: "tòa tháp", icon: "🗼", example: "We climbed spiral stairs to enjoy a panoramic view from the watch tower.", exampleVi: "Chúng tôi leo những bậc thang xoắn ốc để ngắm toàn cảnh từ trên đỉnh tháp canh." },
-            { id: 17, category: "6A_attractions", term: "Water park", type: "n", ipa: "/ˈwɔːtə pɑːk/", meaning: "công viên nước", icon: "🌊", example: "Spending a blistering hot summer day at the water park was perfect.", exampleVi: "Dành một ngày hè nóng nực tại công viên nước quả là một lựa chọn hoàn hảo." },
+            // 1. Lesson 7A: Shops & Services (Các loại Cửa hàng & Dịch vụ)
+            { id: 1, category: "7A_shops", term: "Baker's", type: "n", ipa: "/ˈbeɪkəz/", meaning: "cửa hàng bánh mì / bánh ngọt", icon: "🥖", example: "I bought fresh bread and croissants at the local baker's this morning.", exampleVi: "Tôi đã mua bánh mì tươi và bánh sừng bò ở tiệm bánh mì địa phương sáng nay." },
+            { id: 2, category: "7A_shops", term: "Bank", type: "n", ipa: "/bæŋk/", meaning: "ngân hàng", icon: "🏦", example: "She went to the bank to open a new savings account.", exampleVi: "Cô ấy đã đến ngân hàng để mở một tài khoản tiết kiệm mới." },
+            { id: 3, category: "7A_shops", term: "Butcher's", type: "n", ipa: "/ˈbʊtʃəz/", meaning: "cửa hàng thịt (bò, lợn, cừu)", icon: "🥩", example: "We bought quality sausages and beef steaks at the butcher's.", exampleVi: "Chúng tôi đã mua xúc xích và thịt bò bít tết hảo hạng tại cửa hàng thịt." },
+            { id: 4, category: "7A_shops", term: "Chemist's", type: "n", ipa: "/ˈkemɪsts/", meaning: "hiệu thuốc / cửa hàng dược mỹ phẩm", icon: "💊", example: "You can buy painkillers and skincare products at the chemist's.", exampleVi: "Bạn có thể mua thuốc giảm đau và các sản phẩm dưỡng da ở hiệu thuốc." },
+            { id: 5, category: "7A_shops", term: "Clothes shop", type: "n", ipa: "/ˈkləʊðz ʃɒp/", meaning: "cửa hàng quần áo", icon: "👗", example: "She tried on a stylish winter jacket in the clothes shop.", exampleVi: "Cô ấy đã thử một chiếc áo khoác mùa đông sành điệu trong cửa hàng quần áo." },
+            { id: 6, category: "7A_shops", term: "Coffee shop", type: "n", ipa: "/ˈkɒfi ʃɒp/", meaning: "quán cà phê", icon: "☕", example: "They met at a cosy coffee shop to discuss weekend plans.", exampleVi: "Họ gặp nhau tại một quán cà phê ấm cúng để bàn về kế hoạch cuối tuần." },
+            { id: 7, category: "7A_shops", term: "Delicatessen (Deli)", type: "n", ipa: "/ˌdelɪkəˈtesn/", meaning: "cửa hàng thực phẩm chế biến sẵn cao cấp", icon: "🥪", example: "We picked up imported cheeses and smoked meats from the delicatessen.", exampleVi: "Chúng tôi đã mua phô mai nhập khẩu và thịt hun khói từ cửa hàng thực phẩm chế biến sẵn." },
+            { id: 8, category: "7A_shops", term: "Estate agent", type: "n", ipa: "/ɪˈsteɪt ˌeɪdʒənt/", meaning: "đại lý / công ty bất động sản", icon: "🏠", example: "The estate agent arranged viewings for three different apartments.", exampleVi: "Đại lý bất động sản đã sắp xếp các buổi xem ba căn hộ khác nhau." },
+            { id: 9, category: "7A_shops", term: "Florist's", type: "n", ipa: "/ˈflɒrɪsts/", meaning: "cửa hàng hoa tươi", icon: "💐", example: "He ordered a bouquet of fresh red roses at the florist's.", exampleVi: "Anh ấy đã đặt một bó hoa hồng đỏ tươi tại cửa hàng hoa tươi." },
+            { id: 10, category: "7A_shops", term: "Garden centre", type: "n", ipa: "/ˈɡɑːdn ˌsentə(r)/", meaning: "trung tâm cây cảnh & dụng cụ làm vườn", icon: "🪴", example: "They bought potted plants and garden fertilizer at the garden centre.", exampleVi: "Họ đã mua chậu cây cảnh và phân bón làm vườn tại trung tâm cây cảnh." },
+            { id: 11, category: "7A_shops", term: "Greengrocer's", type: "n", ipa: "/ˈɡriːnɡrəʊsəz/", meaning: "cửa hàng rau củ quả tươi", icon: "🥦", example: "My mother prefers buying organic vegetables at the greengrocer's.", exampleVi: "Mẹ tôi thích mua rau củ hữu cơ tại cửa hàng rau củ quả tươi hơn." },
+            { id: 12, category: "7A_shops", term: "Hairdresser's", type: "n", ipa: "/ˈheədresəz/", meaning: "tiệm làm tóc / tạo mẫu tóc", icon: "💇", example: "She booked an appointment at the hairdresser's before the graduation party.", exampleVi: "Cô ấy đã đặt lịch hẹn tại tiệm làm tóc trước buổi tiệc tốt nghiệp." },
+            { id: 13, category: "7A_shops", term: "Jeweller's", type: "n", ipa: "/ˈdʒuːələz/", meaning: "cửa hàng trang sức, đồng hồ", icon: "💍", example: "He bought a delicate silver ring at the city jeweller's.", exampleVi: "Anh ấy đã mua một chiếc nhẫn bạc tinh xảo tại cửa hàng trang sức của thành phố." },
+            { id: 14, category: "7A_shops", term: "Launderette", type: "n", ipa: "/ˌlɔːndriˈet/", meaning: "tiệm giặt tự động bằng xu", icon: "🧺", example: "Many students wash their clothes at the local coin launderette.", exampleVi: "Nhiều sinh viên giặt quần áo của họ tại tiệm giặt tự động bằng xu địa phương." },
+            { id: 15, category: "7A_shops", term: "Newsagent's", type: "n", ipa: "/ˈnjuːzeɪdʒənts/", meaning: "sạp / cửa hàng báo chí, tạp chí và bánh kẹo", icon: "📰", example: "He bought a morning newspaper and chewing gum at the newsagent's.", exampleVi: "Anh ấy đã mua một tờ báo buổi sáng và kẹo cao su tại sạp báo." },
+            { id: 16, category: "7A_shops", term: "Optician's", type: "n", ipa: "/ɒpˈtɪʃnz/", meaning: "cửa hàng kính mắt / đo thị lực", icon: "👓", example: "I need to visit the optician's to get my eyesight checked and buy new glasses.", exampleVi: "Tôi cần đến cửa hàng kính mắt để kiểm tra thị lực và cắt kính mới." },
+            { id: 17, category: "7A_shops", term: "Post office", type: "n", ipa: "/ˈpəʊst ˌɒfɪs/", meaning: "bưu điện", icon: "📮", example: "She went to the post office to mail a package overseas.", exampleVi: "Cô ấy đã đến bưu điện để gửi một kiện hàng ra nước ngoài." },
+            { id: 18, category: "7A_shops", term: "Shoe shop", type: "n", ipa: "/ˈʃuː ʃɒp/", meaning: "cửa hàng giày dép", icon: "👟", example: "The shoe shop had a huge display of running trainers on sale.", exampleVi: "Cửa hàng giày dép trưng bày rất nhiều mẫu giày chạy bộ đang giảm giá." },
+            { id: 19, category: "7A_shops", term: "Stationer's", type: "n", ipa: "/ˈsteɪʃənəz/", meaning: "cửa hàng văn phòng phẩm", icon: "✏️", example: "I bought notebooks, pens, and highlighters at the stationer's.", exampleVi: "Tôi đã mua vở, bút và bút dạ quang tại cửa hàng văn phòng phẩm." },
+            { id: 20, category: "7A_shops", term: "Takeaway", type: "n", ipa: "/ˈteɪkəweɪ/", meaning: "quán ăn / cửa hàng bán đồ ăn mang về", icon: "🥡", example: "We ordered Chinese food from the local takeaway on Friday evening.", exampleVi: "Chúng tôi đã đặt đồ ăn Trung Hoa từ quán đồ ăn mang về vào tối thứ Sáu." },
 
-            // 2. Lesson 6A: Describing Tourist Destinations (Tính từ miêu tả điểm đến)
-            { id: 18, category: "6A_adj", term: "Atmospheric", type: "adj", ipa: "/ˌætməsˈferɪk/", meaning: "mang không khí cổ kính / đặc biệt", icon: "🕯️", example: "The dimly lit cobblestone alleyways were wonderfully atmospheric.", exampleVi: "Những con hẻm rải sỏi lờ mờ ánh đèn mang một bầu không khí cổ kính tuyệt vời." },
-            { id: 19, category: "6A_adj", term: "Busy", type: "adj", ipa: "/ˈbɪzi/", meaning: "nhộn nhịp, sầm uất", icon: "🏙️️", example: "The city center is always busy during rush hours.", exampleVi: "Trung tâm thành phố lúc nào cũng nhộn nhịp sầm uất vào giờ cao điểm." },
-            { id: 20, category: "6A_adj", term: "Cheap", type: "adj", ipa: "/tʃiːp/", meaning: "rẻ, giá cả bình dân", icon: "🏷️", example: "Street food here is both delicious and remarkably cheap.", exampleVi: "Ẩm thực đường phố ở đây vừa ngon miệng lại vừa có giá rẻ bình dân bất ngờ." },
-            { id: 21, category: "6A_adj", term: "Crowded", type: "adj", ipa: "/ˈkraʊdɪd/", meaning: "đông đúc, chật nát", icon: "👥", example: "The popular sandy beach was too crowded to find a spot to sit.", exampleVi: "Bãi biển nổi tiếng quá đông đúc đến nỗi không tìm được một chỗ để ngồi." },
-            { id: 22, category: "6A_adj", term: "Disappointing", type: "adj", ipa: "/ˌdɪsəˈpɔɪntɪŋ/", meaning: "gây thất vọng", icon: "😞", example: "The overrated tourist monument turned out to be rather disappointing.", exampleVi: "Điểm di tích du lịch được đồn thổi rầm rộ hóa ra lại khá gây thất vọng." },
-            { id: 23, category: "6A_adj", term: "Expensive", type: "adj", ipa: "/ɪkˈspensɪv/", meaning: "đắt đỏ", icon: "💎", example: "Staying at seaside luxury resorts can be very expensive.", exampleVi: "Lưu trú tại các khu nghỉ dưỡng cao cấp ven biển có thể rất đắt đỏ." },
-            { id: 24, category: "6A_adj", term: "Historic", type: "adj", ipa: "/hɪˈstɒrɪk/", meaning: "mang tính lịch sử, cổ kính", icon: "📜", example: "Prague is widely celebrated for its preserved historic town square.", exampleVi: "Prague nổi tiếng nhờ quảng trường cổ kính được gìn giữ nguyên vẹn qua năm tháng." },
-            { id: 25, category: "6A_adj", term: "Impressive", type: "adj", ipa: "/ɪmˈpresɪv/", meaning: "ấn tượng, tráng lệ", icon: "🤩", example: "The soaring marble columns of the building were deeply impressive.", exampleVi: "Những hàng cột đá cẩm thạch cao vút của tòa nhà tạo ấn tượng vô cùng tráng lệ." },
-            { id: 26, category: "6A_adj", term: "Peaceful", type: "adj", ipa: "/ˈpiːsfl/", meaning: "yên bình, thanh bình", icon: "🕊️", example: "We stayed in a peaceful rural village far from noisy city crowds.", exampleVi: "Chúng tôi nghỉ ngơi tại một ngôi làng quê thanh bình cách xa đám đông ồn ào thành thị." },
-            { id: 27, category: "6A_adj", term: "Remote", type: "adj", ipa: "/rɪˈməʊt/", meaning: "xa xôi, hẻo lánh", icon: "🏝️", example: "They spent a month living on a remote volcanic island.", exampleVi: "Họ dành cả tháng sống trên một hòn đảo núi lửa xa xôi và hẻo lánh." },
-            { id: 28, category: "6A_adj", term: "Romantic", type: "adj", ipa: "/rəʊˈmæntɪk/", meaning: "lãng mạn", icon: "🌹", example: "Venice is universally considered an extraordinarily romantic destination.", exampleVi: "Venice được cả thế giới công nhận là một điểm đến đặc biệt lãng mạn." },
-            { id: 29, category: "6A_adj", term: "Spectacular", type: "adj", ipa: "/spekˈtækjələ(r)/", meaning: "đẹp mắt, ngoạn mục", icon: "🌄", example: "The sunset over the rugged ocean cliffs was truly spectacular.", exampleVi: "Cảnh hoàng hôn buông xuống trên vách đá biển gồ ghề thực sự vô cùng ngoạn mục." },
-            { id: 30, category: "6A_adj", term: "Touristy", type: "adj", ipa: "/ˈtʊərɪsti/", meaning: "đông đúc khách du lịch (xu hướng thương mại hóa)", icon: "📸", example: "The waterfront street felt too touristy with endless souvenir stalls.", exampleVi: "Con phố ven sông mang cảm giác quá thương mại hóa với vô số sạp bán đồ lưu niệm." },
+            // 2. Lesson 7A: Shopping Terms & Currencies (Thuật ngữ Mua sắm & Tiền tệ)
+            { id: 21, category: "7A_terms", term: "Bargain", type: "n", ipa: "/ˈbɑːɡən/", meaning: "món hời (mua đồ tốt với giá rất rẻ)", icon: "🏷️", example: "This leather jacket was a real bargain at half price.", exampleVi: "Chiếc áo khoác da này là một món hời thực sự với giá chỉ bằng một nửa." },
+            { id: 22, category: "7A_terms", term: "Coupon", type: "n", ipa: "/ˈkuːpɒn/", meaning: "phiếu giảm giá / voucher", icon: "🎟️", example: "Use this digital coupon to get 20% off your grocery order.", exampleVi: "Sử dụng phiếu giảm giá điện tử này để được giảm 20% cho đơn hàng tạp hóa của bạn." },
+            { id: 23, category: "7A_terms", term: "Discount", type: "n", ipa: "/ˈdɪskaʊnt/", meaning: "sự giảm giá, chiết khấu", icon: "📉", example: "Students receive a 10% discount on public transport tickets.", exampleVi: "Học sinh, sinh viên được giảm giá 10% khi mua vé phương tiện công cộng." },
+            { id: 24, category: "7A_terms", term: "Discount code", type: "n", ipa: "/ˈdɪskaʊnt kəʊd/", meaning: "mã giảm giá", icon: "🔢", example: "Enter the discount code at checkout to reduce the final price.", exampleVi: "Nhập mã giảm giá khi thanh toán để được giảm giá đơn hàng cuối cùng." },
+            { id: 25, category: "7A_terms", term: "Price tag", type: "n", ipa: "/ˈpraɪs tæɡ/", meaning: "nhãn giá / mác niêm yết giá tiền", icon: "🏷️", example: "Check the price tag before taking items to the cashier.", exampleVi: "Hãy kiểm tra nhãn giá trước khi mang đồ ra quầy thu ngân." },
+            { id: 26, category: "7A_terms", term: "Receipt", type: "n", ipa: "/rɪˈsiːt/", meaning: "hóa đơn / biên lai thanh toán", icon: "🧾", example: "Keep your receipt in case you want to exchange or return the item.", exampleVi: "Hãy giữ lại hóa đơn thanh toán phòng khi bạn muốn đổi hoặc trả lại món đồ." },
+            { id: 27, category: "7A_terms", term: "Refund", type: "n", ipa: "/ˈriːfʌnd/", meaning: "tiền hoàn lại (khi trả hàng)", icon: "💰", example: "The shop gave me a full refund for the damaged headphones.", exampleVi: "Cửa hàng đã hoàn lại toàn bộ tiền cho tôi vì chiếc tai nghe bị hỏng." },
+            { id: 28, category: "7A_terms", term: "Special offer", type: "n", ipa: "/ˌspeʃl ˈɒfə(r)/", meaning: "ưu đãi đặc biệt / khuyến mãi có thời hạn", icon: "⭐", example: "The supermarket has a buy-one-get-one-free special offer on snacks.", exampleVi: "Siêu thị đang có chương trình khuyến mãi đặc biệt mua một tặng một cho đồ ăn nhẹ." },
+            { id: 29, category: "7A_terms", term: "Cosmetics", type: "n pl", ipa: "/kɒzˈmetɪks/", meaning: "mỹ phẩm", icon: "💄", example: "She spent part of her pocket money on skincare cosmetics.", exampleVi: "Cô ấy đã dành một phần tiền tiêu vặt của mình để mua mỹ phẩm chăm sóc da." },
+            { id: 30, category: "7A_terms", term: "Currency", type: "n", ipa: "/ˈkʌrənsi/", meaning: "đơn vị tiền tệ", icon: "🌐", example: "What is the official currency used in Japan?", exampleVi: "Đơn vị tiền tệ chính thức được sử dụng tại Nhật Bản là gì?" },
+            { id: 31, category: "7A_terms", term: "Dollar", type: "n", ipa: "/ˈdɒlə(r)/", meaning: "đồng đô la ($)", icon: "💵", example: "The museum entrance ticket costs ten dollars per person.", exampleVi: "Vé vào cửa bảo tàng có giá mười đô la mỗi người." },
+            { id: 32, category: "7A_terms", term: "Euro", type: "n", ipa: "/ˈjʊərəʊ/", meaning: "đồng ơ-rô (€)", icon: "💶", example: "Most countries in the European Union use the euro.", exampleVi: "Hầu hết các quốc gia trong Liên minh Châu Âu đều sử dụng đồng ơ-rô." },
+            { id: 33, category: "7A_terms", term: "Pound", type: "n", ipa: "/paʊnd/", meaning: "đồng bảng Anh (£)", icon: "💷", example: "The train ticket to London was forty-five pounds.", exampleVi: "Vé tàu hỏa đến London có giá bốn mươi lăm bảng Anh." },
+            { id: 34, category: "7A_terms", term: "Yen", type: "n", ipa: "/jen/", meaning: "đồng yên Nhật (¥)", icon: "💴", example: "He exchanged his savings into Japanese yen for his Tokyo trip.", exampleVi: "Anh ấy đã đổi tiền tiết kiệm của mình sang đồng yên Nhật cho chuyến đi Tokyo." },
 
-            // 3. Lesson 6E: At the Airport & Air Travel (Tại sân bay & Chuyến bay)
-            { id: 31, category: "6E", term: "Bag drop", type: "n", ipa: "/ˈbæɡ drɒp/", meaning: "khu vực gửi hành lý", icon: "🧳", example: "Check in online first to drop your suitcases quickly at the bag drop desk.", exampleVi: "Làm thủ tục trực tuyến trước để gửi vali nhanh chóng tại quầy gửi hành lý." },
-            { id: 32, category: "6E", term: "Baggage claim", type: "n", ipa: "/ˈbæɡɪdʒ kleɪm/", meaning: "khu vực nhận lại hành lý sau chuyến bay", icon: "🔄", example: "Passengers gathered around carousel number four at the baggage claim.", exampleVi: "Các hành khách tập trung quanh băng chuyền số 4 tại khu vực nhận lại hành lý." },
-            { id: 33, category: "6E", term: "Cabin crew", type: "n", ipa: "/ˈkæbɪn kruː/", meaning: "tổ phi hành đoàn trên máy bay", icon: "🧑‍‍✈️", example: "The friendly cabin crew served drinks and snacks throughout the flight.", exampleVi: "Tổ phi hành đoàn thân thiện đã phục vụ đồ uống và thức ăn nhẹ suốt chuyến bay." },
-            { id: 34, category: "6E", term: "Departure lounge", type: "n", ipa: "/dɪˈpɑːtʃə laʊndʒ/", meaning: "phòng chờ xuất phát / phòng chờ bay", icon: "🛋️", example: "We waited comfortably in the modern departure lounge until boarding.", exampleVi: "Chúng tôi ngồi nghỉ ngơi thoải mái trong phòng chờ bay hiện đại cho tới giờ lên máy bay." },
-            { id: 35, category: "6E", term: "Flight attendant", type: "n", ipa: "/ˈflaɪt əˌtendənt/", meaning: "tiếp viên hàng không", icon: "🤝", example: "The flight attendant demonstrated all standard safety procedures.", exampleVi: "Người tiếp viên hàng không đã hướng dẫn tất cả các quy trình an toàn tiêu chuẩn." },
-            { id: 36, category: "6E", term: "Seat belt", type: "n", ipa: "/ˈsiːt belt/", meaning: "dây an toàn", icon: "🔒", example: "Please keep your seat belt securely fastened during turbulence.", exampleVi: "Xin vui lòng thắt chặt dây an toàn trong suốt thời gian máy bay đi qua vùng nhiễu động." },
-            { id: 37, category: "6E", term: "Security check", type: "n", ipa: "/sɪˈkjʊərəti tʃek/", meaning: "khu vực kiểm tra an ninh", icon: "🛂", example: "Remember to remove all laptops and metal items at the security check.", exampleVi: "Hãy nhớ lấy hết máy tính xách tay và đồ kim loại tại khu vực kiểm tra an ninh." },
-            { id: 38, category: "6E", term: "High season", type: "n", ipa: "/ˈhaɪ ˌsiːzn/", meaning: "mùa du lịch cao điểm", icon: "📈", example: "Hotel prices and airfares skyrocket dramatically during the summer high season.", exampleVi: "Giá phòng khách sạn và vé máy bay tăng vọt chóng mặt trong mùa du lịch hè cao điểm." },
-            { id: 39, category: "6E", term: "Low season", type: "n", ipa: "/ˈləʊ ˌsiːzn/", meaning: "mùa du lịch thấp điểm", icon: "📉", example: "Traveling in the low season helps save money and avoid large tourist crowds.", exampleVi: "Đi du lịch vào mùa thấp điểm giúp tiết kiệm chi phí và tránh được những đám đông du khách." },
-            { id: 40, category: "6E", term: "Half board", type: "n", ipa: "/ˌhɑːf ˈbɔːd/", meaning: "gói phòng khách sạn kèm ăn sáng và 1 bữa chính", icon: "🍳", example: "Booking a half board rate gave us flexible dinner plans every day.", exampleVi: "Đặt gói phòng kèm ăn sáng và một bữa chính giúp chúng tôi linh động kế hoạch ăn tối mỗi ngày." },
-
-            // 4. Lesson 6F: Holiday Essentials & Activities (Đồ dùng & Hoạt động du lịch)
-            { id: 41, category: "6F", term: "Backpack", type: "n", ipa: "/ˈbækpæk/", meaning: "ba lô du lịch", icon: "🎒", example: "He packed a durable waterproof backpack for the multi-day mountain trek.", exampleVi: "Anh ấy đã chuẩn bị một chiếc ba lô du lịch chống thấm bền bỉ cho chuyến đi bộ leo núi nhiều ngày." },
-            { id: 42, category: "6F", term: "Campsite", type: "n", ipa: "/ˈkæmpsaɪt/", meaning: "địa điểm cắm trại", icon: "⛺", example: "We pitched our family tents at an idyllic campsite beside the lake.", exampleVi: "Chúng tôi đã dựng lều gia đình tại một địa điểm cắm trại thơ mộng bên bờ hồ." },
-            { id: 43, category: "6F", term: "Sunscreen", type: "n", ipa: "/ˈsʌnskriːn/", meaning: "kem chống nắng", icon: "🧴", example: "Always apply broad-spectrum sunscreen before going into direct sunshine.", exampleVi: "Luôn thoa kem chống nắng phổ rộng trước khi ra ngoài trời nắng gắt." },
-            { id: 44, category: "6F", term: "Sunglasses", type: "n pl", ipa: "/ˈsʌnɡlɑːsɪz/", meaning: "kính mát, kính râm", icon: "🕶️", example: "Dark polarising sunglasses protect your sensitive eyes on bright days.", exampleVi: "Kính râm phân cực màu tối giúp bảo vệ đôi mắt nhạy cảm của bạn trong những ngày nắng chói chang." },
-            { id: 45, category: "6F", term: "Sunburn", type: "n", ipa: "/ˈsʌnbɜːn/", meaning: "vết cháy nắng, sự bỏng nắng", icon: "🔥", example: "Failing to apply lotion resulted in an agonizingly painful red sunburn.", exampleVi: "Việc không thoa kem chống nắng đã dẫn đến một vết cháy nắng đỏ rát vô cùng đau đớn." },
-            { id: 46, category: "6F", term: "Guide", type: "n", ipa: "/ɡaɪd/", meaning: "hướng dẫn viên du lịch", icon: "🚩", example: "Our knowledgeable local guide explained the ancient stories behind each statue.", exampleVi: "Người hướng dẫn viên địa phương am hiểu đã giải thích những câu chuyện xưa đằng sau mỗi bức tượng." },
-            { id: 47, category: "6F", term: "Souvenir", type: "n", ipa: "/ˌsuːvəˈnɪə(r)/", meaning: "quà lưu niệm", icon: "🎁", example: "I bought a carved wooden keychain as a holiday souvenir for my best friend.", exampleVi: "Tôi đã mua một chiếc móc khóa gỗ khắc làm quà lưu niệm chuyến đi cho người bạn thân." },
-            { id: 48, category: "6F", term: "Pen-friend", type: "n", ipa: "/ˈpen frend/", meaning: "bạn qua thư", icon: "✉️", example: "She maintained a regular correspondence with an Italian pen-friend for years.", exampleVi: "Cô ấy đã duy trì liên lạc thư từ đều đặn với một người bạn qua thư người Ý suốt nhiều năm." }
+            // 3. Lesson 7C: Money Verbs & Expressions (Động từ & Cụm từ về Tiền bạc)
+            { id: 35, category: "7C", term: "Afford", type: "v", ipa: "/əˈfɔːd/", meaning: "có đủ khả năng chi trả / đủ tiền mua", icon: "💳", example: "I cannot afford to buy that expensive new smartphone right now.", exampleVi: "Hiện tại tôi không có đủ khả năng chi trả để mua chiếc điện thoại thông minh đắt tiền đó." },
+            { id: 36, category: "7C", term: "Borrow", type: "v", ipa: "/ˈbɒrəʊ/", meaning: "vay, mượn (từ ai đó)", icon: "📥", example: "Can I borrow ten pounds until tomorrow morning?", exampleVi: "Mình có thể mượn bạn mười bảng cho tới sáng mai được không?" },
+            { id: 37, category: "7C", term: "Lend", type: "v", ipa: "/lend/", meaning: "cho vay, cho mượn", icon: "📤", example: "He offered to lend his friend some pocket money for lunch.", exampleVi: "Anh ấy đã đề nghị cho bạn mình mượn một ít tiền tiêu vặt để ăn trưa." },
+            { id: 38, category: "7C", term: "Owe", type: "v", ipa: "/əʊ/", meaning: "nợ (tiền ai đó)", icon: "⏳", example: "I still owe my brother fifteen pounds for the concert ticket.", exampleVi: "Tôi vẫn còn nợ anh trai mình mười lăm bảng tiền vé xem hòa nhạc." },
+            { id: 39, category: "7C", term: "Charge", type: "v", ipa: "/tʃɑːdʒ/", meaning: "tính giá / đòi trả bao nhiêu tiền", icon: "💲", example: "The taxi driver charged ten pounds for the short ride.", exampleVi: "Tài xế taxi đã tính giá mười bảng cho chuyến đi ngắn." },
+            { id: 40, category: "7C", term: "Pay for something", type: "phrase", ipa: "/peɪ fə(r)/", meaning: "trả tiền cho cái gì", icon: "🧾", example: "Who is going to pay for the restaurant meal tonight?", exampleVi: "Ai sẽ trả tiền cho bữa ăn tại nhà hàng tối nay?" },
+            { id: 41, category: "7C", term: "Save up", type: "phrasal v", ipa: "/seɪv ʌp/", meaning: "tiết kiệm tiền (cho mục đích tương lai)", icon: "🏦", example: "She is saving up to buy a new laptop for university.", exampleVi: "Cô ấy đang tiết kiệm tiền để mua một chiếc máy tính xách tay mới cho trường đại học." },
+            { id: 42, category: "7C", term: "Spend (money on)", type: "v", ipa: "/spend/", meaning: "tiêu tiền (vào việc gì)", icon: "💸", example: "Do not spend too much money on things you do not really need.", exampleVi: "Đừng tiêu quá nhiều tiền vào những thứ bạn không thực sự cần." },
+            { id: 43, category: "7C", term: "Waste", type: "v", ipa: "/weɪst/", meaning: "lãng phí (tiền bạc, thời gian)", icon: "🗑️", example: "Buying unnecessary gadgets is a complete waste of money.", exampleVi: "Mua những thiết bị không cần thiết là một sự lãng phí tiền bạc hoàn toàn." },
+            { id: 44, category: "7C", term: "Run out (of)", type: "phrasal v", ipa: "/rʌn aʊt əv/", meaning: "hết, cạn kiệt (tiền bạc, tài nguyên)", icon: "🪫", example: "We ran out of cash and had to find an ATM quickly.", exampleVi: "Chúng tôi đã cạn sạch tiền mặt và phải nhanh chóng tìm một cây ATM." },
+            { id: 45, category: "7C", term: "Be short of something", type: "phrase", ipa: "/bi ʃɔːt əv/", meaning: "thiếu, không có đủ cái gì (tiền, thời gian)", icon: "📉", example: "I am a bit short of cash today; can I pay you back tomorrow?", exampleVi: "Hôm nay tôi hơi thiếu tiền mặt một chút; mai tôi trả lại bạn được không?" }
         ];
 
         // Global State Variables
@@ -380,12 +374,12 @@
         function switchTab(tabId) {
             document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all";
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-amber-100 hover:bg-amber-600 transition-all";
             });
 
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-${tabId}`);
-            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-800 shadow-sm transition-all";
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-amber-800 shadow-sm transition-all";
 
             if (tabId === 'learn') startQuiz();
             if (tabId === 'spell') startSpellMode();
@@ -411,12 +405,11 @@
             document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
             
             const categoryLabels = {
-                '6A_attractions': 'Lesson 6A: Địa điểm du lịch',
-                '6A_adj': 'Lesson 6A: Tính từ miêu tả',
-                '6E': 'Lesson 6E: Sân bay & Chuyến bay',
-                '6F': 'Lesson 6F: Đồ dùng & Hoạt động'
+                '7A_shops': 'Lesson 7A: Cửa hàng & Dịch vụ',
+                '7A_terms': 'Lesson 7A: Mua sắm & Tiền tệ',
+                '7C': 'Lesson 7C: Động từ & Cụm từ tiền bạc'
             };
-            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 6: Tourism & Travel';
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 7: Pocket Money';
 
             // Reset AI Image container
             const imgContainer = document.getElementById('ai-image-container');
@@ -461,7 +454,7 @@
         function generateAIImage() {
             const item = activeList[currentIndex];
             const cleanTerm = item.term.replace(/\s+/g, '-').toLowerCase();
-            const prompt = encodeURIComponent(`high quality clean travel photography of ${cleanTerm}, tourism vacation destination adventure sightseeing concept`);
+            const prompt = encodeURIComponent(`high quality clean digital illustration of ${cleanTerm}, shopping retail finance money commerce concept`);
             const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
 
             const imgContainer = document.getElementById('ai-image-container');
@@ -517,8 +510,8 @@
 
             options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-cyan-600 hover:bg-cyan-50/50 transition-all flex items-start gap-2 text-sm";
-                btn.innerHTML = `<span class="inline-block mt-0.5 text-cyan-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-amber-600 hover:bg-amber-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-amber-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
                 btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
                 optionsContainer.appendChild(btn);
             });
@@ -529,12 +522,12 @@
             allBtns.forEach(btn => btn.disabled = true);
 
             if (isCorrect) {
-                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-600');
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-600');
                 buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
                 quizScore += 1;
                 document.getElementById('quiz-score').innerText = quizScore;
             } else {
-                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-600');
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-600');
                 buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
             }
 
@@ -597,7 +590,7 @@
             const targetText = currentItem.term.trim().toLowerCase();
 
             if (userText === targetText) {
-                feedback.innerHTML = `<span class="text-cyan-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
+                feedback.innerHTML = `<span class="text-amber-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
                 spellScore++;
                 setTimeout(() => {
                     spellIndex++;
@@ -646,7 +639,7 @@
 
             matchCards.forEach((card) => {
                 const cardEl = document.createElement('div');
-                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-cyan-500 hover:bg-white transition-all select-none";
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-amber-500 hover:bg-white transition-all select-none";
                 cardEl.innerText = card.content;
                 cardEl.dataset.id = card.id;
                 cardEl.dataset.type = card.type;
@@ -665,7 +658,7 @@
         function handleMatchCardClick(cardEl) {
             if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
 
-            cardEl.classList.add('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
+            cardEl.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-950');
 
             if (!firstCard) {
                 firstCard = cardEl;
@@ -678,8 +671,8 @@
             // Check if match
             if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
                 setTimeout(() => {
-                    firstCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
-                    secondCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
+                    firstCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950');
+                    secondCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950');
 
                     firstCard.classList.add('matched', 'invisible', 'opacity-0');
                     secondCard.classList.add('matched', 'invisible', 'opacity-0');
@@ -698,8 +691,8 @@
                 secondCard.classList.add('border-rose-500', 'bg-rose-50');
 
                 setTimeout(() => {
-                    firstCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
-                    secondCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
+                    firstCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950', 'border-rose-500', 'bg-rose-50');
                     firstCard = null;
                     secondCard = null;
                     matchLock = false;
