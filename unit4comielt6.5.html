@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete IELTS 6.5–7.5 - Unit 4: Art and the artist</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-rose-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-paintbrush text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Complete IELTS 6.5–7.5: Unit 4</h1>
+                    <p class="text-xs text-rose-200 font-medium">Art and the artist • Visual Arts & Creative Expression</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-rose-950/80 p-1.5 rounded-xl border border-rose-500/40">
+                <i class="fa-solid fa-filter text-xs text-amber-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-rose-100">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-slate-900 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-rose-400/40 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (41 từ/cụm)</option>
+                    <option value="nouns">1. Danh từ & Cụm danh từ (10 từ/cụm)</option>
+                    <option value="verbs">2. Động từ & Cụm động từ (11 từ/cụm)</option>
+                    <option value="adj_adv">3. Tính từ & Trạng từ (7 từ)</option>
+                    <option value="phrases">4. Cụm từ & Thành ngữ cố định (13 cụm)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-rose-950 border-t border-rose-700/50">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-rose-900 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-rose-100 hover:bg-rose-800 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-rose-100 hover:bg-rose-800 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-rose-100 hover:bg-rose-800 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 41</span>
+                <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full font-semibold border border-rose-200" id="card-category-badge">Danh từ & Cụm danh từ</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[420px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md" id="card-type-front">n [U]</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-rose-50 text-rose-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">🖼️</div>
+                            <h2 id="card-term" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">accessibility</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/əkˌsesəˈbɪləti/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-rose-50/80 border-2 border-rose-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-800 bg-rose-200/80 px-2.5 py-1 rounded-md" id="card-type-back">n [U]</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-rose-600 to-amber-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-rose-950 mb-2">độ dễ hiểu, khả năng tiếp cận</h3>
+                            
+                            <div class="bg-white/90 border border-rose-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"Interactive digital exhibits enhance the accessibility of classical fine art for modern audiences."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Các cuộc triển lãm kỹ thuật số tương tác giúp nâng cao khả năng tiếp cận nghệ thuật cổ điển cho công chúng hiện đại."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-rose-700 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-rose-900 text-white font-bold hover:bg-rose-800 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Trắc nghiệm nhận diện nghĩa</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Điểm số</span>
+                        <div class="text-lg font-black text-amber-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n [U] • /əkˌsesəˈbɪləti/</span>
+                        <h3 id="quiz-question-word" class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">accessibility</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng chính xác</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-rose-900 text-white font-bold hover:bg-rose-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-rose-50 border-2 border-rose-300 text-rose-700 rounded-full flex items-center justify-center text-2xl hover:bg-rose-900 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-rose-700 uppercase" id="spell-hint-type">(n [U])</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">độ dễ hiểu, khả năng tiếp cận</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ hoặc cụm từ bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-rose-700 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-rose-900 text-white rounded-xl font-bold hover:bg-rose-800 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-rose-900 text-white font-bold hover:bg-rose-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-rose-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-rose-950 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">🎨🖌️✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ từ vựng IELTS Unit 4!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-rose-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-rose-900 text-white font-bold hover:bg-rose-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Complete IELTS Bands 6.5–7.5 Unit 4: Art and the artist
+        const vocabData = [
+            // 1. Danh từ & Cụm danh từ (Nouns & Noun Phrases)
+            { id: 1, category: "nouns", term: "accessibility", type: "n [U]", ipa: "/əkˌsesəˈbɪləti/", meaning: "độ dễ hiểu, khả năng tiếp cận", icon: "🚪", example: "Interactive digital exhibits enhance the accessibility of classical fine art for modern audiences.", exampleVi: "Các cuộc triển lãm kỹ thuật số tương tác giúp nâng cao khả năng tiếp cận nghệ thuật cổ điển cho công chúng hiện đại." },
+            { id: 2, category: "nouns", term: "clarity", type: "n [U]", ipa: "/ˈklærəti/", meaning: "sự rõ ràng, tính dễ hiểu", icon: "💎", example: "The art curator praised the visual clarity of the abstract installation.", exampleVi: "Người giám tuyển nghệ thuật đánh giá cao tính rõ ràng trực quan của tác phẩm sắp đặt trừu tượng." },
+            { id: 3, category: "nouns", term: "format", type: "n [C]", ipa: "/ˈfɔːmæt/", meaning: "định dạng, cách thiết kế/sắp xếp", icon: "📐", example: "The gallery opted for a digital format to showcase emerging contemporary artists.", exampleVi: "Phòng trưng bày đã chọn định dạng kỹ thuật số để giới thiệu các nghệ sĩ đương đại mới nổi." },
+            { id: 4, category: "nouns", term: "indigenous people", type: "np [C]", ipa: "/ɪnˈdɪdʒənəs ˈpiːpl/", meaning: "người bản địa, thổ dân", icon: "🏹", example: "Ancient cave paintings reveal the spiritual traditions of indigenous people.", exampleVi: "Những bức tranh hang động cổ xưa hé lộ truyền thống tâm linh của người bản địa." },
+            { id: 5, category: "nouns", term: "nuance", type: "n [C]", ipa: "/ˈnjuːɑːns/", meaning: "sắc thái nhỏ, sự khác biệt tinh tế", icon: "🔍", example: "A connoisseur can perceive subtle tonal nuances in Renaissance portraiture.", exampleVi: "Một người sành nghệ thuật có thể nhận ra những sắc thái tông màu tinh tế trong tranh chân dung thời Phục hưng." },
+            { id: 6, category: "nouns", term: "palette", type: "n [C]", ipa: "/ˈpælət/", meaning: "bảng pha màu của họa sĩ", icon: "🎨", example: "Monet utilized a luminous chromatic palette to capture the changing light.", exampleVi: "Monet đã sử dụng một bảng pha màu rực rỡ để bắt trọn ánh sáng đang biến chuyển." },
+            { id: 7, category: "nouns", term: "pigment", type: "n [C]", ipa: "/ˈpɪɡmənt/", meaning: "sắc tố, bột màu", icon: "🧪", example: "Early fresco painters ground mineral pigment with organic binders.", exampleVi: "Những họa sĩ vẽ tranh bích họa đầu tiên đã nghiền sắc tố khoáng chất cùng chất kết dính hữu cơ." },
+            { id: 8, category: "nouns", term: "spectrum", type: "n [C]", ipa: "/ˈspektrəm/", meaning: "dải/phạm vi (màu sắc, ý kiến...)", icon: "🌈", example: "The exhibition spans a broad spectrum of artistic styles from surrealism to realism.", exampleVi: "Triển lãm bao quát một dải phong cách nghệ thuật rộng lớn từ chủ nghĩa siêu thực đến hiện thực." },
+            { id: 9, category: "nouns", term: "visual art form", type: "np [C]", ipa: "/ˈvɪʒuəl ɑːt fɔːm/", meaning: "hình thức nghệ thuật thị giác", icon: "🖼️", example: "Sculpture is a tactile visual art form that engages multi-dimensional space.", exampleVi: "Điêu khắc là một hình thức nghệ thuật thị giác mang tính xúc giác tương tác với không gian đa chiều." },
+            { id: 10, category: "nouns", term: "work of art", type: "np [C]", ipa: "/wɜːk əv ɑːt/", meaning: "tác phẩm nghệ thuật", icon: "🏛️", example: "The ceiling of the Sistine Chapel is hailed as an immortal work of art.", exampleVi: "Trần nhà nguyện Sistine được tôn vinh như một tác phẩm nghệ thuật bất hủ." },
+
+            // 2. Động từ & Cụm động từ (Verbs & Verb Phrases)
+            { id: 11, category: "verbs", term: "call for something", type: "vp [T]", ipa: "/kɔːl fə ˈsʌmθɪŋ/", meaning: "đòi hỏi, cần đến một hành động/phẩm chất", icon: "📢", example: "Executing photorealistic portraiture calls for extraordinary patience and precision.", exampleVi: "Việc thực hiện tranh chân dung siêu thực đòi hỏi sự kiên nhẫn và chính xác phi thường." },
+            { id: 12, category: "verbs", term: "enhance", type: "v [T]", ipa: "/ɪnˈhɑːns/", meaning: "nâng cao, cải thiện chất lượng", icon: "📈", example: "Specialised gallery lighting is deployed to enhance the rich textures of oil paint.", exampleVi: "Hệ thống chiếu sáng chuyên dụng trong phòng tranh được bố trí để làm tăng vẻ đẹp kết cấu phong phú của sơn dầu." },
+            { id: 13, category: "verbs", term: "exert an influence", type: "vp [T]", ipa: "/ɪɡˈzɜːt ən ˈɪnfluəns/", meaning: "gây ảnh hưởng, tác động", icon: "🌊", example: "Japanese woodblock prints exerted a profound influence on French Impressionism.", exampleVi: "Tranh khắc gỗ Nhật Bản đã gây ảnh hưởng sâu sắc đến trường phái Ấn tượng Pháp." },
+            { id: 14, category: "verbs", term: "foster", type: "v [T]", ipa: "/ˈfɒstə(r)/", meaning: "thúc đẩy, nuôi dưỡng, khuyến khích sự phát triển", icon: "🌱", example: "Art residencies foster creative innovation by granting artists unrestricted studio time.", exampleVi: "Các chương trình lưu trú nghệ thuật thúc đẩy sự đổi mới sáng tạo bằng cách cấp thời gian làm việc tự do trong xưởng vẽ." },
+            { id: 15, category: "verbs", term: "grind", type: "v [T]", ipa: "/ɡraɪnd/", meaning: "nghiền, mài nhỏ thành bột", icon: "⚙️", example: "Renaissance apprentices were tasked to grind lapis lazuli into ultramarine powder.", exampleVi: "Các thợ phụ thời Phục hưng được giao nhiệm vụ nghiền đá ngọc lưu ly thành bột màu xanh lam đậm." },
+            { id: 16, category: "verbs", term: "override", type: "v [T]", ipa: "/ˌəʊvəˈraɪd/", meaning: "quan trọng hơn, đè lên / thay thế cái khác", icon: "⚡", example: "In conceptual artwork, philosophical intent often overrides aesthetic craftsmanship.", exampleVi: "Trong nghệ thuật ý niệm, ý đồ triết học thường quan trọng hơn tay nghề thẩm mỹ thủ công." },
+            { id: 17, category: "verbs", term: "produce", type: "v [T]", ipa: "/prəˈdjuːs/", meaning: "tạo ra, sản xuất", icon: "🏭", example: "Over his lifetime, Picasso managed to produce thousands of lithographs and sculptures.", exampleVi: "Trong suốt cuộc đời mình, Picasso đã tạo ra hàng ngàn bản in thạch bản và tác phẩm điêu khắc." },
+            { id: 18, category: "verbs", term: "stimulate", type: "v [T]", ipa: "/ˈstɪmjuleɪt/", meaning: "kích thích, khuyến khích, truyền cảm hứng", icon: "💡", example: "Public interactive installations stimulate aesthetic curiosity among city commuters.", exampleVi: "Các tác phẩm sắp đặt tương tác công cộng kích thích trí tò mò thẩm mỹ ở người đi đường trong thành phố." },
+            { id: 19, category: "verbs", term: "take off", type: "vp [I]", ipa: "/teɪk ɒf/", meaning: "cất cánh, đột nhiên thành công rực rỡ", icon: "🚀", example: "Her international career took off after her solo exhibition in Paris.", exampleVi: "Sự nghiệp quốc tế của cô ấy đột nhiên thành công rực rỡ sau cuộc triển lãm cá nhân tại Paris." },
+            { id: 20, category: "verbs", term: "trace", type: "v [T]", ipa: "/treɪs/", meaning: "vẽ lại theo đường viền (can nét), truy xuất nguồn gốc", icon: "✏️", example: "Art historians attempt to trace the lineage of disputed classical canvases.", exampleVi: "Các nhà sử học nghệ thuật nỗ lực truy xuất nguồn gốc lai lịch của các bức tranh cổ điển đang tranh chấp." },
+            { id: 21, category: "verbs", term: "wash away", type: "vp [T]", ipa: "/wɒʃ əˈweɪ/", meaning: "bị nước cuốn trôi", icon: "🌧️", example: "Ephemeral chalk murals drawn on boardwalks are designed to wash away with rain.", exampleVi: "Những bức tranh phấn vẽ tạm thời trên lối đi bằng gỗ được thiết kế để bị nước mưa cuốn trôi." },
+
+            // 3. Tính từ & Trạng từ (Adjectives & Adverbs)
+            { id: 22, category: "adj_adv", term: "decorative", type: "adj", ipa: "/ˈdekərətɪv/", meaning: "có tính trang trí, làm đẹp", icon: "✨", example: "Intricate mosaic tiles served both structural and decorative purposes.", exampleVi: "Những viên gạch khảm tinh xảo phục vụ cả mục đích kết cấu lẫn chức năng trang trí." },
+            { id: 23, category: "adj_adv", term: "dogmatic", type: "adj", ipa: "/dɒɡˈmætɪk/", meaning: "áp đặt, giáo điều, độc đoán", icon: "📜", example: "Modernist avant-garde movements rejected dogmatic academic drawing conventions.", exampleVi: "Các phong trào nghệ thuật tiền phong hiện đại đã bác bỏ những quy ước vẽ hàn lâm giáo điều." },
+            { id: 24, category: "adj_adv", term: "dominant", type: "adj", ipa: "/ˈdɒmɪnənt/", meaning: "chính, quan trọng nhất, thống trị", icon: "👑", example: "Warm cadmium crimson was the dominant hue across his nocturnal series.", exampleVi: "Màu đỏ thẫm ấm áp là sắc thái màu chủ đạo xuyên suốt loạt tranh đêm của ông." },
+            { id: 25, category: "adj_adv", term: "durable", type: "adj", ipa: "/ˈdʒʊərəbl/", meaning: "bền, sử dụng lâu dài", icon: "🛡️", example: "Bronze remains a favoured durable medium for permanent outdoor monuments.", exampleVi: "Đồng vẫn là chất liệu bền chắc được ưa chuộng cho các đài tưởng niệm ngoài trời lâu năm." },
+            { id: 26, category: "adj_adv", term: "passionate about something", type: "adj", ipa: "/ˈpæʃənət əˈbaʊt ˈsʌmθɪŋ/", meaning: "đam mê, hào hứng với cái gì", icon: "🔥", example: "She is fiercely passionate about preserving vulnerable tribal craft techniques.", exampleVi: "Cô ấy vô cùng đam mê việc bảo tồn các kỹ thuật thủ công truyền thống dễ bị mai một của các bộ tộc." },
+            { id: 27, category: "adj_adv", term: "prior to something", type: "adj", ipa: "/ˈpraɪə tə ˈsʌmθɪŋ/", meaning: "trước một thời điểm / sự kiện nào đó", icon: "⏮️", example: "Rough charcoal sketches were completed prior to applying oil glazes.", exampleVi: "Các phác thảo than thô được hoàn thiện trước khi phủ các lớp sơn dầu bóng." },
+            { id: 28, category: "adj_adv", term: "remarkable", type: "adj", ipa: "/rɪˈmɑːkəbl/", meaning: "đáng chú ý, phi thường", icon: "⭐", example: "The restoration team achieved remarkable success in reviving the faded fresco.", exampleVi: "Đội ngũ phục chế đã đạt được thành công đáng chú ý trong việc hồi sinh bức bích họa bị phai mờ." },
+
+            // 4. Cụm từ & Thành ngữ cố định (Phrases & Expressions)
+            { id: 29, category: "phrases", term: "all shapes and sizes", type: "phrase", ipa: "/ɔːl ʃeɪps ənd ˈsaɪzɪz/", meaning: "đủ mọi hình dáng và kích cỡ", icon: "📐", example: "The gallery exhibit featured ceramic sculptures in all shapes and sizes.", exampleVi: "Triển lãm của phòng tranh trưng bày các tác phẩm điêu khắc bằng gốm với đủ mọi hình dáng và kích cỡ." },
+            { id: 30, category: "phrases", term: "give someone an opportunity", type: "phrase", ipa: "/ɡɪv ˈsʌmwʌn ən ˌɒpəˈtjuːnəti/", meaning: "trao cho ai cơ hội làm gì", icon: "🚪", example: "Art grants give underprivileged artists an opportunity to exhibit abroad.", exampleVi: "Các khoản tài trợ nghệ thuật trao cho những nghệ sĩ có hoàn cảnh khó khăn cơ hội triển lãm ở nước ngoài." },
+            { id: 31, category: "phrases", term: "in stark contrast to", type: "phrase", ipa: "/ɪn stɑːk ˈkɒntrɑːst tuː/", meaning: "trái ngược hoàn toàn với", icon: "⚖️", example: "His minimalist marble forms stand in stark contrast to ornate baroque statuary.", exampleVi: "Các khối đá cẩm thạch tối giản của ông trái ngược hoàn toàn với tượng phong cách baroque hoa mỹ." },
+            { id: 32, category: "phrases", term: "make advances in something", type: "phrase", ipa: "/meɪk ədˈvɑːnsɪz ɪn ˈsʌmθɪŋ/", meaning: "tiến bộ, đạt bước phát triển trong lĩnh vực gì", icon: "🚀", example: "Material scientists make advances in developing environmentally harmless pigments.", exampleVi: "Các nhà khoa học vật liệu đạt được nhiều bước tiến bộ trong việc phát triển sắc tố thân thiện môi trường." },
+            { id: 33, category: "phrases", term: "make use of something", type: "phrase", ipa: "/meɪk juːs əv ˈsʌmθɪŋ/", meaning: "tận dụng, sử dụng cái gì sẵn có", icon: "🔧", example: "Sculptors make use of discarded industrial scrap to craft eco-conscious pieces.", exampleVi: "Các nhà điêu khắc tận dụng phế liệu công nghiệp bỏ đi để chế tác các tác phẩm ý thức sinh thái." },
+            { id: 34, category: "phrases", term: "meet a need for something", type: "phrase", ipa: "/miːt ə niːd fə ˈsʌmθɪŋ/", meaning: "đáp ứng nhu cầu cho cái gì", icon: "🎯", example: "Community open studios meet a vital need for affordable collaborative creative spaces.", exampleVi: "Các xưởng vẽ mở cộng đồng đáp ứng nhu cầu thiết yếu về không gian sáng tạo chung giá cả phải chăng." },
+            { id: 35, category: "phrases", term: "share the spotlight with something/someone", type: "phrase", ipa: "/ʃeə ðə ˈspɒtlaɪt wɪð/", meaning: "chia sẻ sự chú ý / hào quang với ai/cái gì", icon: "🔦", example: "The veteran maestro graciously chose to share the spotlight with young muralists.", exampleVi: "Vị danh họa kỳ cựu đã hòa nhã chọn cách chia sẻ sự chú ý hào quang với các họa sĩ vẽ tranh tường trẻ." },
+            { id: 36, category: "phrases", term: "take advantage of something", type: "phrase", ipa: "/teɪk ədˈvɑːntɪdʒ əv ˈsʌmθɪŋ/", meaning: "tận dụng cơ hội / lợi thế của điều gì", icon: "💎", example: "Digital illustrators take advantage of vector graphics software to produce scalable art.", exampleVi: "Các họa sĩ minh họa kỹ thuật số tận dụng phần mềm đồ họa vector để tạo ra nghệ thuật tùy biến kích thước." },
+            { id: 37, category: "phrases", term: "take hold", type: "phrase", ipa: "/teɪk həʊld/", meaning: "trở nên phổ biến, bám rễ", icon: "🌱", example: "Urban street art began to take hold as a recognized form of artistic expression.", exampleVi: "Nghệ thuật đường phố đô thị đã bắt đầu trở nên phổ biến như một hình thức biểu đạt nghệ thuật được công nhận." },
+            { id: 38, category: "phrases", term: "take steps to do something", type: "phrase", ipa: "/teɪk steps tə duː ˈsʌmθɪŋ/", meaning: "thực hiện các bước/biện pháp để giải quyết vấn đề", icon: "🚶", example: "Museum conservators must take steps to regulate humidity levels around oil canvases.", exampleVi: "Các chuyên viên bảo tồn bảo tàng phải thực hiện các biện pháp điều chỉnh độ ẩm quanh các bức tranh sơn dầu." },
+            { id: 39, category: "phrases", term: "to this day", type: "phrase", ipa: "/tə ðɪs deɪ/", meaning: "cho đến tận ngày nay", icon: "⏳", example: "Da Vinci's enigmatic Mona Lisa portrait inspires relentless intrigue to this day.", exampleVi: "Bức chân dung nàng Mona Lisa bí ẩn của Da Vinci vẫn truyền cảm hứng tò mò bất tận cho đến tận ngày nay." },
+            { id: 40, category: "phrases", term: "a vehicle for something / doing something", type: "phrase", ipa: "/ə ˈviːəkl fə ˈsʌmθɪŋ/", meaning: "phương tiện / công cụ để truyền tải hoặc thực hiện điều gì", icon: "🚗", example: "Political cartoons function as a powerful satirical vehicle for social critique.", exampleVi: "Tranh biếm họa chính trị hoạt động như một công cụ châm biếm mạnh mẽ để phê bình xã hội." },
+            { id: 41, category: "phrases", term: "when it comes to something / doing something", type: "phrase", ipa: "/wen ɪt kʌmz tə ˈsʌmθɪŋ/", meaning: "khi nói đến / khi đề cập đến việc gì", icon: "📌", example: "When it comes to ceramic firing temperatures, precise kiln monitoring is imperative.", exampleVi: "Khi nói đến nhiệt độ nung gốm sứ, việc giám sát lò nung chuẩn xác là điều bắt buộc." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-rose-100 hover:bg-rose-800 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-rose-900 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                'nouns': '1. Danh từ & Cụm danh từ',
+                'verbs': '2. Động từ & Cụm động từ',
+                'adj_adv': '3. Tính từ & Trạng từ',
+                'phrases': '4. Cụm từ & Thành ngữ cố định'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'IELTS Unit 4: Art and the artist';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const raw = textToSpeak || activeList[currentIndex].term;
+            const cleanText = raw.replace(/\(.*?\)/g, '').replace(/someone/g, 'someone').replace(/something/g, 'something');
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\(.*?\)/g, '').replace(/[^a-zA-Z\s]/g, '').trim().replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean artistic oil painting visual art digital illustration of ${cleanTerm}, creative artistic gallery aesthetics ielts study concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-rose-700 hover:bg-rose-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-rose-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-rose-700');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-rose-700');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function normalizeSpellText(str) {
+            return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userNorm = normalizeSpellText(input.value);
+            const targetNorm = normalizeSpellText(currentItem.term);
+            const cleanTarget = normalizeSpellText(currentItem.term.replace(/\(.*?\)/g, ''));
+
+            if (userNorm === targetNorm || userNorm === cleanTarget) {
+                feedback.innerHTML = `<span class="text-rose-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Rất xuất sắc.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2200);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-rose-500 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-rose-700', 'bg-rose-50', 'text-rose-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-rose-700', 'bg-rose-50', 'text-rose-950');
+                    secondCard.classList.remove('border-rose-700', 'bg-rose-50', 'text-rose-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-rose-700', 'bg-rose-50', 'text-rose-950');
+                    secondCard.classList.remove('border-rose-700', 'bg-rose-50', 'text-rose-950');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
