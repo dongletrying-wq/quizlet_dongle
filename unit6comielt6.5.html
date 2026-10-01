@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete IELTS 6.5–7.5 - Unit 6: IT society</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti for Celebration Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <header class="bg-cyan-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-laptop-code text-2xl text-cyan-200"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Complete IELTS 6.5–7.5: Unit 6</h1>
+                    <p class="text-xs text-cyan-200 font-medium">IT society • Technology & Modern Social Dynamics</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-cyan-950/80 p-1.5 rounded-xl border border-cyan-500/40">
+                <i class="fa-solid fa-filter text-xs text-cyan-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-cyan-100">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-slate-900 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (40 từ/cụm)</option>
+                    <option value="nouns">1. Danh từ & Cụm danh từ (12 từ/cụm)</option>
+                    <option value="verbs">2. Động từ & Cụm động từ (14 từ/cụm)</option>
+                    <option value="adj_adv">3. Tính từ & Trạng từ (3 từ)</option>
+                    <option value="phrases">4. Cụm từ & Thành ngữ (11 cụm)</option>
+                </select>
+            </div>
+        </div>
+
+        <nav class="bg-cyan-900 border-t border-cyan-700/60">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-900 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-800 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-800 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-800 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 40</span>
+                <span class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full font-semibold border border-cyan-200" id="card-category-badge">Danh từ & Cụm danh từ</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[420px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-1 rounded-md" id="card-type-front">np [C]</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-cyan-50 text-cyan-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">📢</div>
+                            <h2 id="card-term" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">advocate of something</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈædvəkət əv ˈsʌmθɪŋ/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-cyan-50/80 border-2 border-cyan-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-800 bg-cyan-200/80 px-2.5 py-1 rounded-md" id="card-type-back">np [C]</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-cyan-950 mb-2">người ủng hộ một ý tưởng hoặc phương pháp</h3>
+                            
+                            <div class="bg-white/90 border border-cyan-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"He is an outspoken advocate of open-source software in public education."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Ông là một người ủng hộ nhiệt thành việc ứng dụng phần mềm mã nguồn mở trong giáo dục công."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-cyan-700 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-cyan-800 text-white font-bold hover:bg-cyan-700 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trắc nghiệm nhận diện nghĩa</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Điểm số</span>
+                        <div class="text-lg font-black text-amber-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">np [C] • /ˈædvəkət əv ˈsʌmθɪŋ/</span>
+                        <h3 id="quiz-question-word" class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">advocate of something</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng chính xác</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-800 text-white font-bold hover:bg-cyan-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-cyan-50 border-2 border-cyan-300 text-cyan-700 rounded-full flex items-center justify-center text-2xl hover:bg-cyan-800 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-cyan-700 uppercase" id="spell-hint-type">(np [C])</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">người ủng hộ một ý tưởng hoặc phương pháp</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ hoặc cụm từ bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-cyan-700 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-cyan-800 text-white rounded-xl font-bold hover:bg-cyan-700 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-800 text-white font-bold hover:bg-cyan-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-cyan-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-cyan-950 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">💻🌐✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ từ vựng IELTS Unit 6!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-cyan-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-cyan-800 text-white font-bold hover:bg-cyan-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <script>
+        // Database Vocabulary for Complete IELTS Bands 6.5–7.5 Unit 6: IT society
+        const vocabData = [
+            // 1. Danh từ & Cụm danh từ (Nouns & Noun Phrases)
+            { id: 1, category: "nouns", term: "advocate of something", type: "np [C]", ipa: "/ˈædvəkət əv ˈsʌmθɪŋ/", meaning: "người ủng hộ một ý tưởng hoặc phương pháp", icon: "📢", example: "He is an outspoken advocate of open-source software in public education.", exampleVi: "Ông là một người ủng hộ nhiệt thành việc ứng dụng phần mềm mã nguồn mở trong giáo dục công." },
+            { id: 2, category: "nouns", term: "feature film", type: "np [C]", ipa: "/ˈfiːtʃə fɪlm/", meaning: "phim điện ảnh dài (từ 90 phút trở lên)", icon: "🎬", example: "Computer-generated imagery has revolutionized the production of modern feature films.", exampleVi: "Hình ảnh tạo bằng máy tính đã cách mạng hóa khâu sản xuất phim điện ảnh dài hiện đại." },
+            { id: 3, category: "nouns", term: "film sequence", type: "np [C]", ipa: "/fɪlm ˈsiːkwəns/", meaning: "phân đoạn phim xử lý một sự kiện", icon: "🎞️", example: "The climactic digital film sequence took weeks of rendering by powerful servers.", exampleVi: "Phân đoạn phim kỹ thuật số cao trào đã mất hàng tuần kết xuất bằng các máy chủ cấu hình mạnh." },
+            { id: 4, category: "nouns", term: "icon", type: "n [C]", ipa: "/ˈaɪkɒn/", meaning: "biểu tượng, nhân vật/vật đại diện cho một lối sống/ý tưởng", icon: "⭐", example: "The personal computer has become a cultural icon of the digital revolution.", exampleVi: "Máy tính cá nhân đã trở thành một biểu tượng văn hóa của cuộc cách mạng số." },
+            { id: 5, category: "nouns", term: "instant access", type: "n [U]", ipa: "/ˈɪnstənt ˈækses/", meaning: "sự truy cập / tiếp cận tức thì", icon: "⚡", example: "High-speed broadband grants researchers instant access to global scientific archives.", exampleVi: "Mạng băng thông rộng tốc độ cao mang lại cho các nhà nghiên cứu sự tiếp cận tức thì tới các kho dữ liệu khoa học toàn cầu." },
+            { id: 6, category: "nouns", term: "mediocrity", type: "n [U]", ipa: "/ˌmiːdiˈɒkrəti/", meaning: "chất lượng tầm thường, không có gì nổi bật", icon: "📉", example: "Automated content generation often settles for creative mediocrity over original depth.", exampleVi: "Việc tạo nội dung tự động thường chấp nhận chất lượng tầm thường thay vì chiều sâu sáng tạo nguyên bản." },
+            { id: 7, category: "nouns", term: "pace", type: "singular n", ipa: "/peɪs/", meaning: "tốc độ diễn ra của sự việc", icon: "⏱️", example: "Society struggles to formulate ethical frameworks at the accelerating pace of technological change.", exampleVi: "Xã hội chật vật xây dựng các khung đạo đức bắt kịp tốc độ thay đổi công nghệ ngày càng nhanh." },
+            { id: 8, category: "nouns", term: "phenomena", type: "plural n", ipa: "/fəˈnɒmɪnə/", meaning: "các hiện tượng (độc đáo hoặc khác thường)", icon: "🌌", example: "Social media addiction is among the emerging sociological phenomena of our digital era.", exampleVi: "Nghiện mạng xã hội là một trong những hiện tượng xã hội học mới nổi trong kỷ nguyên số của chúng ta." },
+            { id: 9, category: "nouns", term: "rote", type: "n [U]", ipa: "/rəʊt/", meaning: "phương pháp học vẹt, học lặp đi lặp lại", icon: "🔁", example: "Modern pedagogy discourages learning by rote in favour of critical enquiry.", exampleVi: "Phương pháp giáo dục hiện đại không khuyến khích học vẹt mà ưu tiên tư duy truy vấn phản biện." },
+            { id: 10, category: "nouns", term: "simulation", type: "n [C/U]", ipa: "/ˌsɪmjuˈleɪʃn/", meaning: "sự mô phỏng (tạo ra mô hình giống thực tế)", icon: "🕶️", example: "Pilots train in advanced flight simulation systems before navigating commercial aircraft.", exampleVi: "Phi công được huấn luyện trong các hệ thống mô phỏng bay tiên tiến trước khi điều khiển máy bay thương mại." },
+            { id: 11, category: "nouns", term: "supplement", type: "n [C]", ipa: "/ˈsʌplɪmənt/", meaning: "phần bổ sung, lượng thêm vào", icon: "➕", example: "Online tutorials provide a helpful supplement to traditional university lectures.", exampleVi: "Các bài hướng dẫn trực tuyến cung cấp phần bổ sung hữu ích cho các bài giảng đại học truyền thống." },
+            { id: 12, category: "nouns", term: "technique", type: "n [C/U]", ipa: "/tekˈniːk/", meaning: "kỹ thuật, phương pháp làm việc chuyên biệt", icon: "🛠️", example: "Machine learning introduces sophisticated algorithmic techniques to analyze user behavior.", exampleVi: "Học máy giới thiệu các kỹ thuật thuật toán tinh vi để phân tích hành vi người dùng." },
+
+            // 2. Động từ & Cụm động từ (Verbs & Verb Phrases)
+            { id: 13, category: "verbs", term: "cater to someone/something", type: "vp [T]", ipa: "/ˈkeɪtə tə/", meaning: "phục vụ, đáp ứng nhu cầu (thường là điều tiêu cực)", icon: "🎯", example: "Clickbait platforms cater to users' short attention spans with shallow sensationalism.", exampleVi: "Các nền tảng giật tít phục vụ sự tập trung ngắn ngủi của người dùng bằng sự giật gân nông cạn." },
+            { id: 14, category: "verbs", term: "engage in something", type: "vp [T]", ipa: "/ɪnˈɡeɪdʒ ɪn/", meaning: "tham gia vào việc gì", icon: "🤝", example: "Students frequently engage in online collaborative problem-solving forums.", exampleVi: "Sinh viên thường xuyên tham gia vào các diễn đàn giải quyết vấn đề hợp tác trực tuyến." },
+            { id: 15, category: "verbs", term: "generate", type: "v [T]", ipa: "/ˈdʒenəreɪt/", meaning: "tạo ra, phát sinh", icon: "⚡", example: "Algorithmic recommendations generate billions of video views on streaming sites daily.", exampleVi: "Các đề xuất thuật toán tạo ra hàng tỷ lượt xem video trên các trang phát trực tuyến mỗi ngày." },
+            { id: 16, category: "verbs", term: "gloss over something", type: "vp [T]", ipa: "/ɡlɒs ˈəʊvə/", meaning: "thảo luận qua loa, che đậy để làm nhẹ tầm quan trọng", icon: "🧹", example: "Tech corporations often gloss over data privacy concerns during product announcements.", exampleVi: "Các tập đoàn công nghệ thường nói qua loa về các lo ngại bảo mật dữ liệu khi ra mắt sản phẩm." },
+            { id: 17, category: "verbs", term: "identify with someone", type: "vp [T]", ipa: "/aɪˈdentɪfaɪ wɪð/", meaning: "đồng cảm, cảm thấy mình giống ai đó", icon: "🫂", example: "Young digital creators readily identify with autonomous online influencers.", exampleVi: "Các nhà sáng tạo số trẻ tuổi dễ dàng đồng cảm với những người có tầm ảnh hưởng trực tuyến độc lập." },
+            { id: 18, category: "verbs", term: "modify", type: "v [T]", ipa: "/ˈmɒdɪfaɪ/", meaning: "sửa đổi, điều chỉnh để cải thiện", icon: "✏️", example: "Developers must continuously modify software code to patch security vulnerabilities.", exampleVi: "Các nhà phát triển phải liên tục sửa đổi mã nguồn phần mềm để vá các lỗ hổng bảo mật." },
+            { id: 19, category: "verbs", term: "overhaul", type: "v [T]", ipa: "/ˌəʊvəˈhɔːl/", meaning: "cải tổ, thay đổi toàn bộ hệ thống để làm tốt hơn", icon: "🔄", example: "The Ministry planned to comprehensively overhaul outdated civil service computing infrastructure.", exampleVi: "Bộ đã lên kế hoạch cải tổ toàn diện cơ sở hạ tầng tin học dịch vụ công đã lỗi thời." },
+            { id: 20, category: "verbs", term: "pioneer", type: "v [T]", ipa: "/ˌpaɪəˈnɪə(r)/", meaning: "tiên phong, đi đầu trong lĩnh vực nào đó", icon: "🚩", example: "Computer scientists pioneer neural network architectures that resemble human cognition.", exampleVi: "Các nhà khoa học máy tính tiên phong trong việc phát triển các kiến trúc mạng nơ-ron tương tự nhận thức của con người." },
+            { id: 21, category: "verbs", term: "prove to be something", type: "v", ipa: "/pruːv tə bi/", meaning: "chứng tỏ / tỏ ra là như thế nào sau một thời gian", icon: "🔎", example: "Biometric authentication has proven to be an effective deterrent against identity theft.", exampleVi: "Xác thực sinh trắc học đã chứng tỏ là một biện pháp răn đe hiệu quả chống lại hành vi trộm cắp danh tính." },
+            { id: 22, category: "verbs", term: "require someone to do something", type: "v [T]", ipa: "/rɪˈkwaɪə/", meaning: "yêu cầu ai làm gì", icon: "📌", example: "Cybersecurity regulations require employees to update network credentials periodically.", exampleVi: "Các quy định an ninh mạng yêu cầu nhân viên phải cập nhật thông tin đăng nhập định kỳ." },
+            { id: 23, category: "verbs", term: "scroll", type: "v [I]", ipa: "/skrəʊl/", meaning: "cuộn màn hình (lên/xuống/trở lại/tiến tới)", icon: "📜", example: "Smartphones encourage users to passively scroll through endless algorithmically tailored feeds.", exampleVi: "Điện thoại thông minh khuyến khích người dùng thụ động cuộn qua các bảng tin vô tận được tùy biến theo thuật toán." },
+            { id: 24, category: "verbs", term: "supplement", type: "v [T]", ipa: "/ˈsʌplɪment/", meaning: "bổ sung thêm", icon: "🧩", example: "Educational apps supplement traditional curricula with gamified interactive quizzes.", exampleVi: "Các ứng dụng giáo dục bổ sung thêm cho giáo trình truyền thống các câu hỏi tương tác dưới dạng trò chơi." },
+            { id: 25, category: "verbs", term: "tailor", type: "v [T]", ipa: "/ˈteɪlə(r)/", meaning: "điều chỉnh, biến tấu cho phù hợp với nhu cầu", icon: "✂️", example: "Search engines tailor advertising displays based on aggregated individual browsing profiles.", exampleVi: "Các công cụ tìm kiếm điều chỉnh hiển thị quảng cáo dựa trên hồ sơ duyệt web tổng hợp của cá nhân." },
+            { id: 26, category: "verbs", term: "tune out", type: "vp [I]", ipa: "/tjuːn aʊt/", meaning: "ngắt sự chú ý, không thèm lắng nghe xung quanh", icon: "🎧", example: "Commuters put on noise-cancelling headphones to tune out ambient urban clamour.", exampleVi: "Người đi làm đeo tai nghe chống ồn để ngắt sự chú ý khỏi những âm thanh ồn ào xung quanh đô thị." },
+
+            // 3. Tính từ & Trạng từ (Adjectives & Adverbs)
+            { id: 27, category: "adj_adv", term: "convincing", type: "adj", ipa: "/kənˈvɪnsɪŋ/", meaning: "có sức thuyết phục, đáng tin", icon: "👌", example: "Deepfake synthesis technology produces disturbingly convincing falsified audio and video.", exampleVi: "Công nghệ tổng hợp deepfake tạo ra âm thanh và hình ảnh giả mạo có sức thuyết phục đáng lo ngại." },
+            { id: 28, category: "adj_adv", term: "enamoured with someone/something", type: "adj", ipa: "/ɪˈnæməd wɪð/", meaning: "rất thích, mê mẩn ai/cái gì", icon: "😍", example: "Consumers became instantly enamoured with sleek touch-screen mobile devices.", exampleVi: "Người tiêu dùng ngay lập tức mê mẩn những thiết bị di động màn hình cảm ứng mỏng nhẹ." },
+            { id: 29, category: "adj_adv", term: "unambiguously", type: "adv", ipa: "/ˌʌnæmˈbɪɡjuəsli/", meaning: "một cách rõ ràng, rành mạch, chỉ có một nghĩa", icon: "💡", example: "The encryption protocol unambiguously defines data routing parameters across nodes.", exampleVi: "Giao thức mã hóa định nghĩa một cách rõ ràng rành mạch các tham số định tuyến dữ liệu giữa các nút mạng." },
+
+            // 4. Cụm từ & Thành ngữ cố định (Phrases & Expressions)
+            { id: 30, category: "phrases", term: "the advent of something", type: "phrase", ipa: "/ði ˈædvent əv/", meaning: "sự ra đời, sự xuất hiện của một cái gì mới", icon: "🌅", example: "The advent of generative AI reshaped intellectual property law globally.", exampleVi: "Sự ra đời của trí tuệ nhân tạo tạo sinh đã định hình lại luật sở hữu trí tuệ trên toàn cầu." },
+            { id: 31, category: "phrases", term: "anything but", type: "phrase", ipa: "/ˈeniθɪŋ bʌt/", meaning: "hoàn toàn không", icon: "❌", example: "Managing complex database architecture is anything but straightforward for novice engineers.", exampleVi: "Quản lý kiến trúc cơ sở dữ liệu phức tạp hoàn toàn không đơn giản đối với các kỹ sư mới vào nghề." },
+            { id: 32, category: "phrases", term: "break new ground", type: "phrase", ipa: "/breɪk njuː ɡraʊnd/", meaning: "khai phá vùng đất mới, làm điều chưa ai từng làm", icon: "⛏️", example: "Quantum computing researchers break new ground in cryptographic data security.", exampleVi: "Các nhà nghiên cứu điện toán lượng tử khai phá hướng đi hoàn toàn mới trong bảo mật dữ liệu mật mã." },
+            { id: 33, category: "phrases", term: "by and large", type: "phrase", ipa: "/baɪ ənd lɑːdʒ/", meaning: "nhìn chung, nói chung", icon: "🌐", example: "By and large, cloud computing adoption has bolstered corporate operational agility.", exampleVi: "Nhìn chung, việc áp dụng điện toán đám mây đã nâng cao sự linh hoạt trong vận hành doanh nghiệp." },
+            { id: 34, category: "phrases", term: "the extent of something", type: "phrase", ipa: "/ði ɪkˈstent əv/", meaning: "quy mô, mức độ quan trọng của cái gì", icon: "📏", example: "Forensic analysts are still assessing the full extent of the catastrophic server breach.", exampleVi: "Các chuyên viên phân tích giám định vẫn đang đánh giá toàn bộ quy mô của vụ xâm phạm máy chủ nghiêm trọng." },
+            { id: 35, category: "phrases", term: "get stuck", type: "phrase", ipa: "/ɡet stʌk/", meaning: "bị kẹt, gặp bế tắc không tiếp tục làm được", icon: "🚧", example: "Without adequate algorithmic training, self-driving prototypes frequently get stuck at complex intersections.", exampleVi: "Nếu không có đào tạo thuật toán thỏa đáng, xe tự hành nguyên mẫu thường bị bế tắc tại các nút giao thông phức tạp." },
+            { id: 36, category: "phrases", term: "in essence", type: "phrase", ipa: "/ɪn ˈesns/", meaning: "về bản chất, cốt lõi", icon: "🧬", example: "In essence, neural networks function as massive statistical prediction engines.", exampleVi: "Về bản chất, mạng nơ-ron hoạt động như những cỗ máy dự đoán thống kê quy mô khổng lồ." },
+            { id: 37, category: "phrases", term: "in leaps and bounds", type: "phrase", ipa: "/ɪn liːps ənd baʊndz/", meaning: "rất nhanh chóng, tiến bộ vượt bậc", icon: "🚀", example: "Speech recognition accuracy has advanced in leaps and bounds over the past decade.", exampleVi: "Độ chính xác của nhận dạng giọng nói đã tiến bộ vượt bậc trong một thập kỷ qua." },
+            { id: 38, category: "phrases", term: "in vain", type: "phrase", ipa: "/ɪn veɪn/", meaning: "vô ích, không thu được kết quả", icon: "🫥", example: "Technicians laboured in vain to recover unbacked-up data from the fried hard drive.", exampleVi: "Các kỹ thuật viên đã nỗ lực trong vô vọng để khôi phục dữ liệu chưa sao lưu từ ổ cứng bị cháy." },
+            { id: 39, category: "phrases", term: "reach the point", type: "phrase", ipa: "/riːtʃ ðə pɔɪnt/", meaning: "đạt đến một mức độ/tình huống cụ thể", icon: "🎯", example: "Society has reached the point where digital connectivity is deemed a fundamental human utility.", exampleVi: "Xã hội đã đạt đến mức độ mà kết nối số được coi là một tiện ích cơ bản của con người." },
+            { id: 40, category: "phrases", term: "save the day", type: "phrase", ipa: "/seɪv ðə deɪ/", meaning: "giải cứu tình thế, giải quyết vấn đề nghiêm trọng", icon: "🦸", example: "An off-site automated data backup saved the day following a catastrophic ransomware extortion.", exampleVi: "Bản sao lưu dữ liệu tự động tại vị trí khác đã giải cứu tình thế sau một vụ tống tiền bằng mã độc tống tiền nghiêm trọng." }
+        ];
+
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-800 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-900 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                'nouns': '1. Danh từ & Cụm danh từ',
+                'verbs': '2. Động từ & Cụm động từ',
+                'adj_adv': '3. Tính từ & Trạng từ',
+                'phrases': '4. Cụm từ & Thành ngữ'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'IELTS Unit 6: IT society';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const raw = textToSpeak || activeList[currentIndex].term;
+            const cleanText = raw.replace(/\(.*?\)/g, '').replace(/someone/g, 'someone').replace(/something/g, 'something');
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\(.*?\)/g, '').replace(/[^a-zA-Z\s]/g, '').trim().replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean futuristic computer cyber digital illustration of ${cleanTerm}, information technology network ai computing society ielts study concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-cyan-700 hover:bg-cyan-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-cyan-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-700');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-700');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function normalizeSpellText(str) {
+            return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userNorm = normalizeSpellText(input.value);
+            const targetNorm = normalizeSpellText(currentItem.term);
+            const cleanTarget = normalizeSpellText(currentItem.term.replace(/\(.*?\)/g, ''));
+
+            if (userNorm === targetNorm || userNorm === cleanTarget) {
+                feedback.innerHTML = `<span class="text-cyan-800 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Rất xuất sắc.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2200);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-cyan-600 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-cyan-700', 'bg-cyan-50', 'text-cyan-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-cyan-700', 'bg-cyan-50', 'text-cyan-950');
+                    secondCard.classList.remove('border-cyan-700', 'bg-cyan-50', 'text-cyan-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-cyan-700', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-cyan-700', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
