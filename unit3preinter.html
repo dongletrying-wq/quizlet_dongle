@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions Pre-Intermediate - Unit 3: On screen</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-violet-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-clapperboard text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 3: On screen</h1>
+                    <p class="text-xs text-violet-200 font-medium">Pre-Intermediate 3rd Edition • Film & TV Entertainment</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-violet-900/80 p-1.5 rounded-xl border border-violet-500/40">
+                <i class="fa-solid fa-filter text-xs text-violet-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-violet-100">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-violet-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-violet-400/40 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (40 từ)</option>
+                    <option value="3A_genre">Lesson 3A: Thể loại Phim & TV (21 từ)</option>
+                    <option value="3A_adj">Lesson 3A: Tính từ miêu tả Phim (13 từ)</option>
+                    <option value="aspects">Aspects of Films: Các yếu tố trong phim (6 từ)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-violet-900 border-t border-violet-700/50">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-violet-900 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-violet-100 hover:bg-violet-700 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-violet-100 hover:bg-violet-700 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-violet-100 hover:bg-violet-700 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 40</span>
+                <span class="bg-violet-100 text-violet-800 px-3 py-1 rounded-full font-semibold border border-violet-200" id="card-category-badge">Thể loại Phim & TV</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[410px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-violet-700 bg-violet-50 border border-violet-200 px-2.5 py-1 rounded-md" id="card-type-front">n</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-violet-50 text-violet-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">💥</div>
+                            <h2 id="card-term" class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">Action film</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈækʃn fɪlm/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-violet-50/80 border-2 border-violet-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-violet-800 bg-violet-200/80 px-2.5 py-1 rounded-md" id="card-type-back">n</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-violet-950 mb-2">phim hành động</h3>
+                            
+                            <div class="bg-white/90 border border-violet-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"He loves watching action films with thrilling car chases."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Anh ấy rất thích xem phim hành động với những pha rượt đuổi ô tô kịch tính."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-violet-700 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-violet-700 text-white font-bold hover:bg-violet-800 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-violet-700">Trắc nghiệm nhanh</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Điểm số</span>
+                        <div class="text-lg font-black text-amber-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n • /ˈækʃn fɪlm/</span>
+                        <h3 id="quiz-question-word" class="text-3xl font-black text-slate-900 mt-3">Action film</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-violet-700 text-white font-bold hover:bg-violet-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-violet-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-violet-50 border-2 border-violet-300 text-violet-700 rounded-full flex items-center justify-center text-2xl hover:bg-violet-700 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-violet-700 uppercase" id="spell-hint-type">(n)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">phim hành động</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-violet-600 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-violet-700 text-white rounded-xl font-bold hover:bg-violet-800 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-violet-700 text-white font-bold hover:bg-violet-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-violet-700">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-violet-50 border border-violet-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-violet-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-violet-950 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">🎬🍿✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã vượt qua thử thách On Screen!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-violet-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-violet-700 text-white font-bold hover:bg-violet-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Unit 3: On screen
+        const vocabData = [
+            // 1. Lesson 3A: Film & TV Programmes (Thể loại)
+            { id: 1, category: "3A_genre", term: "Action film", type: "n", ipa: "/ˈækʃn fɪlm/", meaning: "phim hành động", icon: "💥", example: "He loves watching action films with thrilling car chases.", exampleVi: "Anh ấy thích xem phim hành động với những pha rượt đuổi ô tô kịch tính." },
+            { id: 2, category: "3A_genre", term: "Animation", type: "n", ipa: "/ˌænɪˈmeɪʃn/", meaning: "phim hoạt hình (đồ họa/3D)", icon: "🎨", example: "Pixar is famous for creating touching computer animation.", exampleVi: "Pixar rất nổi tiếng với việc tạo ra những bộ phim hoạt hình đồ họa cảm động." },
+            { id: 3, category: "3A_genre", term: "Chat show", type: "n", ipa: "/ˈtʃæt ʃəʊ/", meaning: "chương trình trò chuyện, phỏng vấn người nổi tiếng", icon: "🎙️", example: "The actor appeared on a popular evening chat show.", exampleVi: "Nam diễn viên đã xuất hiện trên một chương trình trò chuyện buổi tối nổi tiếng." },
+            { id: 4, category: "3A_genre", term: "Comedy", type: "n", ipa: "/ˈkɒmədi/", meaning: "phim hài, kịch hài", icon: "😂", example: "We watched a light-hearted comedy to unwind after a stressful day.", exampleVi: "Chúng tôi đã xem một bộ phim hài nhẹ nhàng để thư giãn sau một ngày căng thẳng." },
+            { id: 5, category: "3A_genre", term: "Documentary", type: "n", ipa: "/ˌdɒkjuˈmentri/", meaning: "phim tài liệu", icon: "🦁", example: "This nature documentary shows the life of arctic wolves.", exampleVi: "Bộ phim tài liệu thiên nhiên này mô tả đời sống của loài sói bắc cực." },
+            { id: 6, category: "3A_genre", term: "Fantasy film", type: "n", ipa: "/ˈfæntəsi fɪlm/", meaning: "phim kỳ ảo, viễn tưởng thần thoại", icon: "🧙‍♂️", example: "The Lord of the Rings is a world-renowned fantasy film.", exampleVi: "Chúa tể những chiếc nhẫn là bộ phim kỳ ảo thần thoại nổi tiếng thế giới." },
+            { id: 7, category: "3A_genre", term: "Game show", type: "n", ipa: "/ˈɡeɪm ʃəʊ/", meaning: "trò chơi truyền hình", icon: "🎲", example: "Contestants answered difficult trivia on the live game show.", exampleVi: "Các thí sinh đã trả lời những câu hỏi hóc búa trên trò chơi truyền hình trực tiếp." },
+            { id: 8, category: "3A_genre", term: "Horror film", type: "n", ipa: "/ˈhɒrə(r) fɪlm/", meaning: "phim kinh dị", icon: "🧟", example: "I am too scared to watch a horror film alone at night.", exampleVi: "Tôi quá sợ hãi để xem một bộ phim kinh dị một mình vào ban đêm." },
+            { id: 9, category: "3A_genre", term: "Musical", type: "n", ipa: "/ˈmjuːzɪkl/", meaning: "phim ca nhạc, nhạc kịch", icon: "🎭", example: "La La Land is a modern award-winning musical.", exampleVi: "La La Land là một bộ phim ca nhạc hiện đại từng giành được nhiều giải thưởng." },
+            { id: 10, category: "3A_genre", term: "News bulletin", type: "n", ipa: "/ˈnjuːz ˌbʊlətɪn/", meaning: "bản tin thời sự nhanh", icon: "📰", example: "We interrupted the movie to broadcast an urgent news bulletin.", exampleVi: "Chúng tôi đã tạm dừng bộ phim để phát một bản tin thời sự khẩn." },
+            { id: 11, category: "3A_genre", term: "Period drama", type: "n", ipa: "/ˈpɪəriəd ˌdrɑːmə/", meaning: "phim cổ trang, phim lịch sử", icon: "👑", example: "Downton Abbey is an acclaimed British period drama.", exampleVi: "Downton Abbey là một bộ phim lịch sử nước Anh được đánh giá rất cao." },
+            { id: 12, category: "3A_genre", term: "Reality show", type: "n", ipa: "/riˈæləti ʃəʊ/", meaning: "chương trình truyền hình thực tế", icon: "📹", example: "Many viewers follow the lives of celebrities on that reality show.", exampleVi: "Nhiều khán giả theo dõi cuộc sống của người nổi tiếng trên chương trình thực tế đó." },
+            { id: 13, category: "3A_genre", term: "Romantic comedy", type: "n", ipa: "/rəʊˈmæntɪk ˈkɒmədi/", meaning: "phim hài lãng mạn (Rom-com)", icon: "💖", example: "They spent Valentine's Day watching a cute romantic comedy.", exampleVi: "Họ đã dành ngày lễ tình nhân để cùng xem một bộ phim hài lãng mạn đáng yêu." },
+            { id: 14, category: "3A_genre", term: "Science fiction film", type: "n", ipa: "/ˌsaɪəns ˈfɪkʃn fɪlm/", meaning: "phim khoa học viễn tưởng (Sci-fi)", icon: "🚀", example: "Star Wars is one of the most famous science fiction films.", exampleVi: "Chiến tranh giữa các vì sao là một trong những bộ phim khoa học viễn tưởng nổi tiếng nhất." },
+            { id: 15, category: "3A_genre", term: "Sitcom", type: "n", ipa: "/ˈsɪtkɒm/", meaning: "phim hài tình huống", icon: "📺", example: "Friends is widely considered the most successful sitcom ever.", exampleVi: "Friends được coi là bộ phim hài tình huống thành công nhất từ trước tới nay." },
+            { id: 16, category: "3A_genre", term: "Soap opera", type: "n", ipa: "/ˈsəʊp ɒprə/", meaning: "phim truyền hình dài tập (gia đình/xã hội)", icon: "🛋️", example: "My grandmother never misses an episode of her favorite soap opera.", exampleVi: "Bà tôi không bao giờ bỏ lỡ một tập nào của bộ phim truyền hình dài tập yêu thích." },
+            { id: 17, category: "3A_genre", term: "Talent show", type: "n", ipa: "/ˈtælənt ʃəʊ/", meaning: "cuộc thi tìm kiếm tài năng", icon: "🌟", example: "She auditioned as a singer on the national talent show.", exampleVi: "Cô ấy đã tham gia thử giọng với tư cách ca sĩ tại cuộc thi tài năng toàn quốc." },
+            { id: 18, category: "3A_genre", term: "Thriller", type: "n", ipa: "/ˈθrɪlə(r)/", meaning: "phim giật gân, ly kỳ, gián điệp", icon: "🕵️", example: "The spy thriller kept us on the edge of our seats throughout.", exampleVi: "Bộ phim giật gân về điệp viên khiến chúng tôi hồi hộp dõi theo từ đầu đến cuối." },
+            { id: 19, category: "3A_genre", term: "War film", type: "n", ipa: "/ˈwɔː fɪlm/", meaning: "phim chiến tranh", icon: "⚔️", example: "1917 is a remarkably shot historical war film.", exampleVi: "1917 là một bộ phim chiến tranh lịch sử có những cảnh quay xuất sắc." },
+            { id: 20, category: "3A_genre", term: "Weather forecast", type: "n", ipa: "/ˈweðə fɔːkɑːst/", meaning: "bản tin dự báo thời tiết", icon: "☀️", example: "Check the weather forecast before planning our outdoor hike.", exampleVi: "Hãy xem bản tin dự báo thời tiết trước khi lên kế hoạch đi leo núi dã ngoại." },
+            { id: 21, category: "3A_genre", term: "Western", type: "n", ipa: "/ˈwestən/", meaning: "phim viễn tây (miền Tây nước Mỹ)", icon: "🤠", example: "Classic western films usually feature brave cowboys and horses.", exampleVi: "Những bộ phim viễn tây kinh điển thường có các chàng cao bồi dũng cảm và ngựa." },
+
+            // 2. Lesson 3A: Adjectives to Describe Films (Tính từ miêu tả)
+            { id: 22, category: "3A_adj", term: "Boring", type: "adj", ipa: "/ˈbɔːrɪŋ/", meaning: "tẻ nhạt, chán ngắt", icon: "🥱", example: "The plot was so boring that half the audience fell asleep.", exampleVi: "Cốt truyện tẻ nhạt đến mức một nửa khán giả trong rạp đã ngủ thiếp đi." },
+            { id: 23, category: "3A_adj", term: "Confusing", type: "adj", ipa: "/kənˈfjuːzɪŋ/", meaning: "rắc rối, khó hiểu, gây rối trí", icon: "🌀", example: "The timeline jumps made the storyline very confusing.", exampleVi: "Những đoạn nhảy thời gian khiến tình tiết câu chuyện trở nên vô cùng khó hiểu." },
+            { id: 24, category: "3A_adj", term: "Convincing", type: "adj", ipa: "/kənˈvɪnsɪŋ/", meaning: "thuyết phục (diễn xuất/cốt truyện chân thực)", icon: "👌", example: "His portrayal of the historical figure was completely convincing.", exampleVi: "Cách anh ấy khắc họa nhân vật lịch sử hoàn toàn có sức thuyết phục." },
+            { id: 25, category: "3A_adj", term: "Embarrassing", type: "adj", ipa: "/ɪmˈbærəsɪŋ/", meaning: "gây ngượng ngùng, xấu hổ", icon: "🙈", example: "The poor dialogue led to several embarrassing moments on screen.", exampleVi: "Lời thoại dở tệ dẫn đến một vài phân cảnh gây ngượng ngùng trên màn ảnh." },
+            { id: 26, category: "3A_adj", term: "Exciting", type: "adj", ipa: "/ɪkˈsaɪtɪŋ/", meaning: "kịch tính, gây hứng thú", icon: "🔥", example: "The chase through the crowded streets was truly exciting.", exampleVi: "Pha rượt đuổi qua những con phố đông đúc thực sự vô cùng hào hứng." },
+            { id: 27, category: "3A_adj", term: "Funny", type: "adj", ipa: "/ˈfʌni/", meaning: "hài hước, gây cười", icon: "😆", example: "The dialogue was witty and genuinely funny.", exampleVi: "Lời thoại rất dí dỏm và thực sự mang lại tiếng cười sảng khoái." },
+            { id: 28, category: "3A_adj", term: "Gripping", type: "adj", ipa: "/ˈɡrɪpɪŋ/", meaning: "hấp dẫn, cuốn hút (không thể rời mắt)", icon: "👀", example: "It was such a gripping film that I did not check my phone once.", exampleVi: "Đó là một bộ phim cuốn hút đến nỗi tôi không nhìn vào điện thoại lấy một lần." },
+            { id: 29, category: "3A_adj", term: "Imaginative", type: "adj", ipa: "/ɪˈmædʒɪnətɪv/", meaning: "giàu trí tưởng tượng, sáng tạo", icon: "💡", example: "The alien worlds were designed in an imaginative style.", exampleVi: "Những thế giới ngoài hành tinh được thiết kế theo phong cách rất giàu trí tưởng tượng." },
+            { id: 30, category: "3A_adj", term: "Moving", type: "adj", ipa: "/ˈmuːvɪŋ/", meaning: "cảm động, gây xúc động mạnh", icon: "🥹", example: "The ending reunion between the two brothers was very moving.", exampleVi: "Cuộc đoàn tụ cuối phim giữa hai anh em đã mang lại cảm xúc nghẹn ngào." },
+            { id: 31, category: "3A_adj", term: "Scary", type: "adj", ipa: "/ˈskeəri/", meaning: "đáng sợ, rùng rợn", icon: "👻", example: "The sudden ghostly sound effects were extremely scary.", exampleVi: "Hiệu ứng âm thanh ma quái bất ngờ thực sự rất rùng rợn và đáng sợ." },
+            { id: 32, category: "3A_adj", term: "Spectacular", type: "adj", ipa: "/spekˈtækjələ(r)/", meaning: "hoành tráng, mãn nhãn", icon: "✨", example: "The visual effects in Avatar are spectacular to behold.", exampleVi: "Kỹ xảo hình ảnh trong phim Avatar thực sự hoành tráng và mãn nhãn khi thưởng thức." },
+            { id: 33, category: "3A_adj", term: "Unrealistic", type: "adj", ipa: "/ˌʌnrɪəˈlɪstɪk/", meaning: "phi thực tế, xa rời thực tế", icon: "🛸", example: "Surviving that plane crash without a scratch was totally unrealistic.", exampleVi: "Sống sót sau vụ rơi máy bay mà không có vết xước nào là hoàn toàn phi thực tế." },
+            { id: 34, category: "3A_adj", term: "Violent", type: "adj", ipa: "/ˈvaɪələnt/", meaning: "bạo lực", icon: "⚠️", example: "Parents were warned that the film contains violent fight scenes.", exampleVi: "Phụ huynh được cảnh báo rằng bộ phim có chứa nhiều cảnh chiến đấu bạo lực." },
+
+            // 3. Aspects of Films (Các yếu tố trong phim)
+            { id: 35, category: "aspects", term: "Characters", type: "n pl", ipa: "/ˈkærəktəz/", meaning: "các nhân vật trong phim", icon: "👥", example: "The main characters in the movie develop deep relationships.", exampleVi: "Các nhân vật chính trong phim đã phát triển những mối quan hệ sâu sắc." },
+            { id: 36, category: "aspects", term: "Plot", type: "n", ipa: "/plɒt/", meaning: "cốt truyện, tình tiết phim", icon: "📜", example: "A sudden unexpected twist at the end turned the plot upside down.", exampleVi: "Một cú lật bất ngờ ở phần kết đã thay đổi hoàn toàn cốt truyện của bộ phim." },
+            { id: 37, category: "aspects", term: "Script", type: "n", ipa: "/skrɪpt/", meaning: "kịch bản phim", icon: "📝", example: "The director and writers spent two years polishing the movie script.", exampleVi: "Đạo diễn và các biên kịch đã mất hai năm để trau chuốt kịch bản phim." },
+            { id: 38, category: "aspects", term: "Scene", type: "n", ipa: "/siːn/", meaning: "cảnh quay, phân đoạn phim", icon: "🎬", example: "The final battle scene was filmed in the middle of a desert.", exampleVi: "Cảnh quay trận chiến cuối cùng đã được bấm máy giữa một sa mạc." },
+            { id: 39, category: "aspects", term: "Special effects", type: "n pl", ipa: "/ˌspeʃl ɪˈfekts/", meaning: "hiệu ứng đặc biệt, kỹ xảo điện ảnh", icon: "🎆", example: "State-of-the-art special effects brought the huge dragons to life.", exampleVi: "Kỹ xảo điện ảnh tân tiến đã làm cho những con rồng khổng lồ trở nên sống động." },
+            { id: 40, category: "aspects", term: "Soundtrack", type: "n", ipa: "/ˈsaʊndtræk/", meaning: "nhạc phim", icon: "🎵", example: "The orchestral soundtrack added immense emotion to the final climax.", exampleVi: "Bản nhạc phim giao hưởng đã tiếp thêm cảm xúc mãnh liệt cho đoạn cao trào cuối." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-violet-100 hover:bg-violet-700 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-violet-900 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                '3A_genre': 'Lesson 3A: Thể loại Phim & TV',
+                '3A_adj': 'Lesson 3A: Tính từ miêu tả Phim',
+                'aspects': 'Aspects of Films: Yếu tố trong phim'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 3: On screen';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const word = textToSpeak || activeList[currentIndex].term;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`cinematic aesthetic high quality photography of ${cleanTerm}, movie cinema studio on screen scene`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-violet-600 hover:bg-violet-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-violet-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-violet-600');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-violet-600');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userText = input.value.trim().toLowerCase();
+            const targetText = currentItem.term.trim().toLowerCase();
+
+            if (userText === targetText) {
+                feedback.innerHTML = `<span class="text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án đúng: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2000);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-violet-500 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-violet-600', 'bg-violet-50', 'text-violet-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-violet-600', 'bg-violet-50', 'text-violet-950');
+                    secondCard.classList.remove('border-violet-600', 'bg-violet-50', 'text-violet-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-violet-600', 'bg-violet-50', 'text-violet-950', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-violet-600', 'bg-violet-50', 'text-violet-950', 'border-rose-500', 'bg-rose-50');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
