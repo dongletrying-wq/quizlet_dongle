@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete IELTS 6.5–7.5 - Unit 5: Stepping back in time</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-stone-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-hourglass-half text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Complete IELTS 6.5–7.5: Unit 5</h1>
+                    <p class="text-xs text-stone-300 font-medium">Stepping back in time • Archaeology, History & Evolution</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-stone-900/90 p-1.5 rounded-xl border border-stone-600/50">
+                <i class="fa-solid fa-filter text-xs text-amber-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-stone-200">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-slate-900 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (43 từ/cụm)</option>
+                    <option value="nouns">1. Danh từ & Cụm danh từ (19 từ/cụm)</option>
+                    <option value="verbs">2. Động từ & Cụm động từ (15 từ/cụm)</option>
+                    <option value="adj_adv">3. Tính từ & Trạng từ (4 từ)</option>
+                    <option value="phrases">4. Cụm từ & Thành ngữ cố định (5 cụm)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-stone-900 border-t border-stone-700/60">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-stone-900 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-stone-200 hover:bg-stone-800 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-stone-200 hover:bg-stone-800 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-stone-200 hover:bg-stone-800 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 43</span>
+                <span class="bg-stone-200 text-stone-800 px-3 py-1 rounded-full font-semibold border border-stone-300" id="card-category-badge">Danh từ & Cụm danh từ</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[420px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md" id="card-type-front">plural n</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-stone-100 text-stone-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">🏺</div>
+                            <h2 id="card-term" class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">artefacts</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈɑːtɪfækts/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-amber-50/80 border-2 border-amber-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-200 px-2.5 py-1 rounded-md" id="card-type-back">plural n</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-amber-700 to-stone-700 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-stone-900 mb-2">cổ vật, hiện vật lịch sử</h3>
+                            
+                            <div class="bg-white/90 border border-amber-200 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"Archaeologists uncovered pristine bronze artefacts dating back three millennia."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Các nhà khảo cổ học đã phát hiện những cổ vật bằng đồng nguyên vẹn có niên đại ba thiên niên kỷ trước."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-stone-600 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-stone-800 text-white font-bold hover:bg-stone-700 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Trắc nghiệm nhận diện nghĩa</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Điểm số</span>
+                        <div class="text-lg font-black text-emerald-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">plural n • /ˈɑːtɪfækts/</span>
+                        <h3 id="quiz-question-word" class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">artefacts</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng chính xác</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-stone-800 text-white font-bold hover:bg-stone-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-stone-100 border-2 border-stone-300 text-stone-800 rounded-full flex items-center justify-center text-2xl hover:bg-stone-800 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-amber-800 uppercase" id="spell-hint-type">(plural n)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">cổ vật, hiện vật lịch sử</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ hoặc cụm từ bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-stone-800 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-stone-800 text-white font-bold hover:bg-stone-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-stone-100 border border-stone-200 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-stone-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-stone-900 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">🏺📜✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ từ vựng IELTS Unit 5!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-amber-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-stone-800 text-white font-bold hover:bg-stone-700 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Complete IELTS Bands 6.5–7.5 Unit 5: Stepping back in time
+        const vocabData = [
+            // 1. Danh từ & Cụm danh từ (Nouns & Noun Phrases)
+            { id: 1, category: "nouns", term: "artefacts", type: "plural n", ipa: "/ˈɑːtɪfækts/", meaning: "cổ vật, hiện vật lịch sử", icon: "🏺", example: "Archaeologists uncovered pristine bronze artefacts dating back three millennia.", exampleVi: "Các nhà khảo cổ học đã phát hiện những cổ vật bằng đồng nguyên vẹn có niên đại ba thiên niên kỷ trước." },
+            { id: 2, category: "nouns", term: "burial site", type: "np", ipa: "/ˈberiəl saɪt/", meaning: "khu vực chôn cất, mộ táng", icon: "⚰️", example: "Excavations at the Neolithic burial site revealed complex spiritual mortuary rites.", exampleVi: "Các cuộc khai quật tại khu mộ táng thời đồ đá mới đã hé lộ những nghi thức tang lễ tâm linh phức tạp." },
+            { id: 3, category: "nouns", term: "coastal erosion", type: "np", ipa: "/ˈkəʊstl ɪˈrəʊʒn/", meaning: "sự xói mòn bờ biển", icon: "🌊", example: "Severe coastal erosion frequently exposes prehistoric fossil strata along the cliffs.", exampleVi: "Sự xói mòn bờ biển nghiêm trọng thường làm lộ ra các tầng hóa thạch tiền sử dọc theo vách đá." },
+            { id: 4, category: "nouns", term: "current", type: "n", ipa: "/ˈkʌrənt/", meaning: "dòng chảy (nước, không khí)", icon: "🌀", example: "Strong oceanic currents distributed early maritime migrants across isolated archipelagos.", exampleVi: "Các dòng hải lưu đại dương mạnh mẽ đã phân tán những người di cư đường biển thời kỳ đầu đến các quần đảo biệt lập." },
+            { id: 5, category: "nouns", term: "division of labour", type: "singular n", ipa: "/dɪˈvɪʒn əv ˈleɪbə(r)/", meaning: "sự phân công lao động", icon: "👥", example: "The hunter-gatherer division of labour allowed distinct specialization in foraging and tracking.", exampleVi: "Sự phân công lao động của người săn bắt hái lượm đã tạo ra sự chuyên môn hóa rõ rệt trong việc tìm kiếm thức ăn và săn dấu vết." },
+            { id: 6, category: "nouns", term: "fault lines", type: "plural n", ipa: "/fɔːlt laɪnz/", meaning: "đường đứt gãy địa chất", icon: "⚡", example: "Seismic friction along continental fault lines shaped mountain topography over geological epochs.", exampleVi: "Ma sát địa chấn dọc theo các đường đứt gãy lục địa đã định hình địa hình núi non qua nhiều kỷ nguyên địa chất." },
+            { id: 7, category: "nouns", term: "fossilisation", type: "n", ipa: "/ˌfɒsəlaɪˈzeɪʃn/", meaning: "quá trình hóa đá / hóa thạch", icon: "🦴", example: "Fossilisation requires rapid mineral sedimentation before organic matter decomposes.", exampleVi: "Quá trình hóa thạch đòi hỏi sự lắng đọng khoáng chất nhanh chóng trước khi chất hữu cơ bị phân hủy." },
+            { id: 8, category: "nouns", term: "heritage", type: "n", ipa: "/ˈherɪtɪdʒ/", meaning: "di sản văn hóa / lịch sử", icon: "🏛️", example: "Indigenous storytelling forms an intangible pillar of global anthropological heritage.", exampleVi: "Nghệ thuật kể chuyện dân gian bản địa tạo nên một trụ cột phi vật thể trong di sản nhân chủng học toàn cầu." },
+            { id: 9, category: "nouns", term: "immediate surroundings", type: "plural n", ipa: "/ɪˈmiːdiət səˈraʊndɪŋz/", meaning: "môi trường / khu vực xung quanh ngay trước mắt", icon: "🏞️", example: "Palaeolithic tribes harvested flint exclusively from their immediate surroundings.", exampleVi: "Các bộ tộc thời kỳ đồ đá cũ chỉ thu gom đá lửa từ chính khu vực xung quanh ngay trước mắt họ." },
+            { id: 10, category: "nouns", term: "implement", type: "n", ipa: "/ˈɪmplɪmənt/", meaning: "công cụ, dụng cụ lao động", icon: "🪓", example: "Sharpened obsidian blades served as an indispensable cutting implement for early hominids.", exampleVi: "Các lưỡi dao bằng đá vỏ chai mài sắc đóng vai trò là dụng cụ cắt gọt không thể thiếu của người vượn cổ sơ." },
+            { id: 11, category: "nouns", term: "inheritance", type: "n", ipa: "/ɪnˈherɪtəns/", meaning: "tài sản thừa kế, di sản", icon: "📜", example: "Epigenetic research demonstrates biological inheritance beyond basic DNA sequences.", exampleVi: "Nghiên cứu biểu sinh học chứng minh sự di truyền sinh học vượt ra ngoài các chuỗi DNA cơ bản." },
+            { id: 12, category: "nouns", term: "an insight into something", type: "np", ipa: "/ən ˈɪnsaɪt ˈɪntə ˈsʌmθɪŋ/", meaning: "cái nhìn sâu sắc / sự hiểu biết về điều gì", icon: "💡", example: "Carbon dating offers crucial scientific insight into prehistoric chronology.", exampleVi: "Định tuổi bằng đồng vị phóng xạ carbon đem lại cái nhìn sâu sắc và chuẩn xác về mặt khoa học vào niên đại học tiền sử." },
+            { id: 13, category: "nouns", term: "lobe", type: "n", ipa: "/ləʊb/", meaning: "thùy (thùy não)", icon: "🧠", example: "The evolutionary enlargement of the frontal lobe enabled abstract reasoning and linguistics.", exampleVi: "Sự mở rộng qua tiến hóa của thùy trán đã giúp phát triển tư duy trừu tượng và ngôn ngữ." },
+            { id: 14, category: "nouns", term: "predator", type: "n", ipa: "/ˈpredətə(r)/", meaning: "động vật săn mồi", icon: "🐅", example: "Apex predators like the sabre-toothed cat regulated Pleistocene herbivore herds.", exampleVi: "Những loài động vật săn mồi đỉnh cao như hổ răng kiếm từng kiểm soát số lượng đàn động vật ăn cỏ kỷ Pleistocen." },
+            { id: 15, category: "nouns", term: "refuge", type: "n", ipa: "/ˈrefjuːdʒ/", meaning: "nơi trú ẩn, nơi trốn tránh nguy hiểm", icon: "⛺", example: "Limestone caverns provided safe subterranean refuge during the glacial freeze.", exampleVi: "Các hang động đá vôi đã cung cấp nơi trú ẩn an toàn dưới lòng đất trong suốt đợt đóng băng của kỷ băng hà." },
+            { id: 16, category: "nouns", term: "sediment", type: "n", ipa: "/ˈsedɪmənt/", meaning: "trầm tích, lớp lắng đọng", icon: "🧱", example: "Core samples extracted from riverbed sediment archive climatic variability over millennia.", exampleVi: "Các mẫu lõi khoan từ trầm tích đáy sông lưu trữ sự biến thiên khí hậu qua hàng ngàn năm." },
+            { id: 17, category: "nouns", term: "sentimental value", type: "np", ipa: "/ˌsentɪˈmentl ˈvæljuː/", meaning: "giá trị kỷ niệm / tình cảm", icon: "💖", example: "Heirloom stone beads carried immense sentimental value across familial generations.", exampleVi: "Những chuỗi hạt đá gia bảo mang giá trị kỷ niệm tình cảm vô giá qua nhiều thế hệ gia đình." },
+            { id: 18, category: "nouns", term: "silt", type: "n", ipa: "/sɪlt/", meaning: "bùn phù sa", icon: "🌾", example: "Seasonal Nile inundations deposited mineral-rich silt that sustained Bronze Age agriculture.", exampleVi: "Những trận ngập lụt theo mùa của sông Nile đã bồi đắp lượng bùn phù sa giàu khoáng chất nuôi dưỡng nền nông nghiệp thời kỳ đồ đồng." },
+            { id: 19, category: "nouns", term: "trait", type: "n", ipa: "/treɪt/", meaning: "đặc điểm, nét tính cách", icon: "🧬", example: "Bipedal locomotion represents a defining evolutionary trait of human ancestors.", exampleVi: "Dáng đi bằng hai chân đại diện cho một đặc điểm tiến hóa mang tính then chốt của tổ tiên loài người." },
+
+            // 2. Động từ & Cụm động từ (Verbs & Verb Phrases)
+            { id: 20, category: "verbs", term: "allocate", type: "v", ipa: "/ˈæləkeɪt/", meaning: "phân bổ, giao nhiệm vụ", icon: "📋", example: "Tribal elders would allocate scarce hunting yields among all village households.", exampleVi: "Các già làng sẽ phân bổ sản lượng săn bắn khan hiếm cho tất cả các hộ gia đình trong làng." },
+            { id: 21, category: "verbs", term: "barter", type: "v", ipa: "/ˈbɑːtə(r)/", meaning: "trao đổi hàng hóa / dịch vụ (không dùng tiền)", icon: "🤝", example: "Nomadic caravans gathered at crossroads to barter dried grain for cured hides.", exampleVi: "Các đoàn lữ hành du mục tập hợp tại các giao lộ để trao đổi ngũ cốc khô lấy da thú đã thuộc." },
+            { id: 22, category: "verbs", term: "catch up on something", type: "vp", ipa: "/kætʃ ʌp ɒn ˈsʌmθɪŋ/", meaning: "làm bù công việc chưa kịp làm", icon: "📑", example: "Field excavators returned to the lab to catch up on artifact cataloguing.", exampleVi: "Các chuyên viên khai quật thực địa đã trở lại phòng thí nghiệm để làm bù công việc lập danh mục cổ vật." },
+            { id: 23, category: "verbs", term: "erode", type: "v", ipa: "/ɪˈrəʊd/", meaning: "xói mòn, bào mòn", icon: "🌪️", example: "Relentless winds slowly erode the structural integrity of ancient sandstone monoliths.", exampleVi: "Những cơn gió không ngừng nghỉ bào mòn dần tính toàn vẹn kết cấu của các khối đá sa thạch cổ xưa." },
+            { id: 24, category: "verbs", term: "come about", type: "vp", ipa: "/kʌm əˈbaʊt/", meaning: "xảy ra, bắt đầu diễn ra", icon: "🔄", example: "Anthropologists continue to investigate how complex agrarian governance first came about.", exampleVi: "Các nhà nhân chủng học tiếp tục nghiên cứu xem các thể chế nông nghiệp phức tạp đầu tiên đã diễn ra như thế nào." },
+            { id: 25, category: "verbs", term: "compact", type: "v", ipa: "/kəmˈpækt/", meaning: "nén chặt, làm cho đặc lại", icon: "📦", example: "Enormous tectonic weight will compact soft peat layers into dense lignite coal.", exampleVi: "Áp lực kiến tạo địa chất khổng lồ sẽ nén chặt các lớp than bùn xốp thành than nâu đặc." },
+            { id: 26, category: "verbs", term: "die out", type: "vp", ipa: "/daɪ aʊt/", meaning: "tuyệt chủng, biến mất hoàn toàn", icon: "🦕", example: "Environmental desiccation caused woolly mammoths to die out on mainland continents.", exampleVi: "Tình trạng khô hạn môi trường đã khiến voi ma mút lông xoăn biến mất hoàn toàn khỏi các lục địa lớn." },
+            { id: 27, category: "verbs", term: "entomb", type: "v", ipa: "/ɪnˈtuːm/", meaning: "chôn vùi, lấp kín", icon: "🌋", example: "Volcanic ash plumes from Vesuvius managed to completely entomb the Roman city of Pompeii.", exampleVi: "Những cột tro bụi núi lửa từ núi Vesuvius đã chôn vùi hoàn toàn thành phố La Mã Pompeii." },
+            { id: 28, category: "verbs", term: "imply", type: "v", ipa: "/ɪmˈplaɪ/", meaning: "ngụ ý, ám chỉ", icon: "💬", example: "The presence of marine shells in alpine caves strongly implies ancient oceanic immersion.", exampleVi: "Sự hiện diện của vỏ sò biển trong các hang động núi cao ngụ ý mạnh mẽ về việc nơi đây từng chìm dưới đáy đại dương xưa." },
+            { id: 29, category: "verbs", term: "lead someone to do something", type: "vp", ipa: "/liːd ˈsʌmwʌn tə duː ˈsʌmθɪŋ/", meaning: "dẫn dắt / khiến ai làm gì", icon: "🧭", example: "Stratigraphic anomalies lead geologists to revise earlier chronological hypotheses.", exampleVi: "Những điểm dị thường địa tầng khiến các nhà địa chất phải sửa đổi lại các giả thuyết niên đại trước đây." },
+            { id: 30, category: "verbs", term: "lessen", type: "v", ipa: "/ˈlesn/", meaning: "giảm bớt, làm suy giảm", icon: "📉", example: "Constructing protective sea walls helps lessen wave-driven degradation on coastal heritage.", exampleVi: "Việc xây dựng đê biển bảo vệ giúp giảm bớt sự xuống cấp do sóng biển gây ra đối với di sản ven biển." },
+            { id: 31, category: "verbs", term: "mimic", type: "v", ipa: "/ˈmɪmɪk/", meaning: "bắt chước, mô phỏng", icon: "🎭", example: "Early metallurgists designed iron tools that directly mimic traditional antler axes.", exampleVi: "Những thợ luyện kim thời kỳ đầu đã thiết kế các công cụ sắt mô phỏng trực tiếp rìu gạc hươu truyền thống." },
+            { id: 32, category: "verbs", term: "plummet", type: "v", ipa: "/ˈplʌmɪt/", meaning: "lao dốc, giảm mạnh đột ngột", icon: "📉", example: "Global surface temperatures plummet rapidly during abrupt volcanic winters.", exampleVi: "Nhiệt độ bề mặt toàn cầu giảm mạnh đột ngột trong các mùa đông núi lửa bất ngờ." },
+            { id: 33, category: "verbs", term: "wear away", type: "vp", ipa: "/weə(r) əˈweɪ/", meaning: "mài mòn, làm biến mất dần theo thời gian", icon: "🌊", example: "Centuries of foot traffic wear away the inscribed glyphs on medieval thresholds.", exampleVi: "Hàng thế kỷ đi lại của con người đã mài mòn các ký tự chạm khắc trên bậc thềm thời trung cổ." },
+            { id: 34, category: "verbs", term: "wear someone/something down", type: "vp", ipa: "/weə(r) ˈsʌmwʌn/ˈsʌmθɪŋ daʊn/", meaning: "làm ai/cái gì suy yếu dần", icon: "⌛", example: "Protracted sieges were calculated to wear down the defending garrison's food stockpiles.", exampleVi: "Những cuộc bao vây kéo dài được toan tính nhằm làm suy yếu dần các kho dự trữ lương thực của quân trấn thủ." },
+
+            // 3. Tính từ & Trạng từ (Adjectives & Adverbs)
+            { id: 35, category: "adj_adv", term: "exceptionally", type: "adv", ipa: "/ɪkˈsepʃənəli/", meaning: "một cách khác thường, xuất sắc", icon: "⭐", example: "The bog peat preserved the bog body's skin tissue exceptionally well.", exampleVi: "Bùn than bùn đầm lầy đã bảo quản mô da của thi thể đầm lầy một cách tốt khác thường." },
+            { id: 36, category: "adj_adv", term: "robust", type: "adj", ipa: "/rəʊˈbʌst/", meaning: "khỏe mạnh, cường tráng, bền vững", icon: "💪", example: "Neanderthal skeletal morphology exhibited heavy bones and robust musculature.", exampleVi: "Hình thái xương người Neanderthal thể hiện khung xương nặng và hệ cơ bắp vô cùng cường tráng." },
+            { id: 37, category: "adj_adv", term: "stocky", type: "adj", ipa: "/ˈstɒki/", meaning: "vạm vỡ, thấp và đậm người", icon: "🏋️", example: "A stocky physique conserved body heat efficiently in sub-zero Pleistocene tundra.", exampleVi: "Một vóc dáng vạm vỡ và đậm người đã giúp giữ nhiệt cơ thể hiệu quả trong vùng lãnh nguyên kỷ Pleistocen dưới 0 độ." },
+            { id: 38, category: "adj_adv", term: "widespread", type: "adj", ipa: "/ˈwaɪdspred/", meaning: "phổ biến, diện rộng", icon: "🌐", example: "Archaeologists noted widespread dissemination of Beaker pottery across western Europe.", exampleVi: "Các nhà khảo cổ học đã ghi nhận sự phân bố trên diện rộng của đồ gốm Beaker khắp Tây Âu." },
+
+            // 4. Cụm từ & Thành ngữ cố định (Phrases & Expressions)
+            { id: 39, category: "phrases", term: "be a question of something", type: "phrase", ipa: "/bi ə ˈkwestʃən əv ˈsʌmθɪŋ/", meaning: "là vấn đề liên quan đến cái gì", icon: "❓", example: "Interpreting rock carvings is often a question of cultural semiotics rather than literal prose.", exampleVi: "Việc giải mã các hình khắc trên đá thường là vấn đề liên quan đến ký hiệu học văn hóa hơn là văn xuôi nghĩa đen." },
+            { id: 40, category: "phrases", term: "give someone or something the edge", type: "phrase", ipa: "/ɡɪv ˈsʌmwʌn ɔː ˈsʌmθɪŋ ði edʒ/", meaning: "tạo lợi thế cho ai/cái gì", icon: "⚔️", example: "Mastery of thermal metallurgy gave the Hittite empire a decisive military edge.", exampleVi: "Việc làm chủ kỹ thuật luyện kim nhiệt luyện đã tạo cho đế chế Hittite một lợi thế quân sự quyết định." },
+            { id: 41, category: "phrases", term: "keep themselves to themselves", type: "phrase", ipa: "/kiːp ðəmˈselvz tə ðəmˈselvz/", meaning: "sống khép kín, không giao thiệp nhiều với người khác", icon: "🤫", example: "Isolated mountain settlements historically chose to keep themselves to themselves.", exampleVi: "Các khu định cư trên núi cô lập trong lịch sử thường chọn cách sống khép kín và ít giao thiệp với bên ngoài." },
+            { id: 42, category: "phrases", term: "maintain links with something", type: "phrase", ipa: "/meɪnˈteɪn lɪŋks wɪð ˈsʌmθɪŋ/", meaning: "duy trì mối liên hệ với điều gì", icon: "🔗", example: "Seafaring colonies continued to maintain trade links with their ancestral homelands.", exampleVi: "Các thuộc địa đi biển tiếp tục duy trì mối liên hệ thương mại với quê hương nguồn cội của họ." },
+            { id: 43, category: "phrases", term: "turn the clock back", type: "phrase", ipa: "/tɜːn ðə klɒk bæk/", meaning: "quay ngược thời gian", icon: "⏰", example: "Experimental archaeologists try to turn the clock back by replicating flint knapping methods.", exampleVi: "Các nhà khảo cổ học thực nghiệm cố gắng quay ngược thời gian bằng cách mô phỏng lại các phương pháp ghè đẽo đá lửa xưa." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-stone-200 hover:bg-stone-800 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-stone-900 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                'nouns': '1. Danh từ & Cụm danh từ',
+                'verbs': '2. Động từ & Cụm động từ',
+                'adj_adv': '3. Tính từ & Trạng từ',
+                'phrases': '4. Cụm từ & Thành ngữ cố định'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'IELTS Unit 5: Stepping back in time';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const raw = textToSpeak || activeList[currentIndex].term;
+            const cleanText = raw.replace(/\(.*?\)/g, '').replace(/someone/g, 'someone').replace(/something/g, 'something');
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\(.*?\)/g, '').replace(/[^a-zA-Z\s]/g, '').trim().replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean archaeological historical realistic digital illustration of ${cleanTerm}, prehistoric fossils artifacts ancient history evolution concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-amber-700 hover:bg-amber-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-amber-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-700');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-700');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function normalizeSpellText(str) {
+            return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userNorm = normalizeSpellText(input.value);
+            const targetNorm = normalizeSpellText(currentItem.term);
+            const cleanTarget = normalizeSpellText(currentItem.term.replace(/\(.*?\)/g, ''));
+
+            if (userNorm === targetNorm || userNorm === cleanTarget) {
+                feedback.innerHTML = `<span class="text-amber-800"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Rất xuất sắc.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2200);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-amber-600 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-amber-700', 'bg-amber-50', 'text-stone-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-amber-700', 'bg-amber-50', 'text-stone-950');
+                    secondCard.classList.remove('border-amber-700', 'bg-amber-50', 'text-stone-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-amber-700', 'bg-amber-50', 'text-stone-950');
+                    secondCard.classList.remove('border-amber-700', 'bg-amber-50', 'text-stone-950');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
