@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions Pre-Intermediate - Unit 8: Crimes & Justice</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-scale-balanced text-2xl text-amber-400"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 8: Crimes & Justice</h1>
+                    <p class="text-xs text-slate-300 font-medium">Pre-Intermediate 3rd Edition • Criminals & Investigation</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
+                <i class="fa-solid fa-filter text-xs text-amber-400 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-slate-200">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-slate-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (36 từ)</option>
+                    <option value="crimes">Hành vi phạm tội (Crimes - 9 từ)</option>
+                    <option value="criminals">Kẻ phạm tội (Criminals - 8 từ)</option>
+                    <option value="actions">Hành động phạm tội (Crime Verbs - 7 từ)</option>
+                    <option value="police">Cảnh sát & Điều tra (Investigation - 12 từ)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-slate-800 border-t border-slate-700">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-slate-900 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-200 hover:bg-slate-700 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-200 hover:bg-slate-700 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-200 hover:bg-slate-700 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 36</span>
+                <span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-semibold border border-amber-300" id="card-category-badge">Hành vi phạm tội</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[410px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md" id="card-type-front">n</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">🔥</div>
+                            <h2 id="card-term" class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">Arson</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/ˈɑːsn/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-amber-50/80 border-2 border-amber-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-200 px-2.5 py-1 rounded-md" id="card-type-back">n</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-amber-600 to-rose-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-slate-900 mb-2">tội phóng hỏa, đốt tài sản</h3>
+                            
+                            <div class="bg-white/90 border border-amber-200 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"The historic warehouse fire was treated by detectives as a deliberate act of arson."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Vụ cháy nhà kho lịch sử đã được các thám tử coi là một hành vi cố ý phóng hỏa."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-600 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Trắc nghiệm nhanh</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Điểm số</span>
+                        <div class="text-lg font-black text-emerald-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n • /ˈɑːsn/</span>
+                        <h3 id="quiz-question-word" class="text-3xl font-black text-slate-900 mt-3">Arson</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-slate-100 border-2 border-slate-300 text-slate-800 rounded-full flex items-center justify-center text-2xl hover:bg-slate-900 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-amber-700 uppercase" id="spell-hint-type">(n)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">tội phóng hỏa, đốt tài sản</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-slate-800 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-slate-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-slate-900 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">⚖️🚔✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ chủ đề Tội phạm & Luật pháp!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-amber-600 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Unit 8: Crimes & Justice
+        const vocabData = [
+            // 1. Crimes (Hành vi phạm tội)
+            { id: 1, category: "crimes", term: "Arson", type: "n", ipa: "/ˈɑːsn/", meaning: "tội phóng hỏa, đốt tài sản", icon: "🔥", example: "The historic warehouse fire was investigated as an act of arson.", exampleVi: "Vụ cháy nhà kho lịch sử đã được điều tra như một hành vi phóng hỏa." },
+            { id: 2, category: "crimes", term: "Burglary", type: "n", ipa: "/ˈbɜːɡləri/", meaning: "tội đột nhập trộm cắp (vào nhà/công trình)", icon: "🚪", example: "Police reported a rise in nighttime home burglaries this winter.", exampleVi: "Cảnh sát báo cáo số vụ đột nhập trộm nhà vào ban đêm gia tăng trong mùa đông này." },
+            { id: 3, category: "crimes", term: "Mugging", type: "n", ipa: "/ˈmʌɡɪŋ/", meaning: "tội trấn lột, cướp giật (trên đường phố)", icon: "👜", example: "The victim suffered minor cuts during a violent street mugging.", exampleVi: "Nạn nhân bị vài vết trầy xước nhẹ trong vụ cướp giật trên phố." },
+            { id: 4, category: "crimes", term: "Murder", type: "n", ipa: "/ˈmɜːdə(r)/", meaning: "tội giết người", icon: "💀", example: "The detective uncovered key forensic evidence in the murder trial.", exampleVi: "Thám tử đã phát hiện ra chứng cứ pháp y mấu chốt trong phiên tòa xét xử tội giết người." },
+            { id: 5, category: "crimes", term: "Robbery", type: "n", ipa: "/ˈrɒbəri/", meaning: "tội cướp tài sản (ngân hàng/tiệm vàng, có đe dọa vũ lực)", icon: "🏦", example: "Two armed suspects carried out a brazen bank robbery yesterday.", exampleVi: "Hai nghi phạm có vũ trang đã thực hiện một vụ cướp ngân hàng trắng trợn vào ngày hôm qua." },
+            { id: 6, category: "crimes", term: "Shoplifting", type: "n", ipa: "/ˈʃɒplɪftɪŋ/", meaning: "tội ăn trộm đồ trong cửa hàng", icon: "🛒", example: "Store owners installed mirrors to curb daylight shoplifting.", exampleVi: "Chủ cửa hàng đã lắp gương cầu lồi để hạn chế việc trộm đồ ban ngày." },
+            { id: 7, category: "crimes", term: "Smuggling", type: "n", ipa: "/ˈsmʌɡlɪŋ/", meaning: "tội buôn lậu, vận chuyển trái phép qua biên giới", icon: "📦", example: "Border patrol officers cracked down on illegal wildlife smuggling.", exampleVi: "Lực lượng tuần tra biên giới đã triệt phá đường dây buôn lậu động vật hoang dã trái phép." },
+            { id: 8, category: "crimes", term: "Theft", type: "n", ipa: "/θeft/", meaning: "tội trộm cắp tài sản", icon: "🥷", example: "Car theft in city centre garages has decreased significantly.", exampleVi: "Tình trạng trộm cắp ô tô trong các nhà xe trung tâm thành phố đã giảm đáng kể." },
+            { id: 9, category: "crimes", term: "Vandalism", type: "n", ipa: "/ˈvændəlɪzm/", meaning: "hành vi cố ý phá hoại công trình/tài sản công cộng", icon: "🎨", example: "Spray-painting walls and smashing bus stops is pure vandalism.", exampleVi: "Xịt sơn lên tường và đập phá trạm xe buýt là hành vi phá hoại tài sản công cộng." },
+            { id: 10, category: "crimes", term: "Looting", type: "n", ipa: "/ˈluːtɪŋ/", meaning: "hành vi hôi của, cướp phá (khi bạo động/thiên tai)", icon: "🏬", example: "Widespread looting occurred after the storm damaged security gates.", exampleVi: "Hành vi hôi của lan rộng diễn ra sau khi cơn bão làm hỏng các cổng an ninh." },
+
+            // 2. Criminals (Kẻ phạm tội)
+            { id: 11, category: "criminals", term: "Arsonist", type: "n", ipa: "/ˈɑːsənɪst/", meaning: "kẻ phóng hỏa", icon: "🧨", example: "The arsonist confessed to lighting fires in abandoned barns.", exampleVi: "Kẻ phóng hỏa đã thú nhận hành vi châm lửa đốt các chuồng trại bỏ hoang." },
+            { id: 12, category: "criminals", term: "Burglar", type: "n", ipa: "/ˈbɜːɡlə(r)/", meaning: "kẻ đột nhập trộm cắp", icon: "🔦", example: "The burglar entered through an unlocked back window.", exampleVi: "Kẻ đột nhập đã lẻn vào qua một ô cửa sổ phía sau không khóa." },
+            { id: 13, category: "criminals", term: "Mugger", type: "n", ipa: "/ˈmʌɡə(r)/", meaning: "kẻ trấn lột, cướp giật", icon: "🏃‍♂️️", example: "The mugger snatched her smartphone and ran down an alley.", exampleVi: "Tên cướp giật đã giật phăng chiếc điện thoại và chạy vào ngõ hẹp." },
+            { id: 14, category: "criminals", term: "Murderer", type: "n", ipa: "/ˈmɜːdərə(r)/", meaning: "kẻ sát nhân, hung thủ giết người", icon: "⛓️", example: "The convicted murderer was sentenced to life imprisonment.", exampleVi: "Hung thủ giết người đã bị kết án tù chung thân." },
+            { id: 15, category: "criminals", term: "Shoplifter", type: "n", ipa: "/ˈʃɒplɪftə(r)/", meaning: "kẻ ăn trộm đồ ở cửa hàng", icon: "🧥", example: "Security guards detained a shoplifter attempting to conceal cosmetics.", exampleVi: "Nhân viên bảo vệ đã giữ lại một kẻ trộm đang cố giấu mỹ phẩm vào áo." },
+            { id: 16, category: "criminals", term: "Smuggler", type: "n", ipa: "/ˈsmʌɡlə(r)/", meaning: "kẻ buôn lậu", icon: "🚢", example: "Customs agents caught the smuggler hiding diamonds inside luggage.", exampleVi: "Nhân viên hải quan đã bắt quả tang kẻ buôn lậu giấu kim cương trong hành lý." },
+            { id: 17, category: "criminals", term: "Thief", type: "n", ipa: "/θiːf/", meaning: "tên trộm (số nhiều: thieves)", icon: "🤫", example: "A clever bicycle thief was captured on parking lot CCTV.", exampleVi: "Một tên trộm xe đạp tinh vi đã bị ghi lại trên camera nhà xe." },
+            { id: 18, category: "criminals", term: "Vandal", type: "n", ipa: "/ˈvændl/", meaning: "kẻ phá hoại tài sản công cộng", icon: "🔨", example: "The teenage vandal was ordered to clean up community park benches.", exampleVi: "Cậu thiếu niên phá hoại đã bị phạt phải lau chùi lại các ghế đá công viên." },
+            { id: 19, category: "criminals", term: "Looter", type: "n", ipa: "/ˈluːtə(r)/", meaning: "kẻ hôi của", icon: "🛍️", example: "Police detained several looters trying to cart electronics from broken stores.", exampleVi: "Cảnh sát đã tạm giữ nhiều kẻ hôi của cố chở đồ điện tử từ các cửa hàng vỡ kính." },
+
+            // 3. Actions / Verbs (Động từ phạm tội)
+            { id: 20, category: "actions", term: "To burgle", type: "v", ipa: "/ˈbɜːɡl/", meaning: "đột nhập trộm đồ", icon: "🧰", example: "Thieves managed to burgle three flats in the building over the weekend.", exampleVi: "Kẻ trộm đã đột nhập trộm đồ ở 3 căn hộ trong tòa nhà vào cuối tuần." },
+            { id: 21, category: "actions", term: "To mug", type: "v", ipa: "/mʌɡ/", meaning: "trấn lột, cướp giật", icon: "🤼", example: "He warned his sister never to walk through isolated parks where thugs mug people.", exampleVi: "Anh ấy dặn em gái không bao giờ đi qua công viên vắng nơi côn đồ hay cướp bóc." },
+            { id: 22, category: "actions", term: "To shoplift", type: "v", ipa: "/ˈʃɒplɪft/", meaning: "ăn trộm đồ trong cửa hàng", icon: "🏷️", example: "Desperate teens sometimes shoplift cheap apparel on a dare.", exampleVi: "Một vài thiếu niên bồng bột đôi khi trộm quần áo trong tiệm chỉ vì thách đố." },
+            { id: 23, category: "actions", term: "To smuggle", type: "v", ipa: "/ˈsmʌɡl/", meaning: "buôn lậu, buôn bán trái phép", icon: "🛃", example: "The crew conspired to smuggle luxury watches into the seaport.", exampleVi: "Thủy thủ đoàn đã thông đồng buôn lậu đồng hồ xa xỉ vào cảng biển." },
+            { id: 24, category: "actions", term: "To steal", type: "v", ipa: "/stiːl/", meaning: "lấy trộm", icon: "🤲", example: "Pickpockets try to steal wallets on crowded underground trains.", exampleVi: "Những kẻ móc túi hay rình mò lấy trộm ví trên tàu điện ngầm đông đúc." },
+            { id: 25, category: "actions", term: "To vandalize", type: "v", ipa: "/ˈvændəlaɪz/", meaning: "cố ý phá hoại tài sản", icon: "🪓", example: "Rioters began to vandalize private storefronts and streetlamps.", exampleVi: "Những kẻ quá khích bắt đầu đập phá các mặt tiền tiệm tư nhân và đèn đường." },
+
+            // 4. Police & Investigation (Cảnh sát & Điều tra)
+            { id: 26, category: "police", term: "Arrest", type: "n/v", ipa: "/əˈrest/", meaning: "sự bắt giữ / bắt giữ nghi phạm", icon: "👮", example: "Officers arrived swiftly to make an arrest outside the venue.", exampleVi: "Các sĩ quan đã đến nhanh chóng để tiến hành bắt giữ bên ngoài địa điểm." },
+            { id: 27, category: "police", term: "CCTV", type: "n", ipa: "/ˌsiː siː tiː ˈviː/", meaning: "hệ thống camera an ninh giám sát", icon: "📹", example: "High-resolution CCTV recorded the getaway car licence plate.", exampleVi: "Camera an ninh độ phân giải cao đã ghi lại biển số chiếc xe tẩu thoát." },
+            { id: 28, category: "police", term: "Culprit", type: "n", ipa: "/ˈkʌlprɪt/", meaning: "thủ phạm chính của vụ án", icon: "🎯", example: "Fingerprints matched the database, proving he was the true culprit.", exampleVi: "Dấu vân tay trùng khớp cơ sở dữ liệu, chứng minh anh ta là thủ phạm chính." },
+            { id: 29, category: "police", term: "Footage", type: "n", ipa: "/ˈfʊtɪdʒ/", meaning: "đoạn phim, băng ghi hình từ camera", icon: "🎞️", example: "Investigators reviewed hours of traffic camera footage.", exampleVi: "Các điều tra viên đã xem lại hàng giờ đoạn băng ghi hình giao thông." },
+            { id: 30, category: "police", term: "Investigation", type: "n", ipa: "/ɪnˌvestɪˈɡeɪʃn/", meaning: "cuộc điều tra vụ án", icon: "🔍", example: "The detective led a thorough murder investigation.", exampleVi: "Thám tử đã dẫn đầu một cuộc điều tra án mạng kỹ lưỡng." },
+            { id: 31, category: "police", term: "To launch an investigation", type: "phrase", ipa: "/tə lɔːntʃ ən ɪnˌvestɪˈɡeɪʃn/", meaning: "khởi xướng / tiến hành một cuộc điều tra", icon: "📂", example: "Authorities decided to launch an investigation into financial fraud.", exampleVi: "Nhà chức trách đã quyết định mở một cuộc điều tra về gian lận tài chính." },
+            { id: 32, category: "police", term: "Patrol", type: "n/v", ipa: "/pəˈtrəʊl/", meaning: "sự tuần tra / đi tuần tra", icon: "🚔", example: "Armed officers patrol the airport perimeter day and night.", exampleVi: "Cảnh sát có vũ trang đi tuần tra khu vực chu vi sân bay cả ngày lẫn đêm." },
+            { id: 33, category: "police", term: "Police work", type: "n", ipa: "/pəˈliːs wɜːk/", meaning: "công tác cảnh sát", icon: "🛡️", example: "Patient police work led to the capture of the syndicate.", exampleVi: "Công tác cảnh sát kiên trì đã giúp bắt giữ được băng nhóm tội phạm." },
+            { id: 34, category: "police", term: "Suspect", type: "n", ipa: "/ˈsʌspekt/", meaning: "nghi phạm", icon: "👤", example: "The prime suspect refused to answer questions without a lawyer present.", exampleVi: "Nghi phạm hàng đầu từ chối trả lời câu hỏi nếu không có luật sư hiện diện." },
+            { id: 35, category: "police", term: "Witness", type: "n", ipa: "/ˈwɪtnəs/", meaning: "nhân chứng, người chứng kiến", icon: "👁️", example: "An eyewitness gave police a vivid description of the getaway van.", exampleVi: "Một nhân chứng trực tiếp đã cung cấp cho cảnh sát mô tả rõ ràng về chiếc xe tải tẩu thoát." },
+            { id: 36, category: "police", term: "To identify", type: "v", ipa: "/aɪˈdentɪfaɪ/", meaning: "nhận dạng, xác định danh tính", icon: "🆔", example: "The victim managed to identify the assailant from photos.", exampleVi: "Nạn nhân đã nhận dạng thành công kẻ tấn công qua các bức ảnh." },
+            { id: 37, category: "police", term: "To appeal", type: "v", ipa: "/əˈpiːl/", meaning: "kháng án, phúc thẩm (tại tòa án)", icon: "⚖️", example: "The defense lawyer announced plans to appeal the verdict.", exampleVi: "Luật sư bào chữa đã công bố kế hoạch kháng án đối với phán quyết của tòa." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-200 hover:bg-slate-700 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-slate-900 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                'crimes': 'Hành vi phạm tội',
+                'criminals': 'Kẻ phạm tội',
+                'actions': 'Hành động phạm tội',
+                'police': 'Cảnh sát & Điều tra'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 8: Crimes & Justice';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const word = (textToSpeak || activeList[currentIndex].term).replace(/^To\s+/i, '');
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/^To\s+/i, '').replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean educational digital art of ${cleanTerm}, crime law police justice courtroom concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-amber-600 hover:bg-amber-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-amber-600"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-600');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-amber-600');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userText = input.value.trim().toLowerCase();
+            const rawTarget = currentItem.term.trim().toLowerCase();
+            const cleanTarget = rawTarget.replace(/^to\s+/i, '');
+
+            if (userText === rawTarget || userText === cleanTarget) {
+                feedback.innerHTML = `<span class="text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án đúng: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2000);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-amber-500 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950');
+                    secondCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-950', 'border-rose-500', 'bg-rose-50');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
