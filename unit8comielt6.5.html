@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete IELTS 6.5–7.5 - Unit 8: Across the universe</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen text-slate-100 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b border-indigo-900/60">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600/30 border border-indigo-500/40 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-user-astronaut text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight text-indigo-100">Complete IELTS 6.5–7.5: Unit 8</h1>
+                    <p class="text-xs text-indigo-300 font-medium">Across the universe • Astronomy, Space Exploration & Astrophysics</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-slate-900 p-1.5 rounded-xl border border-indigo-500/40">
+                <i class="fa-solid fa-filter text-xs text-amber-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-indigo-200">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-slate-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (37 từ/cụm)</option>
+                    <option value="nouns">1. Danh từ & Cụm danh từ (17 từ/cụm)</option>
+                    <option value="verbs">2. Động từ & Cụm động từ (10 từ/cụm)</option>
+                    <option value="adj_adv">3. Tính từ & Trạng từ (5 từ)</option>
+                    <option value="phrases">4. Cụm từ & Thành ngữ cố định (5 cụm)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-slate-900/90 border-t border-slate-800">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-indigo-600 text-white shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-400 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 37</span>
+                <span class="bg-indigo-950 text-indigo-300 border border-indigo-700/60 px-3 py-1 rounded-full font-semibold" id="card-category-badge">Danh từ & Cụm danh từ</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[420px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-2xl bg-slate-800 border border-slate-700">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-300 bg-indigo-950 border border-indigo-700/60 px-2.5 py-1 rounded-md" id="card-type-front">n [C]</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-slate-700 text-indigo-400 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">🔭</div>
+                            <h2 id="card-term" class="text-2xl sm:text-3xl font-black text-white tracking-tight">astronomer</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-indigo-300 mt-2 font-medium tracking-wide">/əˈstrɒnəmə(r)/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-slate-900 border-2 border-indigo-500/60 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-300 bg-indigo-950 border border-indigo-800 px-2.5 py-1 rounded-md" id="card-type-back">n [C]</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-amber-300 mb-2">nhà thiên văn học</h3>
+                            
+                            <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 italic text-left w-full my-2 shadow-inner">
+                                <p class="font-bold text-indigo-200" id="card-example">"The astronomer calibrated the orbital telescope to observe distant exoplanets."</p>
+                                <p class="text-slate-400 mt-1 font-normal" id="card-example-vi">"Nhà thiên văn học đã hiệu chuẩn kính thiên văn quỹ đạo để quan sát các hành tinh ngoài hệ Mặt Trời xa xôi."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border border-indigo-500 shadow-lg" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-indigo-400 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 font-bold text-slate-200 hover:bg-slate-700 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Trắc nghiệm nhận diện nghĩa</span>
+                        <div class="text-lg font-black text-white" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Điểm số</span>
+                        <div class="text-lg font-black text-amber-400" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-900 border border-slate-700 text-indigo-300 font-semibold px-2.5 py-1 rounded-md">n [C] • /əˈstrɒnəmə(r)/</span>
+                        <h3 id="quiz-question-word" class="text-2xl sm:text-3xl font-black text-white mt-3">astronomer</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng chính xác</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-white">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-300 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-400" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-slate-900 border-2 border-indigo-500 text-indigo-400 rounded-full flex items-center justify-center text-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-amber-400 uppercase" id="spell-hint-type">(n [C])</span>
+                        <p class="text-slate-100 font-bold mt-1 text-base" id="spell-hint-vietnamese">nhà thiên văn học</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ hoặc cụm từ bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-600 bg-slate-950 text-white focus:outline-none focus:border-indigo-500 text-center font-bold text-lg" />
+                        <button type="submit" class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-500 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-white">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-300 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-400">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-amber-400"></i>
+                        <span id="match-timer" class="font-mono font-bold text-amber-300 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">🌌🚀✨</div>
+                    <h3 class="text-2xl font-black text-white">Xuất sắc! Bạn đã làm chủ từ vựng IELTS Unit 8!</h3>
+                    <p class="text-slate-300 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-amber-400 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-500 border-t border-slate-800 mt-auto bg-slate-950">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Complete IELTS Bands 6.5–7.5 Unit 8: Across the universe
+        const vocabData = [
+            // 1. Danh từ & Cụm danh từ (Nouns & Noun Phrases)
+            { id: 1, category: "nouns", term: "astronomer", type: "n [C]", ipa: "/əˈstrɒnəmə(r)/", meaning: "nhà thiên văn học", icon: "🔭", example: "The astronomer calibrated the orbital telescope to observe distant exoplanets.", exampleVi: "Nhà thiên văn học đã hiệu chuẩn kính thiên văn quỹ đạo để quan sát các hành tinh ngoài hệ Mặt Trời xa xôi." },
+            { id: 2, category: "nouns", term: "astronomy", type: "n [U]", ipa: "/əˈstrɒnəmi/", meaning: "ngành thiên văn học", icon: "🌌", example: "Radio astronomy allows researchers to detect cosmic radiation from early epochs.", exampleVi: "Ngành thiên văn học vô tuyến cho phép các nhà nghiên cứu phát hiện bức xạ vũ trụ từ những kỷ nguyên sơ khai." },
+            { id: 3, category: "nouns", term: "comet", type: "n [C]", ipa: "/ˈkɒmɪt/", meaning: "sao chổi", icon: "☄️", example: "Halley's comet follows an elliptical trajectory around the Sun every 76 years.", exampleVi: "Sao chổi Halley di chuyển theo quỹ đạo hình elip quanh Mặt Trời theo chu kỳ 76 năm một lần." },
+            { id: 4, category: "nouns", term: "continuity", type: "n [U]", ipa: "/ˌkɒntɪˈnjuːəti/", meaning: "sự liên tục, tính kế thừa", icon: "🔁", example: "Astronomical records demonstrate historical continuity across centuries of celestial navigation.", exampleVi: "Các ghi chép thiên văn học chứng minh tính kế thừa liên tục trong lịch sử hàng hải thiên văn qua nhiều thế kỷ." },
+            { id: 5, category: "nouns", term: "cult following", type: "np [C]", ipa: "/kʌlt ˈfɒləʊɪŋ/", meaning: "nhóm người hâm mộ cuồng nhiệt", icon: "⭐", example: "Documentaries detailing deep-space voyages have garnered an enthusiastic cult following.", exampleVi: "Các bộ phim tài liệu mô tả chi tiết về du hành vũ trụ sâu đã thu hút một nhóm người hâm mộ cuồng nhiệt." },
+            { id: 6, category: "nouns", term: "domain", type: "n [C]", ipa: "/dəˈmeɪn/", meaning: "lĩnh vực, vùng/lãnh địa nghiên cứu", icon: "🌐", example: "Quantum astrophysics remains an intellectually challenging scientific domain.", exampleVi: "Vật lý thiên văn lượng tử vẫn là một lĩnh vực nghiên cứu khoa học đầy thách thức về mặt trí tuệ." },
+            { id: 7, category: "nouns", term: "early / ancient / modern civilisations", type: "plural n", ipa: "/ˌsɪvəlaɪˈzeɪʃnz/", meaning: "các nền văn minh sớm / cổ đại / hiện đại", icon: "🏛️", example: "Ancient civilisations aligned colossal stone monoliths with equinoxes and solstices.", exampleVi: "Các nền văn minh cổ đại đã sắp đặt các khối đá khổng lồ thẳng hàng với các điểm phân và điểm chí." },
+            { id: 8, category: "nouns", term: "the end result", type: "singular n", ipa: "/ði end rɪˈzʌlt/", meaning: "kết quả cuối cùng", icon: "🏁", example: "The end result of massive gravitational collapse is frequently a black hole.", exampleVi: "Kết quả cuối cùng của sự sụp đổ hấp dẫn dữ dội thường là một hố đen." },
+            { id: 9, category: "nouns", term: "galaxy", type: "n [C]", ipa: "/ˈɡæləksi/", meaning: "thiên hà", icon: "🌀", example: "The Andromeda galaxy contains approximately one trillion shining stars.", exampleVi: "Thiên hà Tiên Nữ chứa khoảng một nghìn tỷ ngôi sao đang tỏa sáng." },
+            { id: 10, category: "nouns", term: "geologist", type: "n [C]", ipa: "/dʒiˈɒlədʒɪst/", meaning: "nhà địa chất học", icon: "🪨", example: "A planetary geologist analyzes basaltic rock samples collected from Martian craters.", exampleVi: "Một nhà địa chất học hành tinh phân tích các mẫu đá bazan thu thập từ các miệng núi lửa trên sao Hỏa." },
+            { id: 11, category: "nouns", term: "gravitational force", type: "np [U]", ipa: "/ˌɡrævɪˈteɪʃənl fɔːs/", meaning: "lực hấp dẫn, trọng lực", icon: "🪐", example: "The Moon exerts a gravitational force responsible for oceanic tidal rhythms.", exampleVi: "Mặt Trăng tạo ra một lực hấp dẫn chịu trách nhiệm cho các nhịp điệu thủy triều đại dương." },
+            { id: 12, category: "nouns", term: "intrinsic merit", type: "np [U]", ipa: "/ɪnˌtrɪnzɪk ˈmerɪt/", meaning: "giá trị tự thân, giá trị bản chất", icon: "💎", example: "Theoretical cosmology possesses intrinsic merit beyond immediate industrial utility.", exampleVi: "Vũ trụ học lý thuyết sở hữu giá trị tự thân vượt lên trên những ứng dụng công nghiệp trước mắt." },
+            { id: 13, category: "nouns", term: "launch", type: "n [C]", ipa: "/lɔːntʃ/", meaning: "sự phóng (tàu vũ trụ), sự ra mắt", icon: "🚀", example: "Engineers confirmed that the rocket launch proceeded without telemetry anomalies.", exampleVi: "Các kỹ sư xác nhận rằng sự kiện phóng tên lửa đã diễn ra suôn sẻ mà không gặp bất kỳ sự cố đo từ xa nào." },
+            { id: 14, category: "nouns", term: "lens", type: "n [C]", ipa: "/lenz/", meaning: "thấu kính", icon: "🔍", example: "Gravitational lensing occurs when a massive cluster acts as a cosmic lens.", exampleVi: "Thấu kính hấp dẫn xảy ra khi một cụm thiên hà khổng lồ hoạt động như một thấu kính vũ trụ." },
+            { id: 15, category: "nouns", term: "means", type: "n [C]", ipa: "/miːnz/", meaning: "phương tiện, cách thức", icon: "🛠️", example: "Interstellar probes serve as humanity's primary means of robotic deep-space reconnaissance.", exampleVi: "Các tàu thăm dò liên sao đóng vai trò là phương tiện trinh sát robot vũ trụ sâu chính của nhân loại." },
+            { id: 16, category: "nouns", term: "solar eclipse", type: "np [C]", ipa: "/ˌsəʊlər ɪˈklɪps/", meaning: "nhật thực", icon: "🌑", example: "A total solar eclipse allows observers to photograph the tenuous solar corona.", exampleVi: "Một trận nhật thực toàn phần cho phép các nhà quan sát chụp ảnh vành nhật hoa mờ nhạt của Mặt Trời." },
+            { id: 17, category: "nouns", term: "the solar system", type: "singular n", ipa: "/ðə ˈsəʊlə sɪstəm/", meaning: "hệ Mặt Trời", icon: "☀️️", example: "Eight major planets and myriad minor asteroids orbit harmoniously in the solar system.", exampleVi: "Tám hành tinh chính cùng vô số tiểu hành tinh quay quanh một cách hài hòa trong hệ Mặt Trời." },
+
+            // 2. Động từ & Cụm động từ (Verbs & Verb Phrases)
+            { id: 18, category: "verbs", term: "allocate", type: "v [T]", ipa: "/ˈæləkeɪt/", meaning: "phân bổ (tiền bạc, thời gian, không gian)", icon: "📊", example: "Government agencies must allocate funding between manned exploration and robotic rovers.", exampleVi: "Các cơ quan chính phủ phải phân bổ ngân sách hợp lý giữa các chuyến thám hiểm có người lái và xe tự hành robot." },
+            { id: 19, category: "verbs", term: "build a picture of something", type: "phrase", ipa: "/bɪld ə ˈpɪktʃə(r) əv/", meaning: "hình dung / xây dựng bức tranh toàn cảnh về điều gì", icon: "🧩", example: "Astronomers analyze infrared wavelengths to build a picture of the early universe.", exampleVi: "Các nhà thiên văn học phân tích các bước sóng hồng ngoại để xây dựng bức tranh toàn cảnh về vũ trụ sơ khai." },
+            { id: 20, category: "verbs", term: "distract someone from something", type: "vp [T]", ipa: "/dɪˈstrækt ˈsʌmwʌn frɒm/", meaning: "làm ai xao lãng khỏi việc gì", icon: "⚠️", example: "Excessive bureaucratic paperwork can distract scientists from primary research goals.", exampleVi: "Các thủ tục giấy tờ hành chính rườm rà có thể làm các nhà khoa học xao lãng khỏi những mục tiêu nghiên cứu chính." },
+            { id: 21, category: "verbs", term: "divert something from something", type: "vp [T]", ipa: "/daɪˈvɜːt ˈsʌmθɪŋ frɒm/", meaning: "chuyển hướng / làm xao lãng sự chú ý", icon: "🔀", example: "Planetary defense scientists investigate kinetic impactors to divert asteroids from collision trajectories.", exampleVi: "Các nhà khoa học phòng thủ hành tinh nghiên cứu thiết bị va chạm động học để chuyển hướng tiểu hành tinh khỏi quỹ đạo va chạm." },
+            { id: 22, category: "verbs", term: "evolve", type: "v [I/T]", ipa: "/ɪˈvɒlv/", meaning: "tiến hóa, phát triển dần theo thời gian", icon: "🌱", example: "Stars evolve along predictable lifecycles from stellar nurseries to compact dwarfs.", exampleVi: "Các ngôi sao tiến hóa theo những chu kỳ vòng đời dự đoán được từ vườn ươm tinh vân đến các sao lùn đặc." },
+            { id: 23, category: "verbs", term: "found", type: "v [T]", ipa: "/faʊnd/", meaning: "thành lập, sáng lập (tổ chức, học viện)", icon: "🏛️", example: "Pioneering astrophysicists helped found the European Southern Observatory in 1962.", exampleVi: "Các nhà vật lý thiên văn tiên phong đã góp phần thành lập Đài thiên văn Nam Âu vào năm 1962." },
+            { id: 24, category: "verbs", term: "magnify", type: "v [T]", ipa: "/ˈmæɡnɪfaɪ/", meaning: "phóng đại, làm to lên (qua thấu kính/kính thiên văn)", icon: "🔍", example: "Concave reflective mirrors magnify faint electromagnetic signatures from distant nebulae.", exampleVi: "Các gương phản xạ lõm phóng đại những tín hiệu điện từ mờ nhạt từ các tinh vân xa xôi." },
+            { id: 25, category: "verbs", term: "make a contribution to something", type: "phrase", ipa: "/meɪk ə ˌkɒntrɪˈbjuːʃn tuː/", meaning: "đóng góp vào điều gì", icon: "🤝", example: "Citizen science initiatives make a vital contribution to discovering new cometary bodies.", exampleVi: "Các sáng kiến khoa học cộng đồng đóng góp quan trọng vào việc phát hiện các thiên thể sao chổi mới." },
+            { id: 26, category: "verbs", term: "minimise", type: "v [T]", ipa: "/ˈmɪnɪmaɪz/", meaning: "giảm thiểu đến mức tối đa", icon: "📉", example: "Spacecraft shielding is meticulously optimized to minimise astronaut exposure to cosmic rays.", exampleVi: "Lớp chắn bảo vệ tàu vũ trụ được tối ưu hóa tỉ mỉ để giảm thiểu tối đa sự phơi nhiễm của phi hành gia với tia vũ trụ." },
+            { id: 27, category: "verbs", term: "realise", type: "v [T]", ipa: "/ˈrɪəlaɪz/", meaning: "thực hiện được, đạt được (mục tiêu)", icon: "🎯", example: "It took decades of relentless engineering to realise the ambitious James Webb mission.", exampleVi: "Phải mất hàng thập kỷ nỗ lực kỹ thuật không ngừng để hiện thực hóa được sứ mệnh James Webb đầy tham vọng." },
+
+            // 3. Tính từ & Trạng từ (Adjectives & Adverbs)
+            { id: 28, category: "adj_adv", term: "chiefly", type: "adv", ipa: "/ˈtʃiːfli/", meaning: "chủ yếu, chính là", icon: "📌", example: "Galactic spiral structures are shaped chiefly by gravitational interactions between star clusters.", exampleVi: "Các cấu trúc xoắn ốc của thiên hà được định hình chủ yếu bởi các tương tác hấp dẫn giữa các cụm sao." },
+            { id: 29, category: "adj_adv", term: "introspective", type: "adj", ipa: "/ˌɪntrəˈspektɪv/", meaning: "hay tự vấn, suy tư nội tâm", icon: "🤔", example: "Gazing at the immense expanse of the night sky evokes quiet, introspective awe.", exampleVi: "Ngắm nhìn khoảng không bao la vô tận của bầu trời đêm gợi lên niềm kinh ngạc tự vấn nội tâm trầm lắng." },
+            { id: 30, category: "adj_adv", term: "obsessed with someone/something", type: "adj", ipa: "/əbˈsest wɪð/", meaning: "ám ảnh, cực kỳ mê mẩn ai/cái gì", icon: "🤩", example: "Amateur stargazers are often obsessed with astrophotography equipment and dark-sky sites.", exampleVi: "Những người ngắm sao nghiệp dư thường cực kỳ mê mẩn các thiết bị chụp ảnh thiên văn và các địa điểm bầu trời tối." },
+            { id: 31, category: "adj_adv", term: "physiological", type: "adj", ipa: "/ˌfɪziəˈlɒdʒɪkl/", meaning: "thuộc về sinh lý học", icon: "🫀", example: "Prolonged microgravity induces adverse physiological consequences, such as bone demineralization.", exampleVi: "Môi trường vi trọng lực kéo dài gây ra những hậu quả sinh lý học bất lợi, chẳng hạn như mất khoáng chất trong xương." },
+            { id: 32, category: "adj_adv", term: "primarily", type: "adv", ipa: "/praɪˈmerəli/", meaning: "chủ yếu, đầu tiên", icon: "🥇", example: "The Deep Space Network operates primarily as a communications relay for interplanetary explorers.", exampleVi: "Mạng lưới Không gian Sâu hoạt động chủ yếu như một trạm chuyển tiếp liên lạc cho các tàu thăm dò liên hành tinh." },
+
+            // 4. Cụm từ & Thành ngữ cố định (Phrases & Expressions)
+            { id: 33, category: "phrases", term: "for the purpose(s) of something", type: "phrase", ipa: "/fə ðə ˈpɜːpəs əv/", meaning: "nhằm mục đích gì", icon: "🎯", example: "Optical sensors were deployed for the purpose of identifying near-Earth orbital debris.", exampleVi: "Các cảm biến quang học được triển khai nhằm mục đích nhận diện các mảnh rác vũ trụ trên quỹ đạo gần Trái Đất." },
+            { id: 34, category: "phrases", term: "in collaboration with someone", type: "phrase", ipa: "/ɪn kəˌlæbəˈreɪʃn wɪð/", meaning: "hợp tác với ai", icon: "🤝", example: "NASA engineers worked in close collaboration with international space agencies.", exampleVi: "Các kỹ sư NASA đã làm việc trong sự hợp tác chặt chẽ với các cơ quan vũ trụ quốc tế." },
+            { id: 35, category: "phrases", term: "in the sense that", type: "phrase", ipa: "/ɪn ðə sens ðæt/", meaning: "theo nghĩa là / vì lý do là", icon: "💡", example: "The cosmos is hostile in the sense that vacuum conditions cannot support terrestrial biological life.", exampleVi: "Vũ trụ mang tính thù địch theo nghĩa là điều kiện chân không không thể nuôi dưỡng sự sống sinh học trên mặt đất." },
+            { id: 36, category: "phrases", term: "in turn", type: "phrase", ipa: "/ɪn tɜːn/", meaning: "kết quả là, đến lượt nó", icon: "🔄", example: "Solar flares disrupt satellite constellations, which in turn knocks out power grids.", exampleVi: "Bão Mặt Trời làm gián đoạn các chùm vệ tinh, kết quả là đến lượt nó làm sập các lưới điện mặt đất." },
+            { id: 37, category: "phrases", term: "needless to say", type: "phrase", ipa: "/ˈniːdləs tə seɪ/", meaning: "hiển nhiên, không cần phải nói", icon: "✨", example: "Needless to say, manned colonization of outer planets poses unprecedented technological hurdles.", exampleVi: "Hiển nhiên là việc con người định cư trên các hành tinh xa xôi đặt ra những rào cản công nghệ chưa từng có." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-slate-300 hover:bg-slate-800 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-indigo-600 text-white shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                'nouns': '1. Danh từ & Cụm danh từ',
+                'verbs': '2. Động từ & Cụm động từ',
+                'adj_adv': '3. Tính từ & Trạng từ',
+                'phrases': '4. Cụm từ & Thành ngữ cố định'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'IELTS Unit 8: Space';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const raw = textToSpeak || activeList[currentIndex].term;
+            const cleanText = raw.replace(/\(.*?\)/g, '').replace(/someone/g, 'someone').replace(/something/g, 'something');
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\(.*?\)/g, '').replace(/[^a-zA-Z\s]/g, '').trim().replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean astronomical space digital art illustration of ${cleanTerm}, deep cosmos galaxy telescope solar system astrophysics ielts academic concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border border-slate-700 bg-slate-900/80 text-left font-medium text-slate-200 hover:border-indigo-500 hover:bg-indigo-950/40 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-amber-400"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-700', 'hover:border-indigo-500');
+                buttonEl.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-200');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-700', 'hover:border-indigo-500');
+                buttonEl.classList.add('bg-rose-950', 'border-rose-500', 'text-rose-200');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function normalizeSpellText(str) {
+            return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userNorm = normalizeSpellText(input.value);
+            const targetNorm = normalizeSpellText(currentItem.term);
+            const cleanTarget = normalizeSpellText(currentItem.term.replace(/\(.*?\)/g, ''));
+            const alternativeMatch = currentItem.term.includes('/') ? currentItem.term.split('/').some(part => normalizeSpellText(part) === userNorm) : false;
+
+            if (userNorm === targetNorm || userNorm === cleanTarget || alternativeMatch) {
+                feedback.innerHTML = `<span class="text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Rất xuất sắc.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-400"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2200);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border border-slate-700 bg-slate-900/90 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-200 shadow-md hover:border-indigo-500 hover:bg-slate-800 transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-indigo-500', 'bg-indigo-950/60', 'text-indigo-200');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-indigo-500', 'bg-indigo-950/60', 'text-indigo-200');
+                    secondCard.classList.remove('border-indigo-500', 'bg-indigo-950/60', 'text-indigo-200');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-950/60');
+                secondCard.classList.add('border-rose-500', 'bg-rose-950/60');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-indigo-500', 'bg-indigo-950/60', 'text-indigo-200', 'border-rose-500', 'bg-rose-950/60');
+                    secondCard.classList.remove('border-indigo-500', 'bg-indigo-950/60', 'text-indigo-200', 'border-rose-500', 'bg-rose-950/60');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
