@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions Pre-Intermediate - Unit 6: Tourism & Travel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header Navigation -->
+    <header class="bg-cyan-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-plane-departure text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">Solutions Unit 6: Tourism & Travel</h1>
+                    <p class="text-xs text-cyan-200 font-medium">Pre-Intermediate 3rd Edition • Destinations, Flight & Holidays</p>
+                </div>
+            </div>
+
+            <!-- Category Filter Selector -->
+            <div class="flex items-center gap-2 bg-cyan-800/80 p-1.5 rounded-xl border border-cyan-500/40">
+                <i class="fa-solid fa-filter text-xs text-cyan-300 ml-2"></i>
+                <label for="categoryFilter" class="text-xs font-semibold text-cyan-100">Chủ đề:</label>
+                <select id="categoryFilter" class="bg-cyan-950 text-white text-xs font-semibold rounded-lg px-3 py-1.5 border border-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-amber-300 cursor-pointer">
+                    <option value="all">🌟 Tất cả bài học (48 từ)</option>
+                    <option value="6A_attractions">Lesson 6A: Địa điểm du lịch (17 từ)</option>
+                    <option value="6A_adj">Lesson 6A: Tính từ miêu tả (13 từ)</option>
+                    <option value="6E">Lesson 6E: Sân bay & Chuyến bay (10 từ)</option>
+                    <option value="6F">Lesson 6F: Đồ dùng & Hoạt động (8 từ)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <nav class="bg-cyan-800 border-t border-cyan-600/50">
+            <div class="max-w-6xl mx-auto px-4 flex gap-2 overflow-x-auto custom-scrollbar py-2">
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-800 shadow-sm transition-all">
+                    <i class="fa-solid fa-layer-group"></i> <span>Flashcards 3D</span>
+                </button>
+                <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                    <i class="fa-solid fa-circle-question"></i> <span>Trắc Nghiệm (Quiz)</span>
+                </button>
+                <button onclick="switchTab('spell')" id="tab-spell" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                    <i class="fa-solid fa-headphones"></i> <span>Nghe & Gõ (Listen)</span>
+                </button>
+                <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all">
+                    <i class="fa-solid fa-bolt"></i> <span>Ghép Từ (Match)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 flex-1 flex flex-col justify-center">
+
+        <!-- 1. FLASHCARDS MODE -->
+        <div id="view-flashcards" class="view-panel flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs font-bold text-slate-500 mb-3 px-2">
+                <span id="card-progress">Thẻ 1 / 48</span>
+                <span class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full font-semibold border border-cyan-200" id="card-category-badge">Địa điểm du lịch</span>
+            </div>
+
+            <!-- 3D Card Area -->
+            <div class="w-full h-[410px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+                <div id="flashcard-inner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl bg-white border border-slate-200">
+                    
+                    <!-- Front Face -->
+                    <div class="absolute inset-0 backface-hidden p-8 flex flex-col items-center justify-between text-center rounded-2xl bg-gradient-to-b from-white to-slate-50">
+                        <div class="w-full flex justify-between items-center text-slate-400">
+                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-1 rounded-md" id="card-type-front">n</span>
+                            <button onclick="event.stopPropagation(); speakWord()" class="p-2.5 rounded-full hover:bg-cyan-50 text-cyan-700 transition" title="Nghe phát âm">
+                                <i class="fa-solid fa-volume-high text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto flex flex-col items-center">
+                            <div id="card-icon" class="text-5xl mb-4">🐠</div>
+                            <h2 id="card-term" class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">Aquarium</h2>
+                            <p id="card-ipa" class="text-sm font-serif text-slate-500 mt-2 font-medium tracking-wide">/əˈkweəriəm/</p>
+                        </div>
+
+                        <div class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để lật xem nghĩa (hoặc nhấn Space)
+                        </div>
+                    </div>
+
+                    <!-- Back Face -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-between rounded-2xl bg-cyan-50/80 border-2 border-cyan-300 text-center overflow-y-auto custom-scrollbar">
+                        <div class="w-full flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-800 bg-cyan-200/80 px-2.5 py-1 rounded-md" id="card-type-back">n</span>
+                            <button onclick="event.stopPropagation(); generateAIImage()" id="btn-generate-img" class="flex items-center gap-1.5 text-xs bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition" title="Tạo ảnh bằng Pollinations AI">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tạo Ảnh AI</span>
+                            </button>
+                        </div>
+
+                        <div class="my-3 flex flex-col items-center w-full">
+                            <h3 id="card-vietnamese" class="text-xl sm:text-2xl font-black text-cyan-950 mb-2">thủy cung, bể nuôi cá lớn</h3>
+                            
+                            <div class="bg-white/90 border border-cyan-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700 italic text-left w-full my-2 shadow-sm">
+                                <p class="font-bold text-slate-900" id="card-example">"We saw colorful exotic fish and sea turtles at the city aquarium."</p>
+                                <p class="text-slate-500 mt-1 font-normal" id="card-example-vi">"Chúng tôi đã ngắm nhìn những loài cá rực rỡ và rùa biển tại thủy cung thành phố."</p>
+                            </div>
+
+                            <!-- AI Image Container -->
+                            <div id="ai-image-container" class="hidden mt-2 w-full flex flex-col items-center">
+                                <img id="ai-image" class="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl border-2 border-white shadow-md" alt="AI Generated Illustration" />
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-cyan-700 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Bấm để quay lại mặt trước
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Trước (←)</span>
+                </button>
+                <button onclick="shuffleCurrentCards()" class="p-3 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 active:scale-95 transition shadow-sm" title="Xáo trộn thẻ">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md flex items-center gap-2">
+                    <span>Sau (→)</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LEARN / QUIZ MODE -->
+        <div id="view-learn" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trắc nghiệm nhanh</span>
+                        <div class="text-lg font-black text-slate-800" id="quiz-counter">Câu 1 / 10</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Điểm số</span>
+                        <div class="text-lg font-black text-amber-600" id="quiz-score">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <div class="text-center my-6">
+                        <span id="quiz-pos-ipa" class="text-xs uppercase bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">n • /ˈækʃn fɪlm/</span>
+                        <h3 id="quiz-question-word" class="text-3xl font-black text-slate-900 mt-3">Aquarium</h3>
+                        <p class="text-slate-400 text-xs mt-1">Chọn nghĩa tiếng Việt tương ứng</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài kiểm tra!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="quiz-final-score">Bạn đạt được 10/10 điểm</p>
+                    <button onclick="startQuiz()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Làm lại đề khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. LISTEN & SPELL MODE -->
+        <div id="view-spell" class="view-panel hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Luyện Nghe & Viết Chính Tả</span>
+                    <span class="text-xs font-bold text-slate-500" id="spell-counter">Từ 1 / 10</span>
+                </div>
+
+                <div id="spell-content" class="flex flex-col items-center text-center">
+                    <button onclick="playSpellAudio()" class="w-20 h-20 bg-cyan-50 border-2 border-cyan-300 text-cyan-700 rounded-full flex items-center justify-center text-2xl hover:bg-cyan-700 hover:text-white transition-all shadow-md group">
+                        <i class="fa-solid fa-volume-high group-hover:scale-110 transition"></i>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Bấm vào biểu tượng loa để nghe lại</p>
+
+                    <div class="my-5 p-3.5 bg-slate-50 border border-slate-200 rounded-xl max-w-md w-full">
+                        <span class="text-xs font-bold text-cyan-700 uppercase" id="spell-hint-type">(n)</span>
+                        <p class="text-slate-800 font-bold mt-1 text-base" id="spell-hint-vietnamese">thủy cung, bể nuôi cá lớn</p>
+                    </div>
+
+                    <form onsubmit="handleSpellSubmit(event)" class="w-full max-w-md mt-2 flex flex-col gap-3">
+                        <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh bạn nghe được..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-cyan-600 text-center font-bold text-lg text-slate-800" />
+                        <button type="submit" class="w-full py-3 bg-cyan-700 text-white rounded-xl font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                            Kiểm tra kết quả
+                        </button>
+                    </form>
+                    <div id="spell-feedback" class="mt-4 text-sm font-bold min-h-[24px]"></div>
+                </div>
+
+                <div id="spell-result" class="hidden text-center py-8">
+                    <div class="text-5xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-800">Hoàn thành bài luyện viết!</h3>
+                    <p class="text-slate-600 mt-2 text-sm" id="spell-final-score">Bạn đã hoàn thành các từ luyện tập.</p>
+                    <button onclick="startSpellMode()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Luyện tập từ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MATCH GAME MODE -->
+        <div id="view-match" class="view-panel hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-700">Trò chơi ghép thẻ</span>
+                        <div class="text-xs text-slate-500">Nối cặp Từ tiếng Anh & Nghĩa tiếng Việt tương ứng</div>
+                    </div>
+                    <div class="bg-cyan-50 border border-cyan-100 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-cyan-700"></i>
+                        <span id="match-timer" class="font-mono font-bold text-cyan-950 text-base">0.0s</span>
+                    </div>
+                </div>
+
+                <!-- Match Grid -->
+                <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <!-- Cards injected via JS -->
+                </div>
+
+                <!-- Win Screen -->
+                <div id="match-win" class="hidden text-center py-10">
+                    <div class="text-6xl mb-3">🏖️✈️✨</div>
+                    <h3 class="text-2xl font-black text-slate-900">Xuất sắc! Bạn đã làm chủ chủ đề Du lịch & Nghỉ dưỡng!</h3>
+                    <p class="text-slate-600 mt-2 text-base">Thời gian hoàn thành: <strong id="match-final-time" class="text-cyan-700 text-lg">12.4s</strong></p>
+                    <button onclick="startMatchGame()" class="mt-6 px-6 py-3 rounded-xl bg-cyan-700 text-white font-bold hover:bg-cyan-800 active:scale-95 transition shadow-md">
+                        <i class="fa-solid fa-play mr-1"></i> Chơi Lại Ván Mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs font-medium text-slate-400 border-t border-slate-200 mt-auto bg-white/50">
+        Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">Space</kbd> lật thẻ | <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-200 rounded text-slate-700">→</kbd> chuyển thẻ
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Database Vocabulary for Unit 6: Tourism / Travel
+        const vocabData = [
+            // 1. Lesson 6A: Tourist Attractions (Địa điểm du lịch)
+            { id: 1, category: "6A_attractions", term: "Aquarium", type: "n", ipa: "/əˈkweəriəm/", meaning: "thủy cung, bể nuôi cá lớn", icon: "🐠", example: "We saw colorful exotic fish and sea turtles at the city aquarium.", exampleVi: "Chúng tôi đã ngắm nhìn những loài cá rực rỡ và rùa biển tại thủy cung thành phố." },
+            { id: 2, category: "6A_attractions", term: "Botanical garden", type: "n", ipa: "/bəˈtænɪkl ˈɡɑːdn/", meaning: "vườn bách thảo", icon: "🌿", example: "The botanical garden features thousands of rare plant species.", exampleVi: "Vườn bách thảo trưng bày hàng ngàn loài thực vật quý hiếm." },
+            { id: 3, category: "6A_attractions", term: "Castle", type: "n", ipa: "/ˈkɑːsl/", meaning: "lâu đài, thành quách", icon: "🏰", example: "The medieval stone castle stands proudly on the hill overlooking the valley.", exampleVi: "Tòa lâu đài đá thời trung cổ sừng sững uy nghiêm trên ngọn đồi nhìn ra thung lũng." },
+            { id: 4, category: "6A_attractions", term: "Cathedral", type: "n", ipa: "/kəˈθiːdrəl/", meaning: "nhà thờ lớn, thánh đường", icon: "⛪", example: "Tourists marvelled at the soaring stained glass windows of the cathedral.", exampleVi: "Du khách trầm trồ thán phục trước những ô cửa kính màu cao vút của thánh đường." },
+            { id: 5, category: "6A_attractions", term: "Fountain", type: "n", ipa: "/ˈfaʊntən/", meaning: "đài phun nước", icon: "⛲", example: "Visitors threw small coins into the central fountain for good luck.", exampleVi: "Khách tham quan ném những đồng xu nhỏ vào đài phun nước trung tâm để cầu may mắn." },
+            { id: 6, category: "6A_attractions", term: "Harbor", type: "n", ipa: "/ˈhɑːbə(r)/", meaning: "bến cảng, cảng biển", icon: "⚓", example: "Luxury yachts and fishing boats anchored safely in the deep harbor.", exampleVi: "Những du thuyền sang trọng và thuyền đánh cá thả neo an toàn trong bến cảng sâu." },
+            { id: 7, category: "6A_attractions", term: "Market", type: "n", ipa: "/ˈmɑːkɪt/", meaning: "chợ, khu chợ truyền thống", icon: "🛍", example: "The outdoor weekend market sells fresh fruits, local cheeses, and handicrafts.", exampleVi: "Khu chợ ngoài trời cuối tuần bán hoa quả tươi, phô mai địa phương và đồ thủ công." },
+            { id: 8, category: "6A_attractions", term: "Mosque", type: "n", ipa: "/mɒsk/", meaning: "nhà thờ Hồi giáo", icon: "🕌", example: "Visitors must remove their shoes before entering the grand historical mosque.", exampleVi: "Khách tham quan phải cởi giày trước khi bước vào ngôi nhà thờ Hồi giáo cổ kính tráng lệ." },
+            { id: 9, category: "6A_attractions", term: "Museum", type: "n", ipa: "/mjuˈziːəm/", meaning: "bảo tàng", icon: "🏛️", example: "The national history museum displays ancient archaeological artifacts.", exampleVi: "Bảo tàng lịch sử quốc gia trưng bày nhiều cổ vật khảo cổ học xưa." },
+            { id: 10, category: "6A_attractions", term: "National park", type: "n", ipa: "/ˌnæʃnəl ˈpɑːk/", meaning: "vườn quốc gia, công viên quốc gia", icon: "🌲", example: "Yellowstone is one of the most famous and protected national parks.", exampleVi: "Yellowstone là một trong những công viên quốc gia nổi tiếng và được bảo tồn nghiêm ngặt nhất." },
+            { id: 11, category: "6A_attractions", term: "Palace", type: "n", ipa: "/ˈpæləs/", meaning: "cung điện, hoàng cung", icon: "👑", example: "The royal palace boasts over seven hundred luxurious rooms.", exampleVi: "Hoàng cung tự hào có hơn bảy trăm căn phòng sang trọng lộng lẫy." },
+            { id: 12, category: "6A_attractions", term: "Ruin", type: "n", ipa: "/ˈruːɪn/", meaning: "tàn tích, phế tích lịch sử (thường dùng số nhiều: ruins)", icon: "🏺", example: "We walked quietly among the ancient Roman temple ruins.", exampleVi: "Chúng tôi lặng lẽ rảo bước giữa những phế tích đền thờ La Mã cổ đại." },
+            { id: 13, category: "6A_attractions", term: "Statue", type: "n", ipa: "/ˈstætʃuː/", meaning: "bức tượng", icon: "🗽", example: "The bronze statue honours the heroic founder of the coastal town.", exampleVi: "Bức tượng đồng vinh danh người sáng lập anh hùng của thị trấn ven biển." },
+            { id: 14, category: "6A_attractions", term: "Temple", type: "n", ipa: "/ˈtempl/", meaning: "đền, miếu, đền thờ", icon: "⛩️", example: "Monks in orange robes chanted prayers inside the sacred golden temple.", exampleVi: "Các nhà sư trong trang phục áo cà sa màu cam tụng kinh bên trong ngôi đền vàng linh thiêng." },
+            { id: 15, category: "6A_attractions", term: "Theme park", type: "n", ipa: "/ˈθiːm pɑːk/", meaning: "công viên giải trí theo chủ đề", icon: "🎢", example: "Children were excited to ride thrilling roller coasters at the theme park.", exampleVi: "Lũ trẻ hào hứng đi tàu lượn siêu tốc kịch tính tại công viên giải trí theo chủ đề." },
+            { id: 16, category: "6A_attractions", term: "Tower", type: "n", ipa: "/ˈtaʊə(r)/", meaning: "tòa tháp", icon: "🗼", example: "We climbed spiral stairs to enjoy a panoramic view from the watch tower.", exampleVi: "Chúng tôi leo những bậc thang xoắn ốc để ngắm toàn cảnh từ trên đỉnh tháp canh." },
+            { id: 17, category: "6A_attractions", term: "Water park", type: "n", ipa: "/ˈwɔːtə pɑːk/", meaning: "công viên nước", icon: "🌊", example: "Spending a blistering hot summer day at the water park was perfect.", exampleVi: "Dành một ngày hè nóng nực tại công viên nước quả là một lựa chọn hoàn hảo." },
+
+            // 2. Lesson 6A: Describing Tourist Destinations (Tính từ miêu tả điểm đến)
+            { id: 18, category: "6A_adj", term: "Atmospheric", type: "adj", ipa: "/ˌætməsˈferɪk/", meaning: "mang không khí cổ kính / đặc biệt", icon: "🕯️", example: "The dimly lit cobblestone alleyways were wonderfully atmospheric.", exampleVi: "Những con hẻm rải sỏi lờ mờ ánh đèn mang một bầu không khí cổ kính tuyệt vời." },
+            { id: 19, category: "6A_adj", term: "Busy", type: "adj", ipa: "/ˈbɪzi/", meaning: "nhộn nhịp, sầm uất", icon: "🏙️️", example: "The city center is always busy during rush hours.", exampleVi: "Trung tâm thành phố lúc nào cũng nhộn nhịp sầm uất vào giờ cao điểm." },
+            { id: 20, category: "6A_adj", term: "Cheap", type: "adj", ipa: "/tʃiːp/", meaning: "rẻ, giá cả bình dân", icon: "🏷️", example: "Street food here is both delicious and remarkably cheap.", exampleVi: "Ẩm thực đường phố ở đây vừa ngon miệng lại vừa có giá rẻ bình dân bất ngờ." },
+            { id: 21, category: "6A_adj", term: "Crowded", type: "adj", ipa: "/ˈkraʊdɪd/", meaning: "đông đúc, chật nát", icon: "👥", example: "The popular sandy beach was too crowded to find a spot to sit.", exampleVi: "Bãi biển nổi tiếng quá đông đúc đến nỗi không tìm được một chỗ để ngồi." },
+            { id: 22, category: "6A_adj", term: "Disappointing", type: "adj", ipa: "/ˌdɪsəˈpɔɪntɪŋ/", meaning: "gây thất vọng", icon: "😞", example: "The overrated tourist monument turned out to be rather disappointing.", exampleVi: "Điểm di tích du lịch được đồn thổi rầm rộ hóa ra lại khá gây thất vọng." },
+            { id: 23, category: "6A_adj", term: "Expensive", type: "adj", ipa: "/ɪkˈspensɪv/", meaning: "đắt đỏ", icon: "💎", example: "Staying at seaside luxury resorts can be very expensive.", exampleVi: "Lưu trú tại các khu nghỉ dưỡng cao cấp ven biển có thể rất đắt đỏ." },
+            { id: 24, category: "6A_adj", term: "Historic", type: "adj", ipa: "/hɪˈstɒrɪk/", meaning: "mang tính lịch sử, cổ kính", icon: "📜", example: "Prague is widely celebrated for its preserved historic town square.", exampleVi: "Prague nổi tiếng nhờ quảng trường cổ kính được gìn giữ nguyên vẹn qua năm tháng." },
+            { id: 25, category: "6A_adj", term: "Impressive", type: "adj", ipa: "/ɪmˈpresɪv/", meaning: "ấn tượng, tráng lệ", icon: "🤩", example: "The soaring marble columns of the building were deeply impressive.", exampleVi: "Những hàng cột đá cẩm thạch cao vút của tòa nhà tạo ấn tượng vô cùng tráng lệ." },
+            { id: 26, category: "6A_adj", term: "Peaceful", type: "adj", ipa: "/ˈpiːsfl/", meaning: "yên bình, thanh bình", icon: "🕊️", example: "We stayed in a peaceful rural village far from noisy city crowds.", exampleVi: "Chúng tôi nghỉ ngơi tại một ngôi làng quê thanh bình cách xa đám đông ồn ào thành thị." },
+            { id: 27, category: "6A_adj", term: "Remote", type: "adj", ipa: "/rɪˈməʊt/", meaning: "xa xôi, hẻo lánh", icon: "🏝️", example: "They spent a month living on a remote volcanic island.", exampleVi: "Họ dành cả tháng sống trên một hòn đảo núi lửa xa xôi và hẻo lánh." },
+            { id: 28, category: "6A_adj", term: "Romantic", type: "adj", ipa: "/rəʊˈmæntɪk/", meaning: "lãng mạn", icon: "🌹", example: "Venice is universally considered an extraordinarily romantic destination.", exampleVi: "Venice được cả thế giới công nhận là một điểm đến đặc biệt lãng mạn." },
+            { id: 29, category: "6A_adj", term: "Spectacular", type: "adj", ipa: "/spekˈtækjələ(r)/", meaning: "đẹp mắt, ngoạn mục", icon: "🌄", example: "The sunset over the rugged ocean cliffs was truly spectacular.", exampleVi: "Cảnh hoàng hôn buông xuống trên vách đá biển gồ ghề thực sự vô cùng ngoạn mục." },
+            { id: 30, category: "6A_adj", term: "Touristy", type: "adj", ipa: "/ˈtʊərɪsti/", meaning: "đông đúc khách du lịch (xu hướng thương mại hóa)", icon: "📸", example: "The waterfront street felt too touristy with endless souvenir stalls.", exampleVi: "Con phố ven sông mang cảm giác quá thương mại hóa với vô số sạp bán đồ lưu niệm." },
+
+            // 3. Lesson 6E: At the Airport & Air Travel (Tại sân bay & Chuyến bay)
+            { id: 31, category: "6E", term: "Bag drop", type: "n", ipa: "/ˈbæɡ drɒp/", meaning: "khu vực gửi hành lý", icon: "🧳", example: "Check in online first to drop your suitcases quickly at the bag drop desk.", exampleVi: "Làm thủ tục trực tuyến trước để gửi vali nhanh chóng tại quầy gửi hành lý." },
+            { id: 32, category: "6E", term: "Baggage claim", type: "n", ipa: "/ˈbæɡɪdʒ kleɪm/", meaning: "khu vực nhận lại hành lý sau chuyến bay", icon: "🔄", example: "Passengers gathered around carousel number four at the baggage claim.", exampleVi: "Các hành khách tập trung quanh băng chuyền số 4 tại khu vực nhận lại hành lý." },
+            { id: 33, category: "6E", term: "Cabin crew", type: "n", ipa: "/ˈkæbɪn kruː/", meaning: "tổ phi hành đoàn trên máy bay", icon: "🧑‍‍✈️", example: "The friendly cabin crew served drinks and snacks throughout the flight.", exampleVi: "Tổ phi hành đoàn thân thiện đã phục vụ đồ uống và thức ăn nhẹ suốt chuyến bay." },
+            { id: 34, category: "6E", term: "Departure lounge", type: "n", ipa: "/dɪˈpɑːtʃə laʊndʒ/", meaning: "phòng chờ xuất phát / phòng chờ bay", icon: "🛋️", example: "We waited comfortably in the modern departure lounge until boarding.", exampleVi: "Chúng tôi ngồi nghỉ ngơi thoải mái trong phòng chờ bay hiện đại cho tới giờ lên máy bay." },
+            { id: 35, category: "6E", term: "Flight attendant", type: "n", ipa: "/ˈflaɪt əˌtendənt/", meaning: "tiếp viên hàng không", icon: "🤝", example: "The flight attendant demonstrated all standard safety procedures.", exampleVi: "Người tiếp viên hàng không đã hướng dẫn tất cả các quy trình an toàn tiêu chuẩn." },
+            { id: 36, category: "6E", term: "Seat belt", type: "n", ipa: "/ˈsiːt belt/", meaning: "dây an toàn", icon: "🔒", example: "Please keep your seat belt securely fastened during turbulence.", exampleVi: "Xin vui lòng thắt chặt dây an toàn trong suốt thời gian máy bay đi qua vùng nhiễu động." },
+            { id: 37, category: "6E", term: "Security check", type: "n", ipa: "/sɪˈkjʊərəti tʃek/", meaning: "khu vực kiểm tra an ninh", icon: "🛂", example: "Remember to remove all laptops and metal items at the security check.", exampleVi: "Hãy nhớ lấy hết máy tính xách tay và đồ kim loại tại khu vực kiểm tra an ninh." },
+            { id: 38, category: "6E", term: "High season", type: "n", ipa: "/ˈhaɪ ˌsiːzn/", meaning: "mùa du lịch cao điểm", icon: "📈", example: "Hotel prices and airfares skyrocket dramatically during the summer high season.", exampleVi: "Giá phòng khách sạn và vé máy bay tăng vọt chóng mặt trong mùa du lịch hè cao điểm." },
+            { id: 39, category: "6E", term: "Low season", type: "n", ipa: "/ˈləʊ ˌsiːzn/", meaning: "mùa du lịch thấp điểm", icon: "📉", example: "Traveling in the low season helps save money and avoid large tourist crowds.", exampleVi: "Đi du lịch vào mùa thấp điểm giúp tiết kiệm chi phí và tránh được những đám đông du khách." },
+            { id: 40, category: "6E", term: "Half board", type: "n", ipa: "/ˌhɑːf ˈbɔːd/", meaning: "gói phòng khách sạn kèm ăn sáng và 1 bữa chính", icon: "🍳", example: "Booking a half board rate gave us flexible dinner plans every day.", exampleVi: "Đặt gói phòng kèm ăn sáng và một bữa chính giúp chúng tôi linh động kế hoạch ăn tối mỗi ngày." },
+
+            // 4. Lesson 6F: Holiday Essentials & Activities (Đồ dùng & Hoạt động du lịch)
+            { id: 41, category: "6F", term: "Backpack", type: "n", ipa: "/ˈbækpæk/", meaning: "ba lô du lịch", icon: "🎒", example: "He packed a durable waterproof backpack for the multi-day mountain trek.", exampleVi: "Anh ấy đã chuẩn bị một chiếc ba lô du lịch chống thấm bền bỉ cho chuyến đi bộ leo núi nhiều ngày." },
+            { id: 42, category: "6F", term: "Campsite", type: "n", ipa: "/ˈkæmpsaɪt/", meaning: "địa điểm cắm trại", icon: "⛺", example: "We pitched our family tents at an idyllic campsite beside the lake.", exampleVi: "Chúng tôi đã dựng lều gia đình tại một địa điểm cắm trại thơ mộng bên bờ hồ." },
+            { id: 43, category: "6F", term: "Sunscreen", type: "n", ipa: "/ˈsʌnskriːn/", meaning: "kem chống nắng", icon: "🧴", example: "Always apply broad-spectrum sunscreen before going into direct sunshine.", exampleVi: "Luôn thoa kem chống nắng phổ rộng trước khi ra ngoài trời nắng gắt." },
+            { id: 44, category: "6F", term: "Sunglasses", type: "n pl", ipa: "/ˈsʌnɡlɑːsɪz/", meaning: "kính mát, kính râm", icon: "🕶️", example: "Dark polarising sunglasses protect your sensitive eyes on bright days.", exampleVi: "Kính râm phân cực màu tối giúp bảo vệ đôi mắt nhạy cảm của bạn trong những ngày nắng chói chang." },
+            { id: 45, category: "6F", term: "Sunburn", type: "n", ipa: "/ˈsʌnbɜːn/", meaning: "vết cháy nắng, sự bỏng nắng", icon: "🔥", example: "Failing to apply lotion resulted in an agonizingly painful red sunburn.", exampleVi: "Việc không thoa kem chống nắng đã dẫn đến một vết cháy nắng đỏ rát vô cùng đau đớn." },
+            { id: 46, category: "6F", term: "Guide", type: "n", ipa: "/ɡaɪd/", meaning: "hướng dẫn viên du lịch", icon: "🚩", example: "Our knowledgeable local guide explained the ancient stories behind each statue.", exampleVi: "Người hướng dẫn viên địa phương am hiểu đã giải thích những câu chuyện xưa đằng sau mỗi bức tượng." },
+            { id: 47, category: "6F", term: "Souvenir", type: "n", ipa: "/ˌsuːvəˈnɪə(r)/", meaning: "quà lưu niệm", icon: "🎁", example: "I bought a carved wooden keychain as a holiday souvenir for my best friend.", exampleVi: "Tôi đã mua một chiếc móc khóa gỗ khắc làm quà lưu niệm chuyến đi cho người bạn thân." },
+            { id: 48, category: "6F", term: "Pen-friend", type: "n", ipa: "/ˈpen frend/", meaning: "bạn qua thư", icon: "✉️", example: "She maintained a regular correspondence with an Italian pen-friend for years.", exampleVi: "Cô ấy đã duy trì liên lạc thư từ đều đặn với một người bạn qua thư người Ý suốt nhiều năm." }
+        ];
+
+        // Global State Variables
+        let currentFilter = "all";
+        let activeList = [...vocabData];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Quiz State
+        let quizQuestions = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        // Spell State
+        let spellQuestions = [];
+        let spellIndex = 0;
+        let spellScore = 0;
+
+        // Match Game State
+        let matchCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let matchLock = false;
+        let matchTimerInterval = null;
+        let matchStartTime = null;
+        let matchedPairs = 0;
+
+        // Init App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCategoryFilter();
+            loadFlashcard(0);
+            setupKeyboardShortcuts();
+        });
+
+        // Category Filter Setup
+        function setupCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            select.addEventListener('change', (e) => {
+                currentFilter = e.target.value;
+                if (currentFilter === 'all') {
+                    activeList = [...vocabData];
+                } else {
+                    activeList = vocabData.filter(item => item.category === currentFilter);
+                }
+                currentIndex = 0;
+                loadFlashcard(0);
+
+                if (!document.getElementById('view-learn').classList.contains('hidden')) startQuiz();
+                if (!document.getElementById('view-spell').classList.contains('hidden')) startSpellMode();
+                if (!document.getElementById('view-match').classList.contains('hidden')) startMatchGame();
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 text-cyan-100 hover:bg-cyan-700 transition-all";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 bg-white text-cyan-800 shadow-sm transition-all";
+
+            if (tabId === 'learn') startQuiz();
+            if (tabId === 'spell') startSpellMode();
+            if (tabId === 'match') startMatchGame();
+        }
+
+        // 1. FLASHCARD LOGIC
+        function loadFlashcard(index) {
+            if (activeList.length === 0) return;
+            currentIndex = index;
+            isFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            const item = activeList[currentIndex];
+            document.getElementById('card-term').innerText = item.term;
+            document.getElementById('card-type-front').innerText = item.type;
+            document.getElementById('card-type-back').innerText = item.type;
+            document.getElementById('card-ipa').innerText = item.ipa;
+            document.getElementById('card-icon').innerText = item.icon;
+            document.getElementById('card-vietnamese').innerText = item.meaning;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+            document.getElementById('card-example-vi').innerText = `"${item.exampleVi}"`;
+            document.getElementById('card-progress').innerText = `Thẻ ${currentIndex + 1} / ${activeList.length}`;
+            
+            const categoryLabels = {
+                '6A_attractions': 'Lesson 6A: Địa điểm du lịch',
+                '6A_adj': 'Lesson 6A: Tính từ miêu tả',
+                '6E': 'Lesson 6E: Sân bay & Chuyến bay',
+                '6F': 'Lesson 6F: Đồ dùng & Hoạt động'
+            };
+            document.getElementById('card-category-badge').innerText = categoryLabels[item.category] || 'Unit 6: Tourism & Travel';
+
+            // Reset AI Image container
+            const imgContainer = document.getElementById('ai-image-container');
+            imgContainer.classList.add('hidden');
+            document.getElementById('ai-image').src = '';
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            let next = (currentIndex + 1) % activeList.length;
+            loadFlashcard(next);
+        }
+
+        function prevCard() {
+            let prev = (currentIndex - 1 + activeList.length) % activeList.length;
+            loadFlashcard(prev);
+        }
+
+        function shuffleCurrentCards() {
+            activeList.sort(() => Math.random() - 0.5);
+            loadFlashcard(0);
+        }
+
+        function speakWord(textToSpeak) {
+            const word = textToSpeak || activeList[currentIndex].term;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateAIImage() {
+            const item = activeList[currentIndex];
+            const cleanTerm = item.term.replace(/\s+/g, '-').toLowerCase();
+            const prompt = encodeURIComponent(`high quality clean travel photography of ${cleanTerm}, tourism vacation destination adventure sightseeing concept`);
+            const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?width=250&height=250&nologo=true`;
+
+            const imgContainer = document.getElementById('ai-image-container');
+            const img = document.getElementById('ai-image');
+            img.src = imageUrl;
+            imgContainer.classList.remove('hidden');
+        }
+
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                const flashcardTabVisible = !document.getElementById('view-flashcards').classList.contains('hidden');
+                if (!flashcardTabVisible) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.code === 'ArrowRight') {
+                    nextCard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevCard();
+                }
+            });
+        }
+
+        // 2. QUIZ / LEARN MODE LOGIC
+        function startQuiz() {
+            quizQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(10, activeList.length));
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = '0';
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-counter').innerText = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question-word').innerText = q.term;
+            document.getElementById('quiz-pos-ipa').innerText = `${q.type} • ${q.ipa}`;
+
+            // Generate 4 options (1 correct, 3 wrong from overall vocab)
+            let wrongOptions = vocabData.filter(item => item.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [q, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-4 rounded-xl border-2 border-slate-200 text-left font-medium text-slate-800 hover:border-cyan-600 hover:bg-cyan-50/50 transition-all flex items-start gap-2 text-sm";
+                btn.innerHTML = `<span class="inline-block mt-0.5 text-cyan-700"><i class="fa-regular fa-circle-dot"></i></span> <span>${opt.meaning}</span>`;
+                btn.onclick = () => handleQuizAnswer(opt.id === q.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(isCorrect, buttonEl) {
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-600');
+                buttonEl.classList.add('bg-emerald-50', 'border-emerald-600', 'text-emerald-900');
+                quizScore += 1;
+                document.getElementById('quiz-score').innerText = quizScore;
+            } else {
+                buttonEl.classList.remove('border-slate-200', 'hover:border-cyan-600');
+                buttonEl.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+            }
+
+            setTimeout(() => {
+                quizIndex++;
+                loadQuizQuestion();
+            }, 800);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = `Bạn đã trả lời đúng ${quizScore} / ${quizQuestions.length} câu hỏi!`;
+            if (quizScore === quizQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 3. LISTEN & SPELL MODE LOGIC
+        function startSpellMode() {
+            spellQuestions = [...activeList].sort(() => Math.random() - 0.5).slice(0, Math.min(8, activeList.length));
+            spellIndex = 0;
+            spellScore = 0;
+            document.getElementById('spell-result').classList.add('hidden');
+            document.getElementById('spell-content').classList.remove('hidden');
+            loadSpellWord();
+        }
+
+        function loadSpellWord() {
+            if (spellIndex >= spellQuestions.length) {
+                showSpellResult();
+                return;
+            }
+
+            const item = spellQuestions[spellIndex];
+            document.getElementById('spell-counter').innerText = `Từ ${spellIndex + 1} / ${spellQuestions.length}`;
+            document.getElementById('spell-hint-type').innerText = `(${item.type}) ${item.ipa}`;
+            document.getElementById('spell-hint-vietnamese').innerText = item.meaning;
+            const input = document.getElementById('spell-input');
+            input.value = '';
+            input.focus();
+            document.getElementById('spell-feedback').innerHTML = '';
+
+            playSpellAudio();
+        }
+
+        function playSpellAudio() {
+            if (spellIndex < spellQuestions.length) {
+                speakWord(spellQuestions[spellIndex].term);
+            }
+        }
+
+        function handleSpellSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('spell-input');
+            const feedback = document.getElementById('spell-feedback');
+            const currentItem = spellQuestions[spellIndex];
+
+            const userText = input.value.trim().toLowerCase();
+            const targetText = currentItem.term.trim().toLowerCase();
+
+            if (userText === targetText) {
+                feedback.innerHTML = `<span class="text-cyan-700"><i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Tuyệt vời.</span>`;
+                spellScore++;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Chưa đúng! Đáp án đúng: <strong>${currentItem.term}</strong></span>`;
+                setTimeout(() => {
+                    spellIndex++;
+                    loadSpellWord();
+                }, 2000);
+            }
+        }
+
+        function showSpellResult() {
+            document.getElementById('spell-content').classList.add('hidden');
+            document.getElementById('spell-result').classList.remove('hidden');
+            document.getElementById('spell-final-score').innerText = `Bạn đã hoàn thành bài viết chính tả với ${spellScore} / ${spellQuestions.length} từ chính xác.`;
+            if (spellScore === spellQuestions.length) {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // 4. MATCH GAME LOGIC
+        function startMatchGame() {
+            clearInterval(matchTimerInterval);
+            document.getElementById('match-win').classList.add('hidden');
+            document.getElementById('match-grid').classList.remove('hidden');
+
+            const selected = [...activeList].sort(() => Math.random() - 0.5).slice(0, 6);
+            matchCards = [];
+
+            selected.forEach(item => {
+                matchCards.push({ id: item.id, content: item.term, type: 'term' });
+                matchCards.push({ id: item.id, content: item.meaning, type: 'meaning' });
+            });
+
+            matchCards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+            matchedPairs = 0;
+            firstCard = null;
+            secondCard = null;
+            matchLock = false;
+
+            matchCards.forEach((card) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "match-card h-28 p-3 rounded-xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center text-center cursor-pointer text-xs sm:text-sm font-semibold text-slate-800 shadow-sm hover:border-cyan-500 hover:bg-white transition-all select-none";
+                cardEl.innerText = card.content;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.type = card.type;
+                cardEl.onclick = () => handleMatchCardClick(cardEl);
+                grid.appendChild(cardEl);
+            });
+
+            // Start timer
+            matchStartTime = Date.now();
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                document.getElementById('match-timer').innerText = `${elapsed}s`;
+            }, 100);
+        }
+
+        function handleMatchCardClick(cardEl) {
+            if (matchLock || cardEl.classList.contains('matched') || cardEl === firstCard) return;
+
+            cardEl.classList.add('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
+
+            if (!firstCard) {
+                firstCard = cardEl;
+                return;
+            }
+
+            secondCard = cardEl;
+            matchLock = true;
+
+            // Check if match
+            if (firstCard.dataset.id === secondCard.dataset.id && firstCard.dataset.type !== secondCard.dataset.type) {
+                setTimeout(() => {
+                    firstCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
+                    secondCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950');
+
+                    firstCard.classList.add('matched', 'invisible', 'opacity-0');
+                    secondCard.classList.add('matched', 'invisible', 'opacity-0');
+
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                    matchedPairs++;
+
+                    if (matchedPairs === 6) {
+                        finishMatchGame();
+                    }
+                }, 400);
+            } else {
+                firstCard.classList.add('border-rose-500', 'bg-rose-50');
+                secondCard.classList.add('border-rose-500', 'bg-rose-50');
+
+                setTimeout(() => {
+                    firstCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
+                    secondCard.classList.remove('border-cyan-600', 'bg-cyan-50', 'text-cyan-950', 'border-rose-500', 'bg-rose-50');
+                    firstCard = null;
+                    secondCard = null;
+                    matchLock = false;
+                }, 700);
+            }
+        }
+
+        function finishMatchGame() {
+            clearInterval(matchTimerInterval);
+            const totalTime = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+            document.getElementById('match-grid').classList.add('hidden');
+            document.getElementById('match-win').classList.remove('hidden');
+            document.getElementById('match-final-time').innerText = `${totalTime} giây`;
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
