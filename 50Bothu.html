@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>50 Bộ Thủ Cốt Lõi Hán Tự - TOCFL & Academic Quizlet</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans for Latin/English & Noto Sans TC for Traditional Chinese -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            hanzi: ['"Noto Sans TC"', '"PingFang TC"', '"Microsoft JhengHei"', '"Heiti TC"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 3D Flashcard flip styling */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-200 antialiased flex flex-col">
+
+  <!-- Header & Navigation -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white font-hanzi font-bold text-xl shadow-md shadow-indigo-500/20">
+            部
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
+                RadicalMaster
+              </span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                TOCFL 50
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">50 Bộ Thủ Cốt Lõi Chiếm 80% Chữ Hán Thường Gặp</p>
+          </div>
+        </div>
+
+        <!-- Top Right Actions: Dark mode & Sound & Stats -->
+        <div class="flex items-center gap-3">
+          <div class="hidden md:flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200/80 dark:border-slate-700">
+            <span>Tiến độ:&nbsp;</span>
+            <span id="learnedCounter" class="text-indigo-600 dark:text-indigo-400 font-bold">0</span>
+            <span class="mx-1">/</span>
+            <span id="totalRadicalsHeader">50</span>
+          </div>
+
+          <!-- Dark mode toggle -->
+          <button id="themeToggleBtn" title="Chuyển đổi giao diện Sáng/Tối" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-indigo-600"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode Selector Navigation Tabs -->
+    <div class="bg-slate-100/70 dark:bg-slate-900/60 border-t border-slate-200/70 dark:border-slate-800/80 overflow-x-auto scrollbar-none">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-2 py-1.5">
+        <button class="nav-btn active-tab" data-mode="flashcards">
+          <i data-lucide="layers" class="w-4 h-4"></i>
+          <span>Thẻ Ghi Nhớ 3D</span>
+        </button>
+        <button class="nav-btn" data-mode="quiz">
+          <i data-lucide="help-circle" class="w-4 h-4"></i>
+          <span>Quiz Trắc Nghiệm</span>
+        </button>
+        <button class="nav-btn" data-mode="match">
+          <i data-lucide="grid-2x2" class="w-4 h-4"></i>
+          <span>Ghép Thẻ (Match)</span>
+        </button>
+        <button class="nav-btn" data-mode="spell">
+          <i data-lucide="headphones" class="w-4 h-4"></i>
+          <span>Nghe & Chính Tả</span>
+        </button>
+        <button class="nav-btn" data-mode="list">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>Bảng Tra 50 Bộ Thủ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col gap-6">
+
+    <!-- Category Filter Bar (Present in most learning modes) -->
+    <section id="filterSection" class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800">
+      <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap flex items-center gap-1.5">
+          <i data-lucide="filter" class="w-3.5 h-3.5 text-indigo-500"></i> Chủ đề:
+        </span>
+        <select id="groupSelect" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="all">Tất cả (50 Bộ thủ cốt lõi)</option>
+          <option value="1">Nhóm 1: Con người & Hành động (10 bộ)</option>
+          <option value="2">Nhóm 2: Thiên nhiên & Nguyên tố (10 bộ)</option>
+          <option value="3">Nhóm 3: Động vật & Thực vật (8 bộ)</option>
+          <option value="4">Nhóm 4: Nhà cửa & Cấu trúc (7 bộ)</option>
+          <option value="5">Nhóm 5: Đồ dùng & Công cụ (8 bộ)</option>
+          <option value="6">Nhóm 6: Chuyển động & Trạng thái (7 bộ)</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 ml-auto">
+        <span class="hidden sm:inline">Số bộ đang chọn:</span>
+        <span id="filteredCountBadge" class="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold px-2.5 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/60">50 bộ</span>
+      </div>
+    </section>
+
+    <!-- MODE 1: 3D FLASHCARDS -->
+    <section id="flashcardsView" class="view-panel flex flex-col items-center flex-1 justify-center max-w-3xl mx-auto w-full">
+      <!-- Top controls & progress -->
+      <div class="w-full flex items-center justify-between mb-3 px-1 text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium text-xs" id="cardGroupTag">
+            Nhóm 1: Con người
+          </span>
+          <span id="cardCounter" class="font-bold text-indigo-600 dark:text-indigo-400">1 / 50</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs">
+          <span class="hidden sm:inline text-slate-400 font-normal">Phím tắt:</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-mono text-[10px]">Space</kbd> Lật
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-mono text-[10px] ml-1">←</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-mono text-[10px]">→</kbd> Đổi thẻ
+        </div>
+      </div>
+
+      <!-- 3D Card Container -->
+      <div class="w-full aspect-[4/3] sm:aspect-[16/10] max-h-[460px] perspective-1000 cursor-pointer select-none" id="flashcardBox">
+        <div id="flashcardInner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-slate-950/60 border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900">
+          
+          <!-- FRONT FACE -->
+          <div class="absolute inset-0 w-full h-full backface-hidden rounded-3xl p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-950">
+            <div class="flex items-center justify-between">
+              <span class="text-xs uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Mặt trước (Nhận diện)
+              </span>
+              <div class="flex items-center gap-2">
+                <button type="button" class="audio-btn p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition" title="Nghe phát âm">
+                  <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Central Content -->
+            <div class="flex flex-col items-center justify-center my-auto text-center">
+              <div class="flex items-baseline gap-3">
+                <h1 id="frontHanzi" class="font-hanzi font-black text-7xl sm:text-8xl text-slate-800 dark:text-white drop-shadow-sm">
+                  人
+                </h1>
+                <span id="frontVariants" class="font-hanzi text-3xl sm:text-4xl text-indigo-600 dark:text-indigo-400 font-semibold" title="Biến thể">
+                  (亻)
+                </span>
+              </div>
+              <p id="frontPinyin" class="mt-2 text-xl font-bold text-slate-600 dark:text-slate-300 tracking-wide font-sans">
+                rén
+              </p>
+              <div class="mt-3 flex items-center gap-2">
+                <span id="frontHanViet" class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                  Hán Việt: Nhân
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
+              <span class="flex items-center gap-1">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i> Bấm thẻ hoặc Space để xem nghĩa chi tiết
+              </span>
+              <span class="font-mono text-[11px]" id="radicalIndexCode">RAD-01</span>
+            </div>
+          </div>
+
+          <!-- BACK FACE -->
+          <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-3xl p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-indigo-50/50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div>
+                <span class="text-xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-400">
+                  Ý Nghĩa & Phân Tích
+                </span>
+                <h2 id="backNameMeaning" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2 font-hanzi">
+                  Người (Nhân)
+                </h2>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- AI Generate Image button -->
+                <button type="button" id="aiImageBtn" class="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 text-xs font-semibold flex items-center gap-1.5 transition border border-purple-200 dark:border-purple-800" title="Sinh ảnh liên tưởng bằng Pollinations AI">
+                  <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+                  <span>AI Tạo Ảnh</span>
+                </button>
+                <button type="button" class="audio-btn p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300">
+                  <i data-lucide="volume-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Back Middle Details -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-2 text-left">
+              <div class="space-y-2">
+                <div class="bg-white/80 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700/60 shadow-xs">
+                  <span class="text-xs font-semibold text-slate-400 block mb-0.5">Ý nghĩa kết nối & Logic:</span>
+                  <p id="backConnection" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                    Các hoạt động, trạng thái và mối quan hệ của con người.
+                  </p>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700/60 shadow-xs">
+                  <span class="text-xs font-semibold text-slate-400 block mb-0.5">Định nghĩa tiếng Anh (English):</span>
+                  <p id="backEnglishDef" class="text-xs sm:text-sm text-indigo-600 dark:text-indigo-300 font-medium">
+                    Person, human, people, behavior.
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <div class="bg-white/80 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60 shadow-xs">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Ví dụ chữ Hán thường gặp:</span>
+                    <span class="text-[10px] text-indigo-500 font-medium">Bấm chữ để nghe phát âm</span>
+                  </div>
+                  <div id="backExamples" class="flex flex-wrap gap-2.5 font-hanzi">
+                    <!-- generated dynamically with enlarged font size -->
+                  </div>
+                </div>
+                <!-- Container for AI generated visual if triggered -->
+                <div id="aiImageContainer" class="hidden relative rounded-xl overflow-hidden border border-purple-200 dark:border-purple-800 max-h-24 bg-slate-900">
+                  <img id="aiGeneratedImg" src="" alt="AI Visual" class="w-full h-24 object-cover">
+                  <div class="absolute bottom-0 inset-x-0 bg-slate-950/70 text-[10px] text-white p-1 text-center font-mono truncate" id="aiImagePrompt"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span class="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Chuẩn phồn thể TOCFL & Anki
+              </span>
+              <span>Bấm lần nữa để lật lại</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Navigation Buttons below card -->
+      <div class="w-full max-w-md flex items-center justify-between mt-5 gap-3">
+        <button id="prevCardBtn" class="flex-1 py-3 px-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm shadow-sm hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition flex items-center justify-center gap-2">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Thẻ Trước</span>
+        </button>
+        <button id="flipCardBtn" class="py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-lg shadow-indigo-500/25 transition flex items-center justify-center gap-2">
+          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+          <span>Lật Thẻ</span>
+        </button>
+        <button id="nextCardBtn" class="flex-1 py-3 px-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm shadow-sm hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition flex items-center justify-center gap-2">
+          <span>Thẻ Sau</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- MODE 2: MEANING & CONTEXT QUIZ -->
+    <section id="quizView" class="view-panel hidden flex-col items-center max-w-2xl mx-auto w-full">
+      <div class="w-full bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/90 dark:border-slate-800">
+        
+        <!-- Quiz Header Stats -->
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">TOCFL Quiz Mode</span>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white" id="quizQuestionType">Nhận diện bộ thủ</h3>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 font-bold" id="quizScoreText">Điểm: 0/0 (0%)</span>
+            <span class="text-xs text-slate-400 font-mono" id="quizProgressNum">1/10</span>
+          </div>
+        </div>
+
+        <!-- Question Prompt Area -->
+        <div class="my-4 text-center">
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-2" id="quizPromptQuestion">
+            Bộ thủ dưới đây mang ý nghĩa cốt lõi là gì?
+          </p>
+          <div class="inline-flex items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700 mb-2">
+            <span id="quizMainSymbol" class="font-hanzi font-black text-6xl text-slate-800 dark:text-white">水</span>
+            <span id="quizSubSymbol" class="font-hanzi text-2xl text-indigo-500 ml-2 font-bold">(氵)</span>
+          </div>
+          <p id="quizHintText" class="text-xs text-slate-400 italic">Pinyin: shuǐ | Âm Hán Việt: Thủy</p>
+        </div>
+
+        <!-- Options grid -->
+        <div id="quizOptionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+          <!-- Options populated by JS -->
+        </div>
+
+        <!-- Feedback & Next Button -->
+        <div id="quizFeedbackBox" class="hidden p-4 rounded-2xl mb-4 text-sm flex items-start gap-3">
+          <div id="quizFeedbackIcon"></div>
+          <div>
+            <p id="quizFeedbackTitle" class="font-bold"></p>
+            <p id="quizFeedbackDetail" class="text-xs mt-1 text-slate-600 dark:text-slate-300"></p>
+          </div>
+        </div>
+
+        <button id="quizNextBtn" class="hidden w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+          <span>Câu Tiếp Theo</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- MODE 3: MATCH GAME -->
+    <section id="matchView" class="view-panel hidden flex-col max-w-4xl mx-auto w-full">
+      <!-- Game header & timer -->
+      <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 mb-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+            <i data-lucide="timer" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Thời Gian</div>
+            <div id="matchTimer" class="font-mono text-xl font-extrabold text-slate-800 dark:text-white">00:00.0</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-xs text-slate-400 font-medium">Đã Ghép</div>
+            <div class="font-bold text-indigo-600 dark:text-indigo-400" id="matchPairsCount">0 / 8 cặp</div>
+          </div>
+          <button id="restartMatchBtn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" title="Chơi lại ván mới">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Match Cards Grid (16 cards: 8 Hanzi, 8 Meanings) -->
+      <div id="matchGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 select-none">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- MODE 4: LISTEN & SPELL (DICTATION) -->
+    <section id="spellView" class="view-panel hidden flex-col items-center max-w-xl mx-auto w-full">
+      <div class="w-full bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 text-center">
+        
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Luyện Nghe & Chính Tả</span>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1 mb-6">Nghe Phát Âm & Nhập Pinyin hoặc Tên Hán Việt</h3>
+
+        <!-- Big Audio button -->
+        <button id="spellPlayAudioBtn" class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-indigo-600 to-sky-500 hover:scale-105 active:scale-95 text-white flex items-center justify-center shadow-lg shadow-indigo-500/30 transition mb-6">
+          <i data-lucide="volume-2" class="w-10 h-10"></i>
+        </button>
+
+        <!-- Hint accordion -->
+        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl mb-6 text-left border border-slate-100 dark:border-slate-800">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+            <span class="font-bold">Gợi ý nghĩa & tượng hình:</span>
+            <span id="spellGroupLabel" class="text-indigo-500 font-semibold">Nhóm 1</span>
+          </div>
+          <p id="spellMeaningHint" class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+            Hành động dùng tay (cầm, nắm, đẩy, đánh)
+          </p>
+          <div class="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+            <span class="text-xs text-slate-400 block mb-1">Chữ ví dụ thường gặp:</span>
+            <div id="spellCharExample" class="flex flex-wrap gap-2 font-hanzi">
+              <!-- Rendered with prominent size -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Input form -->
+        <form id="spellForm" class="space-y-4">
+          <div class="relative">
+            <input 
+              type="text" 
+              id="spellInput" 
+              autocomplete="off" 
+              placeholder="Nhập Pinyin (ví dụ: shou) hoặc Hán Việt (Thủ)..."
+              class="w-full px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white font-medium focus:outline-none focus:border-indigo-500 transition text-center"
+            >
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="spellShowAnswerBtn" class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white text-xs font-semibold">
+              Hiện đáp án
+            </button>
+            <button type="submit" class="flex-1 py-3 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition">
+              Kiểm Tra
+            </button>
+          </div>
+        </form>
+
+        <div id="spellFeedback" class="mt-4 hidden p-3 rounded-xl text-sm font-semibold"></div>
+
+      </div>
+    </section>
+
+    <!-- MODE 5: RADICALS DIRECTORY / SEARCH TABLE -->
+    <section id="listView" class="view-panel hidden flex-col w-full">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4">
+          <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <i data-lucide="book" class="w-5 h-5 text-indigo-500"></i>
+            <span>50 Bộ Thủ Cốt Lõi (Phồn Thể & Giản Thể TOCFL)</span>
+          </h3>
+          <div class="relative w-full sm:w-64">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <input type="text" id="directorySearchInput" placeholder="Tìm bộ thủ, pinyin, nghĩa..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-500 uppercase tracking-wider text-[11px] font-bold">
+              <tr>
+                <th class="p-3 rounded-l-xl">Bộ thủ</th>
+                <th class="p-3">Hán Việt / Pinyin</th>
+                <th class="p-3">Tên & Nghĩa cốt lõi</th>
+                <th class="p-3">Ví dụ chữ Hán</th>
+                <th class="p-3">Ý nghĩa kết nối</th>
+                <th class="p-3 rounded-r-xl text-center">Phát âm</th>
+              </tr>
+            </thead>
+            <tbody id="radicalsTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal / Floating Card Details (if needed) -->
+  <div id="modalBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <!-- Content injected dynamically -->
+  </div>
+
+  <!-- APPLICATION SCRIPT & DATABASE -->
+  <script>
+    /* =====================================================================
+       FULL 50 RADICALS DATABASE (Divided across 6 thematic groups)
+       Includes Traditional/Simplified, Pinyin, Sino-Vietnamese, Meaning, 
+       English definitions, Examples with contextual breakdown.
+       ===================================================================== */
+    const RADICALS_DATA = [
+      // Nhóm 1: Con người & Hành động (10 bộ)
+      { id: 1, group: 1, groupName: "Con người & Hành động", hanzi: "人", variant: "亻", pinyin: "rén", hanViet: "Nhân", meaning: "Người", english: "Person / Human", connection: "Các hoạt động, trạng thái, mối quan hệ của con người", examples: [{ char: "你", py: "nǐ", mn: "bạn" }, { char: "他", py: "tā", mn: "anh ấy" }, { char: "便", py: "biàn", mn: "tiện lợi" }, { char: "借", py: "jiè", mn: "mượn" }], promptAI: "traditional Chinese calligraphy character person human walking philosophical" },
+      { id: 2, group: 1, groupName: "Con người & Hành động", hanzi: "女", variant: "", pinyin: "nǚ", hanViet: "Nữ", meaning: "Phụ nữ", english: "Woman / Female", connection: "Quan hệ gia đình, tính chất phái nữ, sinh nở", examples: [{ char: "媽/妈", py: "mā", mn: "mẹ" }, { char: "她", py: "tā", mn: "cô ấy" }, { char: "好", py: "hǎo", mn: "tốt" }, { char: "妹", py: "mèi", mn: "em gái" }], promptAI: "ancient chinese pictograph woman female elegance" },
+      { id: 3, group: 1, groupName: "Con người & Hành động", hanzi: "手", variant: "扌", pinyin: "shǒu", hanViet: "Thủ", meaning: "Tay", english: "Hand / Action", connection: "Động tác dùng bàn tay (cầm, nắm, đẩy, đánh, nhấc)", examples: [{ char: "打", py: "dǎ", mn: "đánh" }, { char: "找", py: "zhǎo", mn: "tìm" }, { char: "拿", py: "ná", mn: "cầm" }, { char: "推", py: "tuī", mn: "đẩy" }], promptAI: "stylized hand palm gesture martial art energy" },
+      { id: 4, group: 1, groupName: "Con người & Hành động", hanzi: "口", variant: "", pinyin: "kǒu", hanViet: "Khẩu", meaning: "Miệng", english: "Mouth / Opening", connection: "Hành động liên quan đến miệng (ăn, uống, gọi, nói, hỏi, lỗ mở)", examples: [{ char: "吃", py: "chī", mn: "ăn" }, { char: "喝", py: "hē", mn: "uống" }, { char: "叫", py: "jiào", mn: "kêu/gọi" }, { char: "問/问", py: "wèn", mn: "hỏi" }], promptAI: "open mouth speech bubble minimal icon clean" },
+      { id: 5, group: 1, groupName: "Con người & Hành động", hanzi: "心", variant: "忄", pinyin: "xīn", hanViet: "Tâm", meaning: "Tim / Cảm xúc", english: "Heart / Mind / Feeling", connection: "Tâm lý, cảm xúc, tư duy, sự suy nghĩ, tính cách", examples: [{ char: "想", py: "xiǎng", mn: "nghĩ/nhớ" }, { char: "念", py: "niàn", mn: "niệm/nhớ" }, { char: "快", py: "kuài", mn: "nhanh/vui" }, { char: "慢", py: "màn", mn: "chậm" }], promptAI: "anatomical beating heart glowing with emotional thoughts soul" },
+      { id: 6, group: 1, groupName: "Con người & Hành động", hanzi: "言", variant: "讠", pinyin: "yán", hanViet: "Ngôn", meaning: "Lời nói", english: "Speech / Words / Language", connection: "Lời nói, ngôn ngữ, đàm thoại, giao tiếp, cam kết", examples: [{ char: "說/说", py: "shuō", mn: "nói" }, { char: "話/话", py: "huà", mn: "lời nói" }, { char: "認/认", py: "rèn", mn: "nhận biết" }, { char: "請/请", py: "qǐng", mn: "xin/mời" }], promptAI: "spoken words dialogue soundwaves scrolls poetic" },
+      { id: 7, group: 1, groupName: "Con người & Hành động", hanzi: "目", variant: "", pinyin: "mù", hanViet: "Mục", meaning: "Mắt", english: "Eye / Sight", connection: "Mắt, thị giác, hành động nhìn, quan sát, ngủ", examples: [{ char: "看", py: "kàn", mn: "nhìn/xem" }, { char: "眼", py: "yǎn", mn: "con mắt" }, { char: "睡", py: "shuì", mn: "ngủ" }, { char: "盯", py: "dīng", mn: "nhìn chằm chằm" }], promptAI: "sharp human eye iris vision observation" },
+      { id: 8, group: 1, groupName: "Con người & Hành động", hanzi: "足", variant: "𧾷", pinyin: "zú", hanViet: "Túc", meaning: "Chân", english: "Foot / Leg / Step", connection: "Hành động đi lại, bước chạy, đá, đường đi", examples: [{ char: "跑", py: "pǎo", mn: "chạy" }, { char: "跳", py: "tiào", mn: "nhảy" }, { char: "跟", py: "gēn", mn: "theo sau" }, { char: "路", py: "lù", mn: "con đường" }], promptAI: "athlete running footprints energetic movement trail" },
+      { id: 9, group: 1, groupName: "Con người & Hành động", hanzi: "力", variant: "", pinyin: "lì", hanViet: "Lực", meaning: "Sức lực", english: "Power / Strength / Force", connection: "Sức mạnh cơ bắp, lao động, nỗ lực, trợ giúp", examples: [{ char: "辦/办", py: "bàn", mn: "làm/giải quyết" }, { char: "加", py: "jiā", mn: "thêm/gia tăng" }, { char: "助", py: "zhù", mn: "giúp đỡ" }, { char: "男", py: "nán", mn: "nam giới (lực điền)" }], promptAI: "muscular plow physical strength kinetic energy vector" },
+      { id: 10, group: 1, groupName: "Con người & Hành động", hanzi: "彳", variant: "", pinyin: "chì", hanViet: "Xích", meaning: "Bước chân trái", english: "Step / Stride / Walk", connection: "Chuyển động trên đường, bước đi, hành vi, đi lại", examples: [{ char: "很", py: "hěn", mn: "rất" }, { char: "行", py: "xíng", mn: "đi/được" }, { char: "得", py: "dé", mn: "được" }, { char: "往", py: "wǎng", mn: "hướng về" }], promptAI: "footsteps crossroads wanderer travel path" },
+
+      // Nhóm 2: Thiên nhiên & Nguyên tố (10 bộ)
+      { id: 11, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "水", variant: "氵", pinyin: "shuǐ", hanViet: "Thủy", meaning: "Nước", english: "Water / Liquid", connection: "Nước, sông suối, chất lỏng, hành động liên quan đến nước", examples: [{ char: "河", py: "hé", mn: "dòng sông" }, { char: "海", py: "hǎi", mn: "biển cả" }, { char: "洗", py: "xǐ", mn: "rửa" }, { char: "渴", py: "kě", mn: "khát nước" }], promptAI: "clear flowing river water splash ripples nature" },
+      { id: 12, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "火", variant: "灬", pinyin: "huǒ", hanViet: "Hỏa", meaning: "Lửa", english: "Fire / Heat", connection: "Nhiệt độ, nấu nướng, ánh sáng, nhiệt lượng, đốt cháy", examples: [{ char: "熱/热", py: "rè", mn: "nóng" }, { char: "燒/烧", py: "shāo", mn: "đốt/thiêu" }, { char: "點/点", py: "diǎn", mn: "chấm/thắp" }, { char: "照", py: "zhào", mn: "chiếu sáng" }], promptAI: "bonfire campfire blazing flames warmth spark" },
+      { id: 13, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "木", variant: "", pinyin: "mù", hanViet: "Mộc", meaning: "Cây cối / Gỗ", english: "Tree / Wood", connection: "Thực vật thân gỗ, rừng, đồ đạc bàn ghế bằng gỗ", examples: [{ char: "機/机", py: "jī", mn: "máy móc" }, { char: "桌", py: "zhuō", mn: "cái bàn" }, { char: "杯", py: "bēi", mn: "cái cốc" }, { char: "校", py: "xiào", mn: "trường học" }], promptAI: "majestic ancient oak tree deep forest roots green leaves" },
+      { id: 14, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "日", variant: "", pinyin: "rì", hanViet: "Nhật", meaning: "Mặt trời / Ngày", english: "Sun / Day / Date", connection: "Thời gian, ánh sáng ban ngày, chu kỳ ngày tháng", examples: [{ char: "明", py: "míng", mn: "sáng sủa" }, { char: "時/时", py: "shí", mn: "thời gian" }, { char: "早", py: "zǎo", mn: "sớm" }, { char: "昨", py: "zuó", mn: "hôm qua" }], promptAI: "radiant sunrise golden dawn shining horizon" },
+      { id: 15, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "月", variant: "⺼", pinyin: "yuè", hanViet: "Nguyệt / Nhục", meaning: "Mặt trăng / Thịt cơ thể", english: "Moon / Month / Flesh", connection: "Thời gian chu kỳ tháng hoặc các bộ phận nội tạng, bắp thịt cơ thể", examples: [{ char: "期", py: "qí", mn: "kỳ hạn" }, { char: "胖", py: "pàng", mn: "béo" }, { char: "腿", py: "tuǐ", mn: "cái đùi" }, { char: "肚", py: "dù", mn: "cái bụng" }], promptAI: "crescent glowing moon in night sky clouds celestial" },
+      { id: 16, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "土", variant: "", pinyin: "tǔ", hanViet: "Thổ", meaning: "Đất đai", english: "Earth / Soil / Ground", connection: "Đất cát, lãnh thổ, địa điểm, mặt đất, xây dựng", examples: [{ char: "地", py: "dì", mn: "đất/mặt đất" }, { char: "場/场", py: "chǎng", mn: "quảng trường" }, { char: "在", py: "zài", mn: "ở tại" }, { char: "坐", py: "zuò", mn: "ngồi trên đất" }], promptAI: "fertile soil rich ground sprouts fertile terrain" },
+      { id: 17, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "金", variant: "钅", pinyin: "jīn", hanViet: "Kim", meaning: "Kim loại / Vàng", english: "Gold / Metal / Money", connection: "Tiền tệ, khoáng sản, đồ dùng kim khí, chuông, sắc bén", examples: [{ char: "錢/钱", py: "qián", mn: "tiền" }, { char: "錯/错", py: "cuò", mn: "sai (mạ vàng)" }, { char: "鐵/铁", py: "tiě", mn: "sắt" }, { char: "銀/银", py: "yín", mn: "bạc" }], promptAI: "shining gold bars mineral bullion precious metals" },
+      { id: 18, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "風", variant: "风", pinyin: "fēng", hanViet: "Phong", meaning: "Gió", english: "Wind / Breeze / Storm", connection: "Hiện tượng gió bão, không khí luân chuyển, phong thái", examples: [{ char: "刮", py: "guā", mn: "thổi gió" }, { char: "飄/飘", py: "piāo", mn: "bay bổng" }, { char: "颱/台", py: "tái", mn: "bão táp" }], promptAI: "swirling autumn wind carrying leaves atmosphere breeze" },
+      { id: 19, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "雨", variant: "", pinyin: "yǔ", hanViet: "Vũ", meaning: "Mưa", english: "Rain / Weather", connection: "Hiện tượng thời tiết từ trên bầu trời rơi xuống (tuyết, sương, sấm)", examples: [{ char: "雪", py: "xuě", mn: "tuyết" }, { char: "零", py: "líng", mn: "mưa nhỏ/số không" }, { char: "需", py: "xū", mn: "cần thiết" }, { char: "雷", py: "léi", mn: "sấm sét" }], promptAI: "gentle raindrops falling ripples on water serene storm" },
+      { id: 20, group: 2, groupName: "Thiên nhiên & Nguyên tố", hanzi: "山", variant: "", pinyin: "shān", hanViet: "Sơn", meaning: "Núi non", english: "Mountain / Peak", connection: "Địa hình cao, đồi núi, đỉnh cao, hải đảo hiểm trở", examples: [{ char: "歲/岁", py: "suì", mn: "tuổi/năm" }, { char: "峰", py: "fēng", mn: "đỉnh núi" }, { char: "島/岛", py: "dǎo", mn: "hòn đảo" }, { char: "岸", py: "àn", mn: "bờ bến" }], promptAI: "grand mountain peaks misty clouds oriental ink painting" },
+
+      // Nhóm 3: Động vật & Thực vật (8 bộ)
+      { id: 21, group: 3, groupName: "Động vật & Thực vật", hanzi: "艸", variant: "艹", pinyin: "cǎo", hanViet: "Thảo", meaning: "Cỏ cây / Thảo mộc", english: "Grass / Herb / Flora", connection: "Cây cỏ, hoa màu, thực vật thân thảo, rau củ, thuốc men", examples: [{ char: "茶", py: "chá", mn: "trà" }, { char: "菜", py: "cài", mn: "rau" }, { char: "藥/药", py: "yào", mn: "thuốc" }, { char: "花", py: "huā", mn: "hoa tươi" }], promptAI: "lush green herbal meadow wildflowers tea plantation" },
+      { id: 22, group: 3, groupName: "Động vật & Thực vật", hanzi: "犬", variant: "犭", pinyin: "quǎn", hanViet: "Khuyển", meaning: "Chó / Thú bốn chân", english: "Dog / Beast / Quadruped", connection: "Động vật có vú bốn chân, thú dữ, hành vi săn đuổi", examples: [{ char: "狗", py: "gǒu", mn: "chó" }, { char: "貓/猫", py: "māo", mn: "mèo" }, { char: "猜", py: "cāi", mn: "đoán" }, { char: "狂", py: "kuáng", mn: "cuồng nhiệt" }], promptAI: "loyal canine dog sitting alert wilderness wolf" },
+      { id: 23, group: 3, groupName: "Động vật & Thực vật", hanzi: "蟲", variant: "虫", pinyin: "chóng", hanViet: "Trùng", meaning: "Côn trùng / Sâu bọ", english: "Insect / Bug / Reptile", connection: "Côn trùng, sâu bọ, các loài động vật bò sát hoặc thủy sinh nhỏ", examples: [{ char: "蚊", py: "wén", mn: "con muỗi" }, { char: "蛇", py: "shé", mn: "con rắn" }, { char: "蛋", py: "dàn", mn: "quả trứng" }, { char: "蝦/虾", py: "xiā", mn: "con tôm" }], promptAI: "colorful butterfly beetle insects macro nature leaves" },
+      { id: 24, group: 3, groupName: "Động vật & Thực vật", hanzi: "鳥", variant: "鸟", pinyin: "niǎo", hanViet: "Điểu", meaning: "Chim muông", english: "Bird / Feathered creature", connection: "Loài có lông vũ, bay lượn, tiếng hót trên cành", examples: [{ char: "雞/鸡", py: "jī", mn: "con gà" }, { char: "鴨/鸭", py: "yā", mn: "con vịt" }, { char: "鳴/鸣", py: "míng", mn: "chim hót" }], promptAI: "elegant songbird perched on blooming cherry branch" },
+      { id: 25, group: 3, groupName: "Động vật & Thực vật", hanzi: "魚", variant: "鱼", pinyin: "yú", hanViet: "Ngư", meaning: "Cá", english: "Fish / Marine life", connection: "Các loài cá, thủy hải sản, sinh vật đại dương", examples: [{ char: "魯/鲁", py: "lǔ", mn: "lỗ (nước Lỗ)" }, { char: "鮮/鲜", py: "xiān", mn: "tươi mới" }, { char: "鯨/鲸", py: "jīng", mn: "cá voi" }], promptAI: "vibrant koi fish swimming in clear pond lotus" },
+      { id: 26, group: 3, groupName: "Động vật & Thực vật", hanzi: "牛", variant: "牜", pinyin: "niú", hanViet: "Ngưu", meaning: "Trâu / Bò", english: "Ox / Cow / Cattle", connection: "Gia súc cày cấy, tính chất bền bỉ, đồ vật đặc thù", examples: [{ char: "特", py: "tè", mn: "đặc biệt" }, { char: "物", py: "wù", mn: "sự vật" }, { char: "牧", py: "mù", mn: "chăn nuôi" }], promptAI: "strong water buffalo in pasture rural countryside" },
+      { id: 27, group: 3, groupName: "Động vật & Thực vật", hanzi: "馬", variant: "马", pinyin: "mǎ", hanViet: "Mã", meaning: "Ngựa", english: "Horse / Speed", connection: "Ngựa, phương tiện phi nước đại, tốc độ, huấn luyện", examples: [{ char: "騎/骑", py: "qí", mn: "cưỡi ngựa" }, { char: "駕/驾", py: "jià", mn: "lái xe" }, { char: "驗/验", py: "yàn", mn: "kiểm nghiệm" }], promptAI: "noble wild horse galloping through open grasslands" },
+      { id: 28, group: 3, groupName: "Động vật & Thực vật", hanzi: "禾", variant: "", pinyin: "hé", hanViet: "Hòa", meaning: "Cây lúa / Ngũ cốc", english: "Grain / Cereal / Harvest", connection: "Cây lương thực ngũ cốc, mùa màng thu hoạch, tính hòa thuận", examples: [{ char: "秋", py: "qiū", mn: "mùa thu" }, { char: "香", py: "xiāng", mn: "thơm tho" }, { char: "和", py: "hé", mn: "hòa bình" }, { char: "私", py: "sī", mn: "riêng tư" }], promptAI: "golden rice stalk ripe grains harvest golden field" },
+
+      // Nhóm 4: Nhà cửa & Cấu trúc (7 bộ)
+      { id: 29, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "宀", variant: "", pinyin: "mián", hanViet: "Miên", meaning: "Mái nhà", english: "Roof / Shelter / House", connection: "Không gian che chở trong nhà, nơi cư trú, an toàn, tổ ấm", examples: [{ char: "家", py: "jiā", mn: "nhà/gia đình" }, { char: "安", py: "ān", mn: "bình an" }, { char: "定", py: "dìng", mn: "ổn định" }, { char: "客", py: "kè", mn: "khách" }], promptAI: "traditional oriental wooden pavilion roof architectural shelter" },
+      { id: 30, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "广", variant: "", pinyin: "guǎng", hanViet: "Quảng", meaning: "Mái hiên / Tòa nhà", english: "Wide shelter / Building", connection: "Công trình xây dựng tựa sườn núi, cửa tiệm, kho chứa, phòng ốc", examples: [{ char: "店", py: "diàn", mn: "cửa tiệm" }, { char: "府", py: "fǔ", mn: "phủ/dinh cơ" }, { char: "床", py: "chuáng", mn: "giường ngủ" }, { char: "庫/库", py: "kù", mn: "nhà kho" }], promptAI: "broad roof open antique market pagoda facade" },
+      { id: 31, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "門", variant: "门", pinyin: "mén", hanViet: "Môn", meaning: "Cánh cửa lớn", english: "Gate / Door", connection: "Cửa ngõ hai cánh, khoảng cách ra vào, mở và đóng", examples: [{ char: "問/问", py: "wèn", mn: "hỏi" }, { char: "間/间", py: "jiān", mn: "ở giữa/phòng" }, { char: "關/关", py: "guān", mn: "đóng/liên quan" }, { char: "開/开", py: "kāi", mn: "mở" }], promptAI: "ancient grand palace doorway double wooden gate entrance" },
+      { id: 32, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "穴", variant: "", pinyin: "xué", hanViet: "Huyệt", meaning: "Hang hốc / Cái lỗ", english: "Cave / Hole / Den", connection: "Hang động, khoảng không rỗng sâu, lỗ thủng, nghiên cứu sâu", examples: [{ char: "空", py: "kōng", mn: "không gian/trống" }, { char: "穿", py: "chuān", mn: "xuyên qua/mặc" }, { char: "究", py: "jiū", mn: "nghiên cứu" }, { char: "窄", py: "zhǎi", mn: "hẹp hòi" }], promptAI: "stone cave entrance tunnel light at end mystery" },
+      { id: 33, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "戶", variant: "户", pinyin: "hù", hanViet: "Hộ", meaning: "Một cánh cửa", english: "Single Door / Household", connection: "Hộ gia đình, căn phòng, cánh cửa đơn, nơi trú chân", examples: [{ char: "房", py: "fáng", mn: "căn nhà/phòng" }, { char: "所", py: "suǒ", mn: "nơi chốn" }, { char: "扇", py: "shàn", mn: "cánh quạt/cửa" }], promptAI: "rustic cottage door window residential cozy home" },
+      { id: 34, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "邑", variant: "阝(phải)", pinyin: "yì", hanViet: "Ấp", meaning: "Đô thị / Vùng đất", english: "City / Town / County", connection: "Đô thành, ranh giới hành chính, đất phong, xóm giềng", examples: [{ char: "都", py: "dū", mn: "thủ đô/đều" }, { char: "部", py: "bù", mn: "bộ phận/vùng" }, { char: "郵/邮", py: "yóu", mn: "bưu điện" }, { char: "鄰/邻", py: "lín", mn: "hàng xóm" }], promptAI: "ancient walled city aerial citadel urban town" },
+      { id: 35, group: 4, groupName: "Nhà cửa & Cấu trúc", hanzi: "阜", variant: "阝(trái)", pinyin: "fù", hanViet: "Phụ", meaning: "Gò đất / Đồi cao", english: "Mound / Hill / Terrace", connection: "Địa thế cao ráo, bậc thềm, công trình kiến trúc bậc cấp", examples: [{ char: "陽/阳", py: "yáng", mn: "mặt trời/núi dương" }, { char: "陰/阴", py: "yīn", mn: "mặt râm" }, { char: "階/阶", py: "jiē", mn: "bậc thang" }, { char: "院", py: "yuàn", mn: "học viện/sân" }], promptAI: "terrace earthen hill green mound landscape steps" },
+
+      // Nhóm 5: Đồ dùng & Công cụ (8 bộ)
+      { id: 36, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "糸", variant: "纟", pinyin: "mì", hanViet: "Mịch", meaning: "Sợi tơ / Dây gai", english: "Silk / Thread / String", connection: "Dây nhợ, vải vóc, sợi dệt, màu sắc, liên kết chằng chịt", examples: [{ char: "紅/红", py: "hóng", mn: "màu đỏ" }, { char: "紙/纸", py: "zhǐ", mn: "tờ giấy" }, { char: "給/给", py: "gěi", mn: "cho/cung ứng" }, { char: "經/经", py: "jīng", mn: "kinh qua/dệt" }], promptAI: "spool of fine colorful silk threads loom embroidery" },
+      { id: 37, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "衣", variant: "衤", pinyin: "yī", hanViet: "Y", meaning: "Quần áo", english: "Clothes / Garment", connection: "Trang phục, xiêm y, đồ mặc ấm trên cơ thể", examples: [{ char: "褲/裤", py: "kù", mn: "quần" }, { char: "襯/衬", py: "chèn", mn: "áo sơ mi" }, { char: "被", py: "bèi", mn: "chăn màn" }, { char: "裙", py: "qún", mn: "váy đầm" }], promptAI: "traditional hanfu silk robe apparel clothing" },
+      { id: 38, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "刀", variant: "刂", pinyin: "dāo", hanViet: "Đao", meaning: "Con dao / Cắt rạch", english: "Knife / Blade / Cut", connection: "Dụng cụ cắt gọt, sắc nhọn, phân chia, ranh giới, khắc chữ", examples: [{ char: "分", py: "fēn", mn: "phân chia" }, { char: "別/别", py: "bié", mn: "phân biệt" }, { char: "到", py: "dào", mn: "đến nơi" }, { char: "刻", py: "kè", mn: "khắc/khoảnh khắc" }], promptAI: "sharp curved blade steel kitchen tool carving" },
+      { id: 39, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "車", variant: "车", pinyin: "chē", hanViet: "Xa", meaning: "Chiếc xe / Bánh xe", english: "Vehicle / Cart / Wheel", connection: "Phương tiện giao thông, xe cộ, guồng quay vận chuyển", examples: [{ char: "輔/辅", py: "fǔ", mn: "bổ trợ/trục bánh" }, { char: "輛/辆", py: "liàng", mn: "chiếc xe" }, { char: "輪/轮", py: "lún", mn: "bánh xe" }, { char: "輸/输", py: "shū", mn: "vận chuyển/thua" }], promptAI: "wooden cart antique chariot spokes carriage transport" },
+      { id: 40, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "食", variant: "饣", pinyin: "shí", hanViet: "Thực", meaning: "Đồ ăn / Ăn uống", english: "Food / Meal / Eat", connection: "Thức ăn, ẩm thực, bữa cơm, quán xá, no đói", examples: [{ char: "飯/饭", py: "fàn", mn: "cơm" }, { char: "飽/饱", py: "bǎo", mn: "no nê" }, { char: "館/馆", py: "guǎn", mn: "quán ăn" }, { char: "餃/饺", py: "jiǎo", mn: "bánh chẻo" }], promptAI: "steaming bowl of rice dim sum asian feast delicacies" },
+      { id: 41, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "貝", variant: "贝", pinyin: "bèi", hanViet: "Bối", meaning: "Vỏ sò / Tiền cổ", english: "Cowrie Shell / Treasure / Wealth", connection: "Tiền tệ thời cổ đại, tài sản, buôn bán, hàng hóa quý giá", examples: [{ char: "貴/贵", py: "guì", mn: "quý giá/đắt" }, { char: "負/负", py: "fù", mn: "gánh chịu/thua" }, { char: "財/财", py: "cái", mn: "tiền của" }, { char: "買/买", py: "mǎi", mn: "mua" }], promptAI: "precious cowrie sea shell golden pearls currency antiquity" },
+      { id: 42, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "皿", variant: "", pinyin: "mǐn", hanViet: "Mãnh", meaning: "Bát đĩa / Đồ đựng", english: "Dish / Plate / Vessel", connection: "Đồ dùng chứa đựng thức ăn, chén đĩa, khay hộp rộng", examples: [{ char: "盤/盘", py: "pán", mn: "cái đĩa" }, { char: "盒", py: "hé", mn: "cái hộp" }, { char: "益", py: "yì", mn: "tràn đầy/lợi ích" }, { char: "盛", py: "shèng", mn: "thịnh soạn/xới cơm" }], promptAI: "ceramic porcelain plate dish bowl craft dining" },
+      { id: 43, group: 5, groupName: "Đồ dùng & Công cụ", hanzi: "巾", variant: "", pinyin: "jīn", hanViet: "Cân", meaning: "Khăn vải", english: "Towel / Cloth / Turban", connection: "Mảnh vải quấn, khăn lau, nón mũ, cờ hiệu, phụ kiện", examples: [{ char: "幫/帮", py: "bāng", mn: "giúp đỡ (quai giày)" }, { char: "帽", py: "mào", mn: "cái mũ" }, { char: "帶/带", py: "dài", mn: "dải thắt lưng" }, { char: "幅", py: "fú", mn: "bức tranh/khổ vải" }], promptAI: "folded linen fabric cotton cloth bandana texture" },
+
+      // Nhóm 6: Chuyển động & Trạng thái (7 bộ)
+      { id: 44, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "辵", variant: "辶", pinyin: "chuò", hanViet: "Sước", meaning: "Bước đi đường dài", english: "Walk / Movement / Journey", connection: "Khoảng cách, hành trình đi xa, sự chuyển dời, tiễn biệt", examples: [{ char: "過/过", py: "guò", mn: "đi qua" }, { char: "進/进", py: "jìn", mn: "tiến vào" }, { char: "遠/远", py: "yuǎn", mn: "xa xôi" }, { char: "送", py: "sòng", mn: "tiễn đưa" }], promptAI: "winding pathway road stretching into distant sunset travel" },
+      { id: 45, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "走", variant: "", pinyin: "zǒu", hanViet: "Tẩu", meaning: "Chạy / Đi bộ", english: "Run / Walk / Depart", connection: "Vượt qua, thức dậy, khởi động, di chuyển nhanh chóng", examples: [{ char: "起", py: "qǐ", mn: "khởi dậy" }, { char: "超", py: "chāo", mn: "vượt trội" }, { char: "趕/赶", py: "gǎn", mn: "đuổi kịp" }, { char: "越", py: "yuè", mn: "vượt qua" }], promptAI: "silhouette walking energetic traveler strides forward" },
+      { id: 46, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "囗", variant: "", pinyin: "wéi", hanViet: "Vi", meaning: "Khung bao quanh", english: "Enclosure / Boundary", connection: "Không gian bị khép kín xung quanh, bờ cõi, tường thành bao bọc", examples: [{ char: "國/国", py: "guó", mn: "quốc gia" }, { char: "園/园", py: "yuán", mn: "vườn tược" }, { char: "回", py: "huí", mn: "quay về" }, { char: "圖/图", py: "tú", mn: "bản đồ" }], promptAI: "enclosed courtyard square geometric frame perimeter fortress" },
+      { id: 47, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "歹", variant: "", pinyin: "dǎi", hanViet: "Đãi", meaning: "Xấu / Chết chóc", english: "Bad / Death / Decay", connection: "Xương tàn, sự diệt vong, tan vỡ, tổn hại, tàn dư", examples: [{ char: "死", py: "sǐ", mn: "chết" }, { char: "殃", py: "yāng", mn: "tai ương" }, { char: "殘/残", py: "cán", mn: "tàn khốc" }], promptAI: "decay autumn withered broken fragments stillness" },
+      { id: 48, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "攴", variant: "攵", pinyin: "pū", hanViet: "Phộc", meaning: "Đánh nhẹ / Tác động", english: "Tap / Strike / Action", connection: "Hành động gõ nhẹ, chấn chỉnh, giáo dục, sửa chữa, cai trị", examples: [{ char: "放", py: "fàng", mn: "thả ra" }, { char: "政", py: "zhèng", mn: "chính trị" }, { char: "教", py: "jiào", mn: "dạy bảo" }, { char: "改", py: "gǎi", mn: "sửa đổi" }], promptAI: "teacher holding pointer scholar discipline calligraphy desk" },
+      { id: 49, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "十", variant: "", pinyin: "shí", hanViet: "Thập", meaning: "Số mười / Hoàn chỉnh", english: "Ten / Complete / Perfect", connection: "Số mười, tứ phương hội tụ, đầy đủ chu toàn, liên hiệp", examples: [{ char: "準/准", py: "zhǔn", mn: "chuẩn xác" }, { char: "協/协", py: "xié", mn: "hợp sức" }, { char: "博", py: "bó", mn: "uyên bác/rộng" }], promptAI: "geometric cross balance completeness harmony symbol" },
+      { id: 50, group: 6, groupName: "Chuyển động & Trạng thái", hanzi: "匚", variant: "", pinyin: "fāng", hanViet: "Phương", meaning: "Chiếc hộp đựng", english: "Box / Container / Chest", connection: "Khay hộp nằm ngang chứa đồ vật, giấu kín, phân vùng", examples: [{ char: "醫/医", py: "yī", mn: "y học (hộp tên)" }, { char: "區/区", py: "qū", mn: "khu vực" }, { char: "匿", py: "nì", mn: "ẩn giấu" }], promptAI: "ancient wooden treasure chest jewelry box container" }
+    ];
+
+    /* =====================================================================
+       STATE MANAGEMENT
+       ===================================================================== */
+    let currentFilterGroup = "all";
+    let activeRadicalsList = [...RADICALS_DATA];
+    let currentCardIndex = 0;
+    let isCardFlipped = false;
+    let learnedRadicals = new Set();
+
+    // Quiz state
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let currentQuizData = null;
+    let quizAnswered = false;
+
+    // Match game state
+    let matchCards = [];
+    let matchFirstSelected = null;
+    let matchSecondSelected = null;
+    let matchPairsFound = 0;
+    let matchTimerInterval = null;
+    let matchStartTime = null;
+
+    // Dictation state
+    let currentSpellItem = null;
+
+    /* =====================================================================
+       AUDIO / SPEECH SYNTHESIS ENGINE
+       ===================================================================== */
+    function speakText(text, lang = 'zh-TW') {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang; // standard Mandarin Taiwan or CN
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* =====================================================================
+       VIEW NAVIGATION LOGIC
+       ===================================================================== */
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const viewPanels = document.querySelectorAll('.view-panel');
+
+    function switchView(targetMode) {
+      navButtons.forEach(btn => {
+        if (btn.dataset.mode === targetMode) {
+          btn.classList.add('active-tab', 'bg-white', 'dark:bg-slate-800', 'text-indigo-600', 'dark:text-indigo-400', 'shadow-xs');
+          btn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        } else {
+          btn.classList.remove('active-tab', 'bg-white', 'dark:bg-slate-800', 'text-indigo-600', 'dark:text-indigo-400', 'shadow-xs');
+          btn.classList.add('text-slate-600', 'dark:text-slate-400');
+        }
+      });
+
+      viewPanels.forEach(panel => {
+        panel.classList.add('hidden');
+        panel.classList.remove('flex');
+      });
+
+      const currentPanel = document.getElementById(`${targetMode}View`);
+      if (currentPanel) {
+        currentPanel.classList.remove('hidden');
+        currentPanel.classList.add('flex');
+      }
+
+      // Mode-specific initializers
+      if (targetMode === 'flashcards') {
+        renderCurrentCard();
+      } else if (targetMode === 'quiz') {
+        startQuizSession();
+      } else if (targetMode === 'match') {
+        startMatchGame();
+      } else if (targetMode === 'spell') {
+        loadSpellQuestion();
+      } else if (targetMode === 'list') {
+        renderRadicalsTable();
+      }
+    }
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.mode));
+    });
+
+    /* =====================================================================
+       FILTER LOGIC
+       ===================================================================== */
+    const groupSelect = document.getElementById('groupSelect');
+    const filteredCountBadge = document.getElementById('filteredCountBadge');
+
+    function applyFilter(groupId) {
+      currentFilterGroup = groupId;
+      if (groupId === "all") {
+        activeRadicalsList = [...RADICALS_DATA];
+      } else {
+        const num = parseInt(groupId, 10);
+        activeRadicalsList = RADICALS_DATA.filter(r => r.group === num);
+      }
+      filteredCountBadge.textContent = `${activeRadicalsList.length} bộ`;
+      currentCardIndex = 0;
+      isCardFlipped = false;
+      
+      // Update UI for whichever active tab
+      const activeBtn = document.querySelector('.nav-btn.active-tab');
+      const currentMode = activeBtn ? activeBtn.dataset.mode : 'flashcards';
+      if (currentMode === 'flashcards') renderCurrentCard();
+      if (currentMode === 'quiz') startQuizSession();
+      if (currentMode === 'match') startMatchGame();
+      if (currentMode === 'spell') loadSpellQuestion();
+      if (currentMode === 'list') renderRadicalsTable();
+    }
+
+    groupSelect.addEventListener('change', (e) => {
+      applyFilter(e.target.value);
+    });
+
+    /* =====================================================================
+       1. FLASHCARDS 3D ENGINE
+       ===================================================================== */
+    const flashcardBox = document.getElementById('flashcardBox');
+    const flashcardInner = document.getElementById('flashcardInner');
+    const prevCardBtn = document.getElementById('prevCardBtn');
+    const nextCardBtn = document.getElementById('nextCardBtn');
+    const flipCardBtn = document.getElementById('flipCardBtn');
+    const cardCounter = document.getElementById('cardCounter');
+    const cardGroupTag = document.getElementById('cardGroupTag');
+    const radicalIndexCode = document.getElementById('radicalIndexCode');
+    const aiImageBtn = document.getElementById('aiImageBtn');
+    const aiImageContainer = document.getElementById('aiImageContainer');
+    const aiGeneratedImg = document.getElementById('aiGeneratedImg');
+    const aiImagePrompt = document.getElementById('aiImagePrompt');
+
+    function toggleCardFlip() {
+      isCardFlipped = !isCardFlipped;
+      if (isCardFlipped) {
+        flashcardInner.classList.add('rotate-y-180');
+      } else {
+        flashcardInner.classList.remove('rotate-y-180');
+      }
+    }
+
+    function renderCurrentCard() {
+      if (activeRadicalsList.length === 0) return;
+      if (currentCardIndex >= activeRadicalsList.length) currentCardIndex = 0;
+      if (currentCardIndex < 0) currentCardIndex = activeRadicalsList.length - 1;
+
+      const item = activeRadicalsList[currentCardIndex];
+      isCardFlipped = false;
+      flashcardInner.classList.remove('rotate-y-180');
+
+      // Front
+      document.getElementById('frontHanzi').textContent = item.hanzi;
+      document.getElementById('frontVariants').textContent = item.variant ? `(${item.variant})` : '';
+      document.getElementById('frontPinyin').textContent = item.pinyin;
+      document.getElementById('frontHanViet').textContent = `Hán Việt: ${item.hanViet}`;
+      radicalIndexCode.textContent = `RAD-${String(item.id).padStart(2, '0')}`;
+
+      // Back
+      document.getElementById('backNameMeaning').textContent = `${item.meaning} (${item.hanViet})`;
+      document.getElementById('backConnection').textContent = item.connection;
+      document.getElementById('backEnglishDef').textContent = item.english;
+
+      // Examples with enlarged Hanzi characters (text-2xl/3xl, font-black, clear strokes)
+      const examplesDiv = document.getElementById('backExamples');
+      examplesDiv.innerHTML = item.examples.map(ex => `
+        <button type="button" onclick="speakText('${ex.char.split('/')[0]}')" title="Bấm nghe: ${ex.char} (${ex.py})" class="flex flex-col items-center justify-center bg-slate-100 hover:bg-indigo-50 dark:bg-slate-700/80 dark:hover:bg-slate-700 px-3 py-2 rounded-2xl border border-slate-200/90 dark:border-slate-600 shadow-xs hover:border-indigo-400 hover:scale-105 active:scale-95 transition">
+          <span class="font-hanzi font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white leading-tight">${ex.char}</span>
+          <span class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-300 font-sans mt-0.5">${ex.py}</span>
+          <span class="text-[10px] text-slate-400 dark:text-slate-300 font-sans">${ex.mn}</span>
+        </button>
+      `).join('');
+
+      // Reset AI visual box
+      aiImageContainer.classList.add('hidden');
+      aiGeneratedImg.src = '';
+
+      // Stats & progress
+      cardCounter.textContent = `${currentCardIndex + 1} / ${activeRadicalsList.length}`;
+      cardGroupTag.textContent = item.groupName;
+
+      // Track learned
+      learnedRadicals.add(item.id);
+      document.getElementById('learnedCounter').textContent = learnedRadicals.size;
+    }
+
+    function nextCard() {
+      currentCardIndex = (currentCardIndex + 1) % activeRadicalsList.length;
+      renderCurrentCard();
+    }
+
+    function prevCard() {
+      currentCardIndex = (currentCardIndex - 1 + activeRadicalsList.length) % activeRadicalsList.length;
+      renderCurrentCard();
+    }
+
+    flashcardBox.addEventListener('click', (e) => {
+      // Don't flip if clicking interactive buttons inside card
+      if (e.target.closest('button') || e.target.closest('img')) return;
+      toggleCardFlip();
+    });
+
+    flipCardBtn.addEventListener('click', toggleCardFlip);
+    nextCardBtn.addEventListener('click', nextCard);
+    prevCardBtn.addEventListener('click', prevCard);
+
+    // Audio click handlers
+    document.querySelectorAll('.audio-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const item = activeRadicalsList[currentCardIndex];
+        speakText(item.hanzi);
+      });
+    });
+
+    // AI Generate Image via Pollinations.ai API
+    aiImageBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const item = activeRadicalsList[currentCardIndex];
+      const encodedPrompt = encodeURIComponent(`${item.promptAI}, concept art, cinematic lighting, 4k`);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=600&height=300&nologo=true`;
+      
+      aiGeneratedImg.src = imageUrl;
+      aiImagePrompt.textContent = `AI: ${item.meaning} - ${item.english}`;
+      aiImageContainer.classList.remove('hidden');
+    });
+
+    // Keyboard Shortcuts (Space to flip, Arrow keys to navigate)
+    window.addEventListener('keydown', (e) => {
+      const activeBtn = document.querySelector('.nav-btn.active-tab');
+      if (!activeBtn || activeBtn.dataset.mode !== 'flashcards') return;
+      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleCardFlip();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        nextCard();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        prevCard();
+      }
+    });
+
+    /* =====================================================================
+       2. MEANING & CONTEXT QUIZ ENGINE
+       ===================================================================== */
+    const quizOptionsContainer = document.getElementById('quizOptionsContainer');
+    const quizNextBtn = document.getElementById('quizNextBtn');
+    const quizFeedbackBox = document.getElementById('quizFeedbackBox');
+    const quizFeedbackTitle = document.getElementById('quizFeedbackTitle');
+    const quizFeedbackDetail = document.getElementById('quizFeedbackDetail');
+    const quizFeedbackIcon = document.getElementById('quizFeedbackIcon');
+    const quizScoreText = document.getElementById('quizScoreText');
+    const quizProgressNum = document.getElementById('quizProgressNum');
+    const quizMainSymbol = document.getElementById('quizMainSymbol');
+    const quizSubSymbol = document.getElementById('quizSubSymbol');
+    const quizHintText = document.getElementById('quizHintText');
+    const quizPromptQuestion = document.getElementById('quizPromptQuestion');
+
+    function startQuizSession() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      generateQuizQuestion();
+    }
+
+    function generateQuizQuestion() {
+      quizAnswered = false;
+      quizNextBtn.classList.add('hidden');
+      quizFeedbackBox.classList.add('hidden');
+
+      if (activeRadicalsList.length === 0) return;
+      const targetItem = activeRadicalsList[Math.floor(Math.random() * activeRadicalsList.length)];
+      currentQuizData = targetItem;
+
+      // Pick question type randomly: 1. Identify Meaning from Radical, 2. Identify Character containing Radical
+      const qType = Math.random() > 0.4 ? 'meaning' : 'character';
+
+      quizProgressNum.textContent = `Câu ${currentQuizIndex + 1}`;
+      quizScoreText.textContent = `Điểm: ${quizScore}/${currentQuizIndex} (${currentQuizIndex === 0 ? 0 : Math.round((quizScore / currentQuizIndex) * 100)}%)`;
+
+      quizMainSymbol.textContent = targetItem.hanzi;
+      quizSubSymbol.textContent = targetItem.variant ? `(${targetItem.variant})` : '';
+      quizHintText.textContent = `Pinyin: ${targetItem.pinyin} | Âm Hán Việt: ${targetItem.hanViet}`;
+
+      // Build options (1 correct + 3 distractor)
+      const options = [];
+      if (qType === 'meaning') {
+        quizPromptQuestion.textContent = "Bộ thủ này mang ý nghĩa cốt lõi và trường từ vựng nào?";
+        options.push({ text: `${targetItem.meaning} (${targetItem.english})`, correct: true, detail: targetItem.connection });
+        
+        // Random distractor meanings
+        const others = RADICALS_DATA.filter(r => r.id !== targetItem.id);
+        const shuffled = [...others].sort(() => 0.5 - Math.random()).slice(0, 3);
+        shuffled.forEach(item => {
+          options.push({ text: `${item.meaning} (${item.english})`, correct: false, detail: item.connection });
+        });
+      } else {
+        quizPromptQuestion.textContent = "Chữ Hán nào dưới đây CHỨA bộ thủ này hoặc biến thể của nó?";
+        const sampleChar = targetItem.examples[0].char;
+        options.push({ text: `${sampleChar} (${targetItem.examples[0].mn})`, correct: true, detail: `Chữ ${sampleChar} chứa bộ ${targetItem.hanzi}` });
+
+        // Distractor characters from other radicals
+        const otherExamples = [];
+        RADICALS_DATA.filter(r => r.id !== targetItem.id).forEach(r => {
+          otherExamples.push(...r.examples.map(ex => ({ text: `${ex.char} (${ex.mn})`, correct: false, detail: `Thuộc bộ ${r.hanzi} (${r.meaning})` })));
+        });
+        const distractors = [...otherExamples].sort(() => 0.5 - Math.random()).slice(0, 3);
+        distractors.forEach(d => options.push(d));
+      }
+
+      // Shuffle options
+      const randomized = [...options].sort(() => 0.5 - Math.random());
+
+      quizOptionsContainer.innerHTML = '';
+      randomized.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `p-4 text-left rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 font-semibold text-sm transition flex items-center justify-between group`;
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center text-xs font-mono group-hover:bg-indigo-100 group-hover:text-indigo-600">
+              ${String.fromCharCode(65 + idx)}
+            </span>
+            <span class="text-slate-800 dark:text-slate-100 font-hanzi">${opt.text}</span>
+          </div>
+        `;
+
+        btn.addEventListener('click', () => handleQuizAnswer(opt, btn));
+        quizOptionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(selectedOption, clickedBtn) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      currentQuizIndex++;
+
+      const isCorrect = selectedOption.correct;
+      if (isCorrect) {
+        quizScore++;
+        clickedBtn.classList.remove('border-slate-200', 'dark:border-slate-800');
+        clickedBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40', 'text-emerald-700', 'dark:text-emerald-300');
+        
+        quizFeedbackBox.className = "p-4 rounded-2xl mb-4 text-sm flex items-start gap-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200";
+        quizFeedbackIcon.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>`;
+        quizFeedbackTitle.textContent = "Chính xác! Xuất sắc!";
+        quizFeedbackDetail.textContent = selectedOption.detail || currentQuizData.connection;
+      } else {
+        clickedBtn.classList.remove('border-slate-200', 'dark:border-slate-800');
+        clickedBtn.classList.add('border-rose-500', 'bg-rose-50', 'dark:bg-rose-950/40', 'text-rose-700', 'dark:text-rose-300');
+
+        quizFeedbackBox.className = "p-4 rounded-2xl mb-4 text-sm flex items-start gap-3 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200";
+        quizFeedbackIcon.innerHTML = `<i data-lucide="x-circle" class="w-5 h-5 text-rose-600"></i>`;
+        quizFeedbackTitle.textContent = "Chưa đúng rồi!";
+        quizFeedbackDetail.textContent = `Đáp án đúng là: ${currentQuizData.meaning} (${currentQuizData.hanViet}) - ${currentQuizData.connection}`;
+      }
+
+      lucide.createIcons();
+      quizFeedbackBox.classList.remove('hidden');
+      quizNextBtn.classList.remove('hidden');
+      quizScoreText.textContent = `Điểm: ${quizScore}/${currentQuizIndex} (${Math.round((quizScore / currentQuizIndex) * 100)}%)`;
+    }
+
+    quizNextBtn.addEventListener('click', generateQuizQuestion);
+
+    /* =====================================================================
+       3. MATCH GAME ENGINE (Timed + Fireworks)
+       ===================================================================== */
+    const matchGrid = document.getElementById('matchGrid');
+    const matchTimer = document.getElementById('matchTimer');
+    const matchPairsCount = document.getElementById('matchPairsCount');
+    const restartMatchBtn = document.getElementById('restartMatchBtn');
+
+    function startMatchGame() {
+      clearInterval(matchTimerInterval);
+      matchFirstSelected = null;
+      matchSecondSelected = null;
+      matchPairsFound = 0;
+      matchPairsCount.textContent = `0 / 8 cặp`;
+
+      // Select 8 random items from filtered list
+      const pool = [...activeRadicalsList].sort(() => 0.5 - Math.random()).slice(0, 8);
+      const cards = [];
+
+      pool.forEach(item => {
+        // Radical Card
+        cards.push({
+          uid: `${item.id}_hanzi`,
+          pairId: item.id,
+          display: item.hanzi + (item.variant ? ` / ${item.variant}` : ''),
+          type: 'hanzi',
+          sub: item.pinyin
+        });
+        // Meaning Card
+        cards.push({
+          uid: `${item.id}_meaning`,
+          pairId: item.id,
+          display: `${item.hanViet} (${item.meaning})`,
+          type: 'meaning',
+          sub: item.english
+        });
+      });
+
+      // Shuffle the 16 cards
+      matchCards = cards.sort(() => 0.5 - Math.random());
+      renderMatchBoard();
+
+      // Start timer
+      matchStartTime = Date.now();
+      matchTimerInterval = setInterval(() => {
+        const elapsed = Date.now() - matchStartTime;
+        const mins = String(Math.floor(elapsed / 60000)).padStart(2, '0');
+        const secs = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
+        const tenths = Math.floor((elapsed % 1000) / 100);
+        matchTimer.textContent = `${mins}:${secs}.${tenths}`;
+      }, 100);
+    }
+
+    function renderMatchBoard() {
+      matchGrid.innerHTML = '';
+      matchCards.forEach(card => {
+        const cardEl = document.createElement('div');
+        cardEl.className = `p-4 h-24 sm:h-28 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 cursor-pointer flex flex-col items-center justify-center text-center transition-all duration-200 hover:border-indigo-400 select-none shadow-xs`;
+        cardEl.dataset.uid = card.uid;
+
+        if (card.type === 'hanzi') {
+          cardEl.innerHTML = `
+            <span class="font-hanzi font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white">${card.display}</span>
+            <span class="text-[11px] text-slate-400 font-sans mt-0.5">${card.sub}</span>
+          `;
+        } else {
+          cardEl.innerHTML = `
+            <span class="font-bold text-xs sm:text-sm text-indigo-700 dark:text-indigo-300">${card.display}</span>
+            <span class="text-[10px] text-slate-400 truncate max-w-full px-1">${card.sub}</span>
+          `;
+        }
+
+        cardEl.addEventListener('click', () => handleMatchCardClick(card, cardEl));
+        matchGrid.appendChild(cardEl);
+      });
+    }
+
+    function handleMatchCardClick(card, el) {
+      if (el.classList.contains('matched') || el.classList.contains('selected')) return;
+
+      // Select first
+      if (!matchFirstSelected) {
+        matchFirstSelected = { card, el };
+        el.classList.add('selected', 'border-indigo-600', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+        return;
+      }
+
+      // Second selection
+      matchSecondSelected = { card, el };
+      el.classList.add('selected', 'border-indigo-600', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+
+      // Check match
+      if (matchFirstSelected.card.pairId === matchSecondSelected.card.pairId && matchFirstSelected.card.type !== matchSecondSelected.card.type) {
+        // Matched!
+        setTimeout(() => {
+          matchFirstSelected.el.classList.remove('selected', 'border-indigo-600', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+          matchSecondSelected.el.classList.remove('selected', 'border-indigo-600', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+
+          matchFirstSelected.el.classList.add('matched', 'opacity-30', 'pointer-events-none', 'border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+          matchSecondSelected.el.classList.add('matched', 'opacity-30', 'pointer-events-none', 'border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+
+          matchPairsFound++;
+          matchPairsCount.textContent = `${matchPairsFound} / 8 cặp`;
+
+          // Win Condition
+          if (matchPairsFound === 8) {
+            clearInterval(matchTimerInterval);
+            triggerCelebration();
+          }
+
+          matchFirstSelected = null;
+          matchSecondSelected = null;
+        }, 300);
+      } else {
+        // Mismatched
+        setTimeout(() => {
+          matchFirstSelected.el.classList.add('border-rose-500');
+          matchSecondSelected.el.classList.add('border-rose-500');
+          setTimeout(() => {
+            matchFirstSelected.el.classList.remove('selected', 'border-indigo-600', 'border-rose-500', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+            matchSecondSelected.el.classList.remove('selected', 'border-indigo-600', 'border-rose-500', 'bg-indigo-50/60', 'dark:bg-indigo-950/40');
+            matchFirstSelected = null;
+            matchSecondSelected = null;
+          }, 350);
+        }, 200);
+      }
+    }
+
+    function triggerCelebration() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 250);
+    }
+
+    restartMatchBtn.addEventListener('click', startMatchGame);
+
+    /* =====================================================================
+       4. LISTEN & SPELL / DICTATION ENGINE
+       ===================================================================== */
+    const spellPlayAudioBtn = document.getElementById('spellPlayAudioBtn');
+    const spellMeaningHint = document.getElementById('spellMeaningHint');
+    const spellCharExample = document.getElementById('spellCharExample');
+    const spellGroupLabel = document.getElementById('spellGroupLabel');
+    const spellForm = document.getElementById('spellForm');
+    const spellInput = document.getElementById('spellInput');
+    const spellFeedback = document.getElementById('spellFeedback');
+    const spellShowAnswerBtn = document.getElementById('spellShowAnswerBtn');
+
+    function loadSpellQuestion() {
+      if (activeRadicalsList.length === 0) return;
+      currentSpellItem = activeRadicalsList[Math.floor(Math.random() * activeRadicalsList.length)];
+      
+      spellGroupLabel.textContent = currentSpellItem.groupName;
+      spellMeaningHint.textContent = `${currentSpellItem.meaning} (${currentSpellItem.english})`;
+      
+      // Render large characters in Dictation Hint
+      spellCharExample.innerHTML = currentSpellItem.examples.map(ex => `
+        <span class="inline-flex flex-col items-center bg-white dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xs">
+          <span class="font-hanzi font-bold text-xl sm:text-2xl text-slate-800 dark:text-white">${ex.char}</span>
+          <span class="text-[10px] text-indigo-500 font-sans">${ex.py} (${ex.mn})</span>
+        </span>
+      `).join('');
+      
+      spellInput.value = '';
+      spellFeedback.classList.add('hidden');
+      spellFeedback.textContent = '';
+
+      // Auto play sound softly
+      speakText(currentSpellItem.hanzi);
+    }
+
+    spellPlayAudioBtn.addEventListener('click', () => {
+      if (currentSpellItem) speakText(currentSpellItem.hanzi);
+    });
+
+    spellForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!currentSpellItem) return;
+
+      const userVal = spellInput.value.trim().toLowerCase();
+      const pinyinNoTone = currentSpellItem.pinyin.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const hanVietLower = currentSpellItem.hanViet.toLowerCase();
+      const hanziChar = currentSpellItem.hanzi;
+
+      const isCorrect = userVal === pinyinNoTone || 
+                        userVal === currentSpellItem.pinyin.toLowerCase() || 
+                        userVal === hanVietLower || 
+                        userVal === hanziChar;
+
+      spellFeedback.classList.remove('hidden');
+      if (isCorrect) {
+        spellFeedback.className = "mt-4 p-3 rounded-xl text-sm font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800";
+        spellFeedback.textContent = `Chính xác! Ký tự: ${currentSpellItem.hanzi} | Pinyin: ${currentSpellItem.pinyin} | Hán Việt: ${currentSpellItem.hanViet}`;
+        triggerCelebration();
+        setTimeout(loadSpellQuestion, 2000);
+      } else {
+        spellFeedback.className = "mt-4 p-3 rounded-xl text-sm font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800";
+        spellFeedback.textContent = `Chưa đúng! Thử lại hoặc nhấn 'Hiện đáp án'.`;
+      }
+    });
+
+    spellShowAnswerBtn.addEventListener('click', () => {
+      if (!currentSpellItem) return;
+      spellFeedback.classList.remove('hidden');
+      spellFeedback.className = "mt-4 p-3 rounded-xl text-sm font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800";
+      spellFeedback.textContent = `Đáp án: Ký tự: ${currentSpellItem.hanzi} (${currentSpellItem.variant || ''}) | Pinyin: ${currentSpellItem.pinyin} | Âm Hán Việt: ${currentSpellItem.hanViet}`;
+    });
+
+    /* =====================================================================
+       5. RADICALS DIRECTORY TABLE & SEARCH ENGINE
+       ===================================================================== */
+    const radicalsTableBody = document.getElementById('radicalsTableBody');
+    const directorySearchInput = document.getElementById('directorySearchInput');
+
+    function renderRadicalsTable(filterQuery = "") {
+      const q = filterQuery.toLowerCase().trim();
+      const list = activeRadicalsList.filter(item => {
+        if (!q) return true;
+        return item.hanzi.includes(q) || 
+               item.variant.includes(q) || 
+               item.pinyin.toLowerCase().includes(q) || 
+               item.hanViet.toLowerCase().includes(q) || 
+               item.meaning.toLowerCase().includes(q) ||
+               item.english.toLowerCase().includes(q);
+      });
+
+      radicalsTableBody.innerHTML = list.map(item => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+          <td class="p-3 font-hanzi font-bold text-xl text-slate-900 dark:text-white flex items-center gap-2">
+            <span>${item.hanzi}</span>
+            ${item.variant ? `<span class="text-xs font-normal text-indigo-500 font-sans">(${item.variant})</span>` : ''}
+          </td>
+          <td class="p-3">
+            <span class="font-bold text-slate-800 dark:text-slate-200">${item.hanViet}</span>
+            <span class="text-xs text-slate-400 block font-mono">${item.pinyin}</span>
+          </td>
+          <td class="p-3">
+            <span class="font-semibold text-slate-900 dark:text-slate-100">${item.meaning}</span>
+            <span class="text-xs text-indigo-500 dark:text-indigo-400 block">${item.english}</span>
+          </td>
+          <td class="p-3 font-hanzi">
+            <div class="flex flex-wrap gap-1.5">
+              ${item.examples.map(ex => `
+                <span class="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 px-2.5 py-1 rounded-xl border border-slate-200 dark:border-slate-700">
+                  <span class="font-hanzi font-bold text-lg sm:text-xl text-slate-900 dark:text-white">${ex.char}</span>
+                  <span class="text-[10px] text-slate-400 font-sans">${ex.py}</span>
+                </span>
+              `).join('')}
+            </div>
+          </td>
+          <td class="p-3 text-xs text-slate-500 dark:text-slate-400 max-w-xs">
+            ${item.connection}
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="speakText('${item.hanzi}')" class="p-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900 text-indigo-600 dark:text-indigo-300 transition" title="Nghe">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    directorySearchInput.addEventListener('input', (e) => {
+      renderRadicalsTable(e.target.value);
+    });
+
+    /* =====================================================================
+       DARK/LIGHT THEME TOGGLE
+       ===================================================================== */
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    
+    // Check saved preference or system theme
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      if (document.documentElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    /* =====================================================================
+       INITIALIZATION
+       ===================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      document.getElementById('totalRadicalsHeader').textContent = RADICALS_DATA.length;
+      renderCurrentCard();
+    });
+  </script>
+</body>
+</html>
