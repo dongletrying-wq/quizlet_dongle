@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Band 7.5 Booster - Complete IELTS 6.5-7.5 Companion</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+  </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 text-white flex items-center justify-center font-black text-lg shadow-md shadow-indigo-500/20">
+          7.5
+        </div>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white leading-tight flex items-center gap-2">
+            IELTS Band 7.5 Booster
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">Complete 6.5–7.5 Drills</span>
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Luyện tập sâu Task 1, Task 2, Speaking & Listening theo giáo trình Cambridge</p>
+        </div>
+      </div>
+
+      <!-- Quick Control Actions -->
+      <div class="flex items-center gap-2">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-xs font-semibold">
+          <span class="text-slate-400">Target:</span>
+          <span class="text-indigo-600 dark:text-indigo-400 font-bold">L 7.5+ | W 7.0 | S 7.0</span>
+        </div>
+
+        <select id="voiceAccentSelect" class="text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-2.5 py-1.5 font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500" title="Giọng đọc tiếng Anh">
+          <option value="en-GB">🇬🇧 British (UK)</option>
+          <option value="en-US">🇺🇸 American (US)</option>
+          <option value="en-AU">🇦🇺 Australian (AU)</option>
+        </select>
+
+        <button id="themeToggleBtn" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="Sáng / Tối">
+          <svg id="themeSunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="themeMoonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-6xl mx-auto px-4 flex items-center gap-1.5 overflow-x-auto border-t border-slate-100 dark:border-slate-800 text-xs sm:text-sm font-semibold py-1.5">
+      <button onclick="switchTab('drills')" id="tab-drills" class="tab-btn px-3.5 py-2 rounded-xl text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 flex items-center gap-2 whitespace-nowrap transition font-bold">
+        <span>🎯</span> <span class="text-indigo-600 dark:text-indigo-400 font-extrabold">Bộ Bài Tập Chuyên Sâu 7.0–7.5</span>
+      </button>
+      <button onclick="switchTab('spelling')" id="tab-spelling" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🎧</span> <span class="text-rose-500 font-extrabold">Đặc Trị Listening & Reading Spelling (50+ Từ Bẫy)</span>
+      </button>
+      <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🃏</span> <span>Thẻ 3D Theo Unit & Chủ Đề</span>
+      </button>
+      <button onclick="switchTab('writing')" id="tab-writing" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>✍️</span> <span>Writing Nâng Band Từng Bước (Bậc Thang)</span>
+      </button>
+      <button onclick="switchTab('speaking')" id="tab-speaking" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🗣️</span> <span>Speaking Chunks & Phản Xạ 3 Cấp</span>
+      </button>
+      <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🧩</span> <span>Match Game</span>
+      </button>
+      <button onclick="switchTab('list')" id="tab-list" class="tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>📚</span> <span>Tra Cứu Toàn Bộ Kho Từ Vựng</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-start">
+
+    <!-- =================================================================== -->
+    <!-- TAB 0 (MỚI NHẤT): BỘ BÀI TẬP CHUYÊN SÂU 7.0–7.5 THEO GIÁO TRÌNH -->
+    <!-- =================================================================== -->
+    <div id="view-drills" class="w-full space-y-6">
+      
+      <!-- Banner giới thiệu -->
+      <div class="p-5 rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-sky-600 text-white shadow-lg shadow-indigo-500/20">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 text-white mb-2 inline-block">
+              Complete IELTS Bands 6.5–7.5 Practice Suite
+            </span>
+            <h2 class="text-lg sm:text-2xl font-black mb-1">Bộ Bài Tập Thực Hành Ứng Dụng Kỹ Thuật 7.0–7.5</h2>
+            <p class="text-xs sm:text-sm text-indigo-100 max-w-2xl leading-relaxed">
+              Thực hành trực tiếp các dạng bài tập chiến lược: Nhận diện Main Features Task 1, Ngữ pháp câu chẻ Task 2, Giả định Speaking Part 3 và Giới từ phụ thuộc cốt lõi.
+            </p>
+          </div>
+          <div class="hidden sm:block text-right font-mono text-xs bg-white/10 p-3 rounded-2xl backdrop-blur">
+            <div class="text-indigo-200">Tiến độ bài tập:</div>
+            <div class="text-xl font-black text-white" id="drillsOverallProgress">0 / 7 Hoàn tất</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Drill Category Selector -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-bold">
+        <button onclick="scrollToDrill('drill-task1-main')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          📊 1.1 Main Features Task 1
+        </button>
+        <button onclick="scrollToDrill('drill-task1-vocab')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          📈 1.2 Cụm Biến Động Task 1
+        </button>
+        <button onclick="scrollToDrill('drill-task1-tenses')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          ⏳ 1.3 Phối Hợp Thì
+        </button>
+        <button onclick="scrollToDrill('drill-task2-cleft')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          ⚡ 2.3 Câu Chẻ Cleft
+        </button>
+        <button onclick="scrollToDrill('drill-speaking-habits')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          🗣️ 3.1 Thói Quen Quá Khứ
+        </button>
+        <button onclick="scrollToDrill('drill-speaking-cond')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          🔮 3.2 Cấu Trúc Giả Định
+        </button>
+        <button onclick="scrollToDrill('drill-prep-fix')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-300 whitespace-nowrap shadow-sm">
+          🎯 4.1 Sửa Lỗi Giới Từ
+        </button>
+      </div>
+
+      <!-- BÀI TẬP 1.1: WRITING TASK 1 MAIN FEATURES -->
+      <section id="drill-task1-main" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">1.1</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Identifying & Selecting Main Features</h3>
+              <p class="text-xs text-slate-500">Writing Task 1 • University graduates in Canada (1992–2007)</p>
+            </div>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Select 4 main features</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+          <strong class="text-slate-900 dark:text-white">Chart Overview:</strong> The line graph illustrates the number of university graduates in Canada between 1992 and 2007 (female graduates climbed from approximately 100,000 to 147,000, while male graduates rose from around 70,000 to 95,000). Identify <strong>four statements that accurately describe MAIN FEATURES</strong> suitable for a Band 7.0+ Academic overview:
+        </div>
+
+        <div class="space-y-2.5" id="task1_1_checkboxes">
+          <label class="drill-option flex items-start gap-3 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+            <input type="checkbox" value="1" class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-normal">
+              1. The number of male graduates reached 75,000 in 1992.
+            </span>
+          </label>
+          <label class="drill-option flex items-start gap-3 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+            <input type="checkbox" value="2" class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-normal">
+              2. The overall increase in the number of graduates was not steady across all years.
+            </span>
+          </label>
+          <label class="drill-option flex items-start gap-3 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+            <input type="checkbox" value="3" class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-normal">
+              3. The number of female graduates remained consistently higher than that of males throughout the entire 1992–2007 period.
+            </span>
+          </label>
+          <label class="drill-option flex items-start gap-3 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+            <input type="checkbox" value="4" class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-normal">
+              4. The gap between male and female graduates widened over time.
+            </span>
+          </label>
+          <label class="drill-option flex items-start gap-3 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+            <input type="checkbox" value="5" class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-normal">
+              5. The overall trends and patterns of fluctuation for males and females were strikingly similar.
+            </span>
+          </label>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkTask1_1()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Check Answers
+          </button>
+          <div id="feedback_task1_1" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 1.2: WRITING TASK 1 CỤM BIẾN ĐỘNG NÂNG CAO -->
+      <section id="drill-task1-vocab" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">1.2</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Cụm Từ So Sánh & Biến Động Nâng Cao</h3>
+              <p class="text-xs text-slate-500">Writing Task 1 • Điền cụm từ học thuật thích hợp vào chỗ trống</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/40 rounded-2xl text-xs text-indigo-900 dark:text-indigo-300 font-mono">
+          <strong>Các cụm từ cho sẵn:</strong> was less marked • more significant growth • had widened • flattened out at • saw their strongest growth rate
+        </div>
+
+        <div class="space-y-3.5 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-loose">
+          <p>
+            Trong năm 1992, sự chênh lệch giữa nam và nữ 
+            <select id="gap1_2_1" class="font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 mx-1 text-indigo-600 dark:text-indigo-400">
+              <option value="">-- Chọn cụm từ --</option>
+              <option value="was less marked">was less marked</option>
+              <option value="more significant growth">more significant growth</option>
+              <option value="had widened">had widened</option>
+              <option value="flattened out at">flattened out at</option>
+              <option value="saw their strongest growth rate">saw their strongest growth rate</option>
+            </select>, với con số tương ứng là hơn 70,000 nam và khoảng 100,000 nữ.
+          </p>
+          <p>
+            Tuy nhiên, đến năm 2007, nhóm sinh viên nữ đã chứng kiến 
+            <select id="gap1_2_2" class="font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 mx-1 text-indigo-600 dark:text-indigo-400">
+              <option value="">-- Chọn cụm từ --</option>
+              <option value="was less marked">was less marked</option>
+              <option value="more significant growth">more significant growth</option>
+              <option value="had widened">had widened</option>
+              <option value="flattened out at">flattened out at</option>
+              <option value="saw their strongest growth rate">saw their strongest growth rate</option>
+            </select> khi đạt mức 147,000 so với 95,000 ở nam giới.
+          </p>
+          <p>
+            Do đó, khoảng cách giữa hai nhóm 
+            <select id="gap1_2_3" class="font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 mx-1 text-indigo-600 dark:text-indigo-400">
+              <option value="">-- Chọn cụm từ --</option>
+              <option value="was less marked">was less marked</option>
+              <option value="more significant growth">more significant growth</option>
+              <option value="had widened">had widened</option>
+              <option value="flattened out at">flattened out at</option>
+              <option value="saw their strongest growth rate">saw their strongest growth rate</option>
+            </select>. Xét chi tiết hơn, sau giai đoạn giảm nhẹ, số lượng sinh viên 
+            <select id="gap1_2_4" class="font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 mx-1 text-indigo-600 dark:text-indigo-400">
+              <option value="">-- Chọn cụm từ --</option>
+              <option value="was less marked">was less marked</option>
+              <option value="more significant growth">more significant growth</option>
+              <option value="had widened">had widened</option>
+              <option value="flattened out at">flattened out at</option>
+              <option value="saw their strongest growth rate">saw their strongest growth rate</option>
+            </select> mức khoảng 70,000 đối với nam và 100,000 đối với nữ.
+          </p>
+          <p>
+            Phải đến sau năm 2000, tổng số sinh viên tốt nghiệp mới 
+            <select id="gap1_2_5" class="font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1 mx-1 text-indigo-600 dark:text-indigo-400">
+              <option value="">-- Chọn cụm từ --</option>
+              <option value="was less marked">was less marked</option>
+              <option value="more significant growth">more significant growth</option>
+              <option value="had widened">had widened</option>
+              <option value="flattened out at">flattened out at</option>
+              <option value="saw their strongest growth rate">saw their strongest growth rate</option>
+            </select>.
+          </p>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkTask1_2()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Cụm Từ
+          </button>
+          <div id="feedback_task1_2" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 1.3: PHỐI HỢP THÌ TRONG CHUỖI THỜI GIAN -->
+      <section id="drill-task1-tenses" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">1.3</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Phối Hợp Thì Ngữ Pháp Trong Biểu Đồ Chuỗi Thời Gian</h3>
+              <p class="text-xs text-slate-500">Chuyển động từ trong ngoặc (Past Simple, Present Perfect, Past Perfect)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3.5 text-xs sm:text-sm">
+          <div class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="mb-2 text-slate-800 dark:text-slate-200">
+              1. Between 1995 and 1997, the university (experience) 
+              <input type="text" id="tense_1" placeholder="..." class="w-32 px-2.5 py-1 font-mono font-bold border rounded-lg bg-slate-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400"> a slight increase in science graduates.
+            </p>
+            <span class="text-[11px] text-slate-400 italic">Gợi ý: Khoảng thời gian đóng kín trong quá khứ ➔ Quá khứ đơn.</span>
+          </div>
+
+          <div class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="mb-2 text-slate-800 dark:text-slate-200">
+              2. By 2005, the number of male graduates (reach) 
+              <input type="text" id="tense_2" placeholder="..." class="w-32 px-2.5 py-1 font-mono font-bold border rounded-lg bg-slate-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400"> a peak of 7,800 before falling back.
+            </p>
+            <span class="text-[11px] text-slate-400 italic">Gợi ý: Có mốc "By + năm quá khứ" (Tính đến trước một thời điểm) ➔ Quá khứ hoàn thành.</span>
+          </div>
+
+          <div class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="mb-2 text-slate-800 dark:text-slate-200">
+              3. Figures for international students (rise) 
+              <input type="text" id="tense_3" placeholder="..." class="w-32 px-2.5 py-1 font-mono font-bold border rounded-lg bg-slate-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400"> steadily since 2001.
+            </p>
+            <span class="text-[11px] text-slate-400 italic">Gợi ý: Có liên từ "since + mốc thời gian" kéo dài đến hiện tại ➔ Hiện tại hoàn thành.</span>
+          </div>
+
+          <div class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="mb-2 text-slate-800 dark:text-slate-200">
+              4. Prior to 2002, the university intake (fluctuate) 
+              <input type="text" id="tense_4" placeholder="..." class="w-32 px-2.5 py-1 font-mono font-bold border rounded-lg bg-slate-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400"> significantly.
+            </p>
+            <span class="text-[11px] text-slate-400 italic">Gợi ý: "Prior to + năm quá khứ" (Xảy ra trước một mốc quá khứ) ➔ Quá khứ hoàn thành.</span>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkTask1_3()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Chia Thì
+          </button>
+          <div id="feedback_task1_3" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 2.3: ĐẢO NGỮ & CÂU CHẺ NHẤN MẠNH (CLEFT SENTENCES) -->
+      <section id="drill-task2-cleft" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">2.3</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Cấu Trúc Nhấn Mạnh Bằng Câu Chẻ (Cleft Sentences)</h3>
+              <p class="text-xs text-slate-500">Writing Task 2 • Nâng Grammatical Range với "What... is", "It was... that", "All that..."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <p class="text-slate-500 mb-1">Câu gốc: <em>"Space explorers want to find water on other planets."</em></p>
+            <label class="block font-bold text-slate-900 dark:text-white mb-2">Chuyển sang câu chẻ với <code>What</code>:</label>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">What space explorers</span>
+              <input type="text" id="cleft_1" placeholder="want is to find water on other planets." class="flex-1 px-3 py-1.5 font-mono text-xs sm:text-sm border rounded-xl bg-white dark:bg-slate-800">
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <p class="text-slate-500 mb-1">Câu gốc: <em>"The astronauts enjoyed the space walk most."</em></p>
+            <label class="block font-bold text-slate-900 dark:text-white mb-2">Chuyển sang câu chẻ với <code>It was</code>:</label>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">It was</span>
+              <input type="text" id="cleft_2" placeholder="the space walk that the astronauts enjoyed most." class="flex-1 px-3 py-1.5 font-mono text-xs sm:text-sm border rounded-xl bg-white dark:bg-slate-800">
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <p class="text-slate-500 mb-1">Câu gốc: <em>"We only require political will to set up a permanent base on the Moon."</em></p>
+            <label class="block font-bold text-slate-900 dark:text-white mb-2">Chuyển sang câu chẻ với <code>All that</code>:</label>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">All that</span>
+              <input type="text" id="cleft_3" placeholder="we require to set up a permanent base on the Moon is political will." class="flex-1 px-3 py-1.5 font-mono text-xs sm:text-sm border rounded-xl bg-white dark:bg-slate-800">
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkTask2_3()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Câu Chẻ
+          </button>
+          <div id="feedback_task2_3" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 3.1: SPEAKING PART 1 - THÓI QUEN & SỰ THÍCH NGHI -->
+      <section id="drill-speaking-habits" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">3.1</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Phân Biệt Thói Quen & Sự Thích Nghi Quá Khứ</h3>
+              <p class="text-xs text-slate-500">Speaking Part 1 • Phân biệt 'used to V', 'would V' và 'get used to V-ing'</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="font-medium text-slate-800 dark:text-slate-200 mb-2">1. When I was at school, I used to ________ at 6 a.m. every morning.</p>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="spk_habit_1" value="get up" class="text-indigo-600"> <span class="font-bold">get up</span>
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer ml-3">
+                <input type="radio" name="spk_habit_1" value="getting up" class="text-indigo-600"> <span>getting up</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="font-medium text-slate-800 dark:text-slate-200 mb-2">2. My classmates would often ________ in the library after class.</p>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="spk_habit_2" value="gather" class="text-indigo-600"> <span class="font-bold">gather</span>
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer ml-3">
+                <input type="radio" name="spk_habit_2" value="gathering" class="text-indigo-600"> <span>gathering</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="font-medium text-slate-800 dark:text-slate-200 mb-2">3. When I moved to the capital, I had to get used to ________ in a noisy environment.</p>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="spk_habit_3" value="live" class="text-indigo-600"> <span>live</span>
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer ml-3">
+                <input type="radio" name="spk_habit_3" value="living" class="text-indigo-600"> <span class="font-bold">living</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="font-medium text-slate-800 dark:text-slate-200 mb-2">4. Compared to my high school days, I am much fitter than I used to ________.</p>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="spk_habit_4" value="be" class="text-indigo-600"> <span class="font-bold">be</span>
+              </label>
+              <label class="flex items-center gap-1.5 cursor-pointer ml-3">
+                <input type="radio" name="spk_habit_4" value="being" class="text-indigo-600"> <span>being</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkSpeakingHabits()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Cấu Trúc
+          </button>
+          <div id="feedback_spk_habits" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 3.2: CÂU ĐIỀU KIỆN GIẢ ĐỊNH & ĐẢO NGỮ (SPEAKING 2 & 3) -->
+      <section id="drill-speaking-cond" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">3.2</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Cấu Trúc Điều Kiện Giả Định & Đảo Ngữ Chuyên Sâu</h3>
+              <p class="text-xs text-slate-500">Speaking Part 2 & 3 • Biến đổi thành 'Were it not for' & 'Had it not been for'</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <div class="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40">
+            <p class="text-slate-600 dark:text-slate-300 mb-1">
+              Câu gốc giả định hiện tại: <em>"If my smartphone did not exist, I would lose touch with my friends."</em>
+            </p>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-indigo-600 dark:text-indigo-400 font-mono">If it were not for</span>
+                <input type="text" id="hypo_1" placeholder="my smartphone, I would lose touch with my friends." class="flex-1 px-3 py-1.5 rounded-xl border bg-white dark:bg-slate-800">
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-indigo-600 dark:text-indigo-400 font-mono">Were it not for</span>
+                <input type="text" id="hypo_2" placeholder="my smartphone, I would lose touch with my friends." class="flex-1 px-3 py-1.5 rounded-xl border bg-white dark:bg-slate-800">
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <p class="text-slate-600 dark:text-slate-300 mb-1">
+              Câu gốc giả định quá khứ: <em>"If I had not received support from my tutor, I wouldn't have completed the research."</em>
+            </p>
+            <div class="mt-2 flex items-center gap-2">
+              <span class="font-bold text-indigo-600 dark:text-indigo-400 font-mono">Had it not been for</span>
+              <input type="text" id="hypo_3" placeholder="the support from my tutor, I wouldn't have completed the research." class="flex-1 px-3 py-1.5 rounded-xl border bg-white dark:bg-slate-800">
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkHypothetical()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Cấu Trúc Giả Định
+          </button>
+          <div id="feedback_hypothetical" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- BÀI TẬP 4.1: SỬA LỖI GIỚI TỪ PHỤ THUỘC (DEPENDENT PREPOSITIONS) -->
+      <section id="drill-prep-fix" class="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-black">4.1</span>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Sửa Lỗi Giới Từ Phụ Thuộc (Dependent Prepositions)</h3>
+              <p class="text-xs text-slate-500">Listening & Reading Trap Clinic • Chọn giới từ chính xác để thay thế giới từ bị sai</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3 text-xs sm:text-sm">
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p class="text-slate-800 dark:text-slate-200">
+              1. ...compete with your rivals and concentrate <code class="text-rose-500 font-bold line-through">to</code> your core goals.
+            </p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-slate-400">Sửa thành:</span>
+              <select id="prep_1" class="font-bold border rounded-lg px-2.5 py-1 bg-white dark:bg-slate-800 text-indigo-600">
+                <option value="">--</option>
+                <option value="in">in</option>
+                <option value="on">on</option>
+                <option value="with">with</option>
+                <option value="for">for</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p class="text-slate-800 dark:text-slate-200">
+              2. Universities should provide students <code class="text-rose-500 font-bold line-through">about</code> modern research facilities.
+            </p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-slate-400">Sửa thành:</span>
+              <select id="prep_2" class="font-bold border rounded-lg px-2.5 py-1 bg-white dark:bg-slate-800 text-indigo-600">
+                <option value="">--</option>
+                <option value="with">with</option>
+                <option value="for">for</option>
+                <option value="to">to</option>
+                <option value="in">in</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p class="text-slate-800 dark:text-slate-200">
+              3. The company has a strong reputation <code class="text-rose-500 font-bold line-through">of</code> high-quality education programs.
+            </p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-slate-400">Sửa thành:</span>
+              <select id="prep_3" class="font-bold border rounded-lg px-2.5 py-1 bg-white dark:bg-slate-800 text-indigo-600">
+                <option value="">--</option>
+                <option value="for">for</option>
+                <option value="about">about</option>
+                <option value="to">to</option>
+                <option value="with">with</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p class="text-slate-800 dark:text-slate-200">
+              4. Working adults often have difficulty in participating <code class="text-rose-500 font-bold line-through">on</code> extra-curricular activities.
+            </p>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-slate-400">Sửa thành:</span>
+              <select id="prep_4" class="font-bold border rounded-lg px-2.5 py-1 bg-white dark:bg-slate-800 text-indigo-600">
+                <option value="">--</option>
+                <option value="in">in</option>
+                <option value="with">with</option>
+                <option value="for">for</option>
+                <option value="to">to</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <button onclick="checkPrepositions()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition">
+            Kiểm Tra Giới Từ
+          </button>
+          <div id="feedback_prepositions" class="text-xs font-semibold"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: WRITING TASK 2 - NÂNG CẤP BẬC THANG BAND 6.0 ➔ 7.0 ➔ 7.5 -->
+    <!-- =================================================================== -->
+    <div id="view-writing" class="hidden max-w-3xl mx-auto w-full">
+      <div class="mb-5 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-sky-500/10 border border-amber-200 dark:border-amber-900/40">
+        <div class="flex items-start gap-3">
+          <span class="text-2xl shrink-0">💡</span>
+          <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-1">
+            <p class="font-bold text-slate-900 dark:text-white">Bí quyết lên điểm Writing từ 6.0 lên 7.0 không phải là "dùng từ lạ hoắc"!</p>
+            <p>Giám khảo IELTS chấm <strong class="text-indigo-600 dark:text-indigo-400">Lexical Resource</strong> dựa trên: <em>dùng đúng ngữ cảnh + kết hợp đúng cụm từ tự nhiên (Collocations)</em>. Đừng nhảy cóc từ 6.0 lên 8.5 ngay. Hãy làm quen với bậc thang <strong>Band 6.5 (Đổi động từ)</strong> trước, sau đó mới đến <strong>Band 7.0 - 7.5 (Biến đổi danh từ hóa)</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-5">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🪜</span>
+            <div>
+              <h3 class="font-bold text-slate-900 dark:text-white text-base">Mô Hình Bậc Thang: Nâng Dần Từng Mức Band</h3>
+              <p class="text-xs text-slate-500">Xem câu văn thay đổi thế nào từ cách viết quen thuộc của bạn lên 7.0+</p>
+            </div>
+          </div>
+          <button onclick="loadRandomWritingTask()" class="px-3.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold text-xs transition">
+            Đổi Chủ Đề Khác ➔
+          </button>
+        </div>
+
+        <div class="mb-5">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Đề bài Task 2 thường gặp:</span>
+          <h4 id="writingPromptTitle" class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+            "Some people think that the government should spend money on public transport to reduce pollution. Discuss."
+          </h4>
+        </div>
+
+        <div class="space-y-3 mb-6" id="ladderContainer"></div>
+
+        <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60">
+          <h5 class="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span>🧩</span> Công Thức Ghép Cụm Đơn Giản (Bạn Chỉ Cần Nhớ Cặp Này):
+          </h5>
+          <div id="writingFormulaContent" class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-mono"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: ĐẶC TRỊ LISTENING SPELLING & PUNCTUATION -->
+    <!-- =================================================================== -->
+    <div id="view-spelling" class="hidden max-w-xl mx-auto w-full">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-rose-500">IELTS Listening Dictation Clinic</span>
+          </div>
+          <span class="text-xs font-mono font-bold text-slate-500" id="spellingScoreCounter">Chính xác: 0 / 0</span>
+        </div>
+
+        <!-- Chủ đề lọc Dictation -->
+        <div class="flex items-center justify-between gap-2 mb-4 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <label class="text-xs font-bold text-slate-600 dark:text-slate-300">Chủ đề luyện gõ:</label>
+          <select id="spellingCategoryFilter" onchange="changeSpellingCategory(this.value)" class="text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-2.5 py-1 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-rose-500">
+            <option value="ALL">Tất cả từ vựng (50+ từ)</option>
+            <option value="LISTENING_TRAPS">Bẫy chính tả hàng đầu</option>
+            <option value="HEALTH">Y tế & Sức khỏe (Unit 3)</option>
+            <option value="EDUCATION">Giáo dục & Nghề nghiệp (Unit 1)</option>
+            <option value="SCIENCE">Lịch sử & Khoa học (Units 5 & 8)</option>
+            <option value="TECH_NATURE">Công nghệ & Sinh học (Units 6 & 7)</option>
+            <option value="WRITING_ANALYSIS">Từ ngữ phân tích bài viết</option>
+          </select>
+        </div>
+
+        <div class="text-center mb-5">
+          <p class="text-xs text-slate-500 mb-1">Quy tắc vàng: Viết hoa đúng tên riêng, đúng số nhiều <code class="text-rose-500 font-bold">-s/-es</code> và các biến thể Anh-Anh / Anh-Mỹ.</p>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Bấm nghe và gõ lại chính xác 100%</h3>
+        </div>
+
+        <div class="flex justify-center mb-5">
+          <button onclick="playSpellingAudio()" class="w-20 h-20 rounded-full bg-gradient-to-tr from-rose-500 to-indigo-600 hover:opacity-90 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 transition transform hover:scale-105 active:scale-95" title="Bấm để nghe">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center gap-2 mb-4 text-xs font-medium text-slate-500">
+          <span>Tốc độ:</span>
+          <button onclick="setSpellingSpeed(0.8)" class="speed-btn px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-indigo-100">0.8x</button>
+          <button onclick="setSpellingSpeed(1.0)" class="speed-btn active px-2 py-0.5 rounded bg-indigo-600 text-white">1.0x (Chuẩn thi)</button>
+          <button onclick="setSpellingSpeed(1.2)" class="speed-btn px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-indigo-100">1.2x (Thách thức)</button>
+        </div>
+
+        <div class="bg-amber-50 dark:bg-amber-950/30 p-3.5 rounded-2xl border border-amber-200 dark:border-amber-800/60 mb-5 text-xs text-amber-900 dark:text-amber-200">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold">💡 Gợi ý ngữ nghĩa & loại từ:</span>
+            <span id="spellingPosHint" class="font-mono font-bold text-amber-700 dark:text-amber-300">noun / verb</span>
+          </div>
+          <p id="spellingMeaningHint" class="leading-relaxed">...</p>
+        </div>
+
+        <form onsubmit="handleSpellingSubmit(event)" class="space-y-3">
+          <div>
+            <input type="text" id="spellingInput" placeholder="Gõ từ bạn nghe được tại đây..." autocomplete="off" spellcheck="false" class="w-full px-4 py-3 text-base rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-rose-500">
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow transition">
+            Kiểm Tra Chính Tả & Ký Tự
+          </button>
+        </form>
+
+        <div id="spellingFeedbackBox" class="hidden mt-4 p-4 rounded-2xl text-xs sm:text-sm"></div>
+
+        <button id="spellingNextBtn" onclick="nextSpellingItem()" class="hidden mt-3 w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition">
+          Luyện Từ Bẫy Tiếp Theo ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: 3D FLASHCARDS -->
+    <!-- =================================================================== -->
+    <div id="view-flashcards" class="hidden flex flex-col items-center">
+      <!-- Bộ lọc Unit trên Thẻ 3D -->
+      <div class="w-full max-w-xl flex items-center justify-between mb-3 bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
+        <label class="font-bold text-slate-600 dark:text-slate-300">Lọc theo Chủ đề / Unit:</label>
+        <select id="flashcardTopicFilter" onchange="filterFlashcards(this.value)" class="font-semibold bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500">
+          <option value="ALL">Tất cả Unit (50+ từ)</option>
+          <option value="LISTENING_TRAPS">Bẫy chính tả Listening hàng đầu</option>
+          <option value="HEALTH">Unit 3: Health & Medicine</option>
+          <option value="EDUCATION">Unit 1: Education, Work & Qualifications</option>
+          <option value="SCIENCE">Units 5 & 8: History, Archaeology & Space</option>
+          <option value="TECH_NATURE">Units 6 & 7: Technology & Nature</option>
+          <option value="WRITING_ANALYSIS">Từ nối & Phân tích Writing</option>
+        </select>
+      </div>
+
+      <div class="w-full max-w-xl flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 px-1">
+        <span id="cardProgressText" class="font-bold">Từ 1 / 50</span>
+        <span class="text-[11px] hidden sm:inline">Phím tắt: <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded font-mono">Space</kbd> lật • <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded font-mono">← / →</kbd> chuyển từ</span>
+      </div>
+      <div class="w-full max-w-xl h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mb-4 overflow-hidden">
+        <div id="cardProgressBar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 2%;"></div>
+      </div>
+
+      <div class="w-full max-w-xl h-[440px] sm:h-[470px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+        <div id="flashcardInner" class="relative w-full h-full transform-style-3d transition-transform duration-500 rounded-3xl shadow-xl shadow-slate-200 dark:shadow-slate-950/60">
+          
+          <!-- FRONT FACE -->
+          <div class="absolute inset-0 backface-hidden bg-white dark:bg-slate-900 border-2 border-indigo-100 dark:border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span id="cardTopicTag" class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                  Band 7.0 Academic
+                </span>
+                <span id="cardPosTag" class="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 italic">
+                  verb
+                </span>
+              </div>
+              <button onclick="event.stopPropagation(); speakWord();" class="p-2.5 rounded-full bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 transition" title="Nghe phát âm chuẩn">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              </button>
+            </div>
+
+            <div class="text-center my-auto">
+              <div class="text-4xl mb-3" id="cardEmoji">🎯</div>
+              <h2 id="cardWord" class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">
+                accommodate
+              </h2>
+              <div class="text-sm sm:text-base font-mono text-indigo-600 dark:text-indigo-400 font-semibold mb-3" id="cardIpa">
+                /əˈkɒm.ə.deɪt/
+              </div>
+              <div id="cardFrontHint" class="inline-block px-3 py-1 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-xs font-semibold text-amber-800 dark:text-amber-300">
+                ⚠️ Bẫy chính tả Listening: 2 chữ 'c' và 2 chữ 'm'
+              </div>
+            </div>
+
+            <div class="text-center text-xs text-slate-400 dark:text-slate-500 font-medium">
+              Chạm hoặc bấm <kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700 text-[10px]">Space</kbd> để xem Collocations & Ví dụ C1
+            </div>
+          </div>
+
+          <!-- BACK FACE -->
+          <div class="absolute inset-0 backface-hidden rotate-y-180 bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-900/60 rounded-3xl p-5 sm:p-7 flex flex-col justify-between overflow-y-auto">
+            <div class="border-b border-slate-100 dark:border-slate-800 pb-2.5 flex items-center justify-between">
+              <div>
+                <h3 id="cardBackWord" class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span>accommodate</span>
+                  <span id="cardBackPos" class="text-xs font-normal text-slate-400 italic">(v)</span>
+                </h3>
+                <p id="cardBackMeaningVi" class="text-sm font-bold text-indigo-600 dark:text-indigo-400">Cung cấp chỗ ở; điều chỉnh để thích nghi</p>
+              </div>
+              <button onclick="event.stopPropagation(); speakWord();" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              </button>
+            </div>
+
+            <div class="space-y-3 my-2 text-xs sm:text-sm">
+              <div class="bg-indigo-50/70 dark:bg-indigo-950/40 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/40">
+                <span class="font-bold text-indigo-700 dark:text-indigo-300 block mb-1">🔗 Academic Collocations:</span>
+                <p id="cardBackCollocations" class="text-slate-800 dark:text-slate-200 font-medium">accommodate the needs of, accommodate rapid growth</p>
+              </div>
+
+              <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                <span class="font-bold text-slate-500 block mb-1">📖 Ngữ cảnh đề thi IELTS:</span>
+                <p id="cardBackExample" class="italic text-slate-700 dark:text-slate-300 leading-relaxed">
+                  "Urban planners must design flexible infrastructure to accommodate the influx of rural migrants."
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between text-xs text-slate-500 px-1">
+                <span>Từ đồng nghĩa Band 7+:</span>
+                <span id="cardBackSynonyms" class="font-semibold text-slate-800 dark:text-slate-200">adapt to, cater for, house</span>
+              </div>
+            </div>
+
+            <div class="text-center text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-2">
+              Chạm thẻ để quay lại mặt trước
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full max-w-xl flex items-center justify-between gap-3 mt-5">
+        <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold shadow-sm transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          <span>Trước</span>
+        </button>
+
+        <button onclick="flipCard()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-md shadow-indigo-600/20 transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Lật Thẻ</span>
+        </button>
+
+        <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold shadow-sm transition flex items-center gap-2">
+          <span>Tiếp</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: SPEAKING FLUENCY CHUNKS -->
+    <!-- =================================================================== -->
+    <div id="view-speaking" class="hidden max-w-2xl mx-auto w-full">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md">
+        <div class="border-b border-slate-100 dark:border-slate-800 pb-3 mb-5 flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+              <span>🗣️</span> IELTS Speaking Part 2 & Part 3 High-Scoring Chunks
+            </h3>
+            <p class="text-xs text-slate-500">Mẫu câu nối (Discourse Markers) & Idiomatic Phrases giúp nói trôi chảy</p>
+          </div>
+          <button onclick="renderSpeakingCard()" class="px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+            Ngẫu Nhiên
+          </button>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase" id="speakingCategory">Speaking Part 3</span>
+            <button onclick="speakSpeakingText()" class="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300" title="Nghe câu mẫu">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+          </div>
+          <p id="speakingPrompt" class="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">...</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="p-3.5 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40">
+            <span class="text-[11px] font-bold text-indigo-700 dark:text-indigo-300 uppercase block mb-1">1. Discourse Marker ấn tượng:</span>
+            <p id="speakingMarker" class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white italic">...</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800">
+            <span class="text-[11px] font-bold text-slate-500 uppercase block mb-1">2. Phát triển với Collocation C1:</span>
+            <p id="speakingElaboration" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">...</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50">
+            <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 uppercase block mb-1">3. Chốt ý & Góc nhìn đa chiều:</span>
+            <p id="speakingConclusion" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300">...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: MATCH GAME -->
+    <!-- =================================================================== -->
+    <div id="view-match" class="hidden max-w-2xl mx-auto w-full">
+      <div class="flex items-center justify-between mb-4 bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span>⏱️</span>
+          <span id="matchTimer" class="font-mono text-base font-bold text-indigo-600 dark:text-indigo-400">00:00.0</span>
+        </div>
+        <div class="text-xs font-semibold text-slate-500">
+          Đã ghép: <span id="matchMatchedCount" class="text-emerald-600 font-bold">0</span>/6 cặp
+        </div>
+        <button onclick="startMatchGame()" class="px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 font-bold text-xs transition">
+          🔄 Ván Mới
+        </button>
+      </div>
+
+      <div id="matchGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 6: DANH SÁCH TỪ VỰNG -->
+    <!-- =================================================================== -->
+    <div id="view-list" class="hidden w-full">
+      <div class="mb-4 flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="relative w-full sm:w-80">
+          <input type="text" id="vocabularySearchInput" placeholder="Tìm từ, IPA, nghĩa tiếng Việt, bẫy chính tả..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <span class="absolute left-3 top-2.5 text-slate-400">🔍</span>
+        </div>
+        <div class="text-xs text-slate-500">
+          Hiển thị <span id="vocabularyFilteredCount" class="font-bold text-indigo-600">0</span> từ
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider">
+              <tr>
+                <th class="p-3">Từ vựng & IPA</th>
+                <th class="p-3">Loại từ</th>
+                <th class="p-3">Nghĩa tiếng Việt</th>
+                <th class="p-3">Cảnh báo lỗi Listening (Spelling/Cap)</th>
+                <th class="p-3">Collocation C1</th>
+                <th class="p-3 text-center w-16">Nghe</th>
+              </tr>
+            </thead>
+            <tbody id="vocabularyTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto py-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-400">
+    Luyện Thi IELTS Band 7.5 • Complete IELTS 6.5–7.5 Curriculum
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    /* =====================================================================
+       KHO TỪ VỰNG CHUẨN COMPLETE IELTS BAND 6.5 - 7.5 & BẪY LISTENING/READING
+       ===================================================================== */
+    const IELTS_VOCABULARY = [
+      // 1. CÁC TỪ DỄ SAI CHÍNH TẢ HÀNG ĐẦU & ĐÁP ÁN LISTENING SECTION 1-4
+      {
+        word: "camouflage",
+        ipa: "/ˈkæm.ə.flɑːʒ/",
+        pos: "noun / verb",
+        meaningVi: "Sự ngụy trang, đổi màu để ẩn nấp (Động vật / Quân sự)",
+        trapHint: "⚠️ Bẫy chính tả: đuôi '-ouflage' (o-u-f-l-a-g-e), hay viết nhầm thành 'camoflage'.",
+        collocations: "natural camouflage, blend in with camouflage, military camouflage",
+        example: "The chameleon utilizes natural camouflage to elude predatory raptors.",
+        synonyms: "disguise, concealment, mimicry",
+        topic: "LISTENING_TRAPS",
+        emoji: "🦎"
+      },
+      {
+        word: "accommodation",
+        ipa: "/əˌkɒm.əˈdeɪ.ʃən/",
+        pos: "noun (uncountable)",
+        meaningVi: "Chỗ ở, phòng ở (Không bao giờ có dạng số nhiều 'accommodations' trong IELTS)",
+        trapHint: "⚠️ Bẫy 'double c, double m'. Thí sinh thường viết thiếu 1 chữ 'm'.",
+        collocations: "student accommodation, rented accommodation, provide accommodation",
+        example: "The university offers subsidized accommodation for first-year undergraduates.",
+        synonyms: "housing, lodgings, residence",
+        topic: "LISTENING_TRAPS",
+        emoji: "🏠"
+      },
+      {
+        word: "environment",
+        ipa: "/ɪnˈvaɪ.rən.mənt/",
+        pos: "noun",
+        meaningVi: "Môi trường (Hay quên chữ 'n' ở giữa)",
+        trapHint: "⚠️ Thường xuyên bị viết sai thành 'enviroment' (thiếu chữ 'n' ở giữa: en-vi-ro-n-ment).",
+        collocations: "hostile environment, natural environment, protect the environment",
+        example: "Children thrive best in a supportive learning environment.",
+        synonyms: "surroundings, habitat, ecosystem",
+        topic: "LISTENING_TRAPS",
+        emoji: "🌿"
+      },
+      {
+        word: "government",
+        ipa: "/ˈɡʌv.ən.mənt/",
+        pos: "noun",
+        meaningVi: "Chính phủ (Bẫy chữ 'n' câm trước ment)",
+        trapHint: "⚠️ Rất hay quên chữ 'n' trước hậu tố '-ment' (viết nhầm 'goverment').",
+        collocations: "government expenditure, municipal government, enact legislation",
+        example: "The government should allocate greater subsidies to renewable technology.",
+        synonyms: "authorities, administration, regime",
+        topic: "LISTENING_TRAPS",
+        emoji: "🏛️"
+      },
+      {
+        word: "Wednesday",
+        ipa: "/ˈwenz.deɪ/",
+        pos: "proper noun",
+        meaningVi: "Thứ Tư (Bắt buộc VIẾT HOA chữ 'W')",
+        trapHint: "⚠️ Không viết hoa chữ cái đầu sẽ bị tính sai cả câu trong bài thi Listening.",
+        collocations: "every Wednesday, Ash Wednesday, next Wednesday",
+        example: "The seminar is scheduled to commence at 9:00 AM on Wednesday.",
+        synonyms: "midweek day",
+        topic: "LISTENING_TRAPS",
+        emoji: "📅"
+      },
+      {
+        word: "February",
+        ipa: "/ˈfeb.ru.ər.i/",
+        pos: "proper noun",
+        meaningVi: "Tháng Hai (Bắt buộc viết hoa 'F' và có chữ 'r' sau 'b')",
+        trapHint: "⚠️ Rất hay viết sai thành 'Febuary' (quên mất chữ 'r' sau chữ 'b': Feb-ru-ary).",
+        collocations: "mid-February, end of February, early February",
+        example: "The field trip registration deadline is Friday, February 24th.",
+        synonyms: "second month",
+        topic: "LISTENING_TRAPS",
+        emoji: "❄️"
+      },
+      {
+        word: "Dominika",
+        ipa: "/ˌdɒm.ɪˈniː.kə/",
+        pos: "proper noun",
+        meaningVi: "Tên riêng thường gặp trong Listening Section 1",
+        trapHint: "⚠️ Tên riêng phải viết hoa chữ cái đầu 'D' và chú ý âm đuôi '-ika'.",
+        collocations: "call Dominika, Dominika's application",
+        example: "Dominika was appointed as the student liaison officer.",
+        synonyms: "personal name",
+        topic: "LISTENING_TRAPS",
+        emoji: "👤"
+      },
+      {
+        word: "inoculate",
+        ipa: "/ɪˈnɒk.jə.leɪt/",
+        pos: "verb",
+        meaningVi: "Tiêm chủng, cấy mầm bệnh",
+        trapHint: "⚠️ Bẫy chữ cái: chỉ có 1 chữ 'c' và 1 chữ 'l' (i-n-o-c-u-l-a-t-e), hay viết thừa cc hoặc ll.",
+        collocations: "inoculate against disease, mass inoculate",
+        example: "Volunteers were inoculated against malaria prior to their expedition.",
+        synonyms: "vaccinate, immunize",
+        topic: "LISTENING_TRAPS",
+        emoji: "💉"
+      },
+      {
+        word: "phenomena",
+        ipa: "/fəˈnɒm.ɪ.nə/",
+        pos: "noun (plural)",
+        meaningVi: "Các hiện tượng (Dạng số nhiều của 'phenomenon')",
+        trapHint: "⚠️ Phân biệt dạng số ít 'phenomenon' và số nhiều 'phenomena'. Viết sai dạng số bị trừ điểm.",
+        collocations: "natural phenomena, observable phenomena, global phenomena",
+        example: "Scientists gathered to analyze erratic meteorological phenomena.",
+        synonyms: "occurrences, events, happenings",
+        topic: "LISTENING_TRAPS",
+        emoji: "🌪️"
+      },
+      {
+        word: "privilege",
+        ipa: "/ˈprɪv.əl.ɪdʒ/",
+        pos: "noun",
+        meaningVi: "Đặc ân, đặc quyền",
+        trapHint: "⚠️ Hay viết nhầm thành 'privelege' hoặc 'priviledge'. Đúng: p-r-i-v-i-l-e-g-e.",
+        collocations: "immense privilege, grant a privilege, misuse privilege",
+        example: "Access to clean water is a basic right rather than an exclusive privilege.",
+        synonyms: "prerogative, entitlement, advantage",
+        topic: "LISTENING_TRAPS",
+        emoji: "💎"
+      },
+
+      // 2. CHỦ ĐỀ SỨC KHỎE & Y TẾ HỌC THUẬT (UNIT 3)
+      {
+        word: "physiotherapy",
+        ipa: "/ˌfɪz.i.əʊˈθer.ə.pi/",
+        pos: "noun (uncountable)",
+        meaningVi: "Vật lý trị liệu (rất hay sai ở cụm 'physio-')",
+        trapHint: "⚠️ Bẫy chính tả: p-h-y-s-i-o-t-h-e-r-a-p-y. Cẩn thận âm 'y' sau 'ph'.",
+        collocations: "undergo physiotherapy, intensive physiotherapy, physiotherapy clinic",
+        example: "Patients recovering from spinal trauma require intensive physiotherapy.",
+        synonyms: "physical therapy, physical rehabilitation",
+        topic: "HEALTH",
+        emoji: "🏥"
+      },
+      {
+        word: "rehabilitation",
+        ipa: "/ˌriː.həˌbɪl.ɪˈteɪ.ʃən/",
+        pos: "noun (uncountable)",
+        meaningVi: "Sự phục hồi chức năng / tái hòa nhập",
+        trapHint: "⚠️ Bẫy âm 'h' ở giữa: re-ha-bi-li-ta-tion. Tránh bỏ quên chữ 'h'.",
+        collocations: "rehabilitation centre, cardiac rehabilitation, vocational rehabilitation",
+        example: "The new rehabilitation program aims to restore full motor functionality.",
+        synonyms: "recovery, restitution, recuperation",
+        topic: "HEALTH",
+        emoji: "🦾"
+      },
+      {
+        word: "pharmaceutical",
+        ipa: "/ˌfɑː.məˈsjuː.tɪ.kəl/",
+        pos: "adjective / noun",
+        meaningVi: "Thuộc về dược phẩm, công ty dược phẩm",
+        trapHint: "⚠️ Cực kỳ dễ gõ thiếu cụm 'ceut': p-h-a-r-m-a-c-e-u-t-i-c-a-l.",
+        collocations: "pharmaceutical industry, pharmaceutical company, pharmaceutical products",
+        example: "Leading pharmaceutical corporations are investing in targeted gene therapy.",
+        synonyms: "medicinal, pharmacology",
+        topic: "HEALTH",
+        emoji: "💊"
+      },
+      {
+        word: "absenteeism",
+        ipa: "/ˌæb.sənˈtiː.ɪ.zəm/",
+        pos: "noun (uncountable)",
+        meaningVi: "Tình trạng vắng mặt/nghỉ làm/nghỉ học thường xuyên không lý do",
+        trapHint: "⚠️ Bẫy gấp đôi chữ 'e': a-b-s-e-n-t-e-e-i-s-m.",
+        collocations: "chronic absenteeism, reduce workplace absenteeism, absenteeism rates",
+        example: "Ergonomic workstations significantly mitigate employee absenteeism.",
+        synonyms: "non-attendance, truancy",
+        topic: "HEALTH",
+        emoji: "🚪"
+      },
+      {
+        word: "demographics",
+        ipa: "/ˌdem.əˈɡræf.ɪks/",
+        pos: "noun (plural)",
+        meaningVi: "Nhân khẩu học, số liệu thống kê dân số",
+        trapHint: "⚠️ Luôn có số nhiều 's' ở cuối và phần đuôi '-graphics'.",
+        collocations: "changing demographics, shifting demographics, customer demographics",
+        example: "Shifting demographics indicate an aging workforce across developed nations.",
+        synonyms: "population statistics, census data",
+        topic: "HEALTH",
+        emoji: "📊"
+      },
+      {
+        word: "sedentary",
+        ipa: "/ˈsed.ən.tər.i/",
+        pos: "adjective",
+        meaningVi: "Thụ động, ít vận động, ngồi nhiều một chỗ",
+        trapHint: "⚠️ Bẫy chính tả: đuôi '-ary' (s-e-d-e-n-t-a-r-y).",
+        collocations: "sedentary lifestyle, sedentary activities, sedentary job",
+        example: "Prolonged sedentary activities are directly correlated with cardiovascular disorders.",
+        synonyms: "inactive, desk-bound, seated",
+        topic: "HEALTH",
+        emoji: "🪑"
+      },
+      {
+        word: "clinical trial",
+        ipa: "/ˌklɪn.ɪ.kəl ˈtraɪ.əl/",
+        pos: "compound noun",
+        meaningVi: "Thử nghiệm lâm sàng (trong nghiên cứu y học)",
+        trapHint: "⚠️ Hai từ riêng biệt: 'clinical' (đuôi -al) và 'trial' (t-r-i-a-l).",
+        collocations: "conduct clinical trials, enter clinical trials, clinical trial phase",
+        example: "The experimental vaccine entered its final phase of clinical trials.",
+        synonyms: "clinical testing, medical study",
+        topic: "HEALTH",
+        emoji: "🧪"
+      },
+      {
+        word: "prescribe",
+        ipa: "/prɪˈskraɪb/",
+        pos: "verb",
+        meaningVi: "Kê đơn thuốc, ra y lệnh",
+        trapHint: "⚠️ Phân biệt với 'subscribe' (đăng ký) và 'proscribe' (cấm đoán).",
+        collocations: "prescribe medication, prescribe antibiotics",
+        example: "Physicians should be cautious when prescribing opioid painkillers.",
+        synonyms: "order, recommend, advise",
+        topic: "HEALTH",
+        emoji: "📝"
+      },
+
+      // 3. CHỦ ĐỀ GIÁO DỤC, ĐÀO TẠO & CÔNG VIỆC (UNIT 1)
+      {
+        word: "vocational",
+        ipa: "/vəʊˈkeɪ.ʃən.əl/",
+        pos: "adjective",
+        meaningVi: "Thuộc về học nghề, định hướng nghề nghiệp thực hành",
+        trapHint: "⚠️ Chú ý: v-o-c-a-t-i-o-n-a-l (gốc từ 'vocation' - nghề nghiệp).",
+        collocations: "vocational training, vocational qualifications, vocational education",
+        example: "Vocational training offers practical pathways for youth seeking technical careers.",
+        synonyms: "occupational, technical, professional",
+        topic: "EDUCATION",
+        emoji: "🛠️"
+      },
+      {
+        word: "telecoms",
+        ipa: "/ˈtel.ɪ.kɒmz/",
+        pos: "noun (plural/informal)",
+        meaningVi: "Ngành viễn thông (Viết tắt của telecommunications)",
+        trapHint: "⚠️ Luôn có đuôi 's': t-e-l-e-c-o-m-s.",
+        collocations: "telecoms sector, telecoms operator, global telecoms",
+        example: "The liberalization of the telecoms market spurred unprecedented digital growth.",
+        synonyms: "telecommunications",
+        topic: "EDUCATION",
+        emoji: "📡"
+      },
+      {
+        word: "recruitment",
+        ipa: "/rɪˈkruːt.mənt/",
+        pos: "noun (uncountable)",
+        meaningVi: "Sự tuyển dụng nhân sự",
+        trapHint: "⚠️ Chú ý cụm 'cruit' (r-e-c-r-u-i-t-m-e-n-t).",
+        collocations: "recruitment programme, recruitment campaign, staff recruitment",
+        example: "The firm launched an international recruitment programme for software engineers.",
+        synonyms: "hiring, staffing, employment",
+        topic: "EDUCATION",
+        emoji: "👔"
+      },
+      {
+        word: "facilities",
+        ipa: "/fəˈsɪl.ə.tiz/",
+        pos: "noun (plural)",
+        meaningVi: "Cơ sở vật chất, trang thiết bị tiện nghi",
+        trapHint: "⚠️ Thường dùng ở dạng số nhiều '-ies' trong bài nghe Section 1.",
+        collocations: "research facilities, sports facilities, modern facilities",
+        example: "The campus boasts world-class scientific research facilities.",
+        synonyms: "amenities, resources, infrastructure",
+        topic: "EDUCATION",
+        emoji: "🏢"
+      },
+      {
+        word: "discipline",
+        ipa: "/ˈdɪs.ə.plɪn/",
+        pos: "noun",
+        meaningVi: "Ngành học, lĩnh vực chuyên môn (nghĩa học thuật) / Kỷ luật",
+        trapHint: "⚠️ Bẫy chữ cái: d-i-s-c-i-p-l-i-n-e (có 'sc').",
+        collocations: "academic discipline, cross-disciplinary, scientific discipline",
+        example: "Biochemistry is an interdisciplinary field bridging several scientific disciplines.",
+        synonyms: "field of study, subject, specialty",
+        topic: "EDUCATION",
+        emoji: "📚"
+      },
+      {
+        word: "pedagogical",
+        ipa: "/ˌped.əˈɡɒdʒ.ɪ.kəl/",
+        pos: "adjective",
+        meaningVi: "Thuộc về phương pháp sư phạm, giáo dục học",
+        trapHint: "⚠️ Cụm từ C1 vàng cho Writing Task 2 chủ đề giáo dục.",
+        collocations: "pedagogical approach, pedagogical methods, pedagogical merit",
+        example: "Modern curriculums adopt an interactive pedagogical approach that fosters inquiry.",
+        synonyms: "educational, instructional, didactic",
+        topic: "EDUCATION",
+        emoji: "🎓"
+      },
+
+      // 4. CHỦ ĐỀ LỊCH SỬ, KHẢO CỔ, ĐỊA CHẤT & VŨ TRỤ (UNITS 5 & 8)
+      {
+        word: "artefacts",
+        ipa: "/ˈɑː.tə.fækts/",
+        pos: "noun (plural)",
+        meaningVi: "Cổ vật, hiện vật lịch sử (Cách viết chuẩn Anh-Anh với chữ 'e')",
+        trapHint: "⚠️ Anh-Anh viết là 'artefacts', Anh-Mỹ viết là 'artifacts'. Đề thi IELTS chấp nhận cả 2 nhưng chuộng Anh-Anh.",
+        collocations: "historical artefacts, archaeological artefacts, preserve ancient artefacts",
+        example: "The excavation site yielded thousands of Bronze Age artefacts.",
+        synonyms: "relics, antiquities, historical objects",
+        topic: "SCIENCE",
+        emoji: "🏺"
+      },
+      {
+        word: "fossilisation",
+        ipa: "/ˌfɒs.əl.aɪˈzeɪ.ʃən/",
+        pos: "noun (uncountable)",
+        meaningVi: "Quá trình hóa thạch (Anh-Anh đuôi '-isation')",
+        trapHint: "⚠️ Bẫy 2 chữ 's': f-o-s-s-i-l-i-s-a-t-i-o-n (hoặc -ization).",
+        collocations: "process of fossilisation, rapid fossilisation",
+        example: "Sedimentary rock layers provide optimal conditions for organism fossilisation.",
+        synonyms: "petrification",
+        topic: "SCIENCE",
+        emoji: "🦴"
+      },
+      {
+        word: "sediment",
+        ipa: "/ˈsed.ɪ.mənt/",
+        pos: "noun (uncountable/countable)",
+        meaningVi: "Trầm tích, cặn lắng đáy sông biển",
+        trapHint: "⚠️ Đáp án quen thuộc trong Reading địa chất. Viết đúng: s-e-d-i-m-e-n-t.",
+        collocations: "layers of sediment, coastal sediment, sediment accumulation",
+        example: "Core samples extracted from deep marine sediment reveal past climate shifts.",
+        synonyms: "deposit, residue, silt",
+        topic: "SCIENCE",
+        emoji: "🏜️"
+      },
+      {
+        word: "silt",
+        ipa: "/sɪlt/",
+        pos: "noun (uncountable)",
+        meaningVi: "Phù sa, bùn cát mịn lắng đọng",
+        trapHint: "⚠️ Từ ngắn 4 ký tự s-i-l-t rất hay xuất hiện trong Reading Section 1 & 2.",
+        collocations: "fine silt, silt deposits, river silt",
+        example: "The delta region is enriched by annual deposits of nutrient-dense silt.",
+        synonyms: "sediment, alluvium, mud",
+        topic: "SCIENCE",
+        emoji: "🌾"
+      },
+      {
+        word: "astronomer",
+        ipa: "/əˈstrɒn.ə.mər/",
+        pos: "noun",
+        meaningVi: "Nhà thiên văn học (phân biệt với astrologer: nhà chiêm tinh)",
+        trapHint: "⚠️ Phân biệt: astronomer (nhà khoa học vũ trụ) vs astrologer (bói toán hoàng đạo).",
+        collocations: "amateur astronomer, renowned astronomer, observational astronomer",
+        example: "Early astronomers relied on rudimentary astrolabes to chart celestial bodies.",
+        synonyms: "astrophysicist, stargazer",
+        topic: "SCIENCE",
+        emoji: "🔭"
+      },
+      {
+        word: "gravitational",
+        ipa: "/ˌɡræv.ɪˈteɪ.ʃən.əl/",
+        pos: "adjective",
+        meaningVi: "Thuộc về lực hấp dẫn, trọng lực",
+        trapHint: "⚠️ Chú ý: g-r-a-v-i-t-a-t-i-o-n-a-l.",
+        collocations: "gravitational force, gravitational pull, gravitational waves",
+        example: "Tidal movements are governed primarily by the moon’s gravitational pull.",
+        synonyms: "attractive force",
+        topic: "SCIENCE",
+        emoji: "🪐"
+      },
+      {
+        word: "physiological",
+        ipa: "/ˌfɪz.i.əˈlɒdʒ.ɪ.kəl/",
+        pos: "adjective",
+        meaningVi: "Thuộc về sinh lý học cơ thể",
+        trapHint: "⚠️ Bẫy chính tả: p-h-y-s-i-o-l-o-g-i-c-a-l.",
+        collocations: "physiological changes, physiological stress, physiological adaptation",
+        example: "Astronauts experience notable physiological changes during long spaceflights.",
+        synonyms: "bodily, biological, physical",
+        topic: "SCIENCE",
+        emoji: "🧬"
+      },
+
+      // 5. CHỦ ĐỀ CÔNG NGHỆ, ROBOT & SINH HỌC (UNITS 6 & 7)
+      {
+        word: "adaptability",
+        ipa: "/əˌdæp.təˈbɪl.ə.ti/",
+        pos: "noun (uncountable)",
+        meaningVi: "Khả năng thích ứng linh hoạt (của robot/con người)",
+        trapHint: "⚠️ Bẫy chính tả: a-d-a-p-t-a-b-i-l-i-t-y (đuôi -ability).",
+        collocations: "remarkable adaptability, foster adaptability, operational adaptability",
+        example: "Autonomous robots demonstrate impressive adaptability in hazardous terrains.",
+        synonyms: "flexibility, versatility, adjustability",
+        topic: "TECH_NATURE",
+        emoji: "🤖"
+      },
+      {
+        word: "simulation",
+        ipa: "/ˌsɪm.jəˈleɪ.ʃən/",
+        pos: "noun",
+        meaningVi: "Sự mô phỏng, mô hình thử nghiệm giả lập",
+        trapHint: "⚠️ Chú ý âm 'u': s-i-m-u-l-a-t-i-o-n.",
+        collocations: "computer simulation, simulation model, flight simulation",
+        example: "Pilots undergo rigorous training inside virtual flight simulation chambers.",
+        synonyms: "model, imitation, mock-up",
+        topic: "TECH_NATURE",
+        emoji: "💻"
+      },
+      {
+        word: "biodiversity",
+        ipa: "/ˌbaɪ.əʊ.daɪˈvɜː.sə.ti/",
+        pos: "noun (uncountable)",
+        meaningVi: "Sự đa dạng sinh học",
+        trapHint: "⚠️ Từ khóa vàng trong IELTS Reading & Writing môi trường.",
+        collocations: "preserve biodiversity, loss of biodiversity, rich biodiversity",
+        example: "Rainforest deforestation leads to an irreversible loss of global biodiversity.",
+        synonyms: "ecological diversity, species richness",
+        topic: "TECH_NATURE",
+        emoji: "🌳"
+      },
+      {
+        word: "pathogens",
+        ipa: "/ˈpæθ.ə.dʒənz/",
+        pos: "noun (plural)",
+        meaningVi: "Các mầm bệnh, vi khuẩn/vi rút gây hại",
+        trapHint: "⚠️ Đề thi thường yêu cầu dạng số nhiều 'pathogens' (có 's').",
+        collocations: "deadly pathogens, airborne pathogens, waterborne pathogens",
+        example: "Sanitization protocols are designed to eliminate virulent foodborne pathogens.",
+        synonyms: "germs, microorganisms, infectious agents",
+        topic: "TECH_NATURE",
+        emoji: "🦠"
+      },
+      {
+        word: "infestation",
+        ipa: "/ˌɪn.feˈsteɪ.ʃən/",
+        pos: "noun",
+        meaningVi: "Sự tràn lan, quấy phá của sâu bọ / ký sinh trùng",
+        trapHint: "⚠️ Chú ý: i-n-f-e-s-t-a-t-i-o-n.",
+        collocations: "parasite infestation, insect infestation, widespread infestation",
+        example: "Crop yields plummeted due to a locust infestation.",
+        synonyms: "plague, invasion, overrun",
+        topic: "TECH_NATURE",
+        emoji: "🦗"
+      },
+      {
+        word: "geothermal",
+        ipa: "/ˌdʒiː.əʊˈθɜː.məl/",
+        pos: "adjective",
+        meaningVi: "Thuộc địa nhiệt (năng lượng từ lòng đất)",
+        trapHint: "⚠️ Bẫy viết: g-e-o-t-h-e-r-m-a-l.",
+        collocations: "geothermal energy, geothermal power plant, geothermal heating",
+        example: "Iceland derives a substantial share of its heating from geothermal energy.",
+        synonyms: "earth-heat",
+        topic: "TECH_NATURE",
+        emoji: "🌋"
+      },
+      {
+        word: "unambiguously",
+        ipa: "/ˌʌn.æmˈbɪɡ.ju.əs.li/",
+        pos: "adverb",
+        meaningVi: "Một cách rõ ràng, dứt khoát, không hề mơ hồ",
+        trapHint: "⚠️ Bẫy chính tả dài: u-n-a-m-b-i-g-u-o-u-s-l-y.",
+        collocations: "state unambiguously, prove unambiguously",
+        example: "The experimental empirical data unambiguously confirmed the hypothesis.",
+        synonyms: "unequivocally, clearly, unmistakably",
+        topic: "TECH_NATURE",
+        emoji: "🎯"
+      },
+
+      // 6. TỪ NỐI & TỪ NGỮ PHÂN TÍCH BÀI VIẾT (WRITING TASK 1 & 2)
+      {
+        word: "predominantly",
+        ipa: "/prɪˈdɒm.ɪ.nənt.li/",
+        pos: "adverb",
+        meaningVi: "Phần lớn, chủ yếu là (thay cho 'mostly', 'mainly')",
+        trapHint: "⚠️ Chú ý chữ 'a': p-r-e-d-o-m-i-n-a-n-t-l-y (không phải -ently).",
+        collocations: "predominantly rural, rely predominantly on",
+        example: "The tertiary education sector remains predominantly funded by state budgets.",
+        synonyms: "chiefly, mainly, primarily",
+        topic: "WRITING_ANALYSIS",
+        emoji: "📈"
+      },
+      {
+        word: "deterioration",
+        ipa: "/dɪˌtɪə.ri.əˈreɪ.ʃən/",
+        pos: "noun (uncountable)",
+        meaningVi: "Sự suy giảm, sự xuống cấp/xấu đi",
+        trapHint: "⚠️ Bẫy chính tả: d-e-t-e-r-i-o-r-a-t-i-o-n.",
+        collocations: "environmental deterioration, rapid deterioration, prevent deterioration",
+        example: "Neglect has led to a severe deterioration of urban public housing.",
+        synonyms: "degradation, decline, worsening",
+        topic: "WRITING_ANALYSIS",
+        emoji: "📉"
+      },
+      {
+        word: "fluctuation",
+        ipa: "/ˌflʌk.tʃuˈeɪ.ʃən/",
+        pos: "noun",
+        meaningVi: "Sự dao động, sự biến động số liệu (Writing Task 1)",
+        trapHint: "⚠️ Bẫy: f-l-u-c-t-u-a-t-i-o-n (có 'c' trước 't').",
+        collocations: "wild fluctuations, mild fluctuation, seasonal fluctuations",
+        example: "The chart highlights noticeable fluctuations in crude oil prices over the decade.",
+        synonyms: "variation, oscillation, wavering",
+        topic: "WRITING_ANALYSIS",
+        emoji: "〰️"
+      },
+      {
+        word: "substantially",
+        ipa: "/səbˈstæn.ʃəl.i/",
+        pos: "adverb",
+        meaningVi: "Đáng kể, nhiều (thay cho 'a lot', 'very much')",
+        trapHint: "⚠️ Chú ý: s-u-b-s-t-a-n-t-i-a-l-l-y.",
+        collocations: "increase substantially, differ substantially",
+        example: "Expenditure on digital resources rose substantially between 2010 and 2015.",
+        synonyms: "considerably, significantly, markedly",
+        topic: "WRITING_ANALYSIS",
+        emoji: "🚀"
+      },
+      {
+        word: "conversely",
+        ipa: "/ˈkɒn.vɜːs.li/",
+        pos: "adverb (discourse marker)",
+        meaningVi: "Ngược lại, ở chiều ngược lại (liên từ đối sánh Task 1 & 2)",
+        trapHint: "⚠️ Dùng đầu câu có dấu phẩy: 'Conversely, ...'",
+        collocations: "conversely argue, affect inversely",
+        example: "Northern regions experienced heavy precipitation; conversely, the south suffered drought.",
+        synonyms: "on the contrary, in contrast, vice versa",
+        topic: "WRITING_ANALYSIS",
+        emoji: "🔄"
+      }
+    ];
+
+    /* =====================================================================
+       DỮ LIỆU BẬC THANG WRITING TASK 2 (ĐỘ KHÓ TĂNG DẦN: 6.0 -> 6.5 -> 7.0 -> 7.5)
+       ===================================================================== */
+    const WRITING_LADDERS = [
+      {
+        topicTitle: "Giao thông & Môi trường đô thị (Transport & Environment)",
+        band6: "Many people think the government should spend money on public transport to stop pollution.",
+        ladder: [
+          {
+            band: "Band 6.0 (Hiện tại)",
+            text: "Many people think the government should spend money on public transport to stop pollution.",
+            color: "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40",
+            comment: "Từ vựng thông thường, lặp từ của đề: 'spend money', 'stop pollution'."
+          },
+          {
+            band: "Band 6.5 (Bước 1: Đổi động từ & tính từ quen)",
+            text: "It is believed that the government should invest money in public transport systems to reduce air pollution.",
+            color: "border-sky-300 dark:border-sky-900 bg-sky-50 dark:bg-sky-950/30",
+            comment: "Chỉ cần đổi 2 động từ quen thuộc: 'spend money' ➔ 'invest money in', 'stop' ➔ 'reduce'."
+          },
+          {
+            band: "Band 7.0 (Bước 2: Cụm Collocation học thuật chuẩn)",
+            text: "It is argued that national authorities should allocate funds to public transit in order to tackle environmental pollution.",
+            color: "border-indigo-400 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40",
+            comment: "Dùng cụm Collocation phổ biến: 'national authorities' + 'allocate funds to' + 'tackle pollution'."
+          },
+          {
+            band: "Band 7.5+ (Bước 3: C1 Academic Chunks & Danh từ hóa)",
+            text: "It is widely contended that governments ought to allocate public expenditure towards mass transit infrastructure to curb carbon emissions.",
+            color: "border-emerald-400 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40",
+            comment: "Danh từ hóa tối ưu: 'public expenditure', 'mass transit infrastructure', 'curb carbon emissions'."
+          }
+        ],
+        formula: "1. spend money on ➔ [invest in] ➔ [allocate funds to] ➔ [allocate public expenditure towards]<br>2. stop pollution ➔ [reduce pollution] ➔ [tackle / curb carbon emissions]<br>3. public transport ➔ [public transit] ➔ [mass transit infrastructure]"
+      },
+      {
+        topicTitle: "Y tế & Chi tiêu phòng bệnh (Health & Prevention)",
+        band6: "Governments should build more hospitals instead of telling people to eat healthy.",
+        ladder: [
+          {
+            band: "Band 6.0 (Hiện tại)",
+            text: "Governments should build more hospitals instead of telling people to eat healthy.",
+            color: "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40",
+            comment: "Lối viết văn nói: 'telling people', 'eat healthy'."
+          },
+          {
+            band: "Band 6.5 (Bước 1: Trang trọng hóa)",
+            text: "Authorities should construct more healthcare centres rather than merely advising citizens to maintain a balanced diet.",
+            color: "border-sky-300 dark:border-sky-900 bg-sky-50 dark:bg-sky-950/30",
+            comment: "construct centres, advise citizens, balanced diet."
+          },
+          {
+            band: "Band 7.0 (Bước 2: Cân bằng hai vế điều trị vs phòng ngừa)",
+            text: "It is often suggested that funding should prioritize clinical treatment facilities over preventive health education.",
+            color: "border-indigo-400 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40",
+            comment: "Dùng thuật ngữ 'clinical treatment facilities' và 'preventive health education'."
+          },
+          {
+            band: "Band 7.5+ (Bước 3: Phong cách phản biện C1)",
+            text: "While expanding tertiary healthcare facilities is imperative, channelizing resources into preventative wellbeing initiatives yields far superior long-term socioeconomic dividends.",
+            color: "border-emerald-400 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40",
+            comment: "Cấu trúc tương nhượng 'While...', cụm 'preventative wellbeing initiatives', 'socioeconomic dividends'."
+          }
+        ],
+        formula: "1. build hospitals ➔ [expand healthcare facilities] ➔ [tertiary healthcare infrastructure]<br>2. tell people to eat healthy ➔ [advise a balanced diet] ➔ [preventative wellbeing initiatives]"
+      }
+    ];
+
+    /* =====================================================================
+       DỮ LIỆU SPEAKING PART 2 & 3 (ĐỘ KHÓ TĂNG DẦN)
+       ===================================================================== */
+    const SPEAKING_CARDS = [
+      {
+        category: "Speaking Part 3 • Trí Tuệ Nhân Tạo & Giáo Viên",
+        prompt: "Do you think artificial intelligence will replace human teachers in the future?",
+        marker: "Off the top of my head, I’d be inclined to argue that...",
+        elaboration: "While automated algorithms can deliver customized learning pathways, they fundamentally lack the empathetic resonance and pastoral mentorship required for true education.",
+        conclusion: "Consequently, it is far more plausible that educators will work in tandem with tech rather than be made completely obsolete."
+      },
+      {
+        category: "Speaking Part 3 • Môi Trường & Ý Thức Người Tiêu Dùng",
+        prompt: "Should individuals or governments take primary responsibility for protecting biodiversity?",
+        marker: "From an objective standpoint, I tend to view this as a shared endeavor...",
+        elaboration: "Citizens undoubtedly influence markets through eco-conscious purchasing, yet without stringent governmental legislation against habitat destruction and parasite infestation, individual efforts remain piecemeal.",
+        conclusion: "Thus, institutional enforcement must act as the indispensable catalyst."
+      }
+    ];
+
+    /* =====================================================================
+       APP STATE & CONTROLLERS
+       ===================================================================== */
+    let filteredVocab = [...IELTS_VOCABULARY];
+    let currentCardIndex = 0;
+    let isFlipped = false;
+    let currentWritingLadderIndex = 0;
+    let currentSpellingItem = null;
+    let spellingScore = { correct: 0, total: 0 };
+    let spellingPlaybackRate = 1.0;
+    let currentSpeakingCardIndex = 0;
+    let drillsCompleted = 0;
+
+    /* Web Speech */
+    function speakAudio(text, rate = 1.0) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = document.getElementById('voiceAccentSelect').value || 'en-GB';
+      utterance.rate = rate;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakWord() {
+      if (filteredVocab.length === 0) return;
+      speakAudio(filteredVocab[currentCardIndex].word);
+    }
+
+    function speakSpeakingText() {
+      const card = SPEAKING_CARDS[currentSpeakingCardIndex];
+      speakAudio(`${card.marker} ${card.elaboration} ${card.conclusion}`, 0.9);
+    }
+
+    /* Scroll To Drill */
+    function scrollToDrill(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /* Logic kiểm tra Bài tập 1.1 */
+    let isTask1_1Done = false;
+    function checkTask1_1() {
+      const checkedBoxes = Array.from(document.querySelectorAll('#task1_1_checkboxes input[type="checkbox"]:checked')).map(cb => cb.value);
+      const feedback = document.getElementById('feedback_task1_1');
+
+      if (checkedBoxes.length === 0) {
+        feedback.innerHTML = '<span class="text-amber-500">⚠️ Please select 4 options before checking.</span>';
+        return;
+      }
+
+      const isCorrect = checkedBoxes.length === 4 && 
+        checkedBoxes.includes("2") && 
+        checkedBoxes.includes("3") && 
+        checkedBoxes.includes("4") && 
+        checkedBoxes.includes("5") && 
+        !checkedBoxes.includes("1");
+
+      if (isCorrect) {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Excellent! Statements 2, 3, 4, and 5 describe overarching main features. Statement 1 is merely an isolated minor data point (Band 6.0 error).</span>';
+        if (!isTask1_1Done) {
+          isTask1_1Done = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 dark:text-rose-400 font-bold">❌ Incorrect selection. Key advice: Avoid selecting Statement 1 because raw isolated figures are details, not key overarching trends (Band 7.0+ Main Features: 2, 3, 4, 5).</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 1.2 */
+    let isTask1_2Done = false;
+    function checkTask1_2() {
+      const g1 = document.getElementById('gap1_2_1').value;
+      const g2 = document.getElementById('gap1_2_2').value;
+      const g3 = document.getElementById('gap1_2_3').value;
+      const g4 = document.getElementById('gap1_2_4').value;
+      const g5 = document.getElementById('gap1_2_5').value;
+      const feedback = document.getElementById('feedback_task1_2');
+
+      const isCorrect = (g1 === "was less marked") &&
+                        (g2 === "more significant growth") &&
+                        (g3 === "had widened") &&
+                        (g4 === "flattened out at") &&
+                        (g5 === "saw their strongest growth rate");
+
+      if (isCorrect) {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Chính xác 100%! Bạn đã áp dụng chuẩn xác toàn bộ cụm từ miêu tả biến động nâng cao.</span>';
+        if (!isTask1_2Done) {
+          isTask1_2Done = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Một số vị trí chưa chính xác. Hãy đối chiếu lại ngữ cảnh số liệu và ý nghĩa so sánh.</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 1.3 */
+    let isTask1_3Done = false;
+    function checkTask1_3() {
+      const t1 = document.getElementById('tense_1').value.trim().toLowerCase();
+      const t2 = document.getElementById('tense_2').value.trim().toLowerCase();
+      const t3 = document.getElementById('tense_3').value.trim().toLowerCase();
+      const t4 = document.getElementById('tense_4').value.trim().toLowerCase();
+      const feedback = document.getElementById('feedback_task1_3');
+
+      const c1 = (t1 === "experienced");
+      const c2 = (t2 === "had reached");
+      const c3 = (t3 === "have risen");
+      const c4 = (t4 === "had fluctuated");
+
+      if (c1 && c2 && c3 && c4) {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Chuẩn xác 100%! Quy tắc: Quá khứ đơn (1995-1997) ➔ Past Perfect (By 2005 / Prior to 2002) ➔ Present Perfect (since 2001).</span>';
+        if (!isTask1_3Done) {
+          isTask1_3Done = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Chưa đúng. Đáp án chuẩn: (1) experienced, (2) had reached, (3) have risen, (4) had fluctuated.</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 2.3 */
+    let isTask2_3Done = false;
+    function checkTask2_3() {
+      const c1 = document.getElementById('cleft_1').value.trim().toLowerCase();
+      const c2 = document.getElementById('cleft_2').value.trim().toLowerCase();
+      const c3 = document.getElementById('cleft_3').value.trim().toLowerCase();
+      const feedback = document.getElementById('feedback_task2_3');
+
+      const isC1 = c1.includes("want is to find water on other planets") || c1.includes("want is finding water on other planets");
+      const isC2 = c2.includes("the space walk that the astronauts enjoyed most");
+      const isC3 = c3.includes("we require to set up a permanent base on the moon is political will");
+
+      if (isC1 && isC2 && isC3) {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Xuất sắc! Bạn đã làm chủ 3 cấu trúc câu chẻ ăn trọn điểm Grammatical Range.</span>';
+        if (!isTask2_3Done) {
+          isTask2_3Done = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Gợi ý: (1) want is to find water... | (2) the space walk that the astronauts enjoyed most. | (3) we require to set up a permanent base on the Moon is political will.</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 3.1 */
+    let isSpkHabitsDone = false;
+    function checkSpeakingHabits() {
+      const h1 = document.querySelector('input[name="spk_habit_1"]:checked')?.value;
+      const h2 = document.querySelector('input[name="spk_habit_2"]:checked')?.value;
+      const h3 = document.querySelector('input[name="spk_habit_3"]:checked')?.value;
+      const h4 = document.querySelector('input[name="spk_habit_4"]:checked')?.value;
+      const feedback = document.getElementById('feedback_spk_habits');
+
+      if (h1 === "get up" && h2 === "gather" && h3 === "living" && h4 === "be") {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Hoàn hảo! used to + V (thói quen cũ), would + V (hành động lặp lại), get used to + V-ing (sự thích nghi).</span>';
+        if (!isSpkHabitsDone) {
+          isSpkHabitsDone = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Chưa chính xác. Đáp án: 1. get up | 2. gather | 3. living | 4. be.</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 3.2 */
+    let isHypoDone = false;
+    function checkHypothetical() {
+      const h1 = document.getElementById('hypo_1').value.trim().toLowerCase();
+      const h2 = document.getElementById('hypo_2').value.trim().toLowerCase();
+      const h3 = document.getElementById('hypo_3').value.trim().toLowerCase();
+      const feedback = document.getElementById('feedback_hypothetical');
+
+      const isH1 = h1.includes("my smartphone") && h1.includes("lose touch");
+      const isH2 = h2.includes("my smartphone") && h2.includes("lose touch");
+      const isH3 = (h3.includes("support from my tutor") || h3.includes("the support of my tutor")) && h3.includes("completed");
+
+      if (isH1 && isH2 && isH3) {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Xuất sắc! Cấu trúc giả định đảo ngữ Band 7.5+ chuẩn mực.</span>';
+        if (!isHypoDone) {
+          isHypoDone = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Gợi ý: (1 & 2): my smartphone, I would lose touch with my friends. | (3): the support from my tutor, I wouldn\'t have completed the research.</span>';
+      }
+    }
+
+    /* Logic kiểm tra Bài tập 4.1 */
+    let isPrepDone = false;
+    function checkPrepositions() {
+      const p1 = document.getElementById('prep_1').value;
+      const p2 = document.getElementById('prep_2').value;
+      const p3 = document.getElementById('prep_3').value;
+      const p4 = document.getElementById('prep_4').value;
+      const feedback = document.getElementById('feedback_prepositions');
+
+      if (p1 === "on" && p2 === "with" && p3 === "for" && p4 === "in") {
+        feedback.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold">✅ Chuẩn 100%! concentrate on, provide with, reputation for, participate in.</span>';
+        if (!isPrepDone) {
+          isPrepDone = true;
+          drillsCompleted++;
+          updateDrillsOverallProgress();
+        }
+      } else {
+        feedback.innerHTML = '<span class="text-rose-500 font-bold">❌ Chưa chính xác. Đáp án chuẩn: 1. on | 2. with | 3. for | 4. in.</span>';
+      }
+    }
+
+    /* Cập nhật tiến độ hoàn thành Drills */
+    function updateDrillsOverallProgress() {
+      document.getElementById('drillsOverallProgress').textContent = `${drillsCompleted} / 7 Hoàn tất`;
+      if (drillsCompleted === 7 && window.confetti) {
+        window.confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      }
+    }
+
+    /* Lọc Thẻ 3D theo Unit */
+    function filterFlashcards(topic) {
+      if (topic === 'ALL') {
+        filteredVocab = [...IELTS_VOCABULARY];
+      } else {
+        filteredVocab = IELTS_VOCABULARY.filter(item => item.topic === topic);
+      }
+      currentCardIndex = 0;
+      renderCurrentCard();
+    }
+
+    /* Lọc Dictation Clinic theo Unit */
+    function changeSpellingCategory(topic) {
+      nextSpellingItem();
+    }
+
+    function setSpellingSpeed(rate) {
+      spellingPlaybackRate = rate;
+      document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+        btn.classList.add('bg-slate-100', 'dark:bg-slate-800');
+      });
+      event.target.classList.add('active', 'bg-indigo-600', 'text-white');
+      playSpellingAudio();
+    }
+
+    function nextSpellingItem() {
+      const topic = document.getElementById('spellingCategoryFilter')?.value || 'ALL';
+      let pool = IELTS_VOCABULARY;
+      if (topic !== 'ALL') {
+        pool = IELTS_VOCABULARY.filter(v => v.topic === topic);
+      }
+      if (!pool || pool.length === 0) pool = IELTS_VOCABULARY;
+
+      currentSpellingItem = pool[Math.floor(Math.random() * pool.length)];
+
+      document.getElementById('spellingInput').value = '';
+      document.getElementById('spellingFeedbackBox').classList.add('hidden');
+      document.getElementById('spellingNextBtn').classList.add('hidden');
+      document.getElementById('spellingPosHint').textContent = currentSpellingItem.pos;
+      document.getElementById('spellingMeaningHint').textContent = currentSpellingItem.meaningVi;
+
+      setTimeout(() => { playSpellingAudio(); }, 300);
+    }
+
+    function playSpellingAudio() {
+      if (!currentSpellingItem) return;
+      speakAudio(currentSpellingItem.word, spellingPlaybackRate);
+    }
+
+    function handleSpellingSubmit(e) {
+      e.preventDefault();
+      if (!currentSpellingItem) return;
+
+      const userRaw = document.getElementById('spellingInput').value.trim();
+      if (!userRaw) return;
+
+      const correctWord = currentSpellingItem.word;
+      const feedbackBox = document.getElementById('spellingFeedbackBox');
+      feedbackBox.classList.remove('hidden');
+
+      spellingScore.total++;
+      
+      // Hỗ trợ kiểm tra biến thể Anh-Anh / Anh-Mỹ
+      let isVariantAccepted = false;
+      if (correctWord === 'artefacts' && userRaw.toLowerCase() === 'artifacts') isVariantAccepted = true;
+      if (correctWord === 'fossilisation' && userRaw.toLowerCase() === 'fossilization') isVariantAccepted = true;
+
+      const isExactMatch = (userRaw === correctWord) || isVariantAccepted;
+      const isCaseMismatch = (userRaw.toLowerCase() === correctWord.toLowerCase()) && !isExactMatch;
+
+      if (isExactMatch) {
+        spellingScore.correct++;
+        feedbackBox.className = "mt-4 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm";
+        feedbackBox.innerHTML = `
+          <div class="font-bold flex items-center gap-1.5 mb-1 text-sm">
+            <span>✅</span> <span>HOÀN TOÀN CHÍNH XÁC (1.0 / 1.0 ĐIỂM)</span>
+          </div>
+          <p>Bạn đã viết chuẩn xác từng ký tự: <strong class="font-mono text-base text-emerald-700 dark:text-emerald-300">${correctWord}</strong> (${currentSpellingItem.ipa}).</p>
+          <div class="mt-2 text-[11px] text-emerald-600 dark:text-emerald-400 border-t border-emerald-200 dark:border-emerald-800/60 pt-1.5">
+            ${currentSpellingItem.trapHint}
+          </div>
+        `;
+      } else if (isCaseMismatch) {
+        feedbackBox.className = "mt-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs sm:text-sm";
+        feedbackBox.innerHTML = `
+          <div class="font-bold flex items-center gap-1.5 mb-1 text-sm">
+            <span>⚠️</span> <span>LỖI VIẾT HOA (CAPITALIZATION ERROR)</span>
+          </div>
+          <p>Bạn gõ: <code class="font-mono line-through text-rose-500">${userRaw}</code> ➔ Đáp án thi phải là: <strong class="font-mono text-base text-indigo-600 dark:text-indigo-400">${correctWord}</strong>.</p>
+        `;
+      } else {
+        feedbackBox.className = "mt-4 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs sm:text-sm";
+        feedbackBox.innerHTML = `
+          <div class="font-bold flex items-center gap-1.5 mb-1 text-sm">
+            <span>❌</span> <span>SAI CHÍNH TẢ (SPELLING MISTAKE)</span>
+          </div>
+          <p>Đáp án đúng: <strong class="font-mono text-base text-indigo-600 dark:text-indigo-400">${correctWord}</strong> (${currentSpellingItem.ipa})</p>
+          <div class="mt-2 text-xs bg-rose-100/70 dark:bg-rose-900/40 p-2.5 rounded-xl">
+            ${currentSpellingItem.trapHint}
+          </div>
+        `;
+      }
+
+      document.getElementById('spellingScoreCounter').textContent = `Chính xác: ${spellingScore.correct} / ${spellingScore.total} (${Math.round((spellingScore.correct / spellingScore.total) * 100)}%)`;
+      document.getElementById('spellingNextBtn').classList.remove('hidden');
+    }
+
+    /* Flashcard Engine */
+    const flashcardInner = document.getElementById('flashcardInner');
+    function renderCurrentCard() {
+      if (filteredVocab.length === 0) return;
+      const item = filteredVocab[currentCardIndex];
+
+      if (isFlipped) {
+        flashcardInner.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+
+      const topicLabels = {
+        'LISTENING_TRAPS': '⚠️ Top Listening Trap',
+        'HEALTH': 'Unit 3: Health & Medicine',
+        'EDUCATION': 'Unit 1: Education & Work',
+        'SCIENCE': 'Units 5 & 8: History & Science',
+        'TECH_NATURE': 'Units 6 & 7: Tech & Nature',
+        'WRITING_ANALYSIS': 'Writing Academic Chunks'
+      };
+
+      document.getElementById('cardTopicTag').textContent = topicLabels[item.topic] || 'Complete IELTS 6.5-7.5';
+      document.getElementById('cardPosTag').textContent = item.pos;
+      document.getElementById('cardEmoji').textContent = item.emoji;
+      document.getElementById('cardWord').textContent = item.word;
+      document.getElementById('cardIpa').textContent = item.ipa;
+      document.getElementById('cardFrontHint').textContent = item.trapHint;
+
+      document.getElementById('cardBackWord').textContent = item.word;
+      document.getElementById('cardBackPos').textContent = `(${item.pos})`;
+      document.getElementById('cardBackMeaningVi').textContent = item.meaningVi;
+      document.getElementById('cardBackCollocations').textContent = item.collocations;
+      document.getElementById('cardBackExample').innerHTML = item.example.replace(new RegExp(`\\b${item.word}\\b`, 'gi'), `<strong class="text-indigo-600 dark:text-indigo-400 not-italic">$&</strong>`);
+      document.getElementById('cardBackSynonyms').textContent = item.synonyms;
+
+      document.getElementById('cardProgressText').textContent = `Từ ${currentCardIndex + 1} / ${filteredVocab.length}`;
+      document.getElementById('cardProgressBar').style.width = `${((currentCardIndex + 1) / filteredVocab.length) * 100}%`;
+    }
+
+    function flipCard() {
+      isFlipped = !isFlipped;
+      flashcardInner.classList.toggle('rotate-y-180', isFlipped);
+    }
+    function prevCard() {
+      currentCardIndex = (currentCardIndex - 1 + filteredVocab.length) % filteredVocab.length;
+      renderCurrentCard();
+    }
+    function nextCard() {
+      currentCardIndex = (currentCardIndex + 1) % filteredVocab.length;
+      renderCurrentCard();
+    }
+
+    function renderSpeakingCard() {
+      currentSpeakingCardIndex = (currentSpeakingCardIndex + 1) % SPEAKING_CARDS.length;
+      const card = SPEAKING_CARDS[currentSpeakingCardIndex];
+      document.getElementById('speakingCategory').textContent = card.category;
+      document.getElementById('speakingPrompt').textContent = `"${card.prompt}"`;
+      document.getElementById('speakingMarker').textContent = `"${card.marker}"`;
+      document.getElementById('speakingElaboration').innerHTML = card.elaboration;
+      document.getElementById('speakingConclusion').textContent = `"${card.conclusion}"`;
+    }
+
+    /* MATCH GAME ENGINE */
+    let matchCards = [];
+    let matchSelected = [];
+    let matchMatchedCount = 0;
+    let matchTimerInterval = null;
+    let matchStartTime = 0;
+
+    function startMatchGame() {
+      clearInterval(matchTimerInterval);
+      matchSelected = [];
+      matchMatchedCount = 0;
+      document.getElementById('matchMatchedCount').textContent = '0';
+      document.getElementById('matchTimer').textContent = '00:00.0';
+
+      // Chọn 6 từ ngẫu nhiên
+      const shuffled = [...IELTS_VOCABULARY].sort(() => 0.5 - Math.random()).slice(0, 6);
+      matchCards = [];
+      shuffled.forEach((item, index) => {
+        matchCards.push({ id: `w-${index}`, pairId: index, text: item.word, type: 'word' });
+        matchCards.push({ id: `m-${index}`, pairId: index, text: item.meaningVi.split('(')[0].trim(), type: 'meaning' });
+      });
+      matchCards.sort(() => 0.5 - Math.random());
+
+      const grid = document.getElementById('matchGrid');
+      grid.innerHTML = matchCards.map(c => `
+        <button onclick="handleMatchCardClick('${c.id}')" id="mc-${c.id}" class="match-card h-28 p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/90 hover:border-indigo-500 flex items-center justify-center text-center font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 shadow-sm transition active:scale-95 leading-snug">
+          ${c.text}
+        </button>
+      `).join('');
+
+      matchStartTime = Date.now();
+      matchTimerInterval = setInterval(() => {
+        const delta = Date.now() - matchStartTime;
+        const mins = Math.floor(delta / 60000).toString().padStart(2, '0');
+        const secs = Math.floor((delta % 60000) / 1000).toString().padStart(2, '0');
+        const tenths = Math.floor((delta % 1000) / 100);
+        document.getElementById('matchTimer').textContent = `${mins}:${secs}.${tenths}`;
+      }, 100);
+    }
+
+    function handleMatchCardClick(cardId) {
+      if (matchSelected.length >= 2) return;
+      const cardObj = matchCards.find(c => c.id === cardId);
+      const btn = document.getElementById(`mc-${cardId}`);
+      if (!cardObj || btn.disabled || matchSelected.some(s => s.id === cardId)) return;
+
+      btn.classList.add('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60', 'scale-95');
+      matchSelected.push({ ...cardObj, btn });
+
+      if (matchSelected.length === 2) {
+        const [c1, c2] = matchSelected;
+        if (c1.pairId === c2.pairId && c1.type !== c2.type) {
+          // Khớp đúng
+          setTimeout(() => {
+            c1.btn.classList.remove('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60');
+            c2.btn.classList.remove('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60');
+            c1.btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600', 'opacity-60');
+            c2.btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600', 'opacity-60');
+            c1.btn.disabled = true;
+            c2.btn.disabled = true;
+            matchMatchedCount++;
+            document.getElementById('matchMatchedCount').textContent = matchMatchedCount;
+            matchSelected = [];
+
+            if (matchMatchedCount === 6) {
+              clearInterval(matchTimerInterval);
+              if (window.confetti) window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+            }
+          }, 300);
+        } else {
+          // Ghép sai
+          setTimeout(() => {
+            c1.btn.classList.add('border-rose-500', 'bg-rose-50');
+            c2.btn.classList.add('border-rose-500', 'bg-rose-50');
+            setTimeout(() => {
+              c1.btn.className = "match-card h-28 p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/90 hover:border-indigo-500 flex items-center justify-center text-center font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 shadow-sm transition active:scale-95 leading-snug";
+              c2.btn.className = "match-card h-28 p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/90 hover:border-indigo-500 flex items-center justify-center text-center font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 shadow-sm transition active:scale-95 leading-snug";
+              matchSelected = [];
+            }, 600);
+          }, 300);
+        }
+      }
+    }
+
+    /* RENDER VOCABULARY SEARCH TABLE */
+    function renderVocabTable(list = IELTS_VOCABULARY) {
+      const tbody = document.getElementById('vocabularyTableBody');
+      document.getElementById('vocabularyFilteredCount').textContent = list.length;
+      tbody.innerHTML = list.map(item => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+          <td class="p-3">
+            <div class="font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <span>${item.emoji}</span>
+              <span>${item.word}</span>
+            </div>
+            <div class="text-[11px] font-mono text-indigo-600 dark:text-indigo-400">${item.ipa}</div>
+          </td>
+          <td class="p-3 text-slate-500 italic">${item.pos}</td>
+          <td class="p-3 text-slate-800 dark:text-slate-200">${item.meaningVi}</td>
+          <td class="p-3 text-rose-600 dark:text-rose-400 text-xs">${item.trapHint}</td>
+          <td class="p-3 font-medium text-slate-700 dark:text-slate-300 text-xs">${item.collocations}</td>
+          <td class="p-3 text-center">
+            <button onclick="speakAudio('${item.word}')" class="p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Filter Table Search
+    document.getElementById('vocabularySearchInput')?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = IELTS_VOCABULARY.filter(item => 
+        item.word.toLowerCase().includes(q) ||
+        item.meaningVi.toLowerCase().includes(q) ||
+        item.trapHint.toLowerCase().includes(q) ||
+        item.collocations.toLowerCase().includes(q)
+      );
+      renderVocabTable(filtered);
+    });
+
+    function switchTab(tabId) {
+      const tabs = ['drills', 'spelling', 'flashcards', 'writing', 'speaking', 'match', 'list'];
+      tabs.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const tabBtn = document.getElementById(`tab-${t}`);
+        if (t === tabId) {
+          viewEl.classList.remove('hidden');
+          tabBtn.className = "tab-btn active px-3.5 py-2 rounded-xl text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 flex items-center gap-2 whitespace-nowrap transition font-bold";
+        } else {
+          viewEl.classList.add('hidden');
+          tabBtn.className = "tab-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition font-semibold";
+        }
+      });
+
+      if (tabId === 'writing') renderWritingLadder();
+      if (tabId === 'spelling') nextSpellingItem();
+      if (tabId === 'flashcards') renderCurrentCard();
+      if (tabId === 'speaking') renderSpeakingCard();
+      if (tabId === 'match') startMatchGame();
+      if (tabId === 'list') renderVocabTable();
+    }
+
+    // Keybindings: Space to flip, Arrows to switch
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.code === 'ArrowRight') {
+        nextCard();
+      } else if (e.code === 'ArrowLeft') {
+        prevCard();
+      }
+    });
+
+    // Theme Toggle
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('themeSunIcon').classList.toggle('hidden', !isDark);
+      document.getElementById('themeMoonIcon').classList.toggle('hidden', isDark);
+    });
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWritingLadder();
+      renderCurrentCard();
+      renderSpeakingCard();
+      renderVocabTable();
+    });
+  </script>
+</body>
+</html>
