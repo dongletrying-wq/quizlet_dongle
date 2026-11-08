@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>214 Bộ Thủ Hán Tự Khang Hy - TOCFL & HSK Edition</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+            hanzi: ['"Noto Sans TC"', '"PingFang TC"', '"Microsoft JhengHei"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Latin + TOCFL Traditional Chinese -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Thư viện Canvas Confetti cho hiệu ứng chúc mừng -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* 3D Flip Styles */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    /* Tối ưu thanh cuộn */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl font-hanzi shadow-md shadow-indigo-500/20">
+          康
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight flex items-center gap-2">
+            214 Bộ Thủ Khang Hy Toàn Tập
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">TOCFL</span>
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Chinh phục trọn bộ 214 bộ thủ từ 1 nét đến 17 nét chuẩn Từ điển Khang Hy</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2">
+        <button id="themeToggleBtn" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="Đổi chế độ Sáng / Tối">
+          <svg id="themeSunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="themeMoonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <button id="soundToggleBtn" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 transition" title="Bật/Tắt phát âm tự động">
+          <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-6xl mx-auto px-4 flex items-center gap-1 overflow-x-auto border-t border-slate-100 dark:border-slate-800/60 text-xs sm:text-sm font-semibold py-1">
+      <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn active px-3.5 py-2 rounded-lg text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🃏</span> <span>Thẻ 3D</span>
+      </button>
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3.5 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>📝</span> <span>Trắc Nghiệm</span>
+      </button>
+      <button onclick="switchTab('match')" id="tab-match" class="tab-btn px-3.5 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🧩</span> <span>Ghép Cặp</span>
+      </button>
+      <button onclick="switchTab('dictation')" id="tab-dictation" class="tab-btn px-3.5 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>🎧</span> <span>Luyện Gõ</span>
+      </button>
+      <button onclick="switchTab('directory')" id="tab-directory" class="tab-btn px-3.5 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <span>📚</span> <span>Tra Cứu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-start">
+
+    <!-- CONTROLS & FILTER BAR -->
+    <section class="mb-5 bg-white dark:bg-slate-900 p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2 flex-wrap">
+        <label for="categoryFilter" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Lọc Số Nét:</label>
+        <select id="categoryFilter" onchange="handleFilterChange()" class="text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+          <option value="ALL">🌟 Toàn Bộ 214 Bộ Thủ</option>
+          <option value="1">Bộ 1 Nét (6 bộ)</option>
+          <option value="2">Bộ 2 Nét (23 bộ)</option>
+          <option value="3">Bộ 3 Nét (31 bộ)</option>
+          <option value="4">Bộ 4 Nét (34 bộ)</option>
+          <option value="5">Bộ 5 Nét (23 bộ)</option>
+          <option value="6">Bộ 6 Nét (29 bộ)</option>
+          <option value="7">Bộ 7 Nét (20 bộ)</option>
+          <option value="8">Bộ 8 Nét (9 bộ)</option>
+          <option value="9">Bộ 9 Nét (11 bộ)</option>
+          <option value="10">Bộ 10 Nét (8 bộ)</option>
+          <option value="11">Bộ 11 Nét (6 bộ)</option>
+          <option value="12">Bộ 12 Nét (4 bộ)</option>
+          <option value="13">Bộ 13 Nét (4 bộ)</option>
+          <option value="14">Bộ 14 Nét (2 bộ)</option>
+          <option value="15">Bộ 15 Nét (1 bộ)</option>
+          <option value="16">Bộ 16 Nét (2 bộ)</option>
+          <option value="17">Bộ 17 Nét (1 bộ)</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <span>Số lượng học:</span>
+        <span id="activeCountBadge" class="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-bold">214</span>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: 3D FLASHCARDS -->
+    <!-- =================================================================== -->
+    <div id="view-flashcards" class="flex flex-col items-center">
+      <!-- Progress Bar -->
+      <div class="w-full max-w-xl flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 px-1">
+        <span id="cardProgressText" class="font-bold">Thẻ 1 / 214</span>
+        <span class="text-[11px] hidden sm:inline">Phím tắt: Space (lật thẻ) • ← / → (chuyển thẻ)</span>
+      </div>
+      <div class="w-full max-w-xl h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mb-4 overflow-hidden">
+        <div id="cardProgressBar" class="h-full bg-indigo-600 rounded-full transition-all duration-300" style="width: 1%;"></div>
+      </div>
+
+      <!-- 3D Card Area -->
+      <div class="w-full max-w-xl h-[430px] sm:h-[460px] perspective-1000 cursor-pointer select-none" onclick="flipCard()">
+        <div id="flashcardInner" class="relative w-full h-full transform-style-3d transition-transform duration-500 rounded-3xl shadow-xl shadow-slate-200 dark:shadow-slate-950/60">
+          
+          <!-- MẶT TRƯỚC (FRONT) -->
+          <div class="absolute inset-0 backface-hidden bg-white dark:bg-slate-900 border-2 border-indigo-100 dark:border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden">
+            <!-- Header mặt trước -->
+            <div class="flex items-center justify-between">
+              <span id="cardCategoryTag" class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                Bộ 1 Nét
+              </span>
+              <button onclick="event.stopPropagation(); speakCurrentCard();" class="p-2.5 rounded-full bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 transition shadow-sm" title="Nghe phát âm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              </button>
+            </div>
+
+            <!-- Nội dung chính mặt trước: Emoji + Bộ thủ to -->
+            <div class="flex flex-col items-center justify-center my-auto">
+              <!-- Khung Emoji minh họa nổi bật -->
+              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-tr from-indigo-50 to-sky-50 dark:from-slate-800 dark:to-indigo-950/50 border border-indigo-100 dark:border-slate-700 flex items-center justify-center shadow-inner mb-3">
+                <span id="cardFrontEmoji" class="text-4xl sm:text-5xl select-none">1️⃣</span>
+              </div>
+              
+              <!-- Chữ Hán Bộ thủ to nét -->
+              <div id="cardFrontHanzi" class="font-hanzi text-6xl sm:text-7xl font-black text-slate-900 dark:text-white tracking-wide mb-1">
+                一
+              </div>
+              
+              <!-- Biến thể nếu có -->
+              <div id="cardFrontVariant" class="text-base sm:text-lg font-hanzi font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/70 dark:bg-slate-800/80 px-3 py-0.5 rounded-lg mb-2">
+                Dạng chuẩn
+              </div>
+              
+              <!-- Pinyin & Âm Hán Việt -->
+              <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300 font-medium">
+                <span id="cardFrontPinyin" class="text-base sm:text-lg text-indigo-600 dark:text-indigo-400 font-semibold font-mono">yī</span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span id="cardFrontHanViet" class="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Nhất</span>
+              </div>
+            </div>
+
+            <!-- Footer mặt trước: Lời nhắc -->
+            <div class="text-center text-xs text-slate-400 dark:text-slate-500 font-medium flex items-center justify-center gap-1.5">
+              <span>Nhấn thẻ hoặc bấm <kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700 text-[10px]">Space</kbd> để xem giải nghĩa</span>
+            </div>
+          </div>
+
+          <!-- MẶT SAU (BACK) -->
+          <div class="absolute inset-0 backface-hidden rotate-y-180 bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-900/60 rounded-3xl p-5 sm:p-7 flex flex-col justify-between overflow-y-auto">
+            <!-- Header mặt sau -->
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <span id="cardBackEmoji" class="text-2xl">1️⃣</span>
+                <div>
+                  <h3 id="cardBackTitle" class="text-base font-bold text-slate-900 dark:text-white">Bộ Nhất (#1)</h3>
+                  <p id="cardBackPinyinHanViet" class="text-xs text-indigo-600 dark:text-indigo-400 font-mono font-medium">yī • NHẤT</p>
+                </div>
+              </div>
+              <button onclick="event.stopPropagation(); speakCurrentCard();" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 transition" title="Nghe phát âm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+              </button>
+            </div>
+
+            <!-- Ý nghĩa cốt lõi & Thông tin nét -->
+            <div class="my-auto space-y-4 text-left">
+              <div class="bg-indigo-50/60 dark:bg-indigo-950/40 p-4 rounded-2xl border border-indigo-100 dark:border-indigo-900/40">
+                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-1">💡 Ý Nghĩa Cốt Lõi:</span>
+                <p id="cardBackConnection" class="text-base font-semibold text-slate-800 dark:text-slate-100 leading-snug">Số một, khởi đầu, đồng nhất</p>
+              </div>
+
+              <!-- Chi tiết Bộ Thủ Khang Hy -->
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <span class="text-slate-400 block mb-0.5">Thứ tự Khang Hy:</span>
+                  <span id="cardBackStt" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 font-mono">Bộ thứ #1</span>
+                </div>
+                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <span class="text-slate-400 block mb-0.5">Số nét cơ bản:</span>
+                  <span id="cardBackStrokeCount" class="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">1 nét</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer mặt sau -->
+            <div class="text-center text-xs text-slate-400 dark:text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+              Nhấn thẻ để lật lại mặt trước
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Controllers -->
+      <div class="w-full max-w-xl flex items-center justify-between gap-3 mt-5">
+        <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold shadow-sm transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          <span>Trước</span>
+        </button>
+
+        <button onclick="flipCard()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-md shadow-indigo-600/20 transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Lật Thẻ</span>
+        </button>
+
+        <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold shadow-sm transition flex items-center gap-2">
+          <span>Tiếp</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: TRẮC NGHIỆM (QUIZ) -->
+    <!-- =================================================================== -->
+    <div id="view-quiz" class="hidden max-w-xl mx-auto w-full">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md">
+        <!-- Quiz Header -->
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-semibold">
+          <span class="text-indigo-600 dark:text-indigo-400" id="quizQuestionCounter">Câu 1</span>
+          <span class="text-slate-500" id="quizScoreText">Điểm: 0</span>
+        </div>
+
+        <!-- Quiz Question Box -->
+        <div class="text-center my-4">
+          <div id="quizPromptEmoji" class="text-5xl mb-2">❓</div>
+          <p class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1" id="quizTypeLabel">Nhận diện bộ thủ</p>
+          <h3 id="quizQuestionTitle" class="font-hanzi text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-2">一</h3>
+          <p id="quizQuestionSub" class="text-sm text-slate-500 dark:text-slate-400">Chọn tên Hán-Việt và ý nghĩa cốt lõi chính xác:</p>
+        </div>
+
+        <!-- Options Container -->
+        <div id="quizOptionsContainer" class="space-y-2.5 my-6">
+          <!-- Tự động sinh trắc nghiệm -->
+        </div>
+
+        <!-- Feedback Box -->
+        <div id="quizFeedbackBox" class="hidden p-4 rounded-2xl mb-4 text-sm flex items-start gap-3">
+          <div id="quizFeedbackIcon"></div>
+          <div>
+            <h4 id="quizFeedbackTitle" class="font-bold mb-0.5"></h4>
+            <p id="quizFeedbackDetail" class="text-xs opacity-90 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- Quiz Next Button -->
+        <button id="quizNextBtn" onclick="generateNewQuizQuestion()" class="hidden w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition flex items-center justify-center gap-2 shadow-md">
+          <span>Câu Tiếp Theo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: MATCH GAME (TRÒ CHƠI GHÉP CẶP) -->
+    <!-- =================================================================== -->
+    <div id="view-match" class="hidden max-w-2xl mx-auto w-full">
+      <!-- Top Control Bar -->
+      <div class="flex items-center justify-between mb-4 bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">⏱️</span>
+          <span id="matchTimer" class="font-mono text-base font-bold text-indigo-600 dark:text-indigo-400">00:00.0</span>
+        </div>
+        <div class="text-xs font-semibold text-slate-500">
+          Đã ghép: <span id="matchMatchedCount" class="text-emerald-600 font-bold">0</span>/6 cặp
+        </div>
+        <button onclick="startMatchGame()" class="px-3.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 font-bold text-xs transition">
+          🔄 Ván Mới
+        </button>
+      </div>
+
+      <!-- Match Grid 3x4 (12 ô) -->
+      <div id="matchGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <!-- Render các ô thẻ tại đây -->
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: LUYỆN GÕ & CHÍNH TẢ (DICTATION) -->
+    <!-- =================================================================== -->
+    <div id="view-dictation" class="hidden max-w-xl mx-auto w-full">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-md">
+        <div class="text-center mb-6">
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Luyện Nghe & Nhận Diện</span>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Nghe phát âm và nhận dạng Bộ thủ</h2>
+          <p class="text-xs text-slate-500 mt-1">Gõ đúng Pinyin hoặc tên âm Hán Việt của bộ thủ</p>
+        </div>
+
+        <!-- Big Audio Button -->
+        <div class="flex justify-center mb-6">
+          <button onclick="playDictationAudio()" class="w-20 h-20 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-lg shadow-indigo-600/30 transition transform hover:scale-105 active:scale-95" title="Phát âm thanh">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+        </div>
+
+        <!-- Hints Box -->
+        <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 mb-6 text-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-400 uppercase">Gợi ý hình tượng:</span>
+            <span id="dictationHintEmoji" class="text-2xl">1️⃣</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300">Ý nghĩa cốt lõi: <strong id="dictationHintMeaning" class="text-slate-900 dark:text-white">...</strong></p>
+          <div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500">
+            <span>Số nét: </span>
+            <span id="dictationHintStrokes" class="font-bold text-indigo-600 dark:text-indigo-400">1 nét</span>
+          </div>
+        </div>
+
+        <!-- Input Form -->
+        <form onsubmit="handleDictationSubmit(event)" class="space-y-3">
+          <div class="relative">
+            <input type="text" id="dictationInput" placeholder="Nhập Pinyin (ví dụ: yi) hoặc Hán Việt (Nhat)..." autocomplete="off" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow transition">
+            Kiểm Tra Kết Quả
+          </button>
+        </form>
+
+        <!-- Dictation Result Feedback -->
+        <div id="dictationResultBox" class="hidden mt-4 p-4 rounded-2xl text-sm"></div>
+
+        <!-- Next button for dictation -->
+        <button id="dictationNextBtn" onclick="nextDictationItem()" class="hidden mt-3 w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs transition">
+          Luyện Bộ Tiếp Theo ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: TRA CỨU DANH MỤC 214 BỘ THỦ (DIRECTORY) -->
+    <!-- =================================================================== -->
+    <div id="view-directory" class="hidden w-full">
+      <!-- Search & Status -->
+      <div class="mb-4 flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="relative w-full sm:w-80">
+          <input type="text" id="directorySearchInput" placeholder="Tìm số nét, bộ thủ, pinyin, Hán Việt, ý nghĩa..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <span class="absolute left-3 top-2.5 text-slate-400">🔍</span>
+        </div>
+        <div class="text-xs text-slate-500">
+          Hiển thị <span id="directoryFilteredCount" class="font-bold text-indigo-600">214</span> / 214 bộ thủ
+        </div>
+      </div>
+
+      <!-- Directory Table Card -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider">
+              <tr>
+                <th class="p-3 text-center w-14">STT</th>
+                <th class="p-3 text-center">Hình & Bộ Thủ</th>
+                <th class="p-3">Biến Thể</th>
+                <th class="p-3">Pinyin</th>
+                <th class="p-3">Tên Hán-Việt</th>
+                <th class="p-3">Số Nét</th>
+                <th class="p-3">Ý Nghĩa Cốt Lõi</th>
+                <th class="p-3 text-center w-16">Phát Âm</th>
+              </tr>
+            </thead>
+            <tbody id="directoryTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+              <!-- Render 214 bộ thủ -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto py-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-400">
+    Học 214 Bộ Thủ Khang Hy Chữ Hán Phồn Thể • Luyện Thi TOCFL & HSK
+  </footer>
+
+  <!-- SCRIPT DATA & APP LOGIC -->
+  <script>
+    /* =====================================================================
+       214 BỘ THỦ KHANG HY TOÀN DIỆN (ĐẦY ĐỦ 100%)
+       ===================================================================== */
+    const RAW_RADICALS_LIST = [
+      // Bộ 1 Nét (6 bộ)
+      [1, "一", "", "yī", "Nhất", "Số một, khởi đầu, đồng nhất", 1, "1️⃣"],
+      [2, "丨", "", "gǔn / shù", "Cổn", "Nét sổ dọc, đường thẳng đứng", 1, "📏"],
+      [3, "丶", "", "zhǔ / diǎn", "Chủ", "Dấu chấm, điểm dừng", 1, "💧"],
+      [4, "丿", "", "piě", "Phiệt", "Nét phẩy chém sang trái", 1, "🗡️"],
+      [5, "乙", "乚, 乛", "yǐ", "Ất", "Vị trí thứ 2 trong Thiên can, cong queo", 1, "🪝"],
+      [6, "亅", "", "jué", "Quyết", "Nét móc đứng lên", 1, "🎣"],
+
+      // Bộ 2 Nét (23 bộ)
+      [7, "二", "", "èr", "Nhị", "Số hai, đôi lứa", 2, "2️⃣"],
+      [8, "亠", "", "tóu", "Đầu", "Nắp đậy, phần chóp trên cùng", 2, "🧢"],
+      [9, "人", "亻", "rén", "Nhân", "Con người, hoạt động con người", 2, "🧍"],
+      [10, "儿", "", "ér", "Nhi", "Đứa trẻ, đôi chân đi bộ", 2, "👶"],
+      [11, "入", "", "rù", "Nhập", "Đi vào, thu nhận vào", 2, "🚪"],
+      [12, "八", "丷", "bā", "Bát", "Số tám, phân chia ra hai bên", 2, "8️⃣"],
+      [13, "冂", "", "jiōng", "Quynh", "Vùng biên cương, khung mở đáy", 2, "⛩️"],
+      [14, "冖", "", "mì", "Mịch", "Khăn trùm, che phủ lên trên", 2, "⛺"],
+      [15, "冫", "", "bīng", "Băng", "Băng tuyết, giá lạnh", 2, "🧊"],
+      [16, "几", "", "jī", "Kỷ", "Ghế nhỏ, cái bàn trà nhỏ", 2, "🪑"],
+      [17, "凵", "", "qǐng / kǎn", "Khảm", "Cái hố, thùng chứa mở miệng trên", 2, "🕳️"],
+      [18, "刀", "刂", "dāo", "Đao", "Con dao, vũ khí chém cắt", 2, "🔪"],
+      [19, "力", "", "lì", "Lực", "Sức mạnh, cơ bắp, lao động", 2, "💪"],
+      [20, "勹", "", "bāo", "Bao", "Bọc lại, ôm ấp", 2, "📦"],
+      [21, "匕", "", "bǐ", "Chủy", "Chiếc thìa, dao găm nhỏ", 2, "🥄"],
+      [22, "匚", "", "fāng", "Phương", "Chiếc hộp gỗ, đồ đựng", 2, "🗃️"],
+      [23, "匸", "", "xǐ", "Hệ", "Che giấu, cất giữ đồ đạc", 2, "🔒"],
+      [24, "十", "", "shí", "Thập", "Số mười, trọn vẹn, đầy đủ", 2, "🔟"],
+      [25, "卜", "", "bǔ", "Bốc", "Xem bói, quẻ bói, vết nứt mu rùa", 2, "🔮"],
+      [26, "卩", "⺋", "jié", "Tiết", "Đốt tre, tư thế người quỳ gối", 2, "🎋"],
+      [27, "厂", "", "hǎn / chǎng", "Hán / Xưởng", "Sườn núi dốc, mái nhà xưởng", 2, "🏭"],
+      [28, "厶", "", "sī", "Khứ / Tư", "Riêng tư, ích kỷ, khép kín", 2, "🤫"],
+      [29, "又", "", "yòu", "Hựu", "Bàn tay phải, lại một lần nữa", 2, "🔁"],
+
+      // Bộ 3 Nét (31 bộ)
+      [30, "口", "", "kǒu", "Khẩu", "Miệng, cửa, lỗ hổng", 3, "👄"],
+      [31, "囗", "", "wéi", "Vi", "Khung bao bọc kín bốn phía", 3, "🔲"],
+      [32, "土", "", "tǔ", "Thổ", "Đất đai, bùn đất, mặt đất", 3, "⛰️"],
+      [33, "士", "", "shì", "Sĩ", "Kẻ sĩ, quan lại, người có tài", 3, "🎓"],
+      [34, "夂", "", "zhǐ", "Trĩ", "Đi chậm chạp ở phía sau", 3, "🚶"],
+      [35, "夊", "", "suī", "Tuy", "Đi kéo lê chân chầm chậm", 3, "🐢"],
+      [36, "夕", "", "xī", "Tịch", "Buổi chiều tối, hoàng hôn", 3, "🌆"],
+      [37, "大", "", "dà", "Đại", "To lớn (hình người dang tay chân)", 3, "👐"],
+      [38, "女", "", "nǚ", "Nữ", "Phụ nữ, tính chất phái nữ", 3, "👩"],
+      [39, "子", "", "zǐ", "Tử", "Con cái, đứa trẻ", 3, "🧒"],
+      [40, "宀", "", "mián", "Miên", "Mái nhà, nơi trú ngụ", 3, "🏠"],
+      [41, "寸", "", "cùn", "Thốn", "Đơn vị tấc đo lường, quy củ", 3, "📏"],
+      [42, "小", "⺌", "xiǎo", "Tiểu", "Nhỏ bé, ít ỏi", 3, "🤏"],
+      [43, "尢", "尣", "wāng", "Uông", "Người tật nguyền, què quặt", 3, "🦯"],
+      [44, "尸", "", "shī", "Thi", "Thân xác, xác chết", 3, "🦴"],
+      [45, "屮", "", "chè", "Triệt", "Mầm cỏ mới mọc trồi lên đất", 3, "🌱"],
+      [46, "山", "", "shān", "Sơn", "Núi non, địa hình đồi núi", 3, "🏔️"],
+      [47, "巛", "川", "chuān", "Xuyên", "Sông ngòi, dòng nước chảy xuôi", 3, "🌊"],
+      [48, "工", "", "gōng", "Công", "Thợ thủ công, công việc, công cụ", 3, "🔨"],
+      [49, "己", "", "jǐ", "Kỷ", "Bản thân mình, can Kỷ", 3, "🪞"],
+      [50, "巾", "", "jīn", "Cân", "Chiếc khăn, vải vóc", 3, "🧣"],
+      [51, "干", "", "gān", "Can", "Can thiệp, cái khiên chắn", 3, "🛡️"],
+      [52, "幺", "", "yāo", "Yêu", "Nhỏ nhắn, non nớt, thứ nhỏ nhất", 3, "✨"],
+      [53, "广", "", "guǎng", "Quảng", "Mái hiên rộng, tòa nhà lớn", 3, "🏛️"],
+      [54, "廴", "", "yǐn", "Dẫn", "Bước chân dài, kéo dài ra", 3, "🏃"],
+      [55, "廾", "", "gǒng", "Củng", "Hai tay chắp lại dâng lên", 3, "🙏"],
+      [56, "弋", "", "yì", "Dực", "Cái cọc gỗ, bắn tên buộc dây", 3, "🎯"],
+      [57, "弓", "", "gōng", "Cung", "Cây cung tên", 3, "🏹"],
+      [58, "彐", "彑", "jì", "Kệ", "Đầu con nhím, mõm thú", 3, "🦔"],
+      [59, "彡", "", "shān", "Sam", "Lông tóc dài, hoa văn trang trí", 3, "🎨"],
+      [60, "彳", "", "chì", "Xích", "Bước chân bên trái, hành trình ngắn", 3, "🚶‍♂️"],
+
+      // Bộ 4 Nét (34 bộ)
+      [61, "心", "忄, ⺗", "xīn", "Tâm", "Tim, cảm xúc, tâm trạng", 4, "❤️"],
+      [62, "戈", "", "gē", "Qua", "Cây giáo, vũ khí chiến đấu", 4, "⚔️"],
+      [63, "戶", "户, 门", "hù", "Hộ", "Một cánh cửa, hộ gia đình", 4, "🚪"],
+      [64, "手", "扌", "shǒu", "Thủ", "Bàn tay, động tác tay", 4, "✋"],
+      [65, "支", "", "zhī", "Chi", "Cành cây, chống đỡ", 4, "🌿"],
+      [66, "攴", "攵", "pū", "Phộc", "Gõ khẽ, đánh đòn, hành chính", 4, "🔨"],
+      [67, "文", "", "wén", "Văn", "Chữ viết, hoa văn, văn hóa", 4, "📜"],
+      [68, "斗", "", "dǒu", "Đẩu", "Cái đấu đong rượu/thóc", 4, "🥣"],
+      [69, "斤", "", "jīn", "Cân", "Chiếc rìu nhỏ, đơn vị đo cân lạng", 4, "🪓"],
+      [70, "方", "", "fāng", "Phương", "Hình vuông, phương hướng", 4, "🧭"],
+      [71, "无", "旡", "wú", "Vô", "Không có, trống rỗng", 4, "🈳"],
+      [72, "日", "", "rì", "Nhật", "Mặt trời, ngày, thời gian", 4, "☀️"],
+      [73, "曰", "", "yuē", "Viết", "Nói rằng, phát ngôn", 4, "💬"],
+      [74, "月", "", "yuè", "Nguyệt", "Mặt trăng, thời gian tháng", 4, "🌙"],
+      [75, "木", "", "mù", "Mộc", "Cây gỗ, đồ đạc bằng gỗ", 4, "🌲"],
+      [76, "欠", "", "qiàn", "Khiếm", "Ngáp, thiếu thốn, khuyết", 4, "🥱"],
+      [77, "止", "", "zhǐ", "Chỉ", "Dừng lại, bàn chân đứng yên", 4, "🛑"],
+      [78, "歹", "歺", "dǎi", "Đãi", "Xương tàn, chết chóc, tai họa", 4, "💀"],
+      [79, "殳", "", "shū", "Thù", "Binh khí bằng gỗ không có mũi nhọn", 4, "🏏"],
+      [80, "毋", "母", "wú / mǔ", "Vô / Mẫu", "Đừng, chớ / Người mẹ", 4, "🤱"],
+      [81, "比", "", "bǐ", "Tỷ", "So sánh, kề vai sát cánh", 4, "⚖️"],
+      [82, "毛", "", "máo", "Mao", "Lông mao, tóc, lông thú", 4, "🪶"],
+      [83, "氏", "", "shì", "Thị", "Dòng họ, gia tộc", 4, "🏷️"],
+      [84, "气", "", "qì", "Khí", "Không khí, khí thế, hơi nước bốc lên", 4, "💨"],
+      [85, "水", "氵, 氺", "shuǐ", "Thủy", "Nước, chất lỏng", 4, "💧"],
+      [86, "火", "灬", "huǒ", "Hỏa", "Ngọn lửa, nhiệt độ, nấu nướng", 4, "🔥"],
+      [87, "爪", "爫", "zhuǎ", "Trảo", "Móng vuốt loài chim thú", 4, "🐾"],
+      [88, "父", "", "fù", "Phụ", "Người cha, bậc phụ huynh", 4, "👨"],
+      [89, "爻", "", "yáo", "Hào", "Vạch quẻ trong Kinh Dịch, giao nhau", 4, "☯️"],
+      [90, "爿", "丬", "qiáng", "Tường", "Mảnh ván xẻ, chiếc giường kê", 4, "🪵"],
+      [91, "片", "", "piàn", "Phiến", "Mảnh mỏng, tấm mỏng", 4, "📄"],
+      [92, "牙", "", "yá", "Nha", "Răng nanh, răng hàm", 4, "🦷"],
+      [93, "牛", "牜", "niú", "Ngưu", "Trâu, bò, gia súc lớn", 4, "🐂"],
+      [94, "犬", "犭", "quǎn", "Khuyển", "Con chó, động vật bốn chân", 4, "🐕"],
+
+      // Bộ 5 Nét (23 bộ)
+      [95, "玄", "", "xuán", "Huyền", "Màu đen sâu thẳm, huyền bí", 5, "🌌"],
+      [96, "玉", "王", "yù", "Ngọc", "Đá quý, ngọc ngà, vua chúa", 5, "💎"],
+      [97, "瓜", "", "guā", "Qua", "Quả dưa, bầu bí", 5, "🍈"],
+      [98, "瓦", "", "wǎ", "Ngõa", "Ngói lợp, đồ gốm nung", 5, "🏺"],
+      [99, "甘", "", "gān", "Cam", "Vị ngọt ngào, dễ chịu", 5, "🍬"],
+      [100, "生", "", "shēng", "Sinh", "Sinh sôi, nảy nở, sống", 5, "🌱"],
+      [101, "用", "", "yòng", "Dụng", "Sử dụng, dùng đến", 5, "🛠️"],
+      [102, "田", "", "tián", "Điền", "Ruộng đất, bờ ruộng", 5, "🌾"],
+      [103, "疋", "⺪", "pǐ / shū", "Thất", "Cuộn vải dài, cẳng chân bước", 5, "📜"],
+      [104, "疒", "", "nì / bìng", "Nạch", "Bệnh tật, đau ốm", 5, "🤒"],
+      [105, "癶", "", "bō", "Bát", "Hai chân bước đạp ngược chiều", 5, "👣"],
+      [106, "白", "", "bái", "Bạch", "Màu trắng, sáng tỏ", 5, "⚪"],
+      [107, "皮", "", "pí", "Bì", "Da động vật, vỏ bọc ngoài", 5, "🧤"],
+      [108, "皿", "", "mǐn", "Mãnh", "Bát đĩa, chén đựng đồ ăn", 5, "🥣"],
+      [109, "目", "", "mù", "Mục", "Con mắt, nhìn ngắm", 5, "👁️"],
+      [110, "矛", "", "máo", "Mâu", "Cây mâu đâm giáo mác", 5, "🔱"],
+      [111, "矢", "", "shǐ", "Thỉ", "Mũi tên bắn", 5, "🏹"],
+      [112, "石", "", "shí", "Thạch", "Hòn đá, quặng khoáng", 5, "🪨"],
+      [113, "示", "礻", "shì", "Thị / Kỳ", "Thần linh, tổ tiên, lễ bái", 5, "⛩️"],
+      [114, "禸", "", "róu", "Nhữu", "Dấu chân dã thú dẫm lên đất", 5, "🐾"],
+      [115, "禾", "", "hé", "Hòa", "Cây lúa, hoa màu lương thực", 5, "🌾"],
+      [116, "穴", "", "xué", "Huyệt", "Hang hốc, lỗ thủng", 5, "🕳️"],
+      [117, "立", "", "lì", "Lập", "Đứng thẳng, thiết lập", 5, "🧍"],
+
+      // Bộ 6 Nét (29 bộ)
+      [118, "竹", "⺮", "zhú", "Trúc", "Cây tre, cây trúc, đồ đan lát", 6, "🎋"],
+      [119, "米", "", "mǐ", "Mễ", "Hạt gạo, lương thực bột ngũ cốc", 6, "🍚"],
+      [120, "糸", "纟", "mì / sī", "Mịch", "Sợi tơ tằm, dây gai, vải dệt", 6, "🧵"],
+      [121, "缶", "", "fǒu", "Phẫu", "Bình gốm miệng hẹp", 6, "🏺"],
+      [122, "网", "罒, ⺲", "wǎng", "Võng", "Lưới đánh cá, bẫy lưới", 6, "🕸️"],
+      [123, "羊", "⺷", "yáng", "Dương", "Con dê, con cừu", 6, "🐑"],
+      [124, "羽", "", "yǔ", "Vũ", "Lông vũ chim muông, cánh chim", 6, "🪶"],
+      [125, "老", "耂", "lǎo", "Lão", "Người già cả, cao tuổi", 6, "👴"],
+      [126, "而", "", "ér", "Nhi", "Râu dưới cằm, liên từ mà/và", 6, "🧔"],
+      [127, "耒", "", "lěi", "Lỗi", "Cái cày xới đất", 6, "🚜"],
+      [128, "耳", "", "ěr", "Nhĩ", "Tai, thính giác", 6, "👂"],
+      [129, "聿", "", "yù", "Duật", "Cây bút lông viết chữ", 6, "🖌️"],
+      [130, "肉", "⺼ - 月", "ròu", "Nhục", "Thịt, các bộ phận cơ thể nội tạng", 6, "🥩"],
+      [131, "臣", "", "chén", "Thần", "Bầy tôi, bề tôi phục dịch", 6, "🙇"],
+      [132, "自", "", "zì", "Tự", "Bản thân mình, cái mũi", 6, "👃"],
+      [133, "至", "", "zhì", "Chí", "Đến nơi, đạt đỉnh điểm", 6, "🏁"],
+      [134, "臼", "", "jiù", "Cối", "Chiếc cối giã gạo", 6, "🥣"],
+      [135, "舌", "", "shé", "Thiệt", "Chiếc lưỡi, nếm vị", 6, "👅"],
+      [136, "舛", "", "chuǎn", "Suyễn", "Sai lệch, hai chân quay ngược", 6, "👣"],
+      [137, "舟", "", "zhōu", "Chu", "Thuyền bè, phương tiện thủy", 6, "🛶"],
+      [138, "艮", "", "gèn", "Cấn", "Quẻ Cấn, kiên định, dừng ngoảnh lại", 6, "⛰️"],
+      [139, "色", "", "sè", "Sắc", "Màu sắc, diện mạo vẻ ngoài", 6, "🎨"],
+      [140, "艸", "艹", "cǎo", "Thảo", "Cỏ cây, hoa lá thảo mộc", 6, "🌿"],
+      [141, "虍", "", "hū", "Hổ", "Vằn vện da hổ, con cọp", 6, "🐯"],
+      [142, "虫", "", "chóng", "Trùng", "Côn trùng, sâu bọ, rắn rết", 6, "🐛"],
+      [143, "血", "", "xiě / xuè", "Huyết", "Máu, dòng máu", 6, "🩸"],
+      [144, "行", "", "xíng", "Hành", "Đi lại, đường phố ngã tư", 6, "🚶"],
+      [145, "衣", "衤", "yī", "Y", "Quần áo, trang phục mặc", 6, "👔"],
+      [146, "襾", "覀", "yà", "Á", "Che phủ, đậy lên, phương tây", 6, "🧭"],
+
+      // Bộ 7 Nét (20 bộ)
+      [147, "見", "见", "jiàn", "Kiến", "Nhìn thấy, gặp gỡ", 7, "👀"],
+      [148, "角", "", "jiǎo", "Giác", "Sừng động vật, góc nhọn", 7, "🦏"],
+      [149, "言", "讠", "yán", "Ngôn", "Lời nói, ngôn ngữ", 7, "🗣️"],
+      [150, "谷", "", "gǔ", "Cốc", "Khe suối, thung lũng", 7, "🏞️"],
+      [151, "豆", "", "dòu", "Đậu", "Hạt đậu, cái chén đựng thịt tế", 7, "🫘"],
+      [152, "豕", "", "shǐ", "Thỉ", "Con lợn (heo)", 7, "🐖"],
+      [153, "豸", "", "zhì", "Trĩ", "Loài thú dữ không sừng", 7, "🐆"],
+      [154, "貝", "贝", "bèi", "Bối", "Vỏ sò, tiền tệ cổ xưa", 7, "🐚"],
+      [155, "赤", "", "chì", "Xích", "Màu đỏ son, trần trụi", 7, "🔴"],
+      [156, "走", "", "zǒu", "Tẩu", "Chạy, đi bộ", 7, "🏃"],
+      [157, "足", "𧾷", "zú", "Túc", "Chân, bàn chân", 7, "🦶"],
+      [158, "身", "", "shēn", "Thân", "Thân thể người, mình mẩy", 7, "🧍"],
+      [159, "車", "车", "chē", "Xa", "Chiếc xe, bánh xe", 7, "🚗"],
+      [160, "辛", "", "xīn", "Tân", "Cay nồng, khổ cực, vất vả", 7, "🌶️"],
+      [161, "辰", "", "chén", "Thần", "Sao trời, can Thìn, thời cơ", 7, "⭐"],
+      [162, "辵", "辶", "chuò", "Sước", "Đi đường dài, khoảng cách", 7, "🛣️"],
+      [163, "邑", "阝- phải", "yì", "Ấp", "Thành lũy, đất nước, vùng đất", 7, "🏙️"],
+      [164, "酉", "", "yǒu", "Dậu", "Bình rượu lên men, đồ ủ chua", 7, "🍶"],
+      [165, "釆", "", "biàn", "Biện", "Phân biệt, móng chân thú", 7, "🐾"],
+      [166, "里", "", "lǐ", "Lý", "Dặm đường, làng xóm bên trong", 7, "🏘️"],
+
+      // Bộ 8 Nét (9 bộ)
+      [167, "金", "钅", "jīn", "Kim", "Kim loại, vàng, tiền tài", 8, "🪙"],
+      [168, "長", "长", "cháng / zhǎng", "Trường / Trưởng", "Dài lâu, lớn lên, người lớn", 8, "📏"],
+      [169, "門", "门", "mén", "Môn", "Hai cánh cổng lớn, cửa ngõ", 8, "🚪"],
+      [170, "阜", "阝- trái", "fù", "Phụ", "Gò đất cao, bờ đê dốc đứng", 8, "⛰️"],
+      [171, "隶", "", "lì", "Đãi", "Nắm bắt lấy, theo đuổi", 8, "🤝"],
+      [172, "隹", "", "zhuī", "Chuy", "Loài chim đuôi ngắn", 8, "🐦"],
+      [173, "雨", "", "yǔ", "Vũ", "Mưa rơi, mây sấm chớp", 8, "🌧️"],
+      [174, "靑", "青", "qīng", "Thanh", "Màu xanh biếc, tươi trẻ", 8, "🟢"],
+      [175, "非", "", "fēi", "Phi", "Trái ngược, không phải, sai lệch", 8, "❌"],
+
+      // Bộ 9 Nét (11 bộ)
+      [176, "面", "", "miàn", "Diện", "Mặt mũi, bề mặt phía trước", 9, "😀"],
+      [177, "革", "", "gé", "Cách", "Da thú thuộc bỏ lông, thay đổi", 9, "👞"],
+      [178, "韋", "韦", "wéi", "Vi", "Da thuộc mềm bao bọc quanh", 9, "🛡️"],
+      [179, "韭", "", "jiǔ", "Cửu", "Rau hẹ", 9, "🥬"],
+      [180, "音", "", "yīn", "Âm", "Âm thanh, tiếng nhạc phát ra", 9, "🎵"],
+      [181, "頁", "页", "yè", "Hiệp / Diệp", "Trang sách, đầu và cổ", 9, "📖"],
+      [182, "風", "风", "fēng", "Phong", "Gió thổi, phong tục", 9, "💨"],
+      [183, "飛", "飞", "fēi", "Phi", "Bay lượn trên trời", 9, "🦅"],
+      [184, "食", "飠, 饣", "shí", "Thực", "Ăn uống, món ăn, thức ăn", 9, "🍲"],
+      [185, "首", "", "shǒu", "Thủ", "Cái đầu, người đứng đầu", 9, "👑"],
+      [186, "香", "", "xiāng", "Hương", "Mùi thơm lúa chín, hương thơm", 9, "🌾"],
+
+      // Bộ 10 Nét (8 bộ)
+      [187, "馬", "马", "mǎ", "Mã", "Con ngựa, phi nhanh", 10, "🐎"],
+      [188, "骨", "", "gǔ", "Cốt", "Xương cốt, khung xương", 10, "🦴"],
+      [189, "高", "", "gāo", "Cao", "Chiều cao, gác cao", 10, "🗼"],
+      [190, "髟", "", "biāo", "Bưu", "Tóc dài rủ xuống", 10, "💇"],
+      [191, "鬥", "", "dòu", "Đấu", "Đánh nhau, tranh chấp", 10, "🥊"],
+      [192, "鬯", "", "chàng", "Sưởng", "Rượu nếp thơm cúng tế", 10, "🍶"],
+      [193, "鬲", "", "lì", "Cách", "Chiếc nồi đồng ba chân cổ", 10, "🍲"],
+      [194, "鬼", "", "guǐ", "Quỷ", "Hồn ma, ma quỷ", 10, "👻"],
+
+      // Bộ 11 Nét (6 bộ)
+      [195, "魚", "鱼", "yú", "Ngư", "Con cá, thủy sản", 11, "🐟"],
+      [196, "鳥", "鸟", "niǎo", "Điểu", "Loài chim chóc đuôi dài", 11, "🦜"],
+      [197, "鹵", "卤", "lǔ", "Lỗ", "Đất mặn, muối khoáng", 11, "🧂"],
+      [198, "鹿", "", "lù", "Lộc", "Con hươu, con nai", 11, "🦌"],
+      [199, "麥", "麦", "mài", "Mạch", "Cây lúa mì, lúa mạch", 11, "🌾"],
+      [200, "麻", "", "má", "Ma", "Cây gai dầu, vải gai", 11, "🌿"],
+
+      // Bộ 12 Nét (4 bộ)
+      [201, "黃", "黄", "huáng", "Hoàng", "Màu vàng của đất phù sa", 12, "🟡"],
+      [202, "黍", "", "shǔ", "Thử", "Cây kê nếp", 12, "🌾"],
+      [203, "黑", "", "hēi", "Hắc", "Màu đen nhánh, bồ hóng", 12, "⚫"],
+      [204, "黹", "", "zhǐ", "Chỉ", "Thêu thùa, may vá hoa văn", 12, "🪡"],
+
+      // Bộ 13 Nét (4 bộ)
+      [205, "黽", "黾", "mǐn", "Mãnh", "Con ếch, loài lưỡng cư", 13, "🐸"],
+      [206, "鼎", "", "dǐng", "Đỉnh", "Cái vạc đồng ba chân hai tai", 13, "🏺"],
+      [207, "鼓", "", "gǔ", "Cổ", "Cái trống gõ phát âm thanh", 13, "🥁"],
+      [208, "鼠", "", "shǔ", "Thử", "Con chuột", 13, "🐀"],
+
+      // Bộ 14 Nét (2 bộ)
+      [209, "鼻", "", "bí", "Tị", "Cái mũi, khứu giác", 14, "👃"],
+      [210, "齊", "齐", "qí", "Tề", "Ngay ngắn, chỉnh tề bằng nhau", 14, "📐"],
+
+      // Bộ 15 Nét (1 bộ)
+      [211, "齒", "齿", "chǐ", "Xỉ", "Răng nanh hàm, tuổi tác", 15, "🦷"],
+
+      // Bộ 16 Nét (2 bộ)
+      [212, "龍", "龙", "lóng", "Long", "Con rồng thần thoại", 16, "🐉"],
+      [213, "龜", "龟", "guī", "Quy", "Con rùa, mai rùa", 16, "🐢"],
+
+      // Bộ 17 Nét (1 bộ)
+      [214, "龠", "", "yuè", "Dược", "Ống sáo ba lỗ, nhạc cụ cổ", 17, "🪈"]
+    ];
+
+    // Chuyển mảng dữ liệu thành object chuẩn
+    const RADICALS_DATA = RAW_RADICALS_LIST.map(item => ({
+      stt: item[0],
+      hanzi: item[1],
+      variant: item[2],
+      pinyin: item[3],
+      hanViet: item[4],
+      meaning: item[5],
+      strokes: item[6],
+      emoji: item[7],
+      groupName: `Bộ ${item[6]} Nét`
+    }));
+
+    /* =====================================================================
+       APP STATE
+       ===================================================================== */
+    let currentFilteredList = [...RADICALS_DATA];
+    let currentCardIndex = 0;
+    let isFlipped = false;
+    let autoSoundEnabled = true;
+
+    // Quiz State
+    let quizScore = 0;
+    let currentQuizIndex = 0;
+    let currentQuizData = null;
+    let quizAnswered = false;
+
+    // Match Game State
+    let matchCards = [];
+    let matchFlipped = [];
+    let matchMatchedCount = 0;
+    let matchTimerInterval = null;
+    let matchStartTime = null;
+
+    // Dictation State
+    let currentDictationItem = null;
+
+    /* =====================================================================
+       DOM ELEMENTS
+       ===================================================================== */
+    const flashcardInner = document.getElementById('flashcardInner');
+    const cardProgressText = document.getElementById('cardProgressText');
+    const cardProgressBar = document.getElementById('cardProgressBar');
+    const activeCountBadge = document.getElementById('activeCountBadge');
+
+    // Mặt trước thẻ
+    const cardCategoryTag = document.getElementById('cardCategoryTag');
+    const cardFrontEmoji = document.getElementById('cardFrontEmoji');
+    const cardFrontHanzi = document.getElementById('cardFrontHanzi');
+    const cardFrontVariant = document.getElementById('cardFrontVariant');
+    const cardFrontPinyin = document.getElementById('cardFrontPinyin');
+    const cardFrontHanViet = document.getElementById('cardFrontHanViet');
+
+    // Mặt sau thẻ
+    const cardBackEmoji = document.getElementById('cardBackEmoji');
+    const cardBackTitle = document.getElementById('cardBackTitle');
+    const cardBackPinyinHanViet = document.getElementById('cardBackPinyinHanViet');
+    const cardBackConnection = document.getElementById('cardBackConnection');
+    const cardBackStt = document.getElementById('cardBackStt');
+    const cardBackStrokeCount = document.getElementById('cardBackStrokeCount');
+
+    /* =====================================================================
+       TEXT TO SPEECH (WEB SPEECH API)
+       ===================================================================== */
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-TW'; // Chuẩn phát âm tiếng Trung Quốc ngữ / Đài Loan TOCFL
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakCurrentCard() {
+      if (currentFilteredList.length === 0) return;
+      const item = currentFilteredList[currentCardIndex];
+      speakText(item.hanzi);
+    }
+
+    /* =====================================================================
+       FLASHCARDS LOGIC
+       ===================================================================== */
+    function renderCurrentCard() {
+      if (currentFilteredList.length === 0) return;
+      const item = currentFilteredList[currentCardIndex];
+
+      // Reset hiệu ứng lật thẻ
+      if (isFlipped) {
+        flashcardInner.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+
+      // Mặt trước
+      cardCategoryTag.textContent = `${item.groupName} • #${item.stt}`;
+      cardFrontEmoji.textContent = item.emoji;
+      cardFrontHanzi.textContent = item.hanzi;
+      cardFrontVariant.textContent = item.variant ? `Biến thể: (${item.variant})` : 'Dạng chuẩn';
+      cardFrontPinyin.textContent = item.pinyin;
+      cardFrontHanViet.textContent = item.hanViet;
+
+      // Mặt sau
+      cardBackEmoji.textContent = item.emoji;
+      cardBackTitle.textContent = `Bộ ${item.hanViet} (#${item.stt})`;
+      cardBackPinyinHanViet.textContent = `${item.pinyin} • ${item.hanViet.toUpperCase()} ${item.variant ? '• ' + item.variant : ''}`;
+      cardBackConnection.textContent = item.meaning;
+      cardBackStt.textContent = `Bộ thứ #${item.stt}`;
+      cardBackStrokeCount.textContent = `${item.strokes} nét`;
+
+      // Cập nhật thanh tiến độ
+      cardProgressText.textContent = `Thẻ ${currentCardIndex + 1} / ${currentFilteredList.length}`;
+      const percentage = ((currentCardIndex + 1) / currentFilteredList.length) * 100;
+      cardProgressBar.style.width = `${percentage}%`;
+
+      // Phát âm tự động
+      if (autoSoundEnabled) {
+        speakText(item.hanzi);
+      }
+    }
+
+    function flipCard() {
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        flashcardInner.classList.add('rotate-y-180');
+      } else {
+        flashcardInner.classList.remove('rotate-y-180');
+      }
+    }
+
+    function prevCard() {
+      if (currentFilteredList.length === 0) return;
+      currentCardIndex = (currentCardIndex - 1 + currentFilteredList.length) % currentFilteredList.length;
+      renderCurrentCard();
+    }
+
+    function nextCard() {
+      if (currentFilteredList.length === 0) return;
+      currentCardIndex = (currentCardIndex + 1) % currentFilteredList.length;
+      renderCurrentCard();
+    }
+
+    /* =====================================================================
+       FILTER LOGIC
+       ===================================================================== */
+    function handleFilterChange() {
+      const selectedVal = document.getElementById('categoryFilter').value;
+      if (selectedVal === 'ALL') {
+        currentFilteredList = [...RADICALS_DATA];
+      } else {
+        const strokeNum = parseInt(selectedVal);
+        currentFilteredList = RADICALS_DATA.filter(item => item.strokes === strokeNum);
+      }
+      activeCountBadge.textContent = currentFilteredList.length;
+      currentCardIndex = 0;
+      renderCurrentCard();
+      renderDirectory();
+    }
+
+    /* =====================================================================
+       TAB SWITCHING
+       ===================================================================== */
+    function switchTab(tabId) {
+      const views = ['flashcards', 'quiz', 'match', 'dictation', 'directory'];
+      views.forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        const tabBtn = document.getElementById(`tab-${v}`);
+        if (v === tabId) {
+          viewEl.classList.remove('hidden');
+          tabBtn.className = "tab-btn active px-3.5 py-2 rounded-lg text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 flex items-center gap-2 whitespace-nowrap transition font-bold";
+        } else {
+          viewEl.classList.add('hidden');
+          tabBtn.className = "tab-btn px-3.5 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap transition font-semibold";
+        }
+      });
+
+      if (tabId === 'quiz') initQuiz();
+      if (tabId === 'match') startMatchGame();
+      if (tabId === 'dictation') initDictation();
+      if (tabId === 'directory') renderDirectory();
+    }
+
+    /* =====================================================================
+       TAB 2: QUIZ LOGIC
+       ===================================================================== */
+    function initQuiz() {
+      quizScore = 0;
+      currentQuizIndex = 0;
+      generateNewQuizQuestion();
+    }
+
+    function generateNewQuizQuestion() {
+      quizAnswered = false;
+      document.getElementById('quizFeedbackBox').classList.add('hidden');
+      document.getElementById('quizNextBtn').classList.add('hidden');
+
+      const pool = currentFilteredList.length >= 4 ? currentFilteredList : RADICALS_DATA;
+      currentQuizData = pool[Math.floor(Math.random() * pool.length)];
+
+      document.getElementById('quizQuestionCounter').textContent = `Câu ${currentQuizIndex + 1}`;
+      document.getElementById('quizScoreText').textContent = `Điểm: ${quizScore}/${currentQuizIndex}`;
+      document.getElementById('quizPromptEmoji').textContent = currentQuizData.emoji;
+      document.getElementById('quizQuestionTitle').textContent = `${currentQuizData.hanzi} ${currentQuizData.variant ? '(' + currentQuizData.variant + ')' : ''}`;
+      document.getElementById('quizQuestionSub').textContent = `Phiên âm: ${currentQuizData.pinyin} (${currentQuizData.strokes} nét). Chọn tên Hán Việt & ý nghĩa chính xác:`;
+
+      // Tạo đáp án đúng và 3 đáp án sai
+      const wrongList = RADICALS_DATA.filter(item => item.stt !== currentQuizData.stt)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const options = [
+        { text: `Bộ ${currentQuizData.hanViet}: ${currentQuizData.meaning}`, correct: true },
+        ...wrongList.map(w => ({ text: `Bộ ${w.hanViet}: ${w.meaning}`, correct: false }))
+      ].sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('quizOptionsContainer');
+      container.innerHTML = options.map((opt, idx) => `
+        <button onclick="handleQuizAnswer(${opt.correct}, this)" class="w-full text-left p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 hover:bg-indigo-50 dark:hover:bg-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-700 transition font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex items-center justify-between group">
+          <span>${opt.text}</span>
+          <span class="w-6 h-6 rounded-full border border-slate-300 dark:border-slate-600 flex items-center justify-center text-xs text-slate-400 group-hover:border-indigo-500 group-hover:text-indigo-500">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+        </button>
+      `).join('');
+    }
+
+    function handleQuizAnswer(isCorrect, btnEl) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      currentQuizIndex++;
+
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const feedbackTitle = document.getElementById('quizFeedbackTitle');
+      const feedbackDetail = document.getElementById('quizFeedbackDetail');
+      const feedbackIcon = document.getElementById('quizFeedbackIcon');
+
+      if (isCorrect) {
+        quizScore++;
+        btnEl.classList.remove('border-slate-200', 'dark:border-slate-800');
+        btnEl.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40', 'text-emerald-700', 'dark:text-emerald-300');
+
+        feedbackBox.className = "p-4 rounded-2xl mb-4 text-sm flex items-start gap-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200";
+        feedbackIcon.innerHTML = `<span class="text-xl">✅</span>`;
+        feedbackTitle.textContent = "Chính xác! Rất giỏi!";
+        feedbackDetail.textContent = `${currentQuizData.hanzi} (${currentQuizData.pinyin}) là Bộ ${currentQuizData.hanViet} (#${currentQuizData.stt}): ${currentQuizData.meaning}`;
+      } else {
+        btnEl.classList.remove('border-slate-200', 'dark:border-slate-800');
+        btnEl.classList.add('border-rose-500', 'bg-rose-50', 'dark:bg-rose-950/40', 'text-rose-700', 'dark:text-rose-300');
+
+        feedbackBox.className = "p-4 rounded-2xl mb-4 text-sm flex items-start gap-3 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200";
+        feedbackIcon.innerHTML = `<span class="text-xl">❌</span>`;
+        feedbackTitle.textContent = "Chưa chính xác!";
+        feedbackDetail.textContent = `Đáp án đúng là: Bộ ${currentQuizData.hanViet} (#${currentQuizData.stt}): ${currentQuizData.meaning}`;
+      }
+
+      feedbackBox.classList.remove('hidden');
+      document.getElementById('quizNextBtn').classList.remove('hidden');
+      document.getElementById('quizScoreText').textContent = `Điểm: ${quizScore}/${currentQuizIndex} (${Math.round((quizScore / currentQuizIndex) * 100)}%)`;
+    }
+
+    /* =====================================================================
+       TAB 3: MATCH GAME LOGIC
+       ===================================================================== */
+    function startMatchGame() {
+      clearInterval(matchTimerInterval);
+      matchMatchedCount = 0;
+      matchFlipped = [];
+      document.getElementById('matchMatchedCount').textContent = '0';
+      document.getElementById('matchTimer').textContent = '00:00.0';
+
+      const pool = [...(currentFilteredList.length >= 6 ? currentFilteredList : RADICALS_DATA)]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 6);
+
+      const items = [];
+      pool.forEach(item => {
+        // Thẻ Chữ Hán
+        items.push({
+          id: item.stt,
+          type: 'hanzi',
+          content: `${item.hanzi} ${item.variant ? '(' + item.variant + ')' : ''}`,
+          emoji: item.emoji,
+          audioText: item.hanzi
+        });
+        // Thẻ Nghĩa & Tên Hán Việt
+        items.push({
+          id: item.stt,
+          type: 'meaning',
+          content: `${item.hanViet} - ${item.meaning}`,
+          emoji: item.emoji,
+          audioText: item.hanzi
+        });
+      });
+
+      matchCards = items.sort(() => 0.5 - Math.random());
+
+      const grid = document.getElementById('matchGrid');
+      grid.innerHTML = matchCards.map((card, idx) => `
+        <div id="match-card-${idx}" onclick="handleMatchCardClick(${idx})" class="h-28 sm:h-32 p-3 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 transition flex flex-col items-center justify-center text-center cursor-pointer shadow-sm select-none">
+          <span class="text-2xl mb-1">${card.emoji}</span>
+          <span class="${card.type === 'hanzi' ? 'font-hanzi text-2xl font-black text-slate-900 dark:text-white' : 'text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight'}">
+            ${card.content}
+          </span>
+        </div>
+      `).join('');
+
+      // Bắt đầu bấm giờ
+      matchStartTime = Date.now();
+      matchTimerInterval = setInterval(() => {
+        const elapsed = Date.now() - matchStartTime;
+        const seconds = Math.floor(elapsed / 1000);
+        const millis = Math.floor((elapsed % 1000) / 100);
+        const mins = Math.floor(seconds / 60);
+        const remSecs = seconds % 60;
+        document.getElementById('matchTimer').textContent = 
+          `${String(mins).padStart(2, '0')}:${String(remSecs).padStart(2, '0')}.${millis}`;
+      }, 100);
+    }
+
+    function handleMatchCardClick(index) {
+      const cardEl = document.getElementById(`match-card-${index}`);
+      if (!cardEl || cardEl.classList.contains('matched') || matchFlipped.includes(index) || matchFlipped.length >= 2) return;
+
+      cardEl.classList.add('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/50');
+      matchFlipped.push(index);
+
+      if (matchFlipped.length === 2) {
+        const idx1 = matchFlipped[0];
+        const idx2 = matchFlipped[1];
+        const card1 = matchCards[idx1];
+        const card2 = matchCards[idx2];
+
+        if (card1.id === card2.id && card1.type !== card2.type) {
+          // Đúng cặp
+          setTimeout(() => {
+            const el1 = document.getElementById(`match-card-${idx1}`);
+            const el2 = document.getElementById(`match-card-${idx2}`);
+            el1.className = "h-28 sm:h-32 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-500 opacity-60 flex flex-col items-center justify-center text-center cursor-default matched";
+            el2.className = "h-28 sm:h-32 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-500 opacity-60 flex flex-col items-center justify-center text-center cursor-default matched";
+
+            speakText(card1.audioText);
+            matchMatchedCount++;
+            document.getElementById('matchMatchedCount').textContent = matchMatchedCount;
+            matchFlipped = [];
+
+            if (matchMatchedCount === 6) {
+              clearInterval(matchTimerInterval);
+              if (window.confetti) {
+                window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+              }
+            }
+          }, 300);
+        } else {
+          // Sai cặp
+          setTimeout(() => {
+            const el1 = document.getElementById(`match-card-${idx1}`);
+            const el2 = document.getElementById(`match-card-${idx2}`);
+            if (el1) el1.className = "h-28 sm:h-32 p-3 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 transition flex flex-col items-center justify-center text-center cursor-pointer shadow-sm select-none";
+            if (el2) el2.className = "h-28 sm:h-32 p-3 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 transition flex flex-col items-center justify-center text-center cursor-pointer shadow-sm select-none";
+            matchFlipped = [];
+          }, 600);
+        }
+      }
+    }
+
+    /* =====================================================================
+       TAB 4: DICTATION LOGIC
+       ===================================================================== */
+    function initDictation() {
+      nextDictationItem();
+    }
+
+    function nextDictationItem() {
+      const pool = currentFilteredList.length > 0 ? currentFilteredList : RADICALS_DATA;
+      currentDictationItem = pool[Math.floor(Math.random() * pool.length)];
+
+      document.getElementById('dictationInput').value = '';
+      document.getElementById('dictationResultBox').classList.add('hidden');
+      document.getElementById('dictationNextBtn').classList.add('hidden');
+
+      document.getElementById('dictationHintEmoji').textContent = currentDictationItem.emoji;
+      document.getElementById('dictationHintMeaning').textContent = currentDictationItem.meaning;
+      document.getElementById('dictationHintStrokes').textContent = `${currentDictationItem.strokes} nét`;
+
+      setTimeout(() => {
+        playDictationAudio();
+      }, 300);
+    }
+
+    function playDictationAudio() {
+      if (!currentDictationItem) return;
+      speakText(currentDictationItem.hanzi);
+    }
+
+    function handleDictationSubmit(e) {
+      e.preventDefault();
+      if (!currentDictationItem) return;
+
+      const rawInput = document.getElementById('dictationInput').value.trim().toLowerCase();
+      if (!rawInput) return;
+
+      // Chuẩn hóa chuỗi (bỏ dấu tiếng Việt để dễ so khớp)
+      const cleanInput = rawInput.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+      const cleanHanViet = currentDictationItem.hanViet.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+      const cleanPinyin = currentDictationItem.pinyin.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      const isMatch = cleanInput.includes(cleanHanViet) || 
+                      cleanInput.includes(cleanPinyin) || 
+                      rawInput === currentDictationItem.hanzi;
+
+      const box = document.getElementById('dictationResultBox');
+      box.classList.remove('hidden');
+
+      if (isMatch) {
+        box.className = "mt-4 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-sm";
+        box.innerHTML = `
+          <div class="font-bold flex items-center gap-1.5 mb-1">
+            <span>✅</span> <span>Tuyệt vời! Bạn đã nhận diện chính xác!</span>
+          </div>
+          <div class="text-xs">
+            Bộ thủ: <strong class="font-hanzi text-xl">${currentDictationItem.hanzi}</strong> (${currentDictationItem.pinyin}) • Âm Hán-Việt: <strong>${currentDictationItem.hanViet}</strong> (#${currentDictationItem.stt})
+          </div>
+        `;
+      } else {
+        box.className = "mt-4 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-sm";
+        box.innerHTML = `
+          <div class="font-bold flex items-center gap-1.5 mb-1">
+            <span>❌</span> <span>Chưa chính xác!</span>
+          </div>
+          <div class="text-xs">
+            Bộ thủ đúng là: <strong class="font-hanzi text-xl">${currentDictationItem.hanzi}</strong> (${currentDictationItem.pinyin}) - Bộ <strong>${currentDictationItem.hanViet}</strong>: ${currentDictationItem.meaning}
+          </div>
+        `;
+      }
+
+      document.getElementById('dictationNextBtn').classList.remove('hidden');
+    }
+
+    /* =====================================================================
+       TAB 5: DIRECTORY (TRA CỨU 214 BỘ THỦ)
+       ===================================================================== */
+    function renderDirectory() {
+      const tbody = document.getElementById('directoryTableBody');
+      const query = (document.getElementById('directorySearchInput').value || '').trim().toLowerCase();
+
+      const filtered = currentFilteredList.filter(item => {
+        if (!query) return true;
+        return item.hanzi.includes(query) ||
+               (item.variant && item.variant.includes(query)) ||
+               item.pinyin.toLowerCase().includes(query) ||
+               item.hanViet.toLowerCase().includes(query) ||
+               item.meaning.toLowerCase().includes(query) ||
+               String(item.stt) === query ||
+               `${item.strokes} net`.includes(query) ||
+               `${item.strokes} nét`.includes(query);
+      });
+
+      document.getElementById('directoryFilteredCount').textContent = filtered.length;
+
+      tbody.innerHTML = filtered.map((item) => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+          <td class="p-3 text-center text-slate-400 font-mono font-bold">#${item.stt}</td>
+          <td class="p-3 text-center">
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xl">${item.emoji}</span>
+              <span class="font-hanzi text-2xl font-black text-indigo-600 dark:text-indigo-400">${item.hanzi}</span>
+            </div>
+          </td>
+          <td class="p-3 font-hanzi font-bold text-slate-600 dark:text-slate-300">
+            ${item.variant || '—'}
+          </td>
+          <td class="p-3 font-mono font-semibold text-indigo-600 dark:text-indigo-400 text-xs sm:text-sm">
+            ${item.pinyin}
+          </td>
+          <td class="p-3 font-bold text-slate-900 dark:text-white">
+            Bộ ${item.hanViet}
+          </td>
+          <td class="p-3 font-mono text-slate-500 font-semibold">
+            ${item.strokes} nét
+          </td>
+          <td class="p-3 text-slate-600 dark:text-slate-300 text-xs sm:text-sm">
+            ${item.meaning}
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="speakText('${item.hanzi}')" class="p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 transition" title="Nghe phát âm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('directorySearchInput').addEventListener('input', renderDirectory);
+
+    /* =====================================================================
+       THEME & SOUND TOGGLES
+       ===================================================================== */
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeSunIcon = document.getElementById('themeSunIcon');
+    const themeMoonIcon = document.getElementById('themeMoonIcon');
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        themeSunIcon.classList.remove('hidden');
+        themeMoonIcon.classList.add('hidden');
+      } else {
+        themeSunIcon.classList.add('hidden');
+        themeMoonIcon.classList.remove('hidden');
+      }
+    });
+
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const soundOnIcon = document.getElementById('soundOnIcon');
+    const soundOffIcon = document.getElementById('soundOffIcon');
+
+    soundToggleBtn.addEventListener('click', () => {
+      autoSoundEnabled = !autoSoundEnabled;
+      if (autoSoundEnabled) {
+        soundOnIcon.classList.remove('hidden');
+        soundOffIcon.classList.add('hidden');
+      } else {
+        soundOnIcon.classList.add('hidden');
+        soundOffIcon.classList.remove('hidden');
+      }
+    });
+
+    /* =====================================================================
+       KEYBOARD SHORTCUTS
+       ===================================================================== */
+    window.addEventListener('keydown', (e) => {
+      // Chỉ hoạt động khi đang ở tab Flashcards
+      const flashcardView = document.getElementById('view-flashcards');
+      if (flashcardView.classList.contains('hidden')) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        prevCard();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        nextCard();
+      }
+    });
+
+    /* =====================================================================
+       INITIALIZATION
+       ===================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCurrentCard();
+    });
+  </script>
+</body>
+</html>
