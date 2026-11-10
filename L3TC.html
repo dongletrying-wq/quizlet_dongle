@@ -1,37 +1,27 @@
-<!-- 4. Listen & Spell (Đã sửa kích thước to rõ + thêm nút chuyển câu) -->
+<!-- 4. Luyện Nghe & Viết (Listen & Spell - Bản sửa lỗi triệt để) -->
         <div id="spell-view" class="view-panel">
-            <div class="quiz-card" style="max-width: 650px; margin: 0 auto; padding: 2.5rem 1.8rem;">
-                <div style="font-weight: 800; color: var(--primary); font-size: 1.15rem; margin-bottom: 1rem;">
-                    Tiến độ: <span id="spellProgress">1 / 38</span>
+            <div class="quiz-card" style="max-width: 650px; margin: 0 auto; padding: 2.2rem 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                    <span id="spellCategory" class="tag-badge">Từ vựng</span>
+                    <span id="spellProgress" style="font-weight: 800; font-size: 1.15rem; color: var(--primary);">1 / 38</span>
                 </div>
 
-                <button class="ctrl-btn" style="width: 86px; height: 86px; font-size: 2.4rem; margin: 0 auto 1.5rem; color: var(--primary); box-shadow: 0 4px 15px rgba(211, 84, 0, 0.15);" onclick="speakSpellWord()" title="Nghe lại phát âm">
+                <!-- Nút loa to rõ -->
+                <button class="sound-circle-btn" style="width: 80px; height: 80px; font-size: 2.2rem; margin: 0 auto 1.2rem; color: var(--primary); box-shadow: 0 4px 15px rgba(211, 84, 0, 0.15);" onclick="speakSpellWord()" title="Nghe lại phát âm">
                     <i class="fa-solid fa-volume-high"></i>
                 </button>
 
-                <div style="font-size: 1.25rem; font-weight: 700; color: #2c3e50; line-height: 1.5; margin-bottom: 0.5rem;">
-                    Nghe phát âm và gõ chữ Hán hoặc Pinyin:
+                <div style="font-size: 1.25rem; font-weight: 700; color: #2c3e50; margin-bottom: 0.4rem;">
+                    Nghe phát âm và gõ lại:
                 </div>
                 <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-                    (Nhận diện cả Pinyin không dấu và chữ Hán Phồn Thể)
+                    (Có thể gõ chữ Hán hoặc Pinyin không dấu, ví dụ: <i>yundong</i> hoặc <i>運動</i>)
                 </div>
 
-                <div class="input-box" style="max-width: 520px; margin: 0 auto; gap: 12px;">
-                    <input type="text" id="spellInput" placeholder="Ví dụ: yundong hoặc 運動..." 
-                           style="padding: 1rem 1.2rem; font-size: 1.35rem; font-weight: 600; letter-spacing: 0.5px;" 
+                <!-- Khung nhập dữ liệu to rõ -->
+                <div class="input-box" style="max-width: 480px; margin: 0 auto 1rem; display: flex; gap: 10px;">
+                    <input type="text" id="spellInput" placeholder="Nhập vào đây..." 
+                           style="flex: 1; padding: 0.9rem 1.2rem; font-size: 1.35rem; font-weight: 700; border: 2.5px solid var(--border-color); border-radius: var(--radius-md); outline: none;" 
                            autocomplete="off">
-                    <button class="btn-submit" id="btnSpellAction" onclick="handleSpellAction()" 
-                            style="padding: 0 1.8rem; font-size: 1.1rem; white-space: nowrap;">Kiểm tra</button>
-                </div>
-
-                <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 10px;">
-                    <button type="button" onclick="revealSpellAnswer()" 
-                            style="background: transparent; border: none; color: var(--text-muted); text-decoration: underline; cursor: pointer; font-size: 0.95rem; font-weight: 600;">
-                        Xem đáp án & bỏ qua
-                    </button>
-                </div>
-
-                <!-- Vùng phản hồi kết quả to rõ -->
-                <div id="spellFeedback" style="margin-top: 1.6rem; min-height: 60px; font-weight: 700; font-size: 1.2rem; line-height: 1.6;"></div>
-            </div>
-        </div>
+                    <button class="btn-submit" id="btnSpellCheck" onclick="checkSpell()" 
+                            style="padding: 0 1.6
