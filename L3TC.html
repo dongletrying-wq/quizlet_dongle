@@ -1,27 +1,53 @@
-<!-- 4. Luyện Nghe & Viết (Listen & Spell - Bản sửa lỗi triệt để) -->
-        <div id="spell-view" class="view-panel">
-            <div class="quiz-card" style="max-width: 650px; margin: 0 auto; padding: 2.2rem 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
-                    <span id="spellCategory" class="tag-badge">Từ vựng</span>
-                    <span id="spellProgress" style="font-weight: 800; font-size: 1.15rem; color: var(--primary);">1 / 38</span>
-                </div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 3: 週末做什麼？ (Cuối tuần làm gì?) - Flashcard & Game</title>
+    <!-- Google Font Noto Serif TC (Khải Thể / Phồn Thể nét thư pháp chuẩn sách giáo khoa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #d35400;
+            --primary-hover: #a04000;
+            --bg-main: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #ebdcd0;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow-md: 0 10px 25px rgba(211, 84, 0, 0.08);
+            --font-kai: 'DFKai-SB', 'BiauKai', 'KaiTi', 'STKaiti', 'KaiTi_GB2312', 'Noto Serif TC', serif;
+        }
 
-                <!-- Nút loa to rõ -->
-                <button class="sound-circle-btn" style="width: 80px; height: 80px; font-size: 2.2rem; margin: 0 auto 1.2rem; color: var(--primary); box-shadow: 0 4px 15px rgba(211, 84, 0, 0.15);" onclick="speakSpellWord()" title="Nghe lại phát âm">
-                    <i class="fa-solid fa-volume-high"></i>
-                </button>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.3rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo span { font-family: var(--font-kai); font-weight: normal; }
+        
+        nav.nav-tabs { display: flex; justify-content: center; gap: 8px; padding: 0.8rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+        .tab-btn:hover { background: #fdf2e9; color: var(--primary); }
+        .tab-btn.active { background: var(--primary); color: white; }
 
-                <div style="font-size: 1.25rem; font-weight: 700; color: #2c3e50; margin-bottom: 0.4rem;">
-                    Nghe phát âm và gõ lại:
-                </div>
-                <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-                    (Có thể gõ chữ Hán hoặc Pinyin không dấu, ví dụ: <i>yundong</i> hoặc <i>運動</i>)
-                </div>
+        main { flex: 1; max-width: 800px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
 
-                <!-- Khung nhập dữ liệu to rõ -->
-                <div class="input-box" style="max-width: 480px; margin: 0 auto 1rem; display: flex; gap: 10px;">
-                    <input type="text" id="spellInput" placeholder="Nhập vào đây..." 
-                           style="flex: 1; padding: 0.9rem 1.2rem; font-size: 1.35rem; font-weight: 700; border: 2.5px solid var(--border-color); border-radius: var(--radius-md); outline: none;" 
-                           autocomplete="off">
-                    <button class="btn-submit" id="btnSpellCheck" onclick="checkSpell()" 
-                            style="padding: 0 1.6
+        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1.5px solid var(--border-color); background: var(--card-bg); font-weight: 700; margin-bottom: 1.2rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 420px; font-size: 0.95rem; }
+
+        /* Flashcard 3D */
+        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 410px; margin-bottom: 1.5rem; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.8rem; text-align: center; }
+        .card-back { transform: rotateY(180deg); background: #fffdf9; }
+        .card-category { position: absolute; top: 16px; left: 20px; font-size: 0.8rem; font-weight: 7
