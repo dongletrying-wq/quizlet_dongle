@@ -29,20 +29,4 @@
         .logo span { font-family: var(--font-kai); font-weight: normal; }
 
         nav.nav-tabs { display: flex; justify-content: center; gap: 8px; padding: 0.8rem; background: var(--card-bg); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
-        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
-        .tab-btn:hover { background: #fdf2e9; color: var(--primary); }
-        .tab-btn.active { background: var(--primary); color: white; }
-
-        main { flex: 1; max-width: 760px; width: 100%; margin: 0 auto; padding: 1.5rem 1rem; }
-        .view-panel { display: none; }
-        .view-panel.active { display: block; }
-
-        .filter-select { padding: 10px 18px; border-radius: 20px; border: 1.5px solid var(--border-color); background: var(--card-bg); font-weight: 700; margin-bottom: 1.2rem; outline: none; cursor: pointer; color: var(--text-main); width: 100%; max-width: 400px; }
-
-        /* Khung Flashcard */
-        .flashcard-wrapper { perspective: 1000px; width: 100%; height: 380px; margin-bottom: 1.5rem; }
-        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: 20px; box-shadow: 0 10px 25px rgba(211, 84, 0, 0.08); }
-        .flashcard.flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; text-align: center; }
-        .card-back { transform: rotateY(180deg); background: #fffdf9; }
-        .card-category { position: absolute; top
+        .tab-btn { background: transparent; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex
