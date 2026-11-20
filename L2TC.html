@@ -261,7 +261,7 @@
             document.getElementById('cardType').innerText = item.type || 'N';
             document.getElementById('cardMeaning').innerText = item.meaning;
             document.getElementById('cardNote').innerText = item.note ? item.note : '';
-            document.getElementById('cardProgress').innerText = `${index + 1} /${dataset.length}`;
+            document.getElementById('cardProgress').innerText = `${index + 1} / ${dataset.length}`;
 
             let imgEl = document.getElementById('cardImg');
             let iconEl = document.getElementById('cardIcon');
@@ -273,7 +273,45 @@
             } else {
                 imgEl.style.display = 'none';
                 iconEl.style.display = 'block';
-                iconEl.className = `fa-solid ${item.icon \vert{}\vert{} 'fa-people-roof'}`; } }  function filterCategory(cat) { dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat); index = 0; loadCard(); if(document.getElementById('quiz-view').classList.contains('active')) startQuiz(); if(document.getElementById('match-view').classList.contains('active')) startMatch(); if(document.getElementById('spell-view').classList.contains('active')) startSpell(); }  function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); } function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } } function prevCard() { if(index > 0) { index--; loadCard(); } } function speakCurrentWord(e) { if(e) e.stopPropagation(); playSound(dataset[index].word); }  function generateAIImage(e) { e.stopPropagation(); let btn = e.currentTarget; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...'; let query = dataset[index].meaning.split(',')[0].trim(); let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('Warm Taiwanese family home daily life illustration of ' + query)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`; let tempImg = new Image(); tempImg.src = imageUrl; tempImg.onload = () => { dataset[index].customImg = imageUrl; btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo'; loadCard(); }; tempImg.onerror = () => { btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại'; }; }  function switchTab(tab, btn) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active')); btn.classList.add('active'); document.getElementById(`${tab}-view`).classList.add('active');
+                iconEl.className = `fa-solid ${item.icon || 'fa-people-roof'}`;
+            }
+        }
+
+        function filterCategory(cat) {
+            dataset = cat === 'ALL' ? [...rawVocabulary] : rawVocabulary.filter(v => v.category === cat);
+            index = 0;
+            loadCard();
+            if(document.getElementById('quiz-view').classList.contains('active')) startQuiz();
+            if(document.getElementById('match-view').classList.contains('active')) startMatch();
+            if(document.getElementById('spell-view').classList.contains('active')) startSpell();
+        }
+
+        function flipCard() { document.getElementById('mainCard').classList.toggle('flipped'); }
+        function nextCard() { if(index < dataset.length - 1) { index++; loadCard(); } }
+        function prevCard() { if(index > 0) { index--; loadCard(); } }
+        function speakCurrentWord(e) { if(e) e.stopPropagation(); playSound(dataset[index].word); }
+
+        function generateAIImage(e) {
+            e.stopPropagation();
+            let btn = e.currentTarget;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo...';
+            let query = dataset[index].meaning.split(',')[0].trim();
+            let imageUrl = `https://pollinations.ai/p/${encodeURIComponent('Warm Taiwanese family home daily life illustration of ' + query)}?width=300&height=200&seed=${Math.floor(Math.random()*1000)}`;
+            let tempImg = new Image();
+            tempImg.src = imageUrl;
+            tempImg.onload = () => {
+                dataset[index].customImg = imageUrl;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã tạo';
+                loadCard();
+            };
+            tempImg.onerror = () => { btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Thử lại'; };
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${tab}-view`).classList.add('active');
             if(tab === 'match') startMatch();
             if(tab === 'quiz') startQuiz();
             if(tab === 'spell') startSpell();
@@ -309,7 +347,7 @@
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 container.innerHTML = `
                     <h2 style="color:var(--primary); margin-bottom: 0.5rem;">🎉 Xuất sắc! Bạn đã thuộc hết!</h2>
-                    <p style="color:var(--text-muted); font-size: 1.05rem;">Đã hoàn thành <strong>${quizMastered} /${quizTotal}</strong> từ vựng trong danh mục này.</p>
+                    <p style="color:var(--text-muted); font-size: 1.05rem;">Đã hoàn thành <strong>${quizMastered} / ${quizTotal}</strong> từ vựng trong danh mục này.</p>
                     <button class="btn-submit" style="margin:1.5rem auto 0; display:inline-block; padding:0.8rem 2rem;" onclick="startQuiz()">Luyện tập lại</button>
                 `;
                 return;
@@ -331,11 +369,12 @@
 
             container.innerHTML = `
                 <div class="anki-bar">
-                    <span class="stat-pill stat-mastered"><i class="fa-solid fa-check"></i> Đã thuộc: ${quizMastered} /${quizTotal}</span>
+                    <span class="stat-pill stat-mastered"><i class="fa-solid fa-check"></i> Đã thuộc: ${quizMastered} / ${quizTotal}</span>
                     <span class="stat-pill stat-left"><i class="fa-solid fa-rotate"></i> Còn lại: ${quizQueue.length}</span>
                 </div>
                 <div>
-                    <span class="tag-badge">${q.category}</span>${q.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
+                    <span class="tag-badge">${q.category}</span>
+                    ${q.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
                 </div>
                 <div class="hanzi-display">${q.word}</div>
                 <div>
@@ -401,7 +440,8 @@
             let items = [...dataset].sort(() => 0.5 - Math.random()).slice(0, 6);
             let cards = [];
             items.forEach((item, i) => {
-                cards.push({ id: i, text: `${item.word}`, isHanzi: true }); cards.push({ id: i, text: `${item.meaning}`, isHanzi: false });
+                cards.push({ id: i, text: `${item.word}`, isHanzi: true });
+                cards.push({ id: i, text: `${item.meaning}`, isHanzi: false });
             });
             cards.sort(() => 0.5 - Math.random());
             cards.forEach(c => {
@@ -453,4 +493,104 @@
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 card.innerHTML = `
                     <h2 style="color:var(--primary); margin-bottom: 0.6rem;">🎉 Hoàn thành Luyện Nghe & Viết!</h2>
-                    <p style="font-size: 1.1rem; color:
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Bạn đã nghe và viết đúng toàn bộ <strong style="color: var(--success);">${spellMastered} / ${spellTotal}</strong> từ.
+                    </p>
+                    <button class="btn-submit" style="margin-top: 1.2rem; padding: 0.8rem 2rem;" onclick="startSpell()">Luyện tập lại</button>
+                `;
+                return;
+            }
+
+            spellLocked = false;
+            const current = spellQueue[0];
+
+            card.innerHTML = `
+                <div class="anki-bar">
+                    <span class="stat-pill stat-mastered"><i class="fa-solid fa-check"></i> Đã thuộc: ${spellMastered} / ${spellTotal}</span>
+                    <span class="stat-pill stat-left"><i class="fa-solid fa-rotate"></i> Còn lại: ${spellQueue.length}</span>
+                </div>
+                <div style="margin-bottom: 0.8rem;">
+                    <span class="tag-badge">${current.category}</span>
+                    ${current.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
+                </div>
+                <button class="ctrl-btn" style="width: 75px; height: 75px; font-size: 2rem; margin: 0 auto 1.2rem; color: var(--primary);" onclick="speakSpellWord()">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <div style="font-size: 1.05rem; font-weight: 600;">Nghe phát âm và gõ lại chữ Hán (hoặc Pinyin không dấu):</div>
+                <div class="input-box" style="max-width: 480px; margin: 1.2rem auto;">
+                    <input type="text" id="spellInput" placeholder="Nhập chữ Hán hoặc pinyin..." onkeyup="if(event.key==='Enter') checkSpell()">
+                    <button class="btn-submit" onclick="checkSpell()">Kiểm tra</button>
+                    <button class="btn-submit" style="background: #95a5a6; padding: 0 1rem;" onclick="skipSpellWord()">Bỏ qua</button>
+                </div>
+                <div id="spellFeedback" style="margin-top: 1rem; font-weight: 800; font-size: 1.05rem; min-height: 28px;"></div>
+            `;
+
+            document.getElementById('spellInput').focus();
+            speakSpellWord();
+        }
+
+        function speakSpellWord() {
+            if (spellQueue.length > 0) playSound(spellQueue[0].word);
+        }
+
+        function checkSpell() {
+            if (spellLocked || spellQueue.length === 0) return;
+
+            const inputEl = document.getElementById('spellInput');
+            let input = inputEl.value.trim().toLowerCase();
+            if (!input) return;
+
+            spellLocked = true;
+            const current = spellQueue.shift();
+            let targetWord = current.word.toLowerCase();
+            let targetPinyin = current.pinyin
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/['\s]+/g, '')
+                .toLowerCase();
+            let rawInput = input.replace(/['\s]+/g, '');
+            let fb = document.getElementById('spellFeedback');
+
+            if (input === targetWord || rawInput === targetPinyin) {
+                spellMastered++;
+                fb.style.color = '#27ae60';
+                fb.innerHTML = `Chính xác! (<span style="font-family:var(--font-kai); font-size:1.4rem;">${current.word}</span> - ${current.pinyin}: ${current.meaning})`;
+                setTimeout(renderSpell, 1000);
+            } else {
+                fb.style.color = '#e74c3c';
+                fb.innerHTML = `Chưa đúng! Đáp án: <span style="font-family:var(--font-kai); font-size:1.4rem; color:#1e272e;">${current.word}</span> (${current.pinyin} - ${current.meaning}). Từ này sẽ xuất hiện lại!`;
+
+                current.isReview = true;
+                const insertPos = Math.min(3, spellQueue.length);
+                spellQueue.splice(insertPos, 0, current);
+
+                setTimeout(renderSpell, 1800);
+            }
+        }
+
+        function skipSpellWord() {
+            if (spellLocked || spellQueue.length === 0) return;
+            spellLocked = true;
+            const current = spellQueue.shift();
+            let fb = document.getElementById('spellFeedback');
+            fb.style.color = '#7f8c8d';
+            fb.innerHTML = `Đáp án: <span style="font-family:var(--font-kai); font-size:1.4rem; color:#1e272e;">${current.word}</span> (${current.pinyin} - ${current.meaning}). Đã đưa lại vào danh sách ôn!`;
+
+            current.isReview = true;
+            const insertPos = Math.min(3, spellQueue.length);
+            spellQueue.splice(insertPos, 0, current);
+
+            setTimeout(renderSpell, 1600);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(!document.getElementById('flashcards-view').classList.contains('active')) return;
+            if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if(e.code === 'ArrowRight') nextCard();
+            if(e.code === 'ArrowLeft') prevCard();
+        });
+
+        window.onload = loadCard;
+    </script>
+</body>
+</html>
