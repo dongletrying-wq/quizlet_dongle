@@ -95,8 +95,28 @@
         .option-btn:disabled { cursor: default; }
         .input-box { display: flex; gap: 10px; margin-top: 1.5rem; }
         .input-box input { flex: 1; padding: 0.9rem 1.2rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.15rem; outline: none; }
+        .input-box input:disabled { background: #f8f9fa; color: #7f8c8d; }
         .btn-submit { background: var(--primary); color: white; border: none; padding: 0 1.4rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-submit:hover { background: var(--primary-hover); }
+        .btn-submit:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-next-spell {
+            display: none;
+            margin: 1.2rem auto 0;
+            padding: 0.85rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-next-spell:hover { background: var(--primary-hover); transform: translateY(-1px); }
     </style>
 </head>
 <body>
@@ -472,9 +492,10 @@
         }
 
         /* =========================================
-           4. LUYỆN NGHE & VIẾT (CƠ CHẾ ANKI)
+           4. LUYỆN NGHE & VIẾT (CƠ CHẾ ANKI + NÚT TIẾP THEO)
            ========================================= */
         let spellQueue = [];
+        let currentSpellItem = null;
         let spellMastered = 0;
         let spellTotal = 0;
         let spellLocked = false;
@@ -490,6 +511,7 @@
         function renderSpell() {
             const card = document.getElementById('spellCard');
             if (spellQueue.length === 0) {
+                currentSpellItem = null;
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 card.innerHTML = `
                     <h2 style="color:var(--primary); margin-bottom: 0.6rem;">🎉 Hoàn thành Luyện Nghe & Viết!</h2>
@@ -502,7 +524,7 @@
             }
 
             spellLocked = false;
-            const current = spellQueue[0];
+            currentSpellItem = spellQueue[0];
 
             card.innerHTML = `
                 <div class="anki-bar">
@@ -510,19 +532,22 @@
                     <span class="stat-pill stat-left"><i class="fa-solid fa-rotate"></i> Còn lại: ${spellQueue.length}</span>
                 </div>
                 <div style="margin-bottom: 0.8rem;">
-                    <span class="tag-badge">${current.category}</span>
-                    ${current.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
+                    <span class="tag-badge">${currentSpellItem.category}</span>
+                    ${currentSpellItem.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
                 </div>
-                <button class="ctrl-btn" style="width: 75px; height: 75px; font-size: 2rem; margin: 0 auto 1.2rem; color: var(--primary);" onclick="speakSpellWord()">
+                <button class="ctrl-btn" style="width: 75px; height: 75px; font-size: 2rem; margin: 0 auto 1.2rem; color: var(--primary);" onclick="speakSpellWord()" title="Nghe lại">
                     <i class="fa-solid fa-volume-high"></i>
                 </button>
                 <div style="font-size: 1.05rem; font-weight: 600;">Nghe phát âm và gõ lại chữ Hán (hoặc Pinyin không dấu):</div>
                 <div class="input-box" style="max-width: 480px; margin: 1.2rem auto;">
                     <input type="text" id="spellInput" placeholder="Nhập chữ Hán hoặc pinyin..." onkeyup="if(event.key==='Enter') checkSpell()">
-                    <button class="btn-submit" onclick="checkSpell()">Kiểm tra</button>
-                    <button class="btn-submit" style="background: #95a5a6; padding: 0 1rem;" onclick="skipSpellWord()">Bỏ qua</button>
+                    <button class="btn-submit" id="btnCheckSpell" onclick="checkSpell()">Kiểm tra</button>
+                    <button class="btn-submit" id="btnSkipSpell" style="background: #95a5a6; padding: 0 1rem;" onclick="skipSpellWord()">Bỏ qua</button>
                 </div>
-                <div id="spellFeedback" style="margin-top: 1rem; font-weight: 800; font-size: 1.05rem; min-height: 28px;"></div>
+                <div id="spellFeedback" style="margin-top: 1.2rem; font-weight: 800; font-size: 1.05rem; min-height: 28px; line-height: 1.6;"></div>
+                <button id="nextSpellBtn" class="btn-next-spell" onclick="renderSpell()">
+                    Từ tiếp theo <i class="fa-solid fa-arrow-right"></i>
+                </button>
             `;
 
             document.getElementById('spellInput').focus();
@@ -530,7 +555,16 @@
         }
 
         function speakSpellWord() {
-            if (spellQueue.length > 0) playSound(spellQueue[0].word);
+            if (currentSpellItem) playSound(currentSpellItem.word);
+        }
+
+        function showSpellNextState() {
+            document.getElementById('spellInput').disabled = true;
+            document.getElementById('btnCheckSpell').disabled = true;
+            document.getElementById('btnSkipSpell').disabled = true;
+            const nextBtn = document.getElementById('nextSpellBtn');
+            nextBtn.style.display = 'inline-flex';
+            nextBtn.focus();
         }
 
         function checkSpell() {
@@ -542,6 +576,8 @@
 
             spellLocked = true;
             const current = spellQueue.shift();
+            currentSpellItem = current;
+
             let targetWord = current.word.toLowerCase();
             let targetPinyin = current.pinyin
                 .normalize('NFD')
@@ -554,33 +590,55 @@
             if (input === targetWord || rawInput === targetPinyin) {
                 spellMastered++;
                 fb.style.color = '#27ae60';
-                fb.innerHTML = `Chính xác! (<span style="font-family:var(--font-kai); font-size:1.4rem;">${current.word}</span> - ${current.pinyin}: ${current.meaning})`;
-                setTimeout(renderSpell, 1000);
+                fb.innerHTML = `
+                    <div><i class="fa-solid fa-circle-check"></i> Chính xác!</div>
+                    <div style="margin-top: 4px; color: #1e272e;">
+                        <span style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal;">${current.word}</span>
+                        <span style="color:#d35400; margin: 0 6px;">(${current.pinyin})</span>
+                        — <span style="color:var(--primary);">${current.meaning}</span>
+                    </div>
+                `;
             } else {
                 fb.style.color = '#e74c3c';
-                fb.innerHTML = `Chưa đúng! Đáp án: <span style="font-family:var(--font-kai); font-size:1.4rem; color:#1e272e;">${current.word}</span> (${current.pinyin} - ${current.meaning}). Từ này sẽ xuất hiện lại!`;
+                fb.innerHTML = `
+                    <div><i class="fa-solid fa-circle-xmark"></i> Chưa đúng! Từ này sẽ xuất hiện lại để bạn ôn.</div>
+                    <div style="margin-top: 4px; color: #1e272e;">
+                        Đáp án: <span style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal;">${current.word}</span>
+                        <span style="color:#d35400; margin: 0 6px;">(${current.pinyin})</span>
+                        — <span style="color:var(--primary);">${current.meaning}</span>
+                    </div>
+                `;
 
                 current.isReview = true;
                 const insertPos = Math.min(3, spellQueue.length);
                 spellQueue.splice(insertPos, 0, current);
-
-                setTimeout(renderSpell, 1800);
             }
+
+            showSpellNextState();
         }
 
         function skipSpellWord() {
             if (spellLocked || spellQueue.length === 0) return;
             spellLocked = true;
             const current = spellQueue.shift();
+            currentSpellItem = current;
+
             let fb = document.getElementById('spellFeedback');
             fb.style.color = '#7f8c8d';
-            fb.innerHTML = `Đáp án: <span style="font-family:var(--font-kai); font-size:1.4rem; color:#1e272e;">${current.word}</span> (${current.pinyin} - ${current.meaning}). Đã đưa lại vào danh sách ôn!`;
+            fb.innerHTML = `
+                <div>Đã bỏ qua — Từ này sẽ xuất hiện lại trong danh sách ôn!</div>
+                <div style="margin-top: 4px; color: #1e272e;">
+                    Đáp án: <span style="font-family:var(--font-kai); font-size:1.8rem; font-weight:normal;">${current.word}</span>
+                    <span style="color:#d35400; margin: 0 6px;">(${current.pinyin})</span>
+                    — <span style="color:var(--primary);">${current.meaning}</span>
+                </div>
+            `;
 
             current.isReview = true;
             const insertPos = Math.min(3, spellQueue.length);
             spellQueue.splice(insertPos, 0, current);
 
-            setTimeout(renderSpell, 1600);
+            showSpellNextState();
         }
 
         document.addEventListener('keydown', (e) => {
