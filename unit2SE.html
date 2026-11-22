@@ -24,6 +24,7 @@
             --border-color: #e3e8ee;
             --accent-green: #23b26d;
             --accent-red: #ff4949;
+            --accent-orange: #f59e0b;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
             --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
             --shadow-lg: 0 16px 32px rgba(66, 85, 255, 0.1);
@@ -172,6 +173,44 @@
             outline: none;
             cursor: pointer;
             font-weight: 600;
+        }
+
+        /* Anki Status Bar */
+        .anki-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+            font-size: 0.88rem;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stat-pill {
+            padding: 5px 12px;
+            border-radius: 12px;
+        }
+
+        .stat-mastered {
+            color: #137333;
+            background: #e6f4ea;
+        }
+
+        .stat-left {
+            color: #b45309;
+            background: #fef3c7;
+        }
+
+        .review-badge {
+            background: #fef3c7;
+            color: #b45309;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            margin-left: 6px;
+            display: inline-block;
         }
 
         /* 1. Flashcards Mode */
@@ -325,16 +364,22 @@
             font-weight: 600;
             font-size: 0.92rem;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             transition: all 0.2s ease;
         }
 
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
         .btn-outline { background: white; border: 1.5px solid var(--border-color); color: var(--text-dark); }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-outline:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
 
         .shortcut-hint {
             text-align: center;
@@ -423,9 +468,13 @@
             transition: all 0.2s ease;
         }
 
-        .quiz-option:hover {
+        .quiz-option:hover:not(:disabled) {
             border-color: var(--primary);
             background: #fafbff;
+        }
+
+        .quiz-option:disabled {
+            cursor: default;
         }
 
         .quiz-option.correct { 
@@ -450,7 +499,7 @@
             border: none;
             font-size: 1.85rem;
             cursor: pointer;
-            margin: 0.5rem auto 1.25rem;
+            margin: 0.5rem auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -465,7 +514,7 @@
 
         .spell-input-box {
             display: flex;
-            max-width: 480px;
+            max-width: 500px;
             margin: 1.25rem auto 0.75rem;
             gap: 8px;
         }
@@ -488,11 +537,32 @@
             background: white;
         }
 
-        .spell-actions {
-            display: flex;
+        .spell-input:disabled {
+            background: #f1f5f9;
+            color: var(--text-muted);
+        }
+
+        .btn-next-spell {
+            display: none;
+            margin: 1.2rem auto 0;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 1rem;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .btn-next-spell:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
         }
 
         @media (max-width: 650px) {
@@ -511,39 +581,40 @@
             <div class="app-title">Solutions Elementary - Unit 2: School Days</div>
         </div>
         <nav>
-            <button class="nav-btn active" onclick="switchTab('cards')">
+            <button class="nav-btn active" onclick="switchTab('cards', this)">
                 <i class="fa-solid fa-clone"></i> Flashcards
             </button>
-            <button class="nav-btn" onclick="switchTab('match')">
+            <button class="nav-btn" onclick="switchTab('match', this)">
                 <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
             </button>
-            <button class="nav-btn" onclick="switchTab('quiz')">
-                <i class="fa-solid fa-circle-question"></i> Kiểm tra
+            <button class="nav-btn" onclick="switchTab('quiz', this)">
+                <i class="fa-solid fa-circle-question"></i> Kiểm tra (Anki)
             </button>
-            <button class="nav-btn" onclick="switchTab('spell')">
-                <i class="fa-solid fa-headphones"></i> Nghe & Viết
+            <button class="nav-btn" onclick="switchTab('spell', this)">
+                <i class="fa-solid fa-headphones"></i> Nghe & Viết (Anki)
             </button>
         </nav>
     </header>
 
     <main>
+        <!-- Filter Bar (dùng chung cho tất cả các tab) -->
+        <div class="filter-container">
+            <span class="filter-label"><i class="fa-solid fa-filter"></i> Chọn chủ đề bài học:</span>
+            <select class="filter-select" id="category-filter" onchange="filterCategory()">
+                <option value="ALL">🌟 Tất cả từ vựng (63 từ)</option>
+                <option value="1. Daily routine">1. Daily routine (Thói quen hàng ngày)</option>
+                <option value="2. School subjects">2. School subjects (Các môn học)</option>
+                <option value="3. Days of the week">3. Days of the week (Thứ trong tuần)</option>
+                <option value="4. Landscape">4. Landscape (Phong cảnh thiên nhiên)</option>
+                <option value="5. Feelings">5. Feelings (Cảm xúc & Trạng thái)</option>
+                <option value="6. School events">6. School events (Sự kiện & Hoạt động trường)</option>
+                <option value="7. Adjectives for places">7. Adjectives (Tính từ miêu tả)</option>
+                <option value="8. Adverbs of frequency">8. Adverbs of frequency (Trạng từ chỉ tần suất)</option>
+            </select>
+        </div>
+
         <!-- TAB 1: FLASHCARDS -->
         <div id="tab-cards" class="tab-content active">
-            <div class="filter-container">
-                <span class="filter-label"><i class="fa-solid fa-filter"></i> Chọn chủ đề bài học:</span>
-                <select class="filter-select" id="category-filter" onchange="filterCategory()">
-                    <option value="ALL">🌟 Tất cả từ vựng (53 từ)</option>
-                    <option value="1. Daily routine">1. Daily routine (Thói quen hàng ngày)</option>
-                    <option value="2. School subjects">2. School subjects (Các môn học)</option>
-                    <option value="3. Days of the week">3. Days of the week (Thứ trong tuần)</option>
-                    <option value="4. Landscape">4. Landscape (Phong cảnh thiên nhiên)</option>
-                    <option value="5. Feelings">5. Feelings (Cảm xúc & Trạng thái)</option>
-                    <option value="6. School events">6. School events (Sự kiện & Hoạt động trường)</option>
-                    <option value="7. Adjectives for places">7. Adjectives (Tính từ miêu tả)</option>
-                    <option value="8. Adverbs of frequency">8. Adverbs of frequency (Trạng từ chỉ tần suất)</option>
-                </select>
-            </div>
-
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard" onclick="flipCard()">
                     <!-- Mặt trước -->
@@ -590,7 +661,7 @@
 
             <div class="controls">
                 <button class="btn btn-outline" onclick="prevCard()"><i class="fa-solid fa-arrow-left"></i> Thẻ trước</button>
-                <div style="font-weight: 700; color: var(--text-muted);" id="card-counter">1 / 53</div>
+                <div style="font-weight: 700; color: var(--text-muted);" id="card-counter">1 / 63</div>
                 <button class="btn btn-outline" onclick="nextCard()">Thẻ sau <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
@@ -608,44 +679,14 @@
             <div class="match-grid" id="match-grid"></div>
         </div>
 
-        <!-- TAB 3: QUIZ -->
+        <!-- TAB 3: QUIZ (ANKI) -->
         <div id="tab-quiz" class="tab-content">
             <div class="quiz-card" id="quiz-box"></div>
         </div>
 
-        <!-- TAB 4: LISTEN & SPELL (ĐÃ SỬA & NÂNG CẤP HOÀN TOÀN) -->
+        <!-- TAB 4: LISTEN & SPELL (ANKI) -->
         <div id="tab-spell" class="tab-content">
-            <div class="spell-card" style="text-align: center;" id="spell-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <span style="font-weight: 700; color: var(--primary); font-size: 0.9rem;">🎧 LUYỆN NGHE & CHÍNH TẢ</span>
-                    <span style="font-weight: 700; color: var(--accent-green);" id="spell-score">Điểm: 0</span>
-                </div>
-
-                <button class="spell-speaker" onclick="speakCurrentSpellWord()" title="Bấm để nghe phát âm">
-                    <i class="fa-solid fa-volume-high"></i>
-                </button>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">(Bấm loa để nghe phát âm tiếng Anh)</p>
-
-                <p style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;" id="spell-hint">
-                    Gợi ý nghĩa: Thức dậy
-                </p>
-
-                <div class="spell-input-box">
-                    <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tiếng Anh tại đây..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                    <button class="btn btn-primary" onclick="checkSpellAnswer()">Kiểm tra</button>
-                </div>
-
-                <div class="spell-actions">
-                    <button class="btn btn-outline" style="font-size: 0.82rem; padding: 6px 14px;" onclick="showSpellAnswer()">
-                        <i class="fa-regular fa-eye"></i> Xem đáp án
-                    </button>
-                    <button class="btn btn-outline" style="font-size: 0.82rem; padding: 6px 14px;" onclick="initSpell()">
-                        <i class="fa-solid fa-forward-step"></i> Đổi từ khác
-                    </button>
-                </div>
-
-                <div style="margin-top: 1.2rem; font-weight: 700; font-size: 1.05rem; min-height: 1.6rem;" id="spell-feedback"></div>
-            </div>
+            <div class="spell-card" style="text-align: center;" id="spell-box"></div>
         </div>
     </main>
 
@@ -682,7 +723,7 @@
             // 3. Days of the week
             {term: "Monday", ipa: "/ˈmʌn.deɪ/", definition: "Thứ Hai", category: "3. Days of the week", icon: "📅"},
             {term: "Tuesday", ipa: "/ˈtjuːz.deɪ/", definition: "Thứ Ba", category: "3. Days of the week", icon: "📅"},
-            {term: "Wednesday", ipa: "/ˈwed.nəz-deɪ/", definition: "Thứ Tư", category: "3. Days of the week", icon: "📅"},
+            {term: "Wednesday", ipa: "/ˈwed.nəz.deɪ/", definition: "Thứ Tư", category: "3. Days of the week", icon: "📅"},
             {term: "Thursday", ipa: "/ˈθɜːz.deɪ/", definition: "Thứ Năm", category: "3. Days of the week", icon: "📅"},
             {term: "Friday", ipa: "/ˈfraɪ.deɪ/", definition: "Thứ Sáu", category: "3. Days of the week", icon: "📅"},
             {term: "Saturday", ipa: "/ˈsæt.ə.deɪ/", definition: "Thứ Bảy", category: "3. Days of the week", icon: "🎉"},
@@ -750,11 +791,7 @@
                 activeUtterance = new SpeechSynthesisUtterance(clean);
                 activeUtterance.lang = 'en-US';
                 activeUtterance.rate = 0.9;
-                
-                activeUtterance.onerror = () => {
-                    playOnlineAudioFallback(clean);
-                };
-
+                activeUtterance.onerror = () => playOnlineAudioFallback(clean);
                 window.speechSynthesis.speak(activeUtterance);
             } else {
                 playOnlineAudioFallback(clean);
@@ -767,43 +804,36 @@
             fallbackAudioPlayer.play().catch(e => console.log('Audio error:', e));
         }
 
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"').replace(/'/g, ''');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             updateFlashcard();
-            initMatchGame();
-            initQuiz();
-            initSpell();
-            setupSpellInputListener();
         });
 
         // Tab Navigation
-        function switchTab(tabName) {
+        function switchTab(tabName, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById('tab-' + tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (btn) btn.classList.add('active');
 
             if (tabName === 'match') initMatchGame();
             if (tabName === 'quiz') initQuiz();
-            if (tabName === 'spell') {
-                initSpell();
-                setTimeout(() => document.getElementById('spell-input').focus(), 150);
-            }
+            if (tabName === 'spell') initSpell();
         }
 
         // Filter Category
         function filterCategory() {
             const selectedCat = document.getElementById('category-filter').value;
-            if (selectedCat === 'ALL') {
-                filteredVocab = [...vocabData];
-            } else {
-                filteredVocab = vocabData.filter(item => item.category === selectedCat);
-            }
+            filteredVocab = selectedCat === 'ALL' ? [...vocabData] : vocabData.filter(item => item.category === selectedCat);
             currentCardIdx = 0;
             updateFlashcard();
-            initMatchGame();
-            initQuiz();
-            initSpell();
+            if (document.getElementById('tab-match').classList.contains('active')) initMatchGame();
+            if (document.getElementById('tab-quiz').classList.contains('active')) initQuiz();
+            if (document.getElementById('tab-spell').classList.contains('active')) initSpell();
         }
 
         // 1. FLASHCARD LOGIC
@@ -826,27 +856,10 @@
             document.getElementById('flashcard').classList.remove('flipped');
         }
 
-        function flipCard() { 
-            document.getElementById('flashcard').classList.toggle('flipped'); 
-        }
-
-        function nextCard() { 
-            if (filteredVocab.length === 0) return;
-            currentCardIdx = (currentCardIdx + 1) % filteredVocab.length; 
-            updateFlashcard(); 
-        }
-
-        function prevCard() { 
-            if (filteredVocab.length === 0) return;
-            currentCardIdx = (currentCardIdx - 1 + filteredVocab.length) % filteredVocab.length; 
-            updateFlashcard(); 
-        }
-
-        function speakCurrentTerm() { 
-            if (filteredVocab.length > 0) {
-                speakText(filteredVocab[currentCardIdx].term);
-            }
-        }
+        function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+        function nextCard() { if (filteredVocab.length === 0) return; currentCardIdx = (currentCardIdx + 1) % filteredVocab.length; updateFlashcard(); }
+        function prevCard() { if (filteredVocab.length === 0) return; currentCardIdx = (currentCardIdx - 1 + filteredVocab.length) % filteredVocab.length; updateFlashcard(); }
+        function speakCurrentTerm() { if (filteredVocab.length > 0) speakText(filteredVocab[currentCardIdx].term); }
 
         function generateAIImage() {
             if (filteredVocab.length === 0) return;
@@ -883,7 +896,7 @@
             document.getElementById('match-timer').innerText = '⏱️ 0.0s';
             firstSelected = null;
 
-            let sample = [...filteredVocab].sort(() => Math.random() - 0.5).slice(0, 4);
+            let sample = [...filteredVocab].sort(() => Math.random() - 0.5).slice(0, 6);
             let deck = [];
             sample.forEach((item, i) => {
                 deck.push({ id: i, type: 'TERM', label: item.term });
@@ -921,7 +934,10 @@
                         firstSelected.el.classList.add('matched');
                         secondSelected.el.classList.add('matched');
                         firstSelected = null;
-                        checkMatchVictory();
+                        if (document.querySelectorAll('.match-card:not(.matched)').length === 0) {
+                            clearInterval(matchTimerInterval);
+                            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                        }
                     }, 200);
                 } else {
                     setTimeout(() => {
@@ -933,39 +949,60 @@
             }
         }
 
-        function checkMatchVictory() {
-            if (document.querySelectorAll('.match-card:not(.matched)').length === 0) {
-                clearInterval(matchTimerInterval);
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            }
-        }
-
-        // 3. QUIZ LOGIC
-        let currentQuizItem = null;
-        let quizScore = 0;
+        // 3. QUIZ LOGIC (CƠ CHẾ ANKI)
+        let quizQueue = [];
+        let quizMastered = 0;
+        let quizTotal = 0;
+        let quizLocked = false;
 
         function initQuiz() {
-            if (filteredVocab.length === 0) return;
-            currentQuizItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
+            quizQueue = [...filteredVocab].sort(() => Math.random() - 0.5).map(item => ({ ...item, isReview: false }));
+            quizMastered = 0;
+            quizTotal = quizQueue.length;
+            quizLocked = false;
+            renderQuiz();
+        }
 
-            let options = [currentQuizItem];
-            let pool = filteredVocab.filter(item => item.term !== currentQuizItem.term);
+        function renderQuiz() {
+            const quizBox = document.getElementById('quiz-box');
+            if (quizQueue.length === 0) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                quizBox.innerHTML = `
+                    <div style="text-align:center; padding: 1.5rem 0;">
+                        <h2 style="color:var(--primary); margin-bottom:0.5rem;">🎉 Xuất sắc! Bạn đã thuộc hết!</h2>
+                        <p style="color:var(--text-muted); font-size:1rem;">Đã hoàn thành <strong>${quizMastered} / ${quizTotal}</strong> từ vựng trong chủ đề này.</p>
+                        <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="initQuiz()">Làm lại bài kiểm tra</button>
+                    </div>
+                `;
+                return;
+            }
+
+            quizLocked = false;
+            const current = quizQueue[0];
+
+            let options = [current];
+            let pool = vocabData.filter(item => item.term !== current.term && item.definition !== current.definition);
             pool.sort(() => Math.random() - 0.5);
-            
             for (let i = 0; i < Math.min(3, pool.length); i++) {
                 options.push(pool[i]);
             }
             options.sort(() => Math.random() - 0.5);
 
-            const quizBox = document.getElementById('quiz-box');
             quizBox.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                    <span style="font-weight:700; color:var(--primary); font-size:0.9rem;">CHỌN NGHĨA ĐÚNG CỦA TỪ</span>
-                    <span style="font-weight:700; color:var(--accent-green);">Điểm: ${quizScore}</span>
+                <div class="anki-bar">
+                    <span class="stat-pill stat-mastered"><i class="fa-solid fa-check"></i> Đã thuộc: ${quizMastered} / ${quizTotal}</span>
+                    <span class="stat-pill stat-left"><i class="fa-solid fa-rotate"></i> Còn lại: ${quizQueue.length}</span>
                 </div>
                 <div style="text-align:center; margin-bottom:1.5rem;">
-                    <div style="font-size:2.2rem; font-weight:800; color:var(--text-dark);">${escapeHtml(currentQuizItem.term)}</div>
-                    <div style="color:var(--text-muted); font-size:1rem; margin-top:4px;">${escapeHtml(currentQuizItem.ipa || '')}</div>
+                    <div style="margin-bottom: 0.6rem;">
+                        <span class="card-category">${escapeHtml(current.category)}</span>
+                        ${current.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
+                    </div>
+                    <div style="font-size:2.2rem; font-weight:800; color:var(--text-dark);">${escapeHtml(current.term)}</div>
+                    <div style="color:var(--text-muted); font-size:1rem; margin-top:4px;">${escapeHtml(current.ipa || '')}</div>
+                    <button class="audio-btn" style="margin: 0.8rem auto 0;" onclick="speakText('${current.term.replace(/'/g, "\\'")}')" title="Phát âm">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
                 </div>
                 <div class="quiz-options" id="quiz-options-list"></div>
             `;
@@ -985,65 +1022,45 @@
         }
 
         function checkQuizAnswer(btn, selectedTerm) {
+            if (quizLocked) return;
+            quizLocked = true;
+
             const allBtns = document.querySelectorAll('.quiz-option');
             allBtns.forEach(b => b.disabled = true);
 
-            if (selectedTerm === currentQuizItem.term) {
+            const currentItem = quizQueue.shift();
+
+            if (selectedTerm === currentItem.term) {
                 btn.classList.add('correct');
                 btn.querySelector('i').className = 'fa-solid fa-circle-check';
-                quizScore += 10;
+                quizMastered++;
+                speakText(currentItem.term);
+                setTimeout(renderQuiz, 650);
             } else {
                 btn.classList.add('wrong');
                 btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
                 allBtns.forEach(b => {
-                    if (b.dataset.term === currentQuizItem.term) {
+                    if (b.dataset.term === currentItem.term) {
                         b.classList.add('correct');
                         b.querySelector('i').className = 'fa-solid fa-circle-check';
                     }
                 });
+
+                currentItem.isReview = true;
+                const insertPos = Math.min(3, quizQueue.length);
+                quizQueue.splice(insertPos, 0, currentItem);
+
+                setTimeout(renderQuiz, 1200);
             }
-            setTimeout(initQuiz, 1300);
         }
 
-        function escapeHtml(str) {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-        }
-
-        // 4. LISTEN & SPELL LOGIC (ĐÃ SỬA & HOÀN THIỆN)
+        // 4. LISTEN & SPELL LOGIC (CƠ CHẾ ANKI + NÚT TIẾP THEO)
+        let spellQueue = [];
         let currentSpellItem = null;
-        let spellScore = 0;
+        let spellMastered = 0;
+        let spellTotal = 0;
+        let spellLocked = false;
 
-        function initSpell() {
-            if (filteredVocab.length === 0) return;
-            currentSpellItem = filteredVocab[Math.floor(Math.random() * filteredVocab.length)];
-            
-            document.getElementById('spell-hint').innerText = `Gợi ý nghĩa: ${currentSpellItem.definition}`;
-            const inputField = document.getElementById('spell-input');
-            inputField.value = '';
-            document.getElementById('spell-feedback').innerHTML = '';
-            document.getElementById('spell-score').innerText = `Điểm: ${spellScore}`;
-
-            // Phát âm tự động khi người dùng đã chủ động vào tab
-            speakCurrentSpellWord();
-            inputField.focus();
-        }
-
-        function speakCurrentSpellWord() {
-            if (currentSpellItem) {
-                speakText(currentSpellItem.term);
-            }
-        }
-
-        function setupSpellInputListener() {
-            const inputField = document.getElementById('spell-input');
-            inputField.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    checkSpellAnswer();
-                }
-            });
-        }
-
-        // Hàm chuẩn hóa chuỗi để so sánh linh hoạt (bỏ dấu chấm, dấu cách thừa, viết thường)
         function normalizeWord(str) {
             return str
                 .toLowerCase()
@@ -1052,33 +1069,153 @@
                 .trim();
         }
 
-        function checkSpellAnswer() {
-            const inputElem = document.getElementById('spell-input');
-            const val = inputElem.value.trim();
-            const feedback = document.getElementById('spell-feedback');
-            if (!val) return;
-
-            const userNorm = normalizeWord(val);
-            const targetNorm = normalizeWord(currentSpellItem.term);
-
-            if (userNorm === targetNorm) {
-                feedback.style.color = 'var(--accent-green)';
-                feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Chính xác! Rất xuất sắc!';
-                spellScore += 10;
-                document.getElementById('spell-score').innerText = `Điểm: ${spellScore}`;
-                setTimeout(initSpell, 1300);
-            } else {
-                feedback.style.color = 'var(--accent-red)';
-                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Chưa đúng! Bạn hãy thử lại hoặc bấm "Xem đáp án".`;
-            }
+        function initSpell() {
+            spellQueue = [...filteredVocab].sort(() => Math.random() - 0.5).map(item => ({ ...item, isReview: false }));
+            spellMastered = 0;
+            spellTotal = spellQueue.length;
+            spellLocked = false;
+            renderSpell();
         }
 
-        function showSpellAnswer() {
-            if (!currentSpellItem) return;
+        function renderSpell() {
+            const box = document.getElementById('spell-box');
+            if (spellQueue.length === 0) {
+                currentSpellItem = null;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                box.innerHTML = `
+                    <div style="padding: 1.5rem 0;">
+                        <h2 style="color:var(--primary); margin-bottom:0.5rem;">🎉 Hoàn thành Luyện Nghe & Viết!</h2>
+                        <p style="color:var(--text-muted); font-size:1rem;">Bạn đã nghe và viết đúng toàn bộ <strong style="color:var(--accent-green);">${spellMastered} / ${spellTotal}</strong> từ.</p>
+                        <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="initSpell()">Luyện tập lại</button>
+                    </div>
+                `;
+                return;
+            }
+
+            spellLocked = false;
+            currentSpellItem = spellQueue[0];
+
+            box.innerHTML = `
+                <div class="anki-bar">
+                    <span class="stat-pill stat-mastered"><i class="fa-solid fa-check"></i> Đã thuộc: ${spellMastered} / ${spellTotal}</span>
+                    <span class="stat-pill stat-left"><i class="fa-solid fa-rotate"></i> Còn lại: ${spellQueue.length}</span>
+                </div>
+
+                <div style="margin-bottom: 0.8rem;">
+                    <span class="card-category">${escapeHtml(currentSpellItem.category)}</span>
+                    ${currentSpellItem.isReview ? '<span class="review-badge">Ôn lại</span>' : ''}
+                </div>
+
+                <button class="spell-speaker" onclick="speakCurrentSpellWord()" title="Bấm để nghe phát âm">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">(Bấm loa để nghe lại phát âm tiếng Anh)</p>
+
+                <p style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-top: 0.5rem;">
+                    Gợi ý nghĩa: <span style="color:var(--primary);">${escapeHtml(currentSpellItem.definition)}</span>
+                </p>
+
+                <div class="spell-input-box">
+                    <input type="text" class="spell-input" id="spell-input" placeholder="Gõ từ tiếng Anh tại đây..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <button class="btn btn-primary" id="btn-spell-check" onclick="checkSpellAnswer()">Kiểm tra</button>
+                    <button class="btn btn-outline" id="btn-spell-skip" onclick="skipSpellWord()">Bỏ qua</button>
+                </div>
+
+                <div style="margin-top: 1.2rem; font-weight: 700; font-size: 1.02rem; min-height: 1.8rem; line-height: 1.6;" id="spell-feedback"></div>
+
+                <button id="btn-next-spell" class="btn-next-spell" onclick="renderSpell()">
+                    Từ tiếp theo <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            `;
+
+            const inputField = document.getElementById('spell-input');
+            inputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkSpellAnswer();
+                }
+            });
+            inputField.focus();
+            speakCurrentSpellWord();
+        }
+
+        function speakCurrentSpellWord() {
+            if (currentSpellItem) speakText(currentSpellItem.term);
+        }
+
+        function showSpellNextState() {
+            document.getElementById('spell-input').disabled = true;
+            document.getElementById('btn-spell-check').disabled = true;
+            document.getElementById('btn-spell-skip').disabled = true;
+            const nextBtn = document.getElementById('btn-next-spell');
+            nextBtn.style.display = 'inline-flex';
+            nextBtn.focus();
+        }
+
+        function checkSpellAnswer() {
+            if (spellLocked || spellQueue.length === 0) return;
+
+            const inputElem = document.getElementById('spell-input');
+            const val = inputElem.value.trim();
+            if (!val) return;
+
+            spellLocked = true;
+            const current = spellQueue.shift();
+            currentSpellItem = current;
+
+            const userNorm = normalizeWord(val);
+            const targetNorm = normalizeWord(current.term);
             const feedback = document.getElementById('spell-feedback');
-            feedback.style.color = 'var(--primary)';
-            feedback.innerHTML = `💡 Đáp án đúng là: <strong>${currentSpellItem.term}</strong> (${currentSpellItem.ipa || ''})`;
-            document.getElementById('spell-input').value = currentSpellItem.term;
+
+            if (userNorm === targetNorm) {
+                spellMastered++;
+                feedback.style.color = 'var(--accent-green)';
+                feedback.innerHTML = `
+                    <div><i class="fa-solid fa-circle-check"></i> Chính xác! Rất xuất sắc!</div>
+                    <div style="margin-top: 4px; color: var(--text-dark); font-size: 1.15rem;">
+                        <strong>${escapeHtml(current.term)}</strong> <span style="color:var(--text-muted); font-weight:500;">${escapeHtml(current.ipa || '')}</span>
+                    </div>
+                `;
+            } else {
+                feedback.style.color = 'var(--accent-red)';
+                feedback.innerHTML = `
+                    <div><i class="fa-solid fa-circle-xmark"></i> Chưa đúng! Từ này sẽ xuất hiện lại để bạn ôn.</div>
+                    <div style="margin-top: 4px; color: var(--text-dark); font-size: 1.15rem;">
+                        Đáp án: <strong style="color:var(--primary);">${escapeHtml(current.term)}</strong> <span style="color:var(--text-muted); font-weight:500;">${escapeHtml(current.ipa || '')}</span>
+                    </div>
+                `;
+                speakCurrentSpellWord();
+
+                current.isReview = true;
+                const insertPos = Math.min(3, spellQueue.length);
+                spellQueue.splice(insertPos, 0, current);
+            }
+
+            showSpellNextState();
+        }
+
+        function skipSpellWord() {
+            if (spellLocked || spellQueue.length === 0) return;
+
+            spellLocked = true;
+            const current = spellQueue.shift();
+            currentSpellItem = current;
+
+            const feedback = document.getElementById('spell-feedback');
+            feedback.style.color = 'var(--text-muted)';
+            feedback.innerHTML = `
+                <div>Đã bỏ qua — Từ này sẽ xuất hiện lại trong danh sách ôn!</div>
+                <div style="margin-top: 4px; color: var(--text-dark); font-size: 1.15rem;">
+                    Đáp án: <strong style="color:var(--primary);">${escapeHtml(current.term)}</strong> <span style="color:var(--text-muted); font-weight:500;">${escapeHtml(current.ipa || '')}</span>
+                </div>
+            `;
+            speakCurrentSpellWord();
+
+            current.isReview = true;
+            const insertPos = Math.min(3, spellQueue.length);
+            spellQueue.splice(insertPos, 0, current);
+
+            showSpellNextState();
         }
     </script>
 </body>
