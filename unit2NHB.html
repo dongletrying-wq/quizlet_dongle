@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* CSS cho hiệu ứng 3D Flashcard */
         .perspective-1000 {
             perspective: 1000px;
         }
@@ -47,10 +46,10 @@
                     <i class="fa-solid fa-puzzle-piece"></i> Ghép từ
                 </button>
                 <button onclick="switchTab('quiz')" id="btn-quiz" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
-                    <i class="fa-solid fa-circle-question"></i> Kiểm tra
+                    <i class="fa-solid fa-circle-question"></i> Kiểm tra (Anki)
                 </button>
                 <button onclick="switchTab('spell')" id="btn-spell" class="tab-btn px-4 py-2 rounded-lg flex items-center gap-2 transition hover:bg-slate-800 text-slate-400">
-                    <i class="fa-solid fa-headphones"></i> Nghe & Viết
+                    <i class="fa-solid fa-headphones"></i> Nghe & Viết (Anki)
                 </button>
             </nav>
         </div>
@@ -136,7 +135,7 @@
                 <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
                     <i class="fa-solid fa-arrow-left text-lg"></i>
                 </button>
-                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 10</span>
+                <span id="card-progress" class="font-mono text-sm text-slate-400">1 / 56</span>
                 <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-4 rounded-full border border-slate-700 transition hover:scale-105 active:scale-95 shadow-lg">
                     <i class="fa-solid fa-arrow-right text-lg"></i>
                 </button>
@@ -160,54 +159,17 @@
             </div>
         </div>
 
-        <!-- 3. MODE: QUIZ / LEARN -->
+        <!-- 3. MODE: QUIZ / LEARN (ANKI) -->
         <div id="mode-quiz" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
-            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
-                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
-                    <span id="quiz-progress" class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Câu hỏi 1/10</span>
-                    <span id="quiz-score" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">Điểm: 0</span>
-                </div>
-
-                <div class="text-center mb-8">
-                    <span id="quiz-question-type" class="text-xs text-slate-400 uppercase tracking-widest block mb-1">Chọn nghĩa đúng của từ</span>
-                    <div class="flex items-center justify-center gap-2">
-                        <h2 id="quiz-target-word" class="text-3xl font-extrabold text-white"></h2>
-                        <span id="quiz-target-type" class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40"></span>
-                    </div>
-                    <p id="quiz-target-ipa" class="text-slate-400 font-mono text-sm mt-1"></p>
-                </div>
-
-                <div id="quiz-options" class="grid grid-cols-1 gap-3">
-                    <!-- Options injected dynamically -->
-                </div>
-
-                <div id="quiz-feedback" class="mt-6 text-center text-sm font-semibold h-6"></div>
+            <div id="quiz-card" class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl">
+                <!-- Dynamically rendered -->
             </div>
         </div>
 
-        <!-- 4. MODE: LISTEN & SPELL -->
+        <!-- 4. MODE: LISTEN & SPELL (ANKI) -->
         <div id="mode-spell" class="tab-content hidden flex-col items-center w-full max-w-xl mx-auto">
-            <div class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl flex flex-col items-center gap-6">
-                <div class="text-center">
-                    <button onclick="speakSpellWord()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl transition transform hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/30 mb-3">
-                        <i class="fa-solid fa-volume-high"></i>
-                    </button>
-                    <p class="text-xs text-slate-400">Click để nghe lại từ phát âm</p>
-                </div>
-
-                <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 w-full text-center">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Gợi ý nghĩa</span>
-                    <p id="spell-hint" class="text-lg font-bold text-emerald-400"></p>
-                </div>
-
-                <form onsubmit="handleSpellSubmit(event)" class="w-full flex flex-col gap-3">
-                    <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh tương ứng..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg">
-                        Kiểm tra
-                    </button>
-                </form>
-
-                <div id="spell-feedback" class="text-center font-semibold text-sm h-6"></div>
+            <div id="spell-card" class="w-full bg-slate-800 rounded-2xl border border-slate-700 p-6 shadow-xl flex flex-col items-center gap-5">
+                <!-- Dynamically rendered -->
             </div>
         </div>
 
@@ -249,7 +211,7 @@
             { word: "weather", type: "n", ipa: "/ˈweðə(r)/", meaning: "thời tiết", example: "The weather’s awful.", category: "General Vocabulary", icon: "fa-solid fa-cloud-sun" },
             { word: "Where?", type: "adv", ipa: "/weə(r)/", meaning: "ở đâu?", example: "Where are you from?", category: "General Vocabulary", icon: "fa-solid fa-location-dot" },
             { word: "world", type: "n", ipa: "/wɜːld/", meaning: "thế giới", example: "Look at this map of the world.", category: "General Vocabulary", icon: "fa-solid fa-globe" },
-            { word: "You’re right.", type: "phr", ipa: "/jɔːr raɪt/", meaning: "Bạn đúng.", example: "Yes, you’re right.", category: "General Vocabulary", icon: "fa-solid fa-[#4255ff] fa-circle-check" },
+            { word: "You’re right.", type: "phr", ipa: "/jɔːr raɪt/", meaning: "Bạn đúng.", example: "Yes, you’re right.", category: "General Vocabulary", icon: "fa-solid fa-circle-check" },
 
             // Countries
             { word: "Argentina", type: "n", ipa: "/ˌɑːdʒənˈtiːnə/", meaning: "Argentina", example: "Buenos Aires is in Argentina.", category: "Countries", icon: "fa-solid fa-flag" },
@@ -294,26 +256,48 @@
         let selectedMatchCards = [];
         let matchedPairs = 0;
 
-        // Quiz state
-        let quizIndex = 0;
-        let quizScore = 0;
-        let quizList = [];
+        // Quiz (Anki) state
+        let quizQueue = [];
+        let quizMastered = 0;
+        let quizTotal = 0;
+        let quizLocked = false;
 
-        // Spell state
-        let spellIndex = 0;
-        let spellList = [];
+        // Spell (Anki) state
+        let spellQueue = [];
+        let currentSpellItem = null;
+        let spellMastered = 0;
+        let spellTotal = 0;
+        let spellLocked = false;
 
         // --- INITIALIZATION ---
         window.addEventListener('DOMContentLoaded', () => {
             populateCategories();
             updateFilteredList();
+            initFlashcards();
             setupKeyboardShortcuts();
         });
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = String(str);
+            return div.innerHTML;
+        }
+
+        function normalizeWord(str) {
+            return String(str)
+                .toLowerCase()
+                .replace(/\([^)]*\)/g, '')
+                .replace(/[’']/g, '')
+                .replace(/-/g, ' ')
+                .replace(/[.,!?"/\\]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
 
         function populateCategories() {
             const categories = ["Tất cả (All)", ...new Set(rawVocabulary.map(v => v.category))];
             const select = document.getElementById('category-filter');
-            select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            select.innerHTML = categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
         }
 
         function handleCategoryChange() {
@@ -342,7 +326,10 @@
             activeBtn.classList.add('bg-indigo-600', 'text-white');
             activeBtn.classList.remove('hover:bg-slate-800', 'text-slate-400');
 
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(c => {
+                c.classList.add('hidden');
+                c.classList.remove('flex');
+            });
             document.getElementById(`mode-${tab}`).classList.remove('hidden');
             document.getElementById(`mode-${tab}`).classList.add('flex');
 
@@ -382,19 +369,16 @@
             document.getElementById('ai-img-container').classList.add('hidden');
 
             setTimeout(() => {
-                // Front
                 document.getElementById('card-cat-front').textContent = item.category;
                 document.getElementById('card-type-front').textContent = `(${item.type})`;
                 document.getElementById('card-word').textContent = item.word;
                 document.getElementById('card-ipa').textContent = item.ipa;
                 document.getElementById('card-icon-front').className = `${item.icon} text-4xl text-indigo-400 mb-2 block`;
 
-                // Back
                 document.getElementById('card-type-back').textContent = `(${item.type})`;
                 document.getElementById('card-meaning').textContent = item.meaning;
                 document.getElementById('card-example').textContent = item.example ? `"${item.example}"` : '';
 
-                // Counter
                 document.getElementById('card-progress').textContent = `${currentCardIndex + 1} / ${currentVocabList.length}`;
             }, 150);
         }
@@ -402,11 +386,7 @@
         function flipCard() {
             const cardInner = document.getElementById('card-inner');
             isCardFlipped = !isCardFlipped;
-            if (isCardFlipped) {
-                cardInner.classList.add('rotate-y-180');
-            } else {
-                cardInner.classList.remove('rotate-y-180');
-            }
+            cardInner.classList.toggle('rotate-y-180', isCardFlipped);
         }
 
         function nextCard() {
@@ -441,9 +421,8 @@
             const prompt = encodeURIComponent(`digital illustration of ${item.word}, minimalist, clean educational style`);
             const url = `https://pollinations.ai/p/${prompt}?width=200&height=200&seed=${Math.floor(Math.random()*1000)}`;
 
-            img.onload = () => {
-                loading.classList.add('hidden');
-            };
+            img.onload = () => loading.classList.add('hidden');
+            img.onerror = () => loading.classList.add('hidden');
             img.src = url;
         }
 
@@ -483,7 +462,7 @@
                 <div onclick="handleMatchCardClick(this, ${card.id}, '${card.type}')" 
                      data-card-id="${card.id}" data-card-type="${card.type}"
                      class="match-card bg-slate-800 border border-slate-700 hover:border-indigo-500 rounded-xl p-4 min-h-[90px] flex items-center justify-center text-center font-medium cursor-pointer transition transform hover:scale-105 active:scale-95 text-sm select-none">
-                     ${card.text}
+                     ${escapeHtml(card.text)}
                 </div>
             `).join('');
 
@@ -495,7 +474,7 @@
         }
 
         function handleMatchCardClick(element, id, type) {
-            if (element.classList.contains('bg-emerald-900/50') || element.classList.contains('border-indigo-500')) return;
+            if (element.classList.contains('bg-emerald-950/40') || element.classList.contains('border-indigo-500')) return;
             if (selectedMatchCards.length === 1 && selectedMatchCards[0].element === element) return;
 
             element.classList.add('border-indigo-500', 'bg-indigo-950/40');
@@ -531,137 +510,278 @@
             }
         }
 
-        // --- 3. MODE: QUIZ / LEARN LOGIC ---
+        // --- 3. MODE: QUIZ / LEARN LOGIC (ANKI) ---
         function initQuizMode() {
-            quizIndex = 0;
-            quizScore = 0;
-            quizList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            quizQueue = [...currentVocabList].sort(() => 0.5 - Math.random()).map(item => ({ ...item, isReview: false }));
+            quizMastered = 0;
+            quizTotal = quizQueue.length;
+            quizLocked = false;
             renderQuizQuestion();
         }
 
         function renderQuizQuestion() {
-            if (quizIndex >= quizList.length) {
-                document.getElementById('quiz-options').innerHTML = `
+            const container = document.getElementById('quiz-card');
+            if (quizQueue.length === 0) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                container.innerHTML = `
                     <div class="text-center py-6">
                         <i class="fa-solid fa-trophy text-5xl text-amber-400 mb-3"></i>
-                        <h3 class="text-2xl font-bold text-white mb-2">Hoàn thành bài kiểm tra!</h3>
-                        <p class="text-slate-300">Điểm số của bạn: <span class="text-emerald-400 font-bold text-xl">${quizScore} / ${quizList.length}</span></p>
+                        <h3 class="text-2xl font-bold text-white mb-2">Xuất sắc! Bạn đã thuộc hết!</h3>
+                        <p class="text-slate-300">Đã hoàn thành <span class="text-emerald-400 font-bold text-xl">${quizMastered} / ${quizTotal}</span> từ vựng.</p>
                         <button onclick="initQuizMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
                             Làm lại bài test
                         </button>
                     </div>
                 `;
-                document.getElementById('quiz-feedback').textContent = "";
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 return;
             }
 
-            const current = quizList[quizIndex];
-            document.getElementById('quiz-progress').textContent = `Câu hỏi ${quizIndex + 1}/${quizList.length}`;
-            document.getElementById('quiz-score').textContent = `Điểm: ${quizScore}`;
-            document.getElementById('quiz-target-word').textContent = current.word;
-            document.getElementById('quiz-target-type').textContent = `(${current.type})`;
-            document.getElementById('quiz-target-ipa').textContent = current.ipa;
-            document.getElementById('quiz-feedback').textContent = "";
+            quizLocked = false;
+            const current = quizQueue[0];
 
             const distractors = rawVocabulary
-                .filter(v => v.word !== current.word)
+                .filter(v => v.word !== current.word && v.meaning !== current.meaning)
                 .sort(() => 0.5 - Math.random())
                 .slice(0, 3)
                 .map(v => v.meaning);
 
             const options = [...distractors, current.meaning].sort(() => 0.5 - Math.random());
 
+            container.innerHTML = `
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4 flex-wrap gap-2">
+                    <span class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">
+                        <i class="fa-solid fa-check"></i> Đã thuộc: ${quizMastered} / ${quizTotal}
+                    </span>
+                    <span class="text-xs font-bold text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded border border-amber-800/70">
+                        <i class="fa-solid fa-rotate"></i> Còn lại: ${quizQueue.length}
+                    </span>
+                </div>
+
+                <div class="text-center mb-8">
+                    <div class="mb-2 flex justify-center items-center gap-2">
+                        <span class="text-xs text-indigo-400 uppercase tracking-widest font-bold">${escapeHtml(current.category)}</span>
+                        ${current.isReview ? '<span class="text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full">Ôn lại</span>' : ''}
+                    </div>
+                    <div class="flex items-center justify-center gap-2 flex-wrap">
+                        <h2 class="text-3xl font-extrabold text-white">${escapeHtml(current.word)}</h2>
+                        <span class="text-xs font-semibold italic text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40">(${escapeHtml(current.type)})</span>
+                    </div>
+                    <p class="text-slate-400 font-mono text-sm mt-1">${escapeHtml(current.ipa)}</p>
+                    <button onclick="speakText('${current.word.replace(/'/g, "\\'")}')" class="mt-3 text-slate-300 hover:text-indigo-400 bg-slate-900/80 hover:bg-slate-700 w-10 h-10 rounded-full transition">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 gap-3"></div>
+
+                <div id="quiz-feedback" class="mt-6 text-center text-sm font-semibold min-h-[24px]"></div>
+            `;
+
             const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = options.map(opt => `
-                <button onclick="checkQuizAnswer(this, '${opt.replace(/'/g, "\\'")}', '${current.meaning.replace(/'/g, "\\'")}')" 
-                        class="quiz-opt-btn w-full bg-slate-900/80 hover:bg-slate-700/80 border border-slate-700/80 text-left px-5 py-3.5 rounded-xl text-slate-200 transition font-medium text-sm flex items-center justify-between">
-                    <span>${opt}</span>
-                    <i class="fa-regular fa-circle text-slate-500"></i>
-                </button>
-            `).join('');
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn w-full bg-slate-900/80 hover:bg-slate-700/80 border border-slate-700/80 text-left px-5 py-3.5 rounded-xl text-slate-200 transition font-medium text-sm flex items-center justify-between";
+                const isCorrect = (opt === current.meaning);
+                btn.dataset.correct = isCorrect ? "true" : "false";
+                btn.innerHTML = `<span>${escapeHtml(opt)}</span><i class="fa-regular fa-circle text-slate-500"></i>`;
+                btn.onclick = () => checkQuizAnswer(btn, isCorrect);
+                optionsContainer.appendChild(btn);
+            });
         }
 
-        function checkQuizAnswer(button, selected, correct) {
-            document.querySelectorAll('.quiz-opt-btn').forEach(btn => btn.disabled = true);
+        function checkQuizAnswer(button, isCorrect) {
+            if (quizLocked) return;
+            quizLocked = true;
 
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(btn => btn.disabled = true);
+
+            const currentItem = quizQueue.shift();
             const feedback = document.getElementById('quiz-feedback');
-            if (selected === correct) {
+
+            if (isCorrect) {
                 button.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-300');
                 feedback.className = "mt-6 text-center text-sm font-semibold text-emerald-400";
                 feedback.textContent = "Chính xác! 🎉";
-                quizScore++;
-                speakText(quizList[quizIndex].word);
+                quizMastered++;
+                speakText(currentItem.word);
+                setTimeout(renderQuizQuestion, 650);
             } else {
                 button.classList.add('bg-red-950', 'border-red-500', 'text-red-300');
+                allBtns.forEach(btn => {
+                    if (btn.dataset.correct === 'true') {
+                        btn.classList.add('bg-emerald-950', 'border-emerald-500', 'text-emerald-300');
+                    }
+                });
                 feedback.className = "mt-6 text-center text-sm font-semibold text-red-400";
-                feedback.textContent = `Chưa đúng! Đáp án là: ${correct}`;
-            }
+                feedback.textContent = `Chưa đúng! Đáp án là: ${currentItem.meaning} (Sẽ ôn lại)`;
 
-            setTimeout(() => {
-                quizIndex++;
-                renderQuizQuestion();
-            }, 1500);
+                currentItem.isReview = true;
+                const insertPos = Math.min(3, quizQueue.length);
+                quizQueue.splice(insertPos, 0, currentItem);
+
+                setTimeout(renderQuizQuestion, 1300);
+            }
         }
 
-        // --- 4. MODE: LISTEN & SPELL LOGIC ---
+        // --- 4. MODE: LISTEN & SPELL LOGIC (ANKI + NÚT TIẾP THEO) ---
         function initSpellMode() {
-            spellIndex = 0;
-            spellList = [...currentVocabList].sort(() => 0.5 - Math.random());
+            spellQueue = [...currentVocabList].sort(() => 0.5 - Math.random()).map(item => ({ ...item, isReview: false }));
+            spellMastered = 0;
+            spellTotal = spellQueue.length;
+            spellLocked = false;
             renderSpellQuestion();
         }
 
         function renderSpellQuestion() {
-            if (spellIndex >= spellList.length) {
-                document.getElementById('mode-spell').innerHTML = `
-                    <div class="text-center py-6 bg-slate-800 rounded-2xl border border-slate-700 p-8 w-full max-w-xl">
+            const card = document.getElementById('spell-card');
+            if (spellQueue.length === 0) {
+                currentSpellItem = null;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                card.innerHTML = `
+                    <div class="text-center py-6">
                         <i class="fa-solid fa-circle-check text-5xl text-emerald-400 mb-3"></i>
                         <h3 class="text-2xl font-bold text-white mb-2">Tuyệt vời!</h3>
-                        <p class="text-slate-300">Bạn đã luyện nghe và viết xong tất cả từ vựng trong danh mục này.</p>
+                        <p class="text-slate-300">Bạn đã nghe và viết đúng toàn bộ <span class="text-emerald-400 font-bold text-xl">${spellMastered} / ${spellTotal}</span> từ vựng.</p>
                         <button onclick="initSpellMode()" class="mt-6 bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-bold transition">
                             Luyện tập lại
                         </button>
                     </div>
                 `;
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 return;
             }
 
-            const current = spellList[spellIndex];
-            document.getElementById('spell-hint').textContent = current.meaning;
-            document.getElementById('spell-input').value = "";
-            document.getElementById('spell-feedback').textContent = "";
-            document.getElementById('spell-input').focus();
+            spellLocked = false;
+            currentSpellItem = spellQueue[0];
 
-            setTimeout(() => speakSpellWord(), 300);
+            card.innerHTML = `
+                <div class="w-full flex justify-between items-center border-b border-slate-700 pb-4 flex-wrap gap-2">
+                    <span class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">
+                        <i class="fa-solid fa-check"></i> Đã thuộc: ${spellMastered} / ${spellTotal}
+                    </span>
+                    <span class="text-xs font-bold text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded border border-amber-800/70">
+                        <i class="fa-solid fa-rotate"></i> Còn lại: ${spellQueue.length}
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800/50">${escapeHtml(currentSpellItem.category)}</span>
+                    ${currentSpellItem.isReview ? '<span class="text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-full">Ôn lại</span>' : ''}
+                </div>
+
+                <div class="text-center">
+                    <button type="button" onclick="speakSpellWord()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-20 h-20 rounded-full flex items-center justify-center text-3xl transition transform hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/30 mb-2 mx-auto">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <p class="text-xs text-slate-400">Click để nghe lại từ phát âm</p>
+                </div>
+
+                <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 w-full text-center">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Gợi ý nghĩa</span>
+                    <p class="text-lg font-bold text-emerald-400">${escapeHtml(currentSpellItem.meaning)}</p>
+                </div>
+
+                <form onsubmit="handleSpellSubmit(event)" class="w-full flex flex-col gap-3">
+                    <input type="text" id="spell-input" autocomplete="off" placeholder="Gõ từ tiếng Anh tương ứng..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl text-white font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50">
+                    <div class="flex gap-2">
+                        <button type="submit" id="btn-spell-check" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg disabled:opacity-50">
+                            Kiểm tra
+                        </button>
+                        <button type="button" id="btn-spell-skip" onclick="skipSpellWord()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold px-5 py-3 rounded-xl transition disabled:opacity-50">
+                            Bỏ qua
+                        </button>
+                    </div>
+                </form>
+
+                <div id="spell-feedback" class="text-center font-semibold text-sm min-h-[28px] w-full"></div>
+
+                <button type="button" id="btn-next-spell" onclick="renderSpellQuestion()" class="hidden w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg items-center justify-center gap-2">
+                    Từ tiếp theo <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            `;
+
+            document.getElementById('spell-input').focus();
+            setTimeout(() => speakSpellWord(), 250);
         }
 
         function speakSpellWord() {
-            if (spellList[spellIndex]) {
-                speakText(spellList[spellIndex].word);
+            if (currentSpellItem) {
+                speakText(currentSpellItem.word);
             }
+        }
+
+        function showSpellNextState() {
+            document.getElementById('spell-input').disabled = true;
+            document.getElementById('btn-spell-check').disabled = true;
+            document.getElementById('btn-spell-skip').disabled = true;
+            const nextBtn = document.getElementById('btn-next-spell');
+            nextBtn.classList.remove('hidden');
+            nextBtn.classList.add('flex');
+            nextBtn.focus();
         }
 
         function handleSpellSubmit(e) {
             e.preventDefault();
-            const input = document.getElementById('spell-input').value.trim().toLowerCase();
-            const current = spellList[spellIndex];
-            const targetWord = current.word.toLowerCase();
+            if (spellLocked || spellQueue.length === 0) return;
 
+            const inputEl = document.getElementById('spell-input');
+            const input = inputEl.value.trim();
+            if (!input) return;
+
+            spellLocked = true;
+            const current = spellQueue.shift();
+            currentSpellItem = current;
+
+            const userNorm = normalizeWord(input);
+            const targetNorm = normalizeWord(current.word);
             const feedback = document.getElementById('spell-feedback');
 
-            if (input === targetWord) {
-                feedback.className = "text-center font-semibold text-sm text-emerald-400";
-                feedback.textContent = "Chính xác! ✨";
-                setTimeout(() => {
-                    spellIndex++;
-                    renderSpellQuestion();
-                }, 1000);
+            if (userNorm === targetNorm) {
+                spellMastered++;
+                feedback.innerHTML = `
+                    <div class="bg-emerald-950/60 border border-emerald-500/60 rounded-xl p-3 text-emerald-300">
+                        <div><i class="fa-solid fa-circle-check"></i> Chính xác! ✨</div>
+                        <div class="text-white text-lg font-bold mt-1">${escapeHtml(current.word)} <span class="text-slate-400 font-mono text-sm font-normal">${escapeHtml(current.ipa)}</span></div>
+                    </div>
+                `;
             } else {
-                feedback.className = "text-center font-semibold text-sm text-red-400";
-                feedback.textContent = `Chưa đúng. Đáp án đúng: "${current.word}"`;
+                feedback.innerHTML = `
+                    <div class="bg-red-950/60 border border-red-500/60 rounded-xl p-3 text-red-300">
+                        <div><i class="fa-solid fa-circle-xmark"></i> Chưa đúng! Từ này sẽ xuất hiện lại để bạn ôn.</div>
+                        <div class="text-white text-lg font-bold mt-1">Đáp án: ${escapeHtml(current.word)} <span class="text-slate-400 font-mono text-sm font-normal">${escapeHtml(current.ipa)}</span></div>
+                    </div>
+                `;
                 speakSpellWord();
+
+                current.isReview = true;
+                const insertPos = Math.min(3, spellQueue.length);
+                spellQueue.splice(insertPos, 0, current);
             }
+
+            showSpellNextState();
+        }
+
+        function skipSpellWord() {
+            if (spellLocked || spellQueue.length === 0) return;
+
+            spellLocked = true;
+            const current = spellQueue.shift();
+            currentSpellItem = current;
+
+            const feedback = document.getElementById('spell-feedback');
+            feedback.innerHTML = `
+                <div class="bg-slate-900 border border-slate-600 rounded-xl p-3 text-slate-300">
+                    <div>Đã bỏ qua — Từ này sẽ xuất hiện lại trong danh sách ôn!</div>
+                    <div class="text-white text-lg font-bold mt-1">Đáp án: ${escapeHtml(current.word)} <span class="text-slate-400 font-mono text-sm font-normal">${escapeHtml(current.ipa)}</span></div>
+                </div>
+            `;
+            speakSpellWord();
+
+            current.isReview = true;
+            const insertPos = Math.min(3, spellQueue.length);
+            spellQueue.splice(insertPos, 0, current);
+
+            showSpellNextState();
         }
     </script>
 </body>
